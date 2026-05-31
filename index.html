@@ -45,40 +45,58 @@ a { text-decoration:none; color:inherit; }
 .sec-label::after { content:''; flex:1; height:0.5px; background:#1a1a1a; }
 
 /* CONVOCATORIA */
-.conv { background:#0a0014; border:1px solid #4a00aa; padding:2.5rem; margin-bottom:1.5rem; position:relative; }
+.conv { background:#0a0014; border:1px solid #4a00aa; padding:2.5rem; margin-bottom:1.5rem; position:relative; display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:start; }
 .conv::before { content:'CONVOCATORIA ABIERTA'; font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.2em; color:#0a0014; background:#c8ff00; padding:0.3rem 1rem; position:absolute; top:-1px; left:2rem; }
+.conv-img-wrap { position:relative; cursor:pointer; overflow:hidden; border:0.5px solid #3a0080; }
+.conv-img-wrap img { width:100%; display:block; transition:transform 0.3s; }
+.conv-img-wrap:hover img { transform:scale(1.03); }
+.conv-play-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45); transition:background 0.2s; }
+.conv-img-wrap:hover .conv-play-overlay { background:rgba(0,0,0,0.3); }
+.conv-play-btn { width:56px; height:56px; border-radius:50%; background:#c8ff00; display:flex; align-items:center; justify-content:center; }
+.conv-play-btn svg { width:22px; height:22px; fill:#0a0a0a; margin-left:3px; }
+.conv-play-label { position:absolute; bottom:0.8rem; left:0; right:0; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#c8ff00; }
+.conv-right {}
 .conv-deadline { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:#ff5555; margin-bottom:0.8rem; margin-top:1.2rem; display:flex; align-items:center; gap:0.6rem; font-weight:500; }
 .conv-deadline::before { content:''; width:9px; height:9px; background:#ff5555; border-radius:50%; display:inline-block; animation:pulse 1.5s ease-in-out infinite; flex-shrink:0; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-.conv-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,6vw,5rem); line-height:0.92; color:#e8e4d9; margin-bottom:0.6rem; }
+.conv-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,5vw,4rem); line-height:0.92; color:#e8e4d9; margin-bottom:0.6rem; }
 .conv-title em { font-style:normal; color:#c8ff00; }
-.conv-sub { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; color:#6a40a0; text-transform:uppercase; margin-bottom:1.5rem; }
-.conv-desc { font-size:0.9rem; line-height:1.8; color:#a080d0; max-width:580px; margin-bottom:2rem; }
+.conv-sub { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; color:#6a40a0; text-transform:uppercase; margin-bottom:1.2rem; }
+.conv-desc { font-size:0.85rem; line-height:1.75; color:#a080d0; margin-bottom:1.5rem; }
 .conv-desc strong { color:#d0b0f0; font-weight:500; }
 
 .conv-rules { border:0.5px solid #2a0060; margin-bottom:1.5rem; }
-.conv-rule { display:grid; grid-template-columns:44px 1fr; gap:1rem; padding:1.1rem 1.3rem; border-bottom:0.5px solid #1a0040; align-items:start; }
+.conv-rule { display:grid; grid-template-columns:40px 1fr; gap:1rem; padding:1rem 1.2rem; border-bottom:0.5px solid #1a0040; align-items:start; }
 .conv-rule:last-child { border-bottom:none; }
-.conv-rule-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#300060; line-height:1; }
-.conv-rule-title { font-size:0.72rem; font-weight:500; color:#c8a0e8; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.06em; font-family:'IBM Plex Mono',monospace; }
-.conv-rule-text { font-size:0.8rem; line-height:1.65; color:#6a4090; }
-.conv-rule-text strong { color:#a070c0; font-weight:500; }
+.conv-rule-num { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#300060; line-height:1; }
+.conv-rule-title { font-size:0.7rem; font-weight:500; color:#c8a0e8; margin-bottom:0.25rem; text-transform:uppercase; letter-spacing:0.06em; font-family:'IBM Plex Mono',monospace; }
+.conv-rule-text { font-size:0.78rem; line-height:1.6; color:#6a4090; }
+.conv-rule-text strong { color:#a070c0; }
 
-.conv-asunto { background:#0f0025; border:0.5px solid #3a0080; padding:1.2rem 1.5rem; margin-bottom:1.5rem; }
-.conv-asunto-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:#5a3080; margin-bottom:0.5rem; }
-.conv-asunto-val { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:#c8ff00; }
-.conv-asunto-example { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#5a3080; margin-top:0.3rem; }
+.conv-asunto { background:#0f0025; border:0.5px solid #3a0080; padding:1.1rem 1.4rem; margin-bottom:1.2rem; }
+.conv-asunto-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.18em; text-transform:uppercase; color:#5a3080; margin-bottom:0.4rem; }
+.conv-asunto-val { font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:#c8ff00; }
+.conv-asunto-ex { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:#4a2060; margin-top:0.25rem; }
 
-.conv-email-block { background:#0f0025; border:1px solid #6a00cc; padding:1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem; }
-.conv-email-label { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#6a3090; margin-bottom:0.4rem; }
-.conv-email-addr { font-family:'IBM Plex Mono',monospace; font-size:1rem; color:#c8ff00; font-weight:500; letter-spacing:0.05em; }
+.conv-email-block { background:#0f0025; border:1px solid #6a00cc; padding:1.4rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.4rem; }
+.conv-email-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:#6a3090; margin-bottom:0.35rem; }
+.conv-email-addr { font-family:'IBM Plex Mono',monospace; font-size:0.95rem; color:#c8ff00; font-weight:500; }
 
-.conv-dates { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid #2a0060; }
-.conv-date { padding:1.4rem 1.5rem; border-right:0.5px solid #2a0060; }
+.conv-dates { display:grid; grid-template-columns:1fr 1fr; border:0.5px solid #2a0060; }
+.conv-date { padding:1.2rem 1.4rem; border-right:0.5px solid #2a0060; }
 .conv-date:last-child { border-right:none; }
-.conv-date-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:#4a0080; margin-bottom:0.5rem; }
-.conv-date-val { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#e8e4d9; line-height:1; margin-bottom:0.3rem; }
-.conv-date-sub { font-size:0.72rem; color:#5a3080; line-height:1.4; }
+.conv-date-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:#4a0080; margin-bottom:0.4rem; }
+.conv-date-val { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#e8e4d9; line-height:1; margin-bottom:0.25rem; }
+.conv-date-sub { font-size:0.7rem; color:#5a3080; line-height:1.4; }
+
+/* LIGHTBOX */
+.lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999; align-items:center; justify-content:center; padding:2rem; }
+.lightbox.active { display:flex; }
+.lightbox-inner { width:100%; max-width:860px; position:relative; }
+.lightbox-video { position:relative; padding-bottom:56.25%; height:0; }
+.lightbox-video iframe { position:absolute; top:0; left:0; width:100%; height:100%; border-radius:4px; }
+.lightbox-close { position:absolute; top:-2.5rem; right:0; font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#666; cursor:pointer; transition:color 0.2s; background:none; border:none; }
+.lightbox-close:hover { color:#e8e4d9; }
 
 /* RUIDO */
 .ruido-wrap { background:#06060f; border:0.5px solid #2a2a5a; overflow:hidden; }
@@ -86,18 +104,18 @@ a { text-decoration:none; color:inherit; }
 .ruido-video { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; }
 .ruido-video iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
 .ruido-info { padding:2rem; display:flex; flex-direction:column; justify-content:center; }
-.ruido-badge { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#5050a0; border:0.5px solid #2a2a5a; padding:0.25rem 0.8rem; display:inline-block; margin-bottom:1rem; }
-.ruido-year { font-family:'Bebas Neue',sans-serif; font-size:5rem; color:#10101e; line-height:1; margin-bottom:0.5rem; }
-.ruido-title { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#e8e4d9; line-height:1; margin-bottom:0.8rem; }
-.ruido-desc { font-size:0.8rem; line-height:1.75; color:#5050a0; }
+.ruido-badge { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#5050a0; border:0.5px solid #2a2a5a; padding:0.25rem 0.8rem; display:inline-block; margin-bottom:0.8rem; }
+.ruido-year { font-family:'Bebas Neue',sans-serif; font-size:4.5rem; color:#10101e; line-height:1; margin-bottom:0.4rem; }
+.ruido-title { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#e8e4d9; line-height:1; margin-bottom:0.7rem; }
+.ruido-desc { font-size:0.8rem; line-height:1.75; color:#5050a0; margin-bottom:1.2rem; }
 .ruido-desc strong { color:#8080c0; font-weight:500; }
-.ruido-link { margin-top:1.2rem; }
 
 /* SERIE */
 .serie-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
 .serie-video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:0.5px solid #1a1a1a; }
 .serie-video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
 .serie-video-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:#333; margin-top:0.7rem; }
+.serie-intro { font-size:0.82rem; line-height:1.7; color:#666; border-left:2px solid #c8ff00; padding-left:1rem; margin-bottom:1.2rem; }
 .ep-list { border:0.5px solid #1a1a1a; }
 .ep { display:grid; grid-template-columns:46px 1fr auto; align-items:center; gap:1rem; padding:0.9rem 1rem; border-bottom:0.5px solid #141414; transition:background 0.2s; }
 .ep:last-child { border-bottom:none; }
@@ -109,18 +127,17 @@ a { text-decoration:none; color:inherit; }
 .ep-phase { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.1em; text-transform:uppercase; color:#2a2a2a; padding:0.18rem 0.5rem; border:0.5px solid #1e1e1e; white-space:nowrap; }
 
 /* TEXTOS */
-.txt-cols { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid #1a1a1a; }
+.txt-cols { display:grid; grid-template-columns:1fr 1fr; border:0.5px solid #1a1a1a; }
 .txt-col { padding:1.5rem; border-right:0.5px solid #1a1a1a; }
 .txt-col:last-child { border-right:none; }
 .txt-col-title { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:#333; margin-bottom:1.2rem; padding-bottom:0.6rem; border-bottom:0.5px solid #1a1a1a; }
-.txt-loading { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#333; padding:1rem 0; text-align:center; letter-spacing:0.1em; }
-
-.txt-item { padding:0.9rem 0; border-bottom:0.5px solid #141414; cursor:pointer; transition:all 0.2s; display:block; }
+.txt-loading { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#2a2a2a; padding:1rem 0; letter-spacing:0.1em; }
+.txt-item { padding:0.9rem 0; border-bottom:0.5px solid #141414; cursor:pointer; display:block; transition:all 0.2s; }
 .txt-item:last-child { border-bottom:none; }
 .txt-item:hover .txt-item-title { color:#c8ff00; }
 .txt-item-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem; }
 .txt-item-cat { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.12em; text-transform:uppercase; color:#444; }
-.txt-item-time { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; color:#2a2a2a; }
+.txt-item-time { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; color:#cc2200; }
 .txt-item-title { font-size:0.83rem; font-weight:500; color:#e8e4d9; line-height:1.3; margin-bottom:0.25rem; transition:color 0.2s; }
 .txt-item-desc { font-size:0.7rem; line-height:1.5; color:#555; }
 
@@ -130,7 +147,9 @@ a { text-decoration:none; color:inherit; }
 .pod-desc { font-size:0.82rem; line-height:1.7; color:#666; margin-bottom:1.5rem; }
 .pod-num { font-family:'Bebas Neue',sans-serif; font-size:5.5rem; color:#1a1a1a; line-height:1; text-align:right; }
 .pod-num span { font-size:0.85rem; color:#333; font-family:'IBM Plex Mono',monospace; letter-spacing:0.1em; display:block; text-align:right; text-transform:uppercase; }
-.pod-platforms { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:0.5px solid #1a1a1a; }
+.pod-embed { margin-bottom:1.5rem; border-radius:12px; overflow:hidden; }
+.pod-embed iframe { display:block; }
+.pod-platforms { display:grid; grid-template-columns:repeat(3,1fr); border:0.5px solid #1a1a1a; }
 .pod-plat { padding:1.4rem; border-right:0.5px solid #1a1a1a; text-align:center; cursor:pointer; transition:background 0.2s; display:flex; flex-direction:column; align-items:center; gap:0.7rem; }
 .pod-plat:last-child { border-right:none; }
 .pod-plat:hover { background:#0f0f0f; }
@@ -138,8 +157,10 @@ a { text-decoration:none; color:inherit; }
 .pod-plat-name { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#555; }
 .pod-plat-sub { font-size:0.62rem; color:#333; }
 
-.mani { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; background:#050505; }
-.mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.8rem); line-height:1.1; color:#e8e4d9; max-width:580px; margin-bottom:1rem; }
+/* MANIFESTO */
+.mani { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; background:#050505; display:flex; justify-content:flex-end; }
+.mani-inner { max-width:560px; }
+.mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.8rem); line-height:1.1; color:#e8e4d9; margin-bottom:1rem; }
 .mani-q em { font-style:normal; color:#c8ff00; }
 .mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
 
@@ -150,18 +171,31 @@ a { text-decoration:none; color:inherit; }
 @media(max-width:768px) {
   .nav-links { display:none; }
   .hero { grid-template-columns:1fr; gap:1.5rem; }
+  .conv { grid-template-columns:1fr; }
   .ruido-inner { grid-template-columns:1fr; }
   .serie-grid { grid-template-columns:1fr; }
   .txt-cols { grid-template-columns:1fr; }
-  .txt-col:first-child { border-right:none; border-bottom:0.5px solid #1a1a1a; }
+  .txt-col { border-right:none; border-bottom:0.5px solid #1a1a1a; }
+  .txt-col:last-child { border-bottom:none; }
   .conv-dates { grid-template-columns:1fr; }
   .pod-hero { grid-template-columns:1fr; }
   .ep { grid-template-columns:40px 1fr; }
   .ep-phase { display:none; }
+  .mani { justify-content:flex-start; }
 }
 </style>
 </head>
 <body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">× Cerrar</button>
+    <div class="lightbox-video">
+      <iframe id="lightbox-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
 
 <nav class="nav">
   <div class="logo">MA<span>P</span></div>
@@ -194,7 +228,7 @@ a { text-decoration:none; color:inherit; }
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left">
+  <div>
     <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
     <h1 class="hero-h1">Donde el<br>sistema<br>termina,<br><em>empieza</em><br>MAP.</h1>
   </div>
@@ -216,12 +250,23 @@ a { text-decoration:none; color:inherit; }
 <section class="sec" id="convocatoria">
   <div class="sec-label">Prioridad · Convocatoria abierta</div>
   <div class="conv">
-    <div class="conv-deadline">Cierre: 1 de julio de 2026 — ¡Un mes!</div>
-    <h2 class="conv-title">Antología<br><em>Literaria</em><br>MAP</h2>
-    <div class="conv-sub">Cuento & Poesía · Tema libre · Libro impreso</div>
-    <p class="conv-desc">Estamos armando una antología de cuento y poesía. <strong>Tema libre.</strong> No importa si sos un escritor reconocido o si nunca has publicado. Lo que importa es la autenticidad. Los textos seleccionados serán publicados en un <strong>libro impreso</strong> y cada autor recibe un ejemplar.</p>
-    <div class="btn-row">
-      <a href="mailto:maptvshowcr@gmail.com?subject=CONVOCATORIA ANTOLOGÍA – Tu Nombre" class="btn btn-p">Enviar mi texto →</a>
+    <div class="conv-img-wrap" onclick="openLightbox('lUth7IqbDdA')">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2026/05/antologia-f.webp" alt="Antología MAP" loading="lazy">
+      <div class="conv-play-overlay">
+        <div class="conv-play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="conv-play-label">Ver invitación en video</div>
+    </div>
+    <div class="conv-right">
+      <div class="conv-deadline">Cierre: 1 de julio de 2026 — ¡Un mes!</div>
+      <h2 class="conv-title">Antología<br><em>Literaria</em><br>MAP</h2>
+      <div class="conv-sub">Cuento & Poesía · Tema libre · Libro impreso</div>
+      <p class="conv-desc">Estamos armando una antología de cuento y poesía. <strong>Tema libre.</strong> No importa si sos un escritor reconocido o si nunca has publicado. Los textos seleccionados serán publicados en un <strong>libro impreso</strong> y cada autor recibe un ejemplar.</p>
+      <div class="btn-row">
+        <a href="mailto:maptvshowcr@gmail.com?subject=CONVOCATORIA ANTOLOGÍA – Tu Nombre" class="btn btn-p">Enviar mi texto →</a>
+      </div>
     </div>
   </div>
 
@@ -230,28 +275,28 @@ a { text-decoration:none; color:inherit; }
       <div class="conv-rule-num">01</div>
       <div>
         <div class="conv-rule-title">¿Qué se puede enviar?</div>
-        <p class="conv-rule-text">Poesías o cuentos. Podés enviar una sola pieza o varias, siempre que <strong>no excedan 10 páginas en total</strong>. Tema completamente libre.</p>
+        <p class="conv-rule-text">Poesías o cuentos. Una pieza o varias, siempre que <strong>no excedan 10 páginas en total</strong>. Tema completamente libre.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">02</div>
       <div>
         <div class="conv-rule-title">Formato requerido</div>
-        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos únicamente.</p>
+        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">03</div>
       <div>
         <div class="conv-rule-title">Sin inteligencia artificial</div>
-        <p class="conv-rule-text">No se aceptan textos generados mediante IA. <strong>Causa de descalificación automática.</strong> Queremos voz humana y experiencia real.</p>
+        <p class="conv-rule-text">No se aceptan textos generados mediante IA. <strong>Causa de descalificación automática.</strong> Queremos voz humana.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">04</div>
       <div>
         <div class="conv-rule-title">Publicación</div>
-        <p class="conv-rule-text">Los textos seleccionados se publican en un <strong>libro impreso</strong>. Cada autor seleccionado recibe un ejemplar de la obra.</p>
+        <p class="conv-rule-text">Los seleccionados se publican en un <strong>libro impreso</strong>. Cada autor recibe un ejemplar de la obra.</p>
       </div>
     </div>
   </div>
@@ -259,7 +304,7 @@ a { text-decoration:none; color:inherit; }
   <div class="conv-asunto">
     <div class="conv-asunto-label">Asunto del correo — formato obligatorio</div>
     <div class="conv-asunto-val">CONVOCATORIA ANTOLOGÍA – Nombre del autor</div>
-    <div class="conv-asunto-example">Ejemplo: CONVOCATORIA ANTOLOGÍA – Laura Méndez</div>
+    <div class="conv-asunto-ex">Ejemplo: CONVOCATORIA ANTOLOGÍA – Laura Méndez</div>
   </div>
 
   <div class="conv-email-block">
@@ -289,17 +334,15 @@ a { text-decoration:none; color:inherit; }
   <div class="sec-label">El origen · Documental 2018</div>
   <div class="ruido-wrap">
     <div class="ruido-inner">
-      <div class="ruido-video">
-        <iframe src="https://www.youtube.com/embed/_g5LaE4DjVA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
       <div class="ruido-info">
         <div class="ruido-badge">Selección oficial · Festival Internacional de Cine CR</div>
         <div class="ruido-year">2018</div>
         <div class="ruido-title">RUIDO</div>
-        <p class="ruido-desc">Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong></p>
-        <div class="ruido-link">
-          <a href="https://youtu.be/_g5LaE4DjVA?si=obbydxltSBvLygtQ" target="_blank" class="btn btn-g" style="font-size:0.6rem;">Ver documental completo →</a>
-        </div>
+        <p class="ruido-desc">Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong> RUIDO es el punto de partida de todo lo que MAP es hoy.</p>
+        <a href="https://youtu.be/_g5LaE4DjVA?si=obbydxltSBvLygtQ" target="_blank" class="btn btn-g" style="font-size:0.6rem;display:inline-block;margin-top:0.5rem;">Ver documental completo →</a>
+      </div>
+      <div class="ruido-video">
+        <iframe src="https://www.youtube.com/embed/u8Yw1QZw_5s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -315,15 +358,18 @@ a { text-decoration:none; color:inherit; }
       </div>
       <p class="serie-video-label">Extracto · Temporada 1 · MAP</p>
     </div>
-    <div class="ep-list">
-      <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
-      <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
-      <div class="ep"><div class="ep-n">03</div><div><div class="ep-t">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div></div><div class="ep-phase">El tiempo</div></div>
-      <div class="ep"><div class="ep-n">04</div><div><div class="ep-t">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div></div><div class="ep-phase">El tiempo</div></div>
-      <div class="ep"><div class="ep-n">05</div><div><div class="ep-t">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div></div><div class="ep-phase">La rabia</div></div>
-      <div class="ep"><div class="ep-n">06</div><div><div class="ep-t">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div></div><div class="ep-phase">La rabia</div></div>
-      <div class="ep"><div class="ep-n">07</div><div><div class="ep-t">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div></div><div class="ep-phase">El resto</div></div>
-      <div class="ep"><div class="ep-n">08</div><div><div class="ep-t">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div></div><div class="ep-phase">El resto</div></div>
+    <div>
+      <p class="serie-intro">La primera temporada demostró que existía un público sediento de autenticidad. Artistas ninguneados, músicos que nunca salieron en la tele, patinadores que construyeron cultura con las uñas. La segunda temporada va más lejos: ocho episodios que trazan el arco completo de lo que significa crear sin red de seguridad, desde la herida inicial hasta la decisión de seguir aunque nadie esté mirando.</p>
+      <div class="ep-list">
+        <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
+        <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
+        <div class="ep"><div class="ep-n">03</div><div><div class="ep-t">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div></div><div class="ep-phase">El tiempo</div></div>
+        <div class="ep"><div class="ep-n">04</div><div><div class="ep-t">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div></div><div class="ep-phase">El tiempo</div></div>
+        <div class="ep"><div class="ep-n">05</div><div><div class="ep-t">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div></div><div class="ep-phase">La rabia</div></div>
+        <div class="ep"><div class="ep-n">06</div><div><div class="ep-t">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div></div><div class="ep-phase">La rabia</div></div>
+        <div class="ep"><div class="ep-n">07</div><div><div class="ep-t">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div></div><div class="ep-phase">El resto</div></div>
+        <div class="ep"><div class="ep-n">08</div><div><div class="ep-t">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div></div><div class="ep-phase">El resto</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -361,28 +407,22 @@ a { text-decoration:none; color:inherit; }
       <div class="pod-num">200<span>episodios</span></div>
     </div>
   </div>
+  <div class="pod-embed">
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
   <div class="pod-platforms">
     <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB?si=85bf7d21b96c4102" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="12" fill="#1DB954"/>
-        <path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/>
-      </svg>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/></svg>
       <div class="pod-plat-name">Spotify</div>
       <div class="pod-plat-sub">MAP Radio Pachuko</div>
     </a>
     <a href="https://go.ivoox.com/sq/687687" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="24" cy="24" r="24" fill="#F5A623"/>
-        <text x="24" y="30" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">iVoox</text>
-      </svg>
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#F5A623"/><text x="24" y="30" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">iVoox</text></svg>
       <div class="pod-plat-name">iVoox</div>
       <div class="pod-plat-sub">Archivo completo</div>
     </a>
     <a href="https://youtu.be/SQyqoAPaFTY?si=iAarE7rrQQCgd8Xm" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="12" fill="#FF0000"/>
-        <path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/>
-      </svg>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#FF0000"/><path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/></svg>
       <div class="pod-plat-name">YouTube</div>
       <div class="pod-plat-sub">Video podcast</div>
     </a>
@@ -391,8 +431,10 @@ a { text-decoration:none; color:inherit; }
 
 <!-- MANIFESTO -->
 <div class="mani">
-  <div class="mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
-  <div class="mani-src">Misión MAP · 2016 — mapradiocr.com</div>
+  <div class="mani-inner">
+    <div class="mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
+    <div class="mani-src">Misión MAP · 2016 — mapradiocr.com</div>
+  </div>
 </div>
 
 <div class="footer">
@@ -402,6 +444,7 @@ a { text-decoration:none; color:inherit; }
 
 <script>
 const API = 'https://www.mapradiocr.com/wp-json/wp/v2';
+const API_POP = 'https://www.mapradiocr.com/wp-json/map/v1/populares';
 
 function formatTime(dateStr) {
   const d = new Date(dateStr);
@@ -413,19 +456,17 @@ function formatTime(dateStr) {
 }
 
 function stripHtml(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText || '';
+  const t = document.createElement('div');
+  t.innerHTML = html;
+  return t.textContent || t.innerText || '';
 }
 
-function renderPost(post) {
+function renderReciente(post) {
   const title = stripHtml(post.title.rendered);
   const excerpt = stripHtml(post.excerpt.rendered).substring(0,100) + '…';
-  const cat = post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'][0] && post._embedded['wp:term'][0][0]
-    ? post._embedded['wp:term'][0][0].name : 'MAP';
+  const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'MAP';
   const time = formatTime(post.date);
-  const url = post.link;
-  return `<a href="${url}" target="_blank" class="txt-item">
+  return `<a href="${post.link}" target="_blank" class="txt-item">
     <div class="txt-item-meta">
       <span class="txt-item-cat">${cat}</span>
       <span class="txt-item-time">${time}</span>
@@ -435,11 +476,21 @@ function renderPost(post) {
   </a>`;
 }
 
+function renderPopular(post) {
+  const cat = Array.isArray(post.categories) && post.categories.length ? post.categories[0] : 'MAP';
+  const excerpt = post.excerpt ? post.excerpt.substring(0,100) + '…' : '';
+  return `<a href="${post.link}" target="_blank" class="txt-item">
+    <div class="txt-item-meta"><span class="txt-item-cat">${cat}</span></div>
+    <div class="txt-item-title">${post.title}</div>
+    <div class="txt-item-desc">${excerpt}</div>
+  </a>`;
+}
+
 async function loadRecientes() {
   try {
     const r = await fetch(`${API}/posts?per_page=5&orderby=date&order=desc&_embed`);
     const posts = await r.json();
-    document.getElementById('recientes-list').innerHTML = posts.map(renderPost).join('');
+    document.getElementById('recientes-list').innerHTML = posts.map(renderReciente).join('');
   } catch(e) {
     document.getElementById('recientes-list').innerHTML = '<div class="txt-loading">No disponible</div>';
   }
@@ -447,23 +498,35 @@ async function loadRecientes() {
 
 async function loadPopulares() {
   try {
-    const r = await fetch(`${API}/posts?per_page=5&orderby=comment_count&order=desc&_embed`);
+    const r = await fetch(API_POP);
     const posts = await r.json();
-    document.getElementById('populares-list').innerHTML = posts.map(p => {
-      const title = stripHtml(p.title.rendered);
-      const excerpt = stripHtml(p.excerpt.rendered).substring(0,100) + '…';
-      const cat = p._embedded && p._embedded['wp:term'] && p._embedded['wp:term'][0] && p._embedded['wp:term'][0][0]
-        ? p._embedded['wp:term'][0][0].name : 'MAP';
-      return `<a href="${p.link}" target="_blank" class="txt-item">
-        <div class="txt-item-meta"><span class="txt-item-cat">${cat}</span></div>
-        <div class="txt-item-title">${title}</div>
-        <div class="txt-item-desc">${excerpt}</div>
-      </a>`;
-    }).join('');
+    if (Array.isArray(posts) && posts.length) {
+      document.getElementById('populares-list').innerHTML = posts.map(renderPopular).join('');
+    } else {
+      document.getElementById('populares-list').innerHTML = '<div class="txt-loading">No hay datos</div>';
+    }
   } catch(e) {
     document.getElementById('populares-list').innerHTML = '<div class="txt-loading">No disponible</div>';
   }
 }
+
+function openLightbox(videoId) {
+  document.getElementById('lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox-iframe').src = '';
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
 
 loadRecientes();
 loadPopulares();
