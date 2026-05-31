@@ -13,7 +13,7 @@ a { text-decoration:none; color:inherit; }
 .nav { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 2rem; border-bottom:0.5px solid #1e1e1e; background:#0a0a0a; position:sticky; top:0; z-index:100; }
 .logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.15em; color:#e8e4d9; line-height:1; }
 .logo span { color:#c8ff00; }
-.nav-links { display:flex; gap:1.5rem; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:#555; }
+.nav-links { display:flex; gap:1.5rem; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; }
 .nav-links a { color:#555; transition:color 0.2s; }
 .nav-links a:hover { color:#e8e4d9; }
 
@@ -51,11 +51,10 @@ a { text-decoration:none; color:inherit; }
 .conv-img-wrap img { width:100%; display:block; transition:transform 0.3s; }
 .conv-img-wrap:hover img { transform:scale(1.03); }
 .conv-play-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45); transition:background 0.2s; }
-.conv-img-wrap:hover .conv-play-overlay { background:rgba(0,0,0,0.3); }
+.conv-img-wrap:hover .conv-play-overlay { background:rgba(0,0,0,0.28); }
 .conv-play-btn { width:56px; height:56px; border-radius:50%; background:#c8ff00; display:flex; align-items:center; justify-content:center; }
 .conv-play-btn svg { width:22px; height:22px; fill:#0a0a0a; margin-left:3px; }
 .conv-play-label { position:absolute; bottom:0.8rem; left:0; right:0; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#c8ff00; }
-.conv-right {}
 .conv-deadline { font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:#ff5555; margin-bottom:0.8rem; margin-top:1.2rem; display:flex; align-items:center; gap:0.6rem; font-weight:500; }
 .conv-deadline::before { content:''; width:9px; height:9px; background:#ff5555; border-radius:50%; display:inline-block; animation:pulse 1.5s ease-in-out infinite; flex-shrink:0; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
@@ -65,7 +64,7 @@ a { text-decoration:none; color:inherit; }
 .conv-desc { font-size:0.85rem; line-height:1.75; color:#a080d0; margin-bottom:1.5rem; }
 .conv-desc strong { color:#d0b0f0; font-weight:500; }
 
-.conv-rules { border:0.5px solid #2a0060; margin-bottom:1.5rem; }
+.conv-rules { border:0.5px solid #2a0060; margin-bottom:1.2rem; }
 .conv-rule { display:grid; grid-template-columns:40px 1fr; gap:1rem; padding:1rem 1.2rem; border-bottom:0.5px solid #1a0040; align-items:start; }
 .conv-rule:last-child { border-bottom:none; }
 .conv-rule-num { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#300060; line-height:1; }
@@ -75,7 +74,7 @@ a { text-decoration:none; color:inherit; }
 
 .conv-asunto { background:#0f0025; border:0.5px solid #3a0080; padding:1.1rem 1.4rem; margin-bottom:1.2rem; }
 .conv-asunto-label { font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.18em; text-transform:uppercase; color:#5a3080; margin-bottom:0.4rem; }
-.conv-asunto-val { font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:#c8ff00; }
+.conv-asunto-val { font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:#c8ff00; }
 .conv-asunto-ex { font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:#4a2060; margin-top:0.25rem; }
 
 .conv-email-block { background:#0f0025; border:1px solid #6a00cc; padding:1.4rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.4rem; }
@@ -111,11 +110,13 @@ a { text-decoration:none; color:inherit; }
 .ruido-desc strong { color:#8080c0; font-weight:500; }
 
 /* SERIE */
+.serie-intro-banner { background:#0f0f0f; border-left:3px solid #c8ff00; padding:1.2rem 1.5rem; margin-bottom:1.5rem; }
+.serie-intro-text { font-size:0.85rem; line-height:1.75; color:#777; }
+.serie-intro-text strong { color:#e8e4d9; font-weight:500; }
 .serie-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
 .serie-video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:0.5px solid #1a1a1a; }
 .serie-video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
 .serie-video-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:#333; margin-top:0.7rem; }
-.serie-intro { font-size:0.82rem; line-height:1.7; color:#666; border-left:2px solid #c8ff00; padding-left:1rem; margin-bottom:1.2rem; }
 .ep-list { border:0.5px solid #1a1a1a; }
 .ep { display:grid; grid-template-columns:46px 1fr auto; align-items:center; gap:1rem; padding:0.9rem 1rem; border-bottom:0.5px solid #141414; transition:background 0.2s; }
 .ep:last-child { border-bottom:none; }
@@ -141,25 +142,29 @@ a { text-decoration:none; color:inherit; }
 .txt-item-title { font-size:0.83rem; font-weight:500; color:#e8e4d9; line-height:1.3; margin-bottom:0.25rem; transition:color 0.2s; }
 .txt-item-desc { font-size:0.7rem; line-height:1.5; color:#555; }
 
-/* PODCAST */
-.pod-hero { background:#0f0f0f; border:0.5px solid #1a1a1a; padding:2rem; display:grid; grid-template-columns:2fr 1fr; gap:2rem; align-items:center; margin-bottom:1.5rem; }
-.pod-title { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#e8e4d9; margin-bottom:0.6rem; }
-.pod-desc { font-size:0.82rem; line-height:1.7; color:#666; margin-bottom:1.5rem; }
-.pod-num { font-family:'Bebas Neue',sans-serif; font-size:5.5rem; color:#1a1a1a; line-height:1; text-align:right; }
-.pod-num span { font-size:0.85rem; color:#333; font-family:'IBM Plex Mono',monospace; letter-spacing:0.1em; display:block; text-align:right; text-transform:uppercase; }
-.pod-embed { margin-bottom:1.5rem; border-radius:12px; overflow:hidden; }
-.pod-embed iframe { display:block; }
-.pod-platforms { display:grid; grid-template-columns:repeat(3,1fr); border:0.5px solid #1a1a1a; }
-.pod-plat { padding:1.4rem; border-right:0.5px solid #1a1a1a; text-align:center; cursor:pointer; transition:background 0.2s; display:flex; flex-direction:column; align-items:center; gap:0.7rem; }
-.pod-plat:last-child { border-right:none; }
-.pod-plat:hover { background:#0f0f0f; }
-.pod-plat svg { width:32px; height:32px; }
-.pod-plat-name { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#555; }
-.pod-plat-sub { font-size:0.62rem; color:#333; }
+/* PODCAST CREATIVO */
+.pod-layout { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid #1a1a1a; margin-bottom:1.5rem; }
+.pod-left { padding:2.5rem 2rem; background:#0a0a0a; border-right:0.5px solid #1a1a1a; display:flex; flex-direction:column; justify-content:space-between; }
+.pod-right { background:#0f0f0f; display:flex; flex-direction:column; }
+.pod-num-big { font-family:'Bebas Neue',sans-serif; font-size:8rem; color:#141414; line-height:1; margin-bottom:0; }
+.pod-num-label { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#2a2a2a; margin-bottom:1.5rem; }
+.pod-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:#e8e4d9; margin-bottom:0.8rem; letter-spacing:0.03em; }
+.pod-desc { font-size:0.85rem; line-height:1.75; color:#666; margin-bottom:2rem; }
+.pod-since { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:#333; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem; }
+.pod-since::before { content:''; width:20px; height:1px; background:#333; display:inline-block; }
+.pod-embed-wrap { flex:1; padding:1.5rem; border-bottom:0.5px solid #1a1a1a; }
+.pod-embed-label { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase; color:#333; margin-bottom:0.8rem; }
+.pod-platforms-vertical { padding:1.5rem; }
+.pod-plat-row { display:flex; align-items:center; gap:1rem; padding:0.7rem 0; border-bottom:0.5px solid #141414; cursor:pointer; transition:all 0.2s; }
+.pod-plat-row:last-child { border-bottom:none; }
+.pod-plat-row:hover .pod-plat-name-v { color:#c8ff00; }
+.pod-plat-row svg { width:28px; height:28px; flex-shrink:0; }
+.pod-plat-name-v { font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:#555; transition:color 0.2s; }
+.pod-plat-sub-v { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; color:#2a2a2a; margin-left:auto; }
 
 /* MANIFESTO */
-.mani { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; background:#050505; display:flex; justify-content:flex-end; }
-.mani-inner { max-width:560px; }
+.mani { padding:4rem 2rem; border-bottom:0.5px solid #1a1a1a; background:#050505; min-height:220px; display:flex; align-items:center; }
+.mani-inner { max-width:580px; }
 .mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.8rem); line-height:1.1; color:#e8e4d9; margin-bottom:1rem; }
 .mani-q em { font-style:normal; color:#c8ff00; }
 .mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
@@ -178,10 +183,10 @@ a { text-decoration:none; color:inherit; }
   .txt-col { border-right:none; border-bottom:0.5px solid #1a1a1a; }
   .txt-col:last-child { border-bottom:none; }
   .conv-dates { grid-template-columns:1fr; }
-  .pod-hero { grid-template-columns:1fr; }
+  .pod-layout { grid-template-columns:1fr; }
+  .pod-right { border-right:none; border-top:0.5px solid #1a1a1a; }
   .ep { grid-template-columns:40px 1fr; }
   .ep-phase { display:none; }
-  .mani { justify-content:flex-start; }
 }
 </style>
 </head>
@@ -259,7 +264,7 @@ a { text-decoration:none; color:inherit; }
       </div>
       <div class="conv-play-label">Ver invitación en video</div>
     </div>
-    <div class="conv-right">
+    <div>
       <div class="conv-deadline">Cierre: 1 de julio de 2026 — ¡Un mes!</div>
       <h2 class="conv-title">Antología<br><em>Literaria</em><br>MAP</h2>
       <div class="conv-sub">Cuento & Poesía · Tema libre · Libro impreso</div>
@@ -282,29 +287,30 @@ a { text-decoration:none; color:inherit; }
       <div class="conv-rule-num">02</div>
       <div>
         <div class="conv-rule-title">Formato requerido</div>
-        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos.</p>
+        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos únicamente.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">03</div>
       <div>
         <div class="conv-rule-title">Sin inteligencia artificial</div>
-        <p class="conv-rule-text">No se aceptan textos generados mediante IA. <strong>Causa de descalificación automática.</strong> Queremos voz humana.</p>
+        <p class="conv-rule-text">No se aceptan textos generados mediante IA. <strong>Causa de descalificación automática.</strong> Queremos voz humana y experiencia real.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">04</div>
       <div>
         <div class="conv-rule-title">Publicación</div>
-        <p class="conv-rule-text">Los seleccionados se publican en un <strong>libro impreso</strong>. Cada autor recibe un ejemplar de la obra.</p>
+        <p class="conv-rule-text">Los textos seleccionados se publican en un <strong>libro impreso</strong>. Cada autor seleccionado recibe un ejemplar de la obra.</p>
       </div>
     </div>
-  </div>
-
-  <div class="conv-asunto">
-    <div class="conv-asunto-label">Asunto del correo — formato obligatorio</div>
-    <div class="conv-asunto-val">CONVOCATORIA ANTOLOGÍA – Nombre del autor</div>
-    <div class="conv-asunto-ex">Ejemplo: CONVOCATORIA ANTOLOGÍA – Laura Méndez</div>
+    <div class="conv-rule">
+      <div class="conv-rule-num">05</div>
+      <div>
+        <div class="conv-rule-title">Asunto del correo — formato obligatorio</div>
+        <p class="conv-rule-text"><strong style="color:#c8ff00;">CONVOCATORIA ANTOLOGÍA – Nombre del autor</strong><br>Ejemplo: CONVOCATORIA ANTOLOGÍA – Laura Méndez</p>
+      </div>
+    </div>
   </div>
 
   <div class="conv-email-block">
@@ -339,7 +345,7 @@ a { text-decoration:none; color:inherit; }
         <div class="ruido-year">2018</div>
         <div class="ruido-title">RUIDO</div>
         <p class="ruido-desc">Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong> RUIDO es el punto de partida de todo lo que MAP es hoy.</p>
-        <a href="https://youtu.be/_g5LaE4DjVA?si=obbydxltSBvLygtQ" target="_blank" class="btn btn-g" style="font-size:0.6rem;display:inline-block;margin-top:0.5rem;">Ver documental completo →</a>
+        <a href="https://youtu.be/_g5LaE4DjVA?si=obbydxltSBvLygtQ" target="_blank" class="btn btn-g" style="font-size:0.6rem;display:inline-block;">Ver documental completo →</a>
       </div>
       <div class="ruido-video">
         <iframe src="https://www.youtube.com/embed/u8Yw1QZw_5s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -351,6 +357,9 @@ a { text-decoration:none; color:inherit; }
 <!-- SERIE -->
 <section class="sec" id="serie">
   <div class="sec-label">Serie documental · Temporada 2</div>
+  <div class="serie-intro-banner">
+    <p class="serie-intro-text">La primera temporada demostró que existía un público sediento de autenticidad. <strong>Artistas ninguneados, músicos que nunca salieron en la tele, patinadores que construyeron cultura con las uñas.</strong> La segunda temporada va más lejos: ocho episodios que trazan el arco completo de lo que significa crear sin red de seguridad, desde la herida inicial hasta la decisión de seguir aunque nadie esté mirando.</p>
+  </div>
   <div class="serie-grid">
     <div>
       <div class="serie-video-wrap">
@@ -358,18 +367,15 @@ a { text-decoration:none; color:inherit; }
       </div>
       <p class="serie-video-label">Extracto · Temporada 1 · MAP</p>
     </div>
-    <div>
-      <p class="serie-intro">La primera temporada demostró que existía un público sediento de autenticidad. Artistas ninguneados, músicos que nunca salieron en la tele, patinadores que construyeron cultura con las uñas. La segunda temporada va más lejos: ocho episodios que trazan el arco completo de lo que significa crear sin red de seguridad, desde la herida inicial hasta la decisión de seguir aunque nadie esté mirando.</p>
-      <div class="ep-list">
-        <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
-        <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
-        <div class="ep"><div class="ep-n">03</div><div><div class="ep-t">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div></div><div class="ep-phase">El tiempo</div></div>
-        <div class="ep"><div class="ep-n">04</div><div><div class="ep-t">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div></div><div class="ep-phase">El tiempo</div></div>
-        <div class="ep"><div class="ep-n">05</div><div><div class="ep-t">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div></div><div class="ep-phase">La rabia</div></div>
-        <div class="ep"><div class="ep-n">06</div><div><div class="ep-t">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div></div><div class="ep-phase">La rabia</div></div>
-        <div class="ep"><div class="ep-n">07</div><div><div class="ep-t">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div></div><div class="ep-phase">El resto</div></div>
-        <div class="ep"><div class="ep-n">08</div><div><div class="ep-t">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div></div><div class="ep-phase">El resto</div></div>
-      </div>
+    <div class="ep-list">
+      <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
+      <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
+      <div class="ep"><div class="ep-n">03</div><div><div class="ep-t">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div></div><div class="ep-phase">El tiempo</div></div>
+      <div class="ep"><div class="ep-n">04</div><div><div class="ep-t">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div></div><div class="ep-phase">El tiempo</div></div>
+      <div class="ep"><div class="ep-n">05</div><div><div class="ep-t">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div></div><div class="ep-phase">La rabia</div></div>
+      <div class="ep"><div class="ep-n">06</div><div><div class="ep-t">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div></div><div class="ep-phase">La rabia</div></div>
+      <div class="ep"><div class="ep-n">07</div><div><div class="ep-t">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div></div><div class="ep-phase">El resto</div></div>
+      <div class="ep"><div class="ep-n">08</div><div><div class="ep-t">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div></div><div class="ep-phase">El resto</div></div>
     </div>
   </div>
 </section>
@@ -395,37 +401,42 @@ a { text-decoration:none; color:inherit; }
 <!-- PODCAST -->
 <section class="sec" id="podcast">
   <div class="sec-label">Podcast · Desde 2016</div>
-  <div class="pod-hero">
-    <div>
-      <div class="pod-title">MAP Radio</div>
-      <p class="pod-desc">Más de 200 episodios grabados desde 2016. Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie. Algunos episodios son legendarios. Todos son independientes.</p>
-      <div class="btn-row">
+  <div class="pod-layout">
+    <div class="pod-left">
+      <div>
+        <div class="pod-num-big">200</div>
+        <div class="pod-num-label">Episodios grabados</div>
+        <div class="pod-since">Desde 2016</div>
+        <div class="pod-title">MAP Radio</div>
+        <p class="pod-desc">Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie. Algunos episodios son legendarios. Todos son independientes.</p>
+      </div>
+      <div class="btn-row" style="margin-top:1rem;">
         <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB" target="_blank" class="btn btn-p" style="font-size:0.6rem;">Escuchar el archivo →</a>
       </div>
     </div>
-    <div style="text-align:right;">
-      <div class="pod-num">200<span>episodios</span></div>
+    <div class="pod-right">
+      <div class="pod-embed-wrap">
+        <div class="pod-embed-label">Episodio legendario</div>
+        <iframe style="border-radius:8px" src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+      <div class="pod-platforms-vertical">
+        <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB?si=85bf7d21b96c4102" target="_blank" class="pod-plat-row">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/></svg>
+          <span class="pod-plat-name-v">Spotify</span>
+          <span class="pod-plat-sub-v">MAP Radio Pachuko</span>
+        </a>
+        <a href="https://go.ivoox.com/sq/687687" target="_blank" class="pod-plat-row">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#F5A623"/><text x="24" y="30" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">iVoox</text></svg>
+          <span class="pod-plat-name-v">iVoox</span>
+          <span class="pod-plat-sub-v">Archivo completo</span>
+        </a>
+        <a href="https://youtu.be/SQyqoAPaFTY?si=iAarE7rrQQCgd8Xm" target="_blank" class="pod-plat-row">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#FF0000"/><path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/></svg>
+          <span class="pod-plat-name-v">YouTube</span>
+          <span class="pod-plat-sub-v">Video podcast</span>
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="pod-embed">
-    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </div>
-  <div class="pod-platforms">
-    <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB?si=85bf7d21b96c4102" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/></svg>
-      <div class="pod-plat-name">Spotify</div>
-      <div class="pod-plat-sub">MAP Radio Pachuko</div>
-    </a>
-    <a href="https://go.ivoox.com/sq/687687" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#F5A623"/><text x="24" y="30" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">iVoox</text></svg>
-      <div class="pod-plat-name">iVoox</div>
-      <div class="pod-plat-sub">Archivo completo</div>
-    </a>
-    <a href="https://youtu.be/SQyqoAPaFTY?si=iAarE7rrQQCgd8Xm" target="_blank" class="pod-plat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#FF0000"/><path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/></svg>
-      <div class="pod-plat-name">YouTube</div>
-      <div class="pod-plat-sub">Video podcast</div>
-    </a>
   </div>
 </section>
 
@@ -461,36 +472,24 @@ function stripHtml(html) {
   return t.textContent || t.innerText || '';
 }
 
-function renderReciente(post) {
-  const title = stripHtml(post.title.rendered);
-  const excerpt = stripHtml(post.excerpt.rendered).substring(0,100) + '…';
-  const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'MAP';
-  const time = formatTime(post.date);
-  return `<a href="${post.link}" target="_blank" class="txt-item">
-    <div class="txt-item-meta">
-      <span class="txt-item-cat">${cat}</span>
-      <span class="txt-item-time">${time}</span>
-    </div>
-    <div class="txt-item-title">${title}</div>
-    <div class="txt-item-desc">${excerpt}</div>
-  </a>`;
-}
-
-function renderPopular(post) {
-  const cat = Array.isArray(post.categories) && post.categories.length ? post.categories[0] : 'MAP';
-  const excerpt = post.excerpt ? post.excerpt.substring(0,100) + '…' : '';
-  return `<a href="${post.link}" target="_blank" class="txt-item">
-    <div class="txt-item-meta"><span class="txt-item-cat">${cat}</span></div>
-    <div class="txt-item-title">${post.title}</div>
-    <div class="txt-item-desc">${excerpt}</div>
-  </a>`;
-}
-
 async function loadRecientes() {
   try {
     const r = await fetch(`${API}/posts?per_page=5&orderby=date&order=desc&_embed`);
     const posts = await r.json();
-    document.getElementById('recientes-list').innerHTML = posts.map(renderReciente).join('');
+    document.getElementById('recientes-list').innerHTML = posts.map(post => {
+      const title = stripHtml(post.title.rendered);
+      const excerpt = stripHtml(post.excerpt.rendered).substring(0,100) + '…';
+      const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'MAP';
+      const time = formatTime(post.date);
+      return `<a href="${post.link}" target="_blank" class="txt-item">
+        <div class="txt-item-meta">
+          <span class="txt-item-cat">${cat}</span>
+          <span class="txt-item-time">${time}</span>
+        </div>
+        <div class="txt-item-title">${title}</div>
+        <div class="txt-item-desc">${excerpt}</div>
+      </a>`;
+    }).join('');
   } catch(e) {
     document.getElementById('recientes-list').innerHTML = '<div class="txt-loading">No disponible</div>';
   }
@@ -501,9 +500,17 @@ async function loadPopulares() {
     const r = await fetch(API_POP);
     const posts = await r.json();
     if (Array.isArray(posts) && posts.length) {
-      document.getElementById('populares-list').innerHTML = posts.map(renderPopular).join('');
+      document.getElementById('populares-list').innerHTML = posts.map(post => {
+        const cat = Array.isArray(post.categories) && post.categories.length ? post.categories[0] : 'MAP';
+        const excerpt = post.excerpt ? post.excerpt.substring(0,100) + '…' : '';
+        return `<a href="${post.link}" target="_blank" class="txt-item">
+          <div class="txt-item-meta"><span class="txt-item-cat">${cat}</span></div>
+          <div class="txt-item-title">${post.title}</div>
+          <div class="txt-item-desc">${excerpt}</div>
+        </a>`;
+      }).join('');
     } else {
-      document.getElementById('populares-list').innerHTML = '<div class="txt-loading">No hay datos</div>';
+      document.getElementById('populares-list').innerHTML = '<div class="txt-loading">Sin datos</div>';
     }
   } catch(e) {
     document.getElementById('populares-list').innerHTML = '<div class="txt-loading">No disponible</div>';
@@ -524,10 +531,7 @@ function closeLightbox(e) {
   }
 }
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeLightbox();
-});
-
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 loadRecientes();
 loadPopulares();
 </script>
