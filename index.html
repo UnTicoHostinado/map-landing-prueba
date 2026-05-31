@@ -10,7 +10,6 @@
 body { background:#0a0a0a; color:#e8e4d9; font-family:'IBM Plex Sans',sans-serif; font-weight:300; }
 a { text-decoration:none; }
 
-/* NAV */
 .nav { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 2rem; border-bottom:0.5px solid #1e1e1e; background:#0a0a0a; position:sticky; top:0; z-index:100; }
 .logo { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.15em; color:#e8e4d9; line-height:1; }
 .logo span { color:#c8ff00; }
@@ -18,25 +17,24 @@ a { text-decoration:none; }
 .nav-links a { color:#555; transition:color 0.2s; }
 .nav-links a:hover { color:#e8e4d9; }
 
-/* TICKER */
 .ticker { overflow:hidden; border-bottom:0.5px solid #1a1a1a; padding:0.5rem 0; background:#050505; }
 .ticker-in { display:flex; gap:3rem; animation:tick 22s linear infinite; white-space:nowrap; width:max-content; }
 @keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 .tick-i { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#2e2e2e; }
 .tick-i span { color:#c8ff00; }
 
-/* HERO */
-.hero { padding:4rem 2rem 3rem; border-bottom:0.5px solid #1a1a1a; }
+.hero { padding:4rem 2rem 3rem; border-bottom:0.5px solid #1a1a1a; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+.hero-left {}
+.hero-right { padding-top:1rem; }
 .hero-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:#c8ff00; text-transform:uppercase; margin-bottom:1.2rem; display:flex; align-items:center; gap:0.6rem; }
 .hero-eyebrow::before { content:''; width:16px; height:1px; background:#c8ff00; display:inline-block; }
-.hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,9vw,6.5rem); line-height:0.92; letter-spacing:0.02em; margin-bottom:1.5rem; }
+.hero-h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,7vw,5.5rem); line-height:0.92; letter-spacing:0.02em; margin-bottom:1.5rem; }
 .hero-h1 em { font-style:normal; color:#c8ff00; }
-.hero-body { max-width:520px; font-size:0.9rem; line-height:1.75; color:#888; border-left:2px solid #1e1e1e; padding-left:1.2rem; margin-bottom:2.5rem; }
+.hero-body { font-size:0.88rem; line-height:1.75; color:#888; border-left:2px solid #1e1e1e; padding-left:1.2rem; margin-bottom:2rem; }
 .hero-body strong { color:#e8e4d9; font-weight:500; }
-.hero-pills { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2.5rem; }
+.hero-pills { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
 .pill { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.3rem 0.8rem; border:0.5px solid #2a2a2a; color:#555; }
 
-/* BOTONES */
 .btn-row { display:flex; gap:1rem; flex-wrap:wrap; }
 .btn { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; padding:0.75rem 1.6rem; border:0.5px solid; cursor:pointer; display:inline-block; transition:all 0.2s; }
 .btn-p { background:#c8ff00; border-color:#c8ff00; color:#0a0a0a; font-weight:500; }
@@ -44,15 +42,14 @@ a { text-decoration:none; }
 .btn-g { background:transparent; border-color:#333; color:#666; }
 .btn-g:hover { border-color:#e8e4d9; color:#e8e4d9; }
 
-/* SECCIONES */
 .sec { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; }
 .sec-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:#333; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
 .sec-label::after { content:''; flex:1; height:0.5px; background:#1a1a1a; }
 
-/* CONVOCATORIA LITERARIA */
+/* CONVOCATORIA */
 .conv { background:#0a0014; border:0.5px solid #2a0050; padding:2.5rem; margin-bottom:1.5rem; }
 .conv-badge { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#c8ff00; background:#150030; border:0.5px solid #3a0080; padding:0.3rem 0.8rem; display:inline-block; margin-bottom:1.2rem; }
-.conv-deadline { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#ff4444; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem; }
+.conv-deadline { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#ff4444; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.5rem; }
 .conv-deadline::before { content:''; width:8px; height:8px; background:#ff4444; border-radius:50%; display:inline-block; animation:pulse 1.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .conv-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,6vw,4.5rem); line-height:0.95; color:#e8e4d9; margin-bottom:0.8rem; }
@@ -65,7 +62,7 @@ a { text-decoration:none; }
 .conv-rule { display:grid; grid-template-columns:40px 1fr; gap:1rem; padding:1rem 1.2rem; border-bottom:0.5px solid #150030; align-items:start; }
 .conv-rule:last-child { border-bottom:none; }
 .conv-rule-num { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#2a0060; line-height:1; }
-.conv-rule-title { font-size:0.78rem; font-weight:500; color:#c8a0e8; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.05em; font-family:'IBM Plex Mono',monospace; }
+.conv-rule-title { font-size:0.75rem; font-weight:500; color:#c8a0e8; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.05em; font-family:'IBM Plex Mono',monospace; }
 .conv-rule-text { font-size:0.78rem; line-height:1.6; color:#5a3080; }
 .conv-rule-text strong { color:#9a70c0; font-weight:500; }
 
@@ -80,6 +77,10 @@ a { text-decoration:none; }
 .conv-date-val { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:#e8e4d9; line-height:1; }
 .conv-date-sub { font-size:0.7rem; color:#5a3080; margin-top:0.2rem; }
 
+/* VIDEO */
+.video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:0.5px solid #1a1a1a; }
+.video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
+
 /* RUIDO */
 .ruido { background:#0a0a14; border:0.5px solid #1a1a2e; padding:2rem; display:grid; grid-template-columns:auto 1fr; gap:2rem; align-items:start; }
 .ruido-year { font-family:'Bebas Neue',sans-serif; font-size:4rem; color:#1a1a2e; line-height:1; }
@@ -90,7 +91,7 @@ a { text-decoration:none; }
 
 /* SERIE */
 .ep-list { border:0.5px solid #1a1a1a; }
-.ep { display:grid; grid-template-columns:50px 1fr auto; align-items:center; gap:1.2rem; padding:1rem 1.2rem; border-bottom:0.5px solid #141414; cursor:pointer; transition:background 0.2s; }
+.ep { display:grid; grid-template-columns:50px 1fr auto; align-items:center; gap:1.2rem; padding:1rem 1.2rem; border-bottom:0.5px solid #141414; transition:background 0.2s; }
 .ep:last-child { border-bottom:none; }
 .ep:hover { background:#0f0f0f; }
 .ep:hover .ep-t { color:#c8ff00; }
@@ -100,42 +101,48 @@ a { text-decoration:none; }
 .ep-phase { font-family:'IBM Plex Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:#2a2a2a; padding:0.2rem 0.5rem; border:0.5px solid #1e1e1e; white-space:nowrap; }
 
 /* TEXTOS */
-.txt-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid #1a1a1a; }
-.txt-card { padding:1.5rem; border-right:0.5px solid #1a1a1a; border-bottom:0.5px solid #1a1a1a; cursor:pointer; transition:background 0.2s; }
-.txt-card:nth-child(2n) { border-right:none; }
-.txt-card:nth-last-child(-n+2) { border-bottom:none; }
-.txt-card:hover { background:#0d0d0d; }
-.txt-cat { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#444; margin-bottom:0.6rem; }
-.txt-title { font-size:0.9rem; font-weight:500; color:#e8e4d9; line-height:1.3; margin-bottom:0.5rem; }
-.txt-desc { font-size:0.75rem; line-height:1.6; color:#555; }
+.txt-filters { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+.txt-filter { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:0.5px solid #2a2a2a; color:#555; cursor:pointer; transition:all 0.2s; }
+.txt-filter:hover, .txt-filter.active { border-color:#c8ff00; color:#c8ff00; }
+
+.txt-cols { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+.txt-col-title { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#333; margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:0.5px solid #1a1a1a; }
+
+.txt-item { padding:1rem 0; border-bottom:0.5px solid #141414; cursor:pointer; transition:all 0.2s; }
+.txt-item:last-child { border-bottom:none; }
+.txt-item:hover .txt-item-title { color:#c8ff00; }
+.txt-item-cat { font-family:'IBM Plex Mono',monospace; font-size:0.52rem; letter-spacing:0.12em; text-transform:uppercase; color:#444; margin-bottom:0.3rem; }
+.txt-item-title { font-size:0.85rem; font-weight:500; color:#e8e4d9; line-height:1.3; margin-bottom:0.3rem; transition:color 0.2s; }
+.txt-item-desc { font-size:0.72rem; line-height:1.5; color:#555; }
 
 /* PODCAST */
 .pod-hero { background:#0f0f0f; border:0.5px solid #1a1a1a; padding:2rem; display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:center; margin-bottom:1.5rem; }
 .pod-title { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#e8e4d9; margin-bottom:0.5rem; }
-.pod-desc { font-size:0.8rem; line-height:1.6; color:#666; max-width:400px; margin-bottom:1.2rem; }
+.pod-desc { font-size:0.8rem; line-height:1.6; color:#666; max-width:400px; margin-bottom:1.5rem; }
 .pod-num { font-family:'Bebas Neue',sans-serif; font-size:5rem; color:#1a1a1a; line-height:1; text-align:right; }
 .pod-num span { font-size:0.9rem; color:#444; font-family:'IBM Plex Mono',monospace; letter-spacing:0.1em; display:block; text-align:right; text-transform:uppercase; }
-.pod-platforms { display:flex; gap:0; border:0.5px solid #1a1a1a; }
-.pod-plat { flex:1; padding:1rem; border-right:0.5px solid #1a1a1a; text-align:center; cursor:pointer; transition:background 0.2s; }
+
+.pod-platforms { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:0.5px solid #1a1a1a; }
+.pod-plat { padding:1.2rem; border-right:0.5px solid #1a1a1a; text-align:center; cursor:pointer; transition:background 0.2s; display:flex; flex-direction:column; align-items:center; gap:0.6rem; }
 .pod-plat:last-child { border-right:none; }
 .pod-plat:hover { background:#0f0f0f; }
-.pod-plat-name { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#555; margin-bottom:0.3rem; }
-.pod-plat-sub { font-size:0.65rem; color:#333; }
+.pod-plat svg { width:28px; height:28px; }
+.pod-plat-name { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#555; }
+.pod-plat-sub { font-size:0.62rem; color:#333; }
 
-/* MANIFESTO */
 .mani { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; background:#050505; }
 .mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.8rem); line-height:1.1; color:#e8e4d9; max-width:580px; margin-bottom:1rem; }
 .mani-q em { font-style:normal; color:#c8ff00; }
 .mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
 
-/* FOOTER */
 .footer { padding:2rem; border-top:0.5px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
 .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.15em; color:#2a2a2a; }
 .footer-txt { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:#2a2a2a; text-transform:uppercase; }
 
-@media(max-width:600px) {
+@media(max-width:700px) {
   .nav-links { display:none; }
-  .txt-grid { grid-template-columns:1fr; }
+  .hero { grid-template-columns:1fr; }
+  .txt-cols { grid-template-columns:1fr; }
   .conv-dates { grid-template-columns:1fr; }
   .ruido { grid-template-columns:1fr; }
   .pod-hero { grid-template-columns:1fr; }
@@ -153,6 +160,7 @@ a { text-decoration:none; }
     <a href="#serie">Serie</a>
     <a href="#textos">Textos</a>
     <a href="#podcast">Podcast</a>
+    <a href="https://www.mapradiocr.com/mapradiocr-mrrp/">Sobre el autor</a>
     <a href="https://www.mapradiocr.com/contacto-page/">Contacto</a>
   </div>
 </nav>
@@ -176,26 +184,27 @@ a { text-decoration:none; }
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
-  <h1 class="hero-h1">Donde el<br>sistema<br>termina,<br><em>empieza</em><br>el mapa.</h1>
-  <p class="hero-body">MAP nació después de <strong>RUIDO</strong>, un documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: crónicas, opinión, podcast, serie documental y ahora una antología literaria abierta a todos.</p>
-  <div class="hero-pills">
-    <span class="pill">Serie documental</span>
-    <span class="pill">Crónicas</span>
-    <span class="pill">Opinión</span>
-    <span class="pill">Podcast · 200+ ep.</span>
-    <span class="pill">Nasional · 2007</span>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
+    <h1 class="hero-h1">Donde el<br>sistema<br>termina,<br><em>empieza</em><br>MAP.</h1>
   </div>
-  <div class="btn-row">
-    <a href="#convocatoria" class="btn btn-p">Antología literaria →</a>
-    <a href="#serie" class="btn btn-g">Ver la serie MAP</a>
+  <div class="hero-right">
+    <p class="hero-body">MAP nació después de <strong>RUIDO</strong>, un documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: crónicas, opinión, podcast, serie documental y una antología literaria abierta a todos.</p>
+    <div class="hero-pills">
+      <span class="pill">Serie documental</span>
+      <span class="pill">Crónicas</span>
+      <span class="pill">Podcast · 200+ ep.</span>
+    </div>
+    <div class="btn-row">
+      <a href="#convocatoria" class="btn btn-p">Antología literaria →</a>
+      <a href="#serie" class="btn btn-g">Ver la serie MAP</a>
+    </div>
   </div>
 </section>
 
-<!-- CONVOCATORIA LITERARIA -->
+<!-- CONVOCATORIA -->
 <section class="sec" id="convocatoria">
   <div class="sec-label">Prioridad · Convocatoria abierta</div>
-
   <div class="conv">
     <div class="conv-badge">Convocatoria literaria · 2026</div>
     <div class="conv-deadline">Cierre: 1 de julio de 2026</div>
@@ -206,7 +215,6 @@ a { text-decoration:none; }
       <a href="mailto:maptvshowcr@gmail.com" class="btn btn-p">Enviar mi texto →</a>
     </div>
   </div>
-
   <div class="conv-rules">
     <div class="conv-rule">
       <div class="conv-rule-num">01</div>
@@ -219,25 +227,24 @@ a { text-decoration:none; }
       <div class="conv-rule-num">02</div>
       <div>
         <div class="conv-rule-title">Formato requerido</div>
-        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Los textos deben ser originales e inéditos.</p>
+        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">03</div>
       <div>
         <div class="conv-rule-title">Sin inteligencia artificial</div>
-        <p class="conv-rule-text">No se aceptan textos generados mediante IA. Este criterio es causa de descalificación automática. Queremos voz humana, experiencia real.</p>
+        <p class="conv-rule-text">No se aceptan textos generados mediante IA. Causa de descalificación automática. Queremos voz humana, experiencia real.</p>
       </div>
     </div>
     <div class="conv-rule">
       <div class="conv-rule-num">04</div>
       <div>
-        <div class="conv-rule-title">Premio</div>
-        <p class="conv-rule-text">No es un concurso con premio en efectivo. Los textos seleccionados serán publicados en un <strong>libro impreso</strong>. Cada autor seleccionado recibirá un ejemplar de la obra.</p>
+        <div class="conv-rule-title">Publicación</div>
+        <p class="conv-rule-text">Los textos seleccionados serán publicados en un <strong>libro impreso</strong>. Cada autor seleccionado recibe un ejemplar.</p>
       </div>
     </div>
   </div>
-
   <div class="conv-email">
     <div>
       <div class="conv-email-label">Enviá tu texto a este correo</div>
@@ -245,12 +252,11 @@ a { text-decoration:none; }
     </div>
     <a href="mailto:maptvshowcr@gmail.com" class="btn btn-p">Enviar ahora →</a>
   </div>
-
   <div class="conv-dates">
     <div class="conv-date">
       <div class="conv-date-label">Fecha límite de envío</div>
       <div class="conv-date-val">1 Julio 2026</div>
-      <div class="conv-date-sub">Textos recibidos después de esta fecha no serán considerados</div>
+      <div class="conv-date-sub">Textos recibidos después no serán considerados</div>
     </div>
     <div class="conv-date">
       <div class="conv-date-label">Publicación de seleccionados</div>
@@ -261,7 +267,7 @@ a { text-decoration:none; }
 </section>
 
 <!-- RUIDO -->
-<section class="sec" style="padding-top:2rem; padding-bottom:2rem;">
+<section class="sec" style="padding-top:2rem;padding-bottom:2rem;">
   <div class="sec-label">El origen · Documental</div>
   <div class="ruido">
     <div><div class="ruido-year">2018</div></div>
@@ -273,9 +279,15 @@ a { text-decoration:none; }
   </div>
 </section>
 
-<!-- SERIE MAP -->
+<!-- SERIE + VIDEO -->
 <section class="sec" id="serie">
   <div class="sec-label">Serie documental · Temporada 2</div>
+  <div style="margin-bottom:2rem;">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/SQyqoAPaFTY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#333;margin-top:0.8rem;">Extracto · Temporada 1</p>
+  </div>
   <div class="ep-list">
     <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
     <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
@@ -290,31 +302,64 @@ a { text-decoration:none; }
 
 <!-- TEXTOS -->
 <section class="sec" id="textos">
-  <div class="sec-label">Crónicas & Textos recientes</div>
-  <div class="txt-grid">
-    <div class="txt-card">
-      <div class="txt-cat">Literatura · Nueva crónica</div>
-      <div class="txt-title">Dr. Arkady Vólkov Dimensiovich Lazenko</div>
-      <p class="txt-desc">La primera crónica del Doctor. Ficción con dientes, humor y una mirada que no pide permiso.</p>
+  <div class="sec-label">Textos recientes & Lo más leído</div>
+  <div class="txt-filters">
+    <span class="txt-filter active">Todos</span>
+    <span class="txt-filter">Literatura</span>
+    <span class="txt-filter">Cine</span>
+    <span class="txt-filter">Editorial</span>
+    <span class="txt-filter">Cantinas</span>
+  </div>
+  <div class="txt-cols">
+    <div>
+      <div class="txt-col-title">Recientes</div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Literatura</div>
+        <div class="txt-item-title">Dr. Arkady Vólkov Dimensiovich Lazenko</div>
+        <p class="txt-item-desc">La primera crónica del Doctor. Ficción con dientes y una mirada que no pide permiso.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Cine</div>
+        <div class="txt-item-title">Salem's Lot</div>
+        <p class="txt-item-desc">A finales de los ochenta, en una noche de televisión abierta costarricense, apareció una miniserie que me dejó completamente cagado.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Cine</div>
+        <div class="txt-item-title">Película: Un Poeta</div>
+        <p class="txt-item-desc">Simón Mesa Soto me agarró desprevenido. No por lo que cuenta, sino por cómo lo hace.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Cine</div>
+        <div class="txt-item-title">Streetwise (1984)</div>
+        <p class="txt-item-desc">A principios de los noventa encontré por accidente un documental en el canal 38 del UHF.</p>
+      </div>
     </div>
-    <div class="txt-card">
-      <div class="txt-cat">Literatura · Crónicas del Refugio</div>
-      <div class="txt-title">La Patrulla Espiritual</div>
-      <p class="txt-desc">Cuatro maes, boleros bajo ventanas y una primera serenata que terminó en cantina hasta el amanecer.</p>
-    </div>
-    <div class="txt-card">
-      <div class="txt-cat">Editorial · Opinión</div>
-      <div class="txt-title">José María Villalta: el político que vive de la pose</div>
-      <p class="txt-desc">Lo que los medios no dicen y MAP sí. Opinión sin filtros sobre la clase política costarricense.</p>
-    </div>
-    <div class="txt-card">
-      <div class="txt-cat">Cine</div>
-      <div class="txt-title">Salem's Lot · Streetwise · Un poeta</div>
-      <p class="txt-desc">Tres miradas sobre cine que importa. Clásicos revisados desde los márgenes del séptimo arte.</p>
+    <div>
+      <div class="txt-col-title">Lo más leído</div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Editorial</div>
+        <div class="txt-item-title">José María Villalta: el político que vive de la pose</div>
+        <p class="txt-item-desc">Lo que los medios no dicen. Opinión sin filtros sobre la clase política costarricense.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Editorial</div>
+        <div class="txt-item-title">El peligro de la candidez (y otros aprendizajes ochenteros)</div>
+        <p class="txt-item-desc">Una mirada honesta a lo que nos enseñó crecer en los ochenta en Costa Rica.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Literatura</div>
+        <div class="txt-item-title">De Cuclillas con Estilo / La Mañana Más Alegre</div>
+        <p class="txt-item-desc">El subdirector se levantó y aplaudió tres veces. Bien hecho, cabrón. Bien hecho.</p>
+      </div>
+      <div class="txt-item">
+        <div class="txt-item-cat">Editorial</div>
+        <div class="txt-item-title">Carlos Alvarado y el Morbo Literario del Poder</div>
+        <p class="txt-item-desc">Sobre los políticos que se creen escritores y los escritores que terminan siendo políticos.</p>
+      </div>
     </div>
   </div>
-  <div style="margin-top:1rem; text-align:right;">
-    <a href="https://www.mapradiocr.com" class="btn btn-g" style="font-size:0.6rem;">Ver todos los textos →</a>
+  <div style="margin-top:1.5rem;text-align:right;">
+    <a href="https://www.mapradiocr.com" class="btn btn-g" style="font-size:0.6rem;">Ver todos los textos en mapradiocr.com →</a>
   </div>
 </section>
 
@@ -325,27 +370,34 @@ a { text-decoration:none; }
     <div>
       <div class="pod-title">MAP Radio</div>
       <p class="pod-desc">Más de 200 episodios grabados desde 2016. Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Algunos legendarios. Todos independientes.</p>
-      <div class="btn-row">
-        <a href="https://www.mapradiocr.com/podcast-copy/" class="btn btn-p" style="font-size:0.6rem;">Escuchar el archivo →</a>
-      </div>
     </div>
-    <div>
-      <div class="pod-num">200<span>episodios</span></div>
-    </div>
+    <div><div class="pod-num">200<span>episodios</span></div></div>
   </div>
   <div class="pod-platforms">
-    <div class="pod-plat">
+    <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB?si=85bf7d21b96c4102" target="_blank" class="pod-plat">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#1DB954"/>
+        <path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/>
+      </svg>
       <div class="pod-plat-name">Spotify</div>
       <div class="pod-plat-sub">MAP Radio Pachuko</div>
-    </div>
-    <div class="pod-plat">
+    </a>
+    <a href="https://go.ivoox.com/sq/687687" target="_blank" class="pod-plat">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#F5A623"/>
+        <text x="12" y="16" font-family="Arial" font-size="8" font-weight="bold" fill="white" text-anchor="middle">iVoox</text>
+      </svg>
       <div class="pod-plat-name">iVoox</div>
       <div class="pod-plat-sub">Archivo completo</div>
-    </div>
-    <div class="pod-plat">
+    </a>
+    <a href="https://youtu.be/SQyqoAPaFTY?si=iAarE7rrQQCgd8Xm" target="_blank" class="pod-plat">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#FF0000"/>
+        <path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/>
+      </svg>
       <div class="pod-plat-name">YouTube</div>
       <div class="pod-plat-sub">Video podcast</div>
-    </div>
+    </a>
   </div>
 </section>
 
