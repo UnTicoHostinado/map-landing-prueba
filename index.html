@@ -9,11 +9,14 @@
 .sa-label::after { content:''; flex:1; height:0.5px; background:#1a1a1a; }
 
 /* HERO */
-.sa-hero { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid #1a1a1a; margin-bottom:0; }
-.sa-hero-img { position:relative; overflow:hidden; min-height:420px; }
-.sa-hero-img img { width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(20%); }
-.sa-hero-img-overlay { position:absolute; inset:0; background:linear-gradient(to right, transparent 50%, #0a0a0a); pointer-events:none; }
-.sa-hero-quote { padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:center; background:#0a0a0a; }
+.sa-hero { position:relative; overflow:hidden; min-height:460px; border-bottom:0.5px solid #1a1a1a; }
+.sa-hero-img-left { position:absolute; top:0; left:0; width:55%; height:100%; }
+.sa-hero-img-left img { width:100%; height:100%; object-fit:cover; display:block; }
+.sa-hero-img-left::after { content:''; position:absolute; inset:0; background:linear-gradient(to right, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.95) 100%); pointer-events:none; }
+.sa-hero-img-right { position:absolute; top:0; right:0; width:50%; height:100%; }
+.sa-hero-img-right img { width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(15%); }
+.sa-hero-img-right::after { content:''; position:absolute; inset:0; background:linear-gradient(to left, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.98) 100%); pointer-events:none; }
+.sa-hero-quote { position:relative; z-index:2; padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:center; min-height:460px; width:55%; background:transparent; }
 .sa-hero-quote-text { font-family:'IBM Plex Sans',sans-serif; font-size:1rem; line-height:1.8; color:#888; font-style:italic; border-left:3px solid #c8ff00; padding-left:1.5rem; margin-bottom:2rem; }
 .sa-hero-name { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:#e8e4d9; letter-spacing:0.05em; line-height:1; }
 .sa-hero-name em { font-style:normal; color:#c8ff00; }
@@ -68,9 +71,10 @@
 .sa-footer-txt { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:#2a2a2a; text-transform:uppercase; }
 
 @media(max-width:768px) {
-  .sa-hero { grid-template-columns:1fr; }
-  .sa-hero-img { min-height:280px; }
-  .sa-hero-img-overlay { background:linear-gradient(to top, #0a0a0a 20%, transparent); }
+  .sa-hero { min-height:500px; }
+  .sa-hero-img-left { width:100%; }
+  .sa-hero-img-right { display:none; }
+  .sa-hero-quote { width:100%; }
   .sa-bio-grid { grid-template-columns:1fr; }
   .sa-credo-item { grid-template-columns:1fr; gap:0.5rem; }
   .sa-credo-word { font-size:2.5rem; }
@@ -82,14 +86,16 @@
 
   <!-- HERO -->
   <div class="sa-hero">
+    <div class="sa-hero-img-left">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp" alt="MAP">
+    </div>
+    <div class="sa-hero-img-right">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/Valdo_limpiando_la_camara_copy.jpg" alt="Valdo Jiménez">
+    </div>
     <div class="sa-hero-quote">
       <p class="sa-hero-quote-text">"Si los grandes medios de comunicación masiva de este país se dedicaran realmente a generar contenido, tanto mis exquisitos textos como mis piezas visuales estarían con regularidad adornando sus pantallas. Sin embargo, el negocio de los medios en Costa Rica es otro, no el de crear, ante lo cual no queda más que la trinchera desde donde construyo."</p>
       <div class="sa-hero-name"><em>VALDO</em><br>JIMÉNEZ V.</div>
       <div class="sa-hero-credit">Foto: Randy Parker · @porkercr</div>
-    </div>
-    <div class="sa-hero-img">
-      <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp" alt="MAP Valdo Jiménez">
-      <div class="sa-hero-img-overlay" style="background:linear-gradient(to left, transparent 30%, #0a0a0a 80%);"></div>
     </div>
   </div>
 
