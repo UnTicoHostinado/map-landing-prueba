@@ -1,1 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crónicas del Refugio — Valdo Jiménez V.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a0a; color:#e8e4d9; font-family:'IBM Plex Sans',sans-serif; font-weight:300; }
+a { text-decoration:none; color:inherit; }
 
+.nav { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 2rem; border-bottom:0.5px solid #1e1e1e; background:#0a0a0a; position:sticky; top:0; z-index:100; }
+.logo { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.15em; color:#e8e4d9; }
+.logo span { color:#c8ff00; }
+.nav-links { display:flex; gap:1.5rem; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; }
+.nav-links a { color:#555; transition:color 0.2s; }
+.nav-links a:hover { color:#e8e4d9; }
+
+/* HERO */
+.cr-hero { position:relative; min-height:560px; display:flex; align-items:flex-end; overflow:hidden; border-bottom:0.5px solid #1a1a1a; }
+.cr-hero-bg { position:absolute; inset:0; }
+.cr-hero-bg img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; filter:grayscale(20%); }
+.cr-hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, #0a0a0a 30%, rgba(10,10,10,0.7) 60%, rgba(10,10,10,0.3) 100%); }
+.cr-hero-content { position:relative; z-index:2; padding:3rem 2rem; width:100%; }
+.cr-hero-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:#c8ff00; text-transform:uppercase; margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem; }
+.cr-hero-eyebrow::before { content:''; width:16px; height:1px; background:#c8ff00; display:inline-block; }
+.cr-hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3.5rem,10vw,8rem); line-height:0.88; letter-spacing:0.02em; color:#e8e4d9; margin-bottom:0.5rem; }
+.cr-hero-title em { font-style:normal; color:#c8ff00; }
+.cr-hero-sub { font-family:'IBM Plex Sans',sans-serif; font-size:1rem; color:#888; font-style:italic; margin-bottom:1.5rem; letter-spacing:0.03em; }
+.cr-hero-origin { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:#555; letter-spacing:0.08em; max-width:480px; line-height:1.6; border-left:2px solid #c8ff00; padding-left:1rem; }
+
+.sec { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; }
+.sec-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:#333; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
+.sec-label::after { content:''; flex:1; height:0.5px; background:#1a1a1a; }
+
+/* SOBRE EL LIBRO */
+.cr-about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+.cr-about-text { font-size:0.95rem; line-height:1.85; color:#888; }
+.cr-about-text p { margin-bottom:1.2rem; }
+.cr-about-text strong { color:#e8e4d9; font-weight:500; }
+.cr-about-text em { color:#aaa; }
+.cr-about-text a { color:#c8ff00; border-bottom:0.5px solid #c8ff00; }
+.cr-territorios { display:flex; flex-direction:column; gap:0; border:0.5px solid #1a1a1a; }
+.cr-territorio-card { padding:1.2rem 1.5rem; border-bottom:0.5px solid #1a1a1a; }
+.cr-territorio-card:last-child { border-bottom:none; }
+.cr-territorio-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#1a1a1a; line-height:1; margin-bottom:0.3rem; }
+.cr-territorio-name { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#e8e4d9; letter-spacing:0.03em; margin-bottom:0.4rem; }
+.cr-territorio-desc { font-size:0.75rem; color:#555; line-height:1.5; font-family:'IBM Plex Mono',monospace; }
+
+/* PORTADA */
+.cr-portada-grid { display:grid; grid-template-columns:280px 1fr; gap:3rem; align-items:start; }
+.cr-portada-img { border:0.5px solid #1a1a1a; overflow:hidden; }
+.cr-portada-img img { width:100%; display:block; }
+.cr-portada-text { font-size:0.92rem; line-height:1.85; color:#888; }
+.cr-portada-text p { margin-bottom:1.2rem; }
+.cr-portada-text strong { color:#e8e4d9; font-weight:500; }
+.cr-portada-text em { color:#aaa; font-style:italic; }
+
+/* QUOTE */
+.cr-quote { background:#050505; border:0.5px solid #1a1a1a; padding:2rem 2.5rem; margin-bottom:2rem; position:relative; }
+.cr-quote::before { content:'"'; font-family:'Bebas Neue',sans-serif; font-size:6rem; color:#111; position:absolute; top:-1rem; left:1rem; line-height:1; pointer-events:none; }
+.cr-quote-text { font-size:0.95rem; line-height:1.8; color:#777; font-style:italic; position:relative; z-index:1; margin-bottom:1rem; }
+.cr-quote-author { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#444; }
+.cr-quote-author a { color:#c8ff00; }
+
+/* RELATOS GRID */
+.cr-relatos-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:0.5px solid #1a1a1a; }
+.cr-relato-card { border-right:0.5px solid #1a1a1a; border-bottom:0.5px solid #1a1a1a; overflow:hidden; display:flex; flex-direction:column; transition:background 0.2s; }
+.cr-relato-card:nth-child(3n) { border-right:none; }
+.cr-relato-card:hover { background:#0d0d0d; }
+.cr-relato-card:hover .cr-relato-title { color:#c8ff00; }
+.cr-relato-img { position:relative; overflow:hidden; aspect-ratio:2/3; }
+.cr-relato-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s; filter:grayscale(30%); }
+.cr-relato-card:hover .cr-relato-img img { transform:scale(1.03); }
+.cr-relato-img-overlay { position:absolute; inset:0; background:linear-gradient(to top, #0a0a0a 20%, transparent 60%); pointer-events:none; }
+.cr-relato-body { padding:1rem; flex:1; }
+.cr-relato-status { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; letter-spacing:0.12em; text-transform:uppercase; color:#444; margin-bottom:0.4rem; }
+.cr-relato-status.dev { color:#c8ff00; }
+.cr-relato-status.rev { color:#888; }
+.cr-relato-title { font-size:0.82rem; font-weight:500; color:#e8e4d9; line-height:1.3; margin-bottom:0.4rem; transition:color 0.2s; }
+.cr-relato-date { font-family:'IBM Plex Mono',monospace; font-size:0.5rem; color:#2a2a2a; margin-bottom:0.5rem; }
+.cr-relato-excerpt { font-size:0.72rem; line-height:1.55; color:#555; }
+.cr-relato-link { display:block; padding:0.6rem 1rem; font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:#444; border-top:0.5px solid #1a1a1a; transition:all 0.2s; }
+.cr-relato-card:hover .cr-relato-link { color:#c8ff00; }
+
+/* TERRITORIO HEADER */
+.cr-territorio-header { padding:1.5rem 0 1rem; display:flex; align-items:baseline; gap:1.5rem; margin-bottom:0; }
+.cr-territorio-header-num { font-family:'Bebas Neue',sans-serif; font-size:4rem; color:#141414; line-height:1; }
+.cr-territorio-header-name { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:#e8e4d9; letter-spacing:0.03em; }
+.cr-territorio-header-desc { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#444; letter-spacing:0.08em; margin-left:auto; text-transform:uppercase; }
+
+/* EPILOGO */
+.cr-epilogo { background:#0f0f0f; border:0.5px solid #1a1a1a; display:grid; grid-template-columns:200px 1fr; gap:0; overflow:hidden; }
+.cr-epilogo-img { overflow:hidden; }
+.cr-epilogo-img img { width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(40%); }
+.cr-epilogo-body { padding:2rem; border-left:0.5px solid #1a1a1a; }
+.cr-epilogo-tag { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase; color:#444; margin-bottom:0.8rem; }
+.cr-epilogo-title { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#e8e4d9; margin-bottom:0.6rem; letter-spacing:0.03em; }
+.cr-epilogo-desc { font-size:0.85rem; line-height:1.7; color:#666; margin-bottom:1.5rem; }
+.btn-g { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; padding:0.75rem 1.6rem; border:0.5px solid #333; color:#666; background:transparent; display:inline-block; transition:all 0.2s; cursor:pointer; }
+.btn-g:hover { border-color:#e8e4d9; color:#e8e4d9; }
+.btn-p { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; padding:0.75rem 1.6rem; border:0.5px solid #c8ff00; color:#0a0a0a; background:#c8ff00; display:inline-block; transition:all 0.2s; font-weight:500; }
+.btn-p:hover { background:#d4ff33; }
+
+.mani { padding:4rem 2rem; background:#050505; border-bottom:0.5px solid #1a1a1a; display:flex; align-items:center; justify-content:center; min-height:180px; }
+.mani-inner { max-width:580px; }
+.mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,4vw,2.8rem); line-height:1.1; color:#e8e4d9; margin-bottom:0.8rem; }
+.mani-q em { font-style:normal; color:#c8ff00; }
+.mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
+
+.footer { padding:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; border-top:0.5px solid #1a1a1a; }
+.footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.15em; color:#2a2a2a; }
+.footer-txt { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:#2a2a2a; text-transform:uppercase; }
+
+@media(max-width:768px) {
+  .nav-links { display:none; }
+  .cr-about-grid { grid-template-columns:1fr; }
+  .cr-portada-grid { grid-template-columns:1fr; }
+  .cr-relatos-grid { grid-template-columns:1fr 1fr; }
+  .cr-relato-card:nth-child(3n) { border-right:0.5px solid #1a1a1a; }
+  .cr-relato-card:nth-child(2n) { border-right:none; }
+  .cr-epilogo { grid-template-columns:1fr; }
+  .cr-epilogo-img { max-height:200px; }
+}
+@media(max-width:480px) {
+  .cr-relatos-grid { grid-template-columns:1fr; }
+  .cr-relato-card { border-right:none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://www.mapradiocr.com" class="logo">MA<span>P</span></a>
+  <div class="nav-links">
+    <a href="https://www.mapradiocr.com">Inicio</a>
+    <a href="https://www.mapradiocr.com/cronicas-del-refugio/">Crónicas</a>
+    <a href="https://www.mapradiocr.com/mapradiocr-mrrp/">Sobre el autor</a>
+    <a href="https://www.mapradiocr.com/contacto-page/">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cr-hero">
+  <div class="cr-hero-bg">
+    <img src="https://www.mapradiocr.com/wp-content/uploads/2026/04/idcdr2.webp" alt="Crónicas del Refugio">
+  </div>
+  <div class="cr-hero-content">
+    <div class="cr-hero-eyebrow">Proyecto literario · En construcción · 2022 —</div>
+    <h1 class="cr-hero-title">Crónicas<br>del <em>Refugio</em></h1>
+    <p class="cr-hero-sub">y otras geografías de la memoria</p>
+    <p class="cr-hero-origin">Este compilado comenzó a tomar forma en el 2022, luego de que una crecida desapareciera mi casa. Desde entonces he estado escribiendo y revisando estos cuentos.</p>
+  </div>
+</div>
+
+<!-- SOBRE EL LIBRO -->
+<section class="sec">
+  <div class="sec-label">Sobre el libro</div>
+  <div class="cr-about-grid">
+    <div class="cr-about-text">
+      <p>Aquí hablo del barrio, la bicicleta, la rabia y las extrañas maneras en que el ser humano siente afecto. Son crónicas de una Costa Rica que no aparece en las guías turísticas, y que sin embargo está muy viva, respirando en cada esquina.</p>
+      <p>Textos donde la memoria se pelea con el olvido, donde personajes que resisten a su manera encuentran su lugar en alguno de los relatos de este libro de cuentos. El último de estos cuentos, <strong><a href="https://www.mapradiocr.com/la-patrulla-espiritual/" target="_blank">La patrulla espiritual</a></strong>, está en desarrollo —al mismo tiempo que reviso y pulo el resto—.</p>
+      <p><em>Crónicas del refugio</em> reúne 20 textos que exploran los bordes del país: la soda El Refugio como territorio de resistencia, la bicicleta como extensión del cuerpo, los barrios como canteras de historias. Hay sátira política, humor negro, realismo sucio, crónica íntima.</p>
+      <p>Este libro también es, en varios de sus textos, un acto de gratitud. Hay personas reales detrás de estas páginas —compañeros de ruta, amigos de mi padre, vecinos— con quienes conviví años. Gente cuya existencia fue tan extraordinaria que parecía sacada de una película.</p>
+      <p><strong>Este libro no busca redimir a nadie. No denuncia ni propone. Es una grieta en la pantalla donde aún se filtra el humo del espectáculo.</strong></p>
+    </div>
+    <div>
+      <div class="cr-territorios">
+        <div class="cr-territorio-card">
+          <div class="cr-territorio-num">01</div>
+          <div class="cr-territorio-name">Memorias del barrio</div>
+          <div class="cr-territorio-desc">Crónica íntima · el barrio · la bicicleta · la universidad</div>
+        </div>
+        <div class="cr-territorio-card">
+          <div class="cr-territorio-num">02</div>
+          <div class="cr-territorio-name">El país como escenario</div>
+          <div class="cr-territorio-desc">Sátira política · poder · medios · identidades fabricadas</div>
+        </div>
+        <div class="cr-territorio-card">
+          <div class="cr-territorio-num">03</div>
+          <div class="cr-territorio-name">Ficciones y umbrales</div>
+          <div class="cr-territorio-desc">Relatos líricos · transición entre realidad y sueño</div>
+        </div>
+        <div class="cr-territorio-card" style="background:#0d0d0d;">
+          <div class="cr-territorio-num" style="color:#c8ff00; font-size:1.2rem;">+</div>
+          <div class="cr-territorio-name" style="font-size:1rem;">Epílogo</div>
+          <div class="cr-territorio-desc">Relato breve en obra gris · autosátira sobre el oficio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTADA -->
+<section class="sec">
+  <div class="sec-label">La imagen de portada</div>
+  <div class="cr-portada-grid">
+    <div class="cr-portada-img">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/cronicas-683x1024.webp" alt="Portada Crónicas del Refugio">
+    </div>
+    <div class="cr-portada-text">
+      <p>El niño descalzo está sentado en la rama gruesa del palo de mango, con la mirada seria y limpia dirigida hacia nosotros. A su derecha, casi al alcance de la mano pero sin tocarla, cuelga un mango rojo intenso, vibrante, casi irreal en medio del grabado en blanco y negro.</p>
+      <p>Debajo de él, el mundo adulto se ha derrumbado en símbolos: una cruz de madera con la bandera de Costa Rica rasgada y colgando como un trapo sucio; una cédula de identidad sobre el suelo agrietado; al fondo, una ciudad borrosa, que ya no parece refugio sino escenario de exilio.</p>
+      <p><strong>Esta imagen no ilustra un cuento: es el libro entero.</strong></p>
+      <p>Es el instante preciso en que la infancia todavía está arriba, todavía tiene el mango rojo suspendido a su lado como una promesa, y abajo la identidad nacional, la patria y la memoria se rompen sin remedio. El niño no llora. No grita. Solo observa.</p>
+      <p>El mango rojo intenso no es un detalle decorativo. Es el último resto de vida, de deseo, de infancia intacta que todavía cuelga en el aire, contrastando violentamente con todo lo que se pudre abajo. <em>Ese rojo grita: aquí todavía hay algo vivo, algo que duele precisamente porque sigue siendo puro en medio de la ruina.</em></p>
+      <p>Esta portada no es decorativa. Es el mapa emocional del libro. Es la geografía exacta donde ocurren todas las crónicas: arriba, la mirada limpia y terca de quien todavía tiene una oportunidad; abajo, el desastre de lo que llamamos "país", "familia", "identidad", "refugio".</p>
+      <div class="cr-quote" style="margin-top:1.5rem;">
+        <p class="cr-quote-text">"El mecanismo que Chuz emplea para dar sustancia a su praxis política no tiene su sidero ni en el dogmatismo ni en el proselitismo. Lo que ha comprendido es que el catalizador que le permitirá urdir su plan es la creación de una sensación de sed incesante y presentarse, de primero, con medio vaso de agua."</p>
+        <div class="cr-quote-author">Ignacio Castillo · Análisis sobre «Estudios Quelonios» · <a href="https://www.mapradiocr.com/etica-tortuguista/" target="_blank">Leer análisis completo →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERRITORIO 1 -->
+<section class="sec">
+  <div class="sec-label">Territorio 01</div>
+  <div class="cr-territorio-header">
+    <div class="cr-territorio-header-num">01</div>
+    <div class="cr-territorio-header-name">Memorias del barrio</div>
+    <div class="cr-territorio-header-desc">6 relatos</div>
+  </div>
+  <div class="cr-relatos-grid">
+    <a href="https://www.mapradiocr.com/80-anos/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-02_59_29-PM-683x1024.png" alt="80 años"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status rev">En revisión</div>
+        <div class="cr-relato-title">80 Años</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Genaro repasaba algunas de sus costumbres más viejas. Hace más de cuarenta años había tomado la decisión de bañarse solo con agua fría.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/cronica-menor/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-03_05_16-PM-683x1024.png" alt="Crónica menor"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Crónica menor de una voluntad intacta</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">El martes debía estar en La Uruca para grabar un podcast. No como productor ni como técnico. Esta vez me tocaba a mí, frente a la cámara.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/el-ano-del-basurero/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-03_20_04-PM-683x1024.png" alt="El año del basurero"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">El año del basurero</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Tenía once años y una condena de seis en la escuela Joaquín García Monge. Estaba cumpliendo el último año de la sentencia.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/la-partera-de-sartenes/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-03_27_04-PM-683x1024.png" alt="La partera de sartenes"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">La partera de sartenes</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Genaro dejó la cafetera italiana sobre el disco de la cocina, a fuego muy lento. El olor del café empezaba a colarse en la casa.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/dios-santo-y-ahora-que/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-03_37_39-PM-683x1024.png" alt="Dios santo y ahora qué"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status rev">En revisión</div>
+        <div class="cr-relato-title">Dios santo, ¿y ahora qué?</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Fue lo primero que pensé cuando terminó el colegio. Así, con todas las letras y el corazón a media asta.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/el-hombre-que-cago/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-01_42_00-PM-683x1024.png" alt="El hombre que se cagó"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status rev">En revisión</div>
+        <div class="cr-relato-title">El hombre que se cagó en su barrio desde un palo de mango</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Nunca me cayeron bien. Nunca me hicieron gracia. Eran los únicos que no me ignoraban.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+  </div>
+</section>
+
+<!-- TERRITORIO 2 -->
+<section class="sec">
+  <div class="sec-label">Territorio 02</div>
+  <div class="cr-territorio-header">
+    <div class="cr-territorio-header-num">02</div>
+    <div class="cr-territorio-header-name">El país como escenario</div>
+    <div class="cr-territorio-header-desc">6 relatos</div>
+  </div>
+  <div class="cr-relatos-grid">
+    <a href="https://www.mapradiocr.com/parte-por-conducir-como-animal/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2025/10/parte-por-conducir-683x1024.webp" alt="Parte por conducir"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Parte por conducir como animal</div>
+        <div class="cr-relato-date">20/10/2025</div>
+        <div class="cr-relato-excerpt">A esta altura, mi trabajo es una liturgia con chaleco reflectivo. La sirena de la moto, libreta, manos a la vista.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/estudios-quelonios/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2025/09/estudios-quelonios-683x1024.webp" alt="Estudios quelonios"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Estudios Quelonios</div>
+        <div class="cr-relato-date">03/09/2025</div>
+        <div class="cr-relato-excerpt">Sátira política sobre cómo el populismo puede transformar una reforma previsional en una farsa intergeneracional.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/protocolo-de-misericordia/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/01/protocolo-683x1024.webp" alt="Protocolo de misericordia"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Protocolo de misericordia</div>
+        <div class="cr-relato-date">04/01/2026</div>
+        <div class="cr-relato-excerpt">El lunes amaneció igual que cualquier otro. San José se llenó de buses, de portones abriéndose tarde, de gente apurada con el café en la mano.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/perro-de-nadie/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/perro-de-nadie-683x1024.webp" alt="Perro de nadie"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Perro de nadie</div>
+        <div class="cr-relato-date">22/03/2026</div>
+        <div class="cr-relato-excerpt">J.C. iniciaba las mañanas con una calma que parecía heredada de siglos. Su casa quedaba en una loma discreta con vista a la ciudad.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/irene-luna-danilo/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2025/12/irene-1-683x1024.webp" alt="Irene Luna y Danilo"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Irene, Luna & Danilo</div>
+        <div class="cr-relato-date">03/12/2025</div>
+        <div class="cr-relato-excerpt">El taller olía a aceite viejo, caucho recalentado y café quemado en una cafetera pava de aluminio que llevaba tres meses pidiendo jubilación.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/la-senora-korolenko/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2025/10/la-senora-korolenko-1-683x1024.webp" alt="La señora Korolenko"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">La señora Korolenko</div>
+        <div class="cr-relato-date">06/10/2025</div>
+        <div class="cr-relato-excerpt">Maya Korolenko acababa de llegar a casa. Dejó la bolsa sobre la mesa del comedor y encendió el televisor.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+  </div>
+</section>
+
+<!-- TERRITORIO 3 -->
+<section class="sec">
+  <div class="sec-label">Territorio 03</div>
+  <div class="cr-territorio-header">
+    <div class="cr-territorio-header-num">03</div>
+    <div class="cr-territorio-header-name">Ficciones y umbrales</div>
+    <div class="cr-territorio-header-desc">8 relatos</div>
+  </div>
+  <div class="cr-relatos-grid">
+    <a href="https://www.mapradiocr.com/el-gran-reportaje-de-carlitos/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-06_24_02-PM-683x1024.png" alt="El gran reportaje de Carlitos"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">El gran reportaje de Carlitos</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Carlitos estaba pasando por su peor momento. En su tiempo, había sido uno de los grandes nombres del periodismo costarricense.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/la-gran-documentalista/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-06_39_34-PM-683x1024.png" alt="La gran documentalista"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">La gran documentalista</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">El viernes 13 de diciembre fue el principio del fin para Carlitos. Lo que debía ser su gran resurrección como periodista.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/3-testigos-y-un-encargo/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/tres-testigos-683x1024.webp" alt="Tres testigos"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Tres testigos y un encargo</div>
+        <div class="cr-relato-date">22/03/2026</div>
+        <div class="cr-relato-excerpt">El desierto empezaba a enfriarse, el calor seguía pegado al suelo como una costra.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/el-puente-el-viento/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2025/12/el-puente-683x1024.webp" alt="El puente y el viento"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">El puente & el viento</div>
+        <div class="cr-relato-date">06/12/2025</div>
+        <div class="cr-relato-excerpt">El ciclista subía la cuesta con el resuello tranquilo de quien conoce bien el camino.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/contrato-de-domingo/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-06_47_37-PM-683x1024.png" alt="Contrato de domingo"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status dev">En desarrollo</div>
+        <div class="cr-relato-title">Contrato de domingo</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">El hombre no era un cura cualquiera. Había nacido fuera de San José, en una casa sencilla donde la palabra valía más que los papeles.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/la-patrulla-espiritual/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/patrulla-espiritual-683x1024.webp" alt="La patrulla espiritual"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status dev">En desarrollo</div>
+        <div class="cr-relato-title">La patrulla espiritual</div>
+        <div class="cr-relato-date">22/03/2026</div>
+        <div class="cr-relato-excerpt">Hace rato vengo dándole vueltas a este cuento. La idea no apareció de repente: llegó por partes.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/andolfo-santa-tecla/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/andolfo-683x1024.webp" alt="Andolfo Santa Tecla"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Andolfo Santa Tecla: el cardenal matemático</div>
+        <div class="cr-relato-date">24/03/2026</div>
+        <div class="cr-relato-excerpt">En 1983, Centroamérica era un mosaico de trincheras que ardía en conflictos, explosiones y gritos sofocados.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+    <a href="https://www.mapradiocr.com/alambre-pila-ceniza/" target="_blank" class="cr-relato-card">
+      <div class="cr-relato-img"><img src="https://www.mapradiocr.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-21-2026-06_58_19-PM-683x1024.png" alt="Alambre pila y ceniza"><div class="cr-relato-img-overlay"></div></div>
+      <div class="cr-relato-body">
+        <div class="cr-relato-status">Publicado</div>
+        <div class="cr-relato-title">Alambre, pila & ceniza</div>
+        <div class="cr-relato-date">21/03/2026</div>
+        <div class="cr-relato-excerpt">Soy Clotilde y el agua ha sido mi metrónomo. Cada madrugada la pila aparece llena hasta el borde.</div>
+      </div>
+      <span class="cr-relato-link">Leer extracto →</span>
+    </a>
+  </div>
+</section>
+
+<!-- EPILOGO -->
+<section class="sec">
+  <div class="sec-label">Epílogo</div>
+  <div class="cr-epilogo">
+    <div class="cr-epilogo-img">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2025/12/relato-breve-en-obra-gris-1-683x1024.webp" alt="Relato breve en obra gris">
+    </div>
+    <div class="cr-epilogo-body">
+      <div class="cr-epilogo-tag">Epílogo · Fuera de los tres territorios</div>
+      <div class="cr-epilogo-title">Relato breve en obra gris</div>
+      <p class="cr-epilogo-desc">Un texto sobre el oficio de escribir, una autosátira que funciona como cierre perfecto después de <em>Alambre, pila y ceniza</em>. Está fuera de las tres categorías del compilado. Es el escritor mirándose al espejo con la misma ferocidad con que mira a sus personajes.</p>
+      <a href="https://www.mapradiocr.com/relato-breve-en-obra-gris/" target="_blank" class="btn-g">Leer extracto →</a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<div class="mani">
+  <div class="mani-inner">
+    <div class="mani-q">Este libro es una grieta en la pantalla donde aún se filtra el <em>humo</em> del espectáculo. Si algo se entiende, fue por <em>error</em>. Si algo no se entiende, fue por diseño.</div>
+    <div class="mani-src">Crónicas del Refugio · Valdo Jiménez V. · mapradiocr.com</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-logo">MAP — 2016</div>
+  <div class="footer-txt">Música · Arte · Patinetas · Costa Rica · Independiente</div>
+</div>
+
+</body>
+</html>
