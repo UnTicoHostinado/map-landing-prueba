@@ -1,1 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHIVO AUDIOVISUAL — MAP RADIO CR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --bg: #0a0a0a;
+    --accent: #c8ff00;
+    --text: #e8e4d9;
+    --muted: #888;
+    --border: 0.5px solid #1a1a1a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.95);
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: var(--border);
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 620px;
+    line-height: 1.8;
+  }
+
+  /* ÍNDICE */
+  .index-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    border-bottom: var(--border);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0;
+  }
+
+  .index-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+    padding-right: 1rem;
+  }
+
+  .index-item:hover { background: #111; }
+
+  .index-num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    min-width: 28px;
+    padding-top: 3px;
+  }
+
+  .index-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  /* PROYECTOS */
+  .projects {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  .project {
+    padding: 4rem 0;
+    border-bottom: var(--border);
+  }
+
+  .project:last-child { border-bottom: none; }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
+  .project h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: 0.05em;
+    line-height: 1.05;
+    color: var(--text);
+  }
+
+  .project-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-left: calc(28px + 1.2rem);
+  }
+
+  .project-body {
+    padding-left: calc(28px + 1.2rem);
+  }
+
+  .project-quote {
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    border-left: 2px solid var(--accent);
+    padding-left: 1rem;
+  }
+
+  .project-text {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-text + .project-text { margin-top: -0.5rem; }
+
+  .anecdota {
+    background: #111;
+    border-left: 2px solid #333;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .anecdota strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border-bottom: 0.5px solid var(--accent);
+    padding-bottom: 2px;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.2s;
+  }
+
+  .external-link:hover { opacity: 0.7; }
+
+  /* EMBED */
+  .embed-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #111;
+    margin-top: 1.5rem;
+    border: var(--border);
+  }
+
+  .embed-wrap.spotify { padding-top: 152px; }
+
+  .embed-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* PREMIO */
+  .award-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 4px 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: var(--border);
+    padding: 2.5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: var(--accent); }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.6rem; }
+    .hero, .index-section, .projects { padding-left: 1rem; padding-right: 1rem; }
+    .project-body, .project-subtitle { padding-left: 0; }
+    .project-header { flex-direction: column; gap: 0.3rem; }
+    .index-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://unticohostinado.github.io/map-landing-prueba/" class="nav-logo">MAP</a>
+  <ul class="nav-links">
+    <li><a href="https://unticohostinado.github.io/map-landing-prueba/">Inicio</a></li>
+    <li><a href="https://www.mapradiocr.com/podcast-copy/">Podcast</a></li>
+    <li><a href="https://www.mapradiocr.com/editorial-opinion/">Textos</a></li>
+    <li><a href="https://unticohostinado.github.io/map-landing-prueba/sobre-autor.html">Autor</a></li>
+    <li><a href="https://unticohostinado.github.io/map-landing-prueba/cronicas.html">Crónicas</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <p class="hero-label">Valdo Jiménez — Producción audiovisual</p>
+  <h1>ARCHIVO<br>AUDIOVISUAL</h1>
+  <p class="hero-desc">
+    Este espacio reúne fragmentos y obras completas que han marcado mi recorrido en el audiovisual:
+    clips de skate, cortos documentales, videoclips y proyectos que han viajado por publicaciones internacionales.
+    Más que un archivo, es una forma de compartir el proceso, la energía y las circunstancias detrás de cada pieza.
+  </p>
+</section>
+
+<section class="index-section">
+  <p class="section-label">Proyectos en este archivo</p>
+  <div class="index-grid">
+    <a href="#capitan-rooster" class="index-item">
+      <span class="index-num">01</span>
+      <span class="index-title">Capitán Rooster — Barrio México</span>
+    </a>
+    <a href="#malas-palabras" class="index-item">
+      <span class="index-num">02</span>
+      <span class="index-title">Malas Palabras — Do It Yourself</span>
+    </a>
+    <a href="#agent-orange" class="index-item">
+      <span class="index-num">03</span>
+      <span class="index-title">Agent Orange en Costa Rica</span>
+    </a>
+    <a href="#tenochtitlan" class="index-item">
+      <span class="index-num">04</span>
+      <span class="index-title">Tenochtitlan según Pelukaz</span>
+    </a>
+    <a href="#ruido" class="index-item">
+      <span class="index-num">05</span>
+      <span class="index-title">RUIDO — Tesis documental</span>
+    </a>
+    <a href="#chuck-jones" class="index-item">
+      <span class="index-num">06</span>
+      <span class="index-title">Chuck Jones — Corto documental</span>
+    </a>
+    <a href="#circo-cero-seis" class="index-item">
+      <span class="index-num">07</span>
+      <span class="index-title">5irko-0-Seis — Hasta que las calles sangren</span>
+    </a>
+    <a href="#sentido-comun" class="index-item">
+      <span class="index-num">08</span>
+      <span class="index-title">Sentido Común — Corto documental</span>
+    </a>
+    <a href="#continental" class="index-item">
+      <span class="index-num">09</span>
+      <span class="index-title">Concierto Continental & La Versión Extendida</span>
+    </a>
+    <a href="#las-canchitas" class="index-item">
+      <span class="index-num">10</span>
+      <span class="index-title">Las Canchitas — Música, Arte & Patinetas</span>
+    </a>
+    <a href="#caidas-libres" class="index-item">
+      <span class="index-num">11</span>
+      <span class="index-title">Caídas Libres — Sesión en San Isidro</span>
+    </a>
+    <a href="#map-episodio7" class="index-item">
+      <span class="index-num">12</span>
+      <span class="index-title">MAP — Episodio 7 y la incógnita del 8</span>
+    </a>
+  </div>
+</section>
+
+<section class="projects">
+
+  <!-- 01 -->
+  <article class="project" id="capitan-rooster">
+    <div class="project-header">
+      <span class="project-num">01 —</span>
+      <h2>CAPITÁN ROOSTER<br>BARRIO MÉXICO</h2>
+    </div>
+    <p class="project-subtitle">Corto documental · Publicado en Noisey / VICE</p>
+    <div class="project-body">
+      <p class="project-quote">"Hace 11 años, con una cámara, un micrófono y mucha fiebre por hacer, grabé este capítulo sobre Capitán Rooster. Lo publicó Noisey (VICE) así, tal cual."</p>
+      <p class="project-text">Un paseo por Barrio México, un Distrito en San José famoso por sus esquinas, sus iglesias, sus cantinas y sus talleres. Es precisamente en un taller donde se puede ver un ensayo de Capitán Rooster y luego una charla sobre el barrio y la vida de una banda underground entre sus calles.</p>
+      <a href="https://www.vice.com/es/article/escuchen-a-capitan-rooster-la-banda-mas-marginal-de-costa-rica/" target="_blank" rel="noopener" class="external-link">↗ Noisey: Escuchen a Capitán Rooster, la banda más marginal de Costa Rica</a>
+      <div class="anecdota">
+        <strong>Anécdota:</strong> En 2018 se robaron el canal de YouTube de Nasional Skateboards (abierto en 2006) donde alojaba todos mis clips. Este video terminó formando parte de un canal ruso de "criptomonedas". Igual acá queda, en casa, como parte de este Archivo Audiovisual.
+      </div>
+      <div class="embed-wrap spotify">
+        <iframe src="https://open.spotify.com/embed/episode/2PJC801GYe35z66oUobqPT/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 02 -->
+  <article class="project" id="malas-palabras">
+    <div class="project-header">
+      <span class="project-num">02 —</span>
+      <h2>MALAS PALABRAS<br>DO IT YOURSELF</h2>
+    </div>
+    <p class="project-subtitle">Corto documental · Blank TV</p>
+    <div class="project-body">
+      <p class="project-quote">"Hace 11 años filmé este corto documental con la alineación original de Malas Palabras. En ese momento había algo que valía la pena capturar: su energía en estudio y el espíritu DIY que los definía."</p>
+      <p class="project-text">Este trabajo refuerza lo que más disfruto del audiovisual: la narrativa documental. No necesito fingir nada, solo estar ahí y dejar que las historias se cuenten por sí solas. Con Malas Palabras, en una finca en Belén de Heredia, esas 6 horas de rodaje entre cables y anécdotas quedó registrado un momento irrepetible.</p>
+      <p class="project-text">El corto se publicó en Blank TV, donde destacaron la historia de la banda, su recorrido en la escena punk rock de Costa Rica y su capacidad de autoproducirse.</p>
+      <div class="embed-wrap spotify">
+        <iframe src="https://open.spotify.com/embed/episode/2M3QyvydFx2ViMPzkJgGpS/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 -->
+  <article class="project" id="agent-orange">
+    <div class="project-header">
+      <span class="project-num">03 —</span>
+      <h2>AGENT ORANGE<br>EN COSTA RICA</h2>
+    </div>
+    <p class="project-subtitle">Extracto de MAP: Música, Arte & Patineta — Episodio 4</p>
+    <div class="project-body">
+      <p class="project-quote">"Este clip es un extracto del cuarto episodio de MAP, grabado hace 6 años con la asistencia de Randy Parker. Para mí marca un punto clave en la evolución de mi trabajo audiovisual."</p>
+      <p class="project-text">En esas jornadas entendí con más claridad lo que significa trabajar con alguien que comparte la visión. Dos personas enfocadas, con roles claros y respeto por el oficio, pueden lograr piezas que superan en calidad, narrativa y cuidado a muchas producciones que se ven en la televisión costarricense.</p>
+      <p class="project-text">Más que un registro de la visita de Agent Orange a Costa Rica, este clip es una prueba de cómo un equipo reducido pero comprometido puede capturar la intensidad de un evento sin artificios ni filtros innecesarios.</p>
+      <div class="embed-wrap spotify">
+        <iframe src="https://open.spotify.com/embed/episode/5yg67wrtr0rB70qXH3MiPk/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 -->
+  <article class="project" id="tenochtitlan">
+    <div class="project-header">
+      <span class="project-num">04 —</span>
+      <h2>TENOCHTITLAN<br>SEGÚN PELUKAZ</h2>
+    </div>
+    <p class="project-subtitle">Música, Arte & Patinetas · México</p>
+    <div class="project-body">
+      <p class="project-quote">"Este clip recoge parte de un viaje a México hace 10 años. Entre León y Guadalajara, presencié escenas que no estaba acostumbrado a ver."</p>
+      <p class="project-text">México me impactó profundamente. Un país vibrante, imposible de olvidar. Conocí a Eliseo Martínez, uno de los protagonistas de la galardonada película <em>Te Prometo Anarquía</em>. Este trabajo combina tres elementos que siempre he buscado en Música, Arte & Patineta: el relato de "Pelucas", la cultura del skate y una narrativa que va más allá de los trucos.</p>
+      <p class="project-text">Grabar skate es difícil. Incluso recolectar dos minutos realmente buenos de skate es un reto. De ahí la idea de MAP: ampliar el lente hacia la cultura, para así tener más contenido y mostrar un panorama más completo. En esta pieza creo que esa mezcla funcionó a la perfección.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/u8Yw1QZw_5s?si=XhQbvYjLsuVph8AG" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 05 -->
+  <article class="project" id="ruido">
+    <div class="project-header">
+      <span class="project-num">05 —</span>
+      <h2>RUIDO<br>TESIS DOCUMENTAL</h2>
+    </div>
+    <p class="project-subtitle">Tesis de graduación · Universidad Veritas · 2016</p>
+    <div class="project-body">
+      <p class="project-quote">"Con William Conejo comparto esa incomodidad —casi rabia— de vivir en un país que premia lo que no debería premiar."</p>
+      <p class="project-text">RUIDO fue mi tesis de graduación en la Universidad Veritas en 2016. Ese mismo año fue seleccionado para el Festival Internacional de Cine de Costa Rica, pero la escuela no lo permitió. El documental tuvo que esperar dos años para llegar finalmente a su audiencia.</p>
+      <p class="project-text">En la escuela no creían demasiado en la idea. Pensaban que, como venía de hacer videos de skate, esto sería otro clip de patineta. Pero desde el inicio yo tenía claro que quería algo diferente: un documental que hablara de la cultura en la que las patinetas giran, de lo que casi nunca se aborda.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/aaO3vJ_xMJU?si=IEabHrC0rJZkGXua" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 06 -->
+  <article class="project" id="chuck-jones">
+    <div class="project-header">
+      <span class="project-num">06 —</span>
+      <h2>CHUCK JONES<br>CORTO DOCUMENTAL</h2>
+    </div>
+    <p class="project-subtitle">Álbum debut Aperitivo · Punk rock · 2019</p>
+    <div class="project-body">
+      <p class="project-quote">"La idea siempre fue clara: no caer en el morbo ni en los clichés que suelen rodear al punk rock. Queríamos mostrar a las personas detrás de la música."</p>
+      <p class="project-text">Durante casi dos meses seguimos a la banda en ensayos, conciertos y conversaciones, intentando capturar algo más que simples imágenes. Cuatro amigos con historias distintas, pero unidos por la urgencia de tocar y decir lo que piensan. El resultado es un retrato directo y sin adornos de una escena que rara vez recibe la atención que merece.</p>
+      <p class="project-text">El cierre del documental es el videoclip del tema "No caminarás solo", un mensaje de resistencia y comunidad que resume el espíritu de la banda. Fue un trabajo realizado con recursos mínimos —una cámara, un micrófono y muchas ganas— pero con la convicción de que la pasión y la honestidad pesan más que cualquier presupuesto.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/W5z7VqDv_HQ?si=4mIa8JtVxHNXD5uB" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 07 -->
+  <article class="project" id="circo-cero-seis">
+    <div class="project-header">
+      <span class="project-num">07 —</span>
+      <h2>5IRKO-0-SEIS<br>HASTA QUE LAS CALLES SANGREN</h2>
+    </div>
+    <p class="project-subtitle">Videoclip · Hip hop · Primera vez trabajando con rap</p>
+    <div class="project-body">
+      <p class="project-quote">"Este proyecto fue especial para mí porque marcó la primera vez que trabajaba con rap."</p>
+      <p class="project-text">El clip se aleja de lo que normalmente se acostumbra en el género. Una persona manoteando a cámara, en muchas ocasiones pretendiendo una malicia y calle que no tiene. Aquí el concepto fue un poco más allá y siento que con muy poco, se logró algo realmente valioso.</p>
+      <p class="project-text">Fue un reto y a la vez un descubrimiento: entender el tempo, la cadencia y la intensidad del hip hop desde la óptica de la cámara. Capturar algo que no es solo música, sino también calle, historia y presencia. Con Tavo, uno de los integrantes, la conexión siguió más allá de este proyecto.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/8dDkYGbBD5o?si=Al66R2IchB5i8b_Y" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 08 -->
+  <article class="project" id="sentido-comun">
+    <div class="project-header">
+      <span class="project-num">08 —</span>
+      <h2>SENTIDO COMÚN<br>CORTO DOCUMENTAL</h2>
+    </div>
+    <p class="project-subtitle">Cartago · Skate or Die · Premio del Público 2024</p>
+    <div class="project-body">
+      <div class="award-badge">★ Premio del Público — Festival de Cine Cartago</div>
+      <p class="project-quote">"En 2024 tuve la oportunidad de trabajar con Sentido Común, una banda muy querida en Cartago y profundamente ligada a las patinetas."</p>
+      <p class="project-text">Este trabajo combina un corto documental en blanco y negro con el videoclip de <em>Skate or Die</em> en color. Más que hacer un videoclip típico de playback frente a la cámara, la idea fue retratar la escena que rodea a Sentido Común, la energía de sus conciertos y el cariño que les tiene su ciudad.</p>
+      <p class="project-text">Fueron dos días de grabación con una gran asistencia de gente. No tuvimos todos los "juguetes" que hubiéramos querido, pero la entrega de la banda y la gente que asistió compensó con creces cualquier falta. El resultado fue un registro que no solo documenta a la banda, sino también la comunidad que la rodea.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/22LSFONUBcc?si=TKXQffaaRdlbQqea" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 09 -->
+  <article class="project" id="continental">
+    <div class="project-header">
+      <span class="project-num">09 —</span>
+      <h2>CONCIERTO CONTINENTAL<br>& LA VERSIÓN EXTENDIDA</h2>
+    </div>
+    <p class="project-subtitle">Registro en vivo · One Army Man · 2019</p>
+    <div class="project-body">
+      <p class="project-quote">"Continental es una de esas bandas que considero de culto en Costa Rica: talentosa, sólida y con un sonido que merecería trascender mucho más allá de nuestras fronteras."</p>
+      <p class="project-text">Estuvimos ahí, como era y es la costumbre: One Army Man, para capturar imágenes del concierto y crear un registro que no solo muestra la música, sino también voces de la escena. La noche fue en 2019, antes de la pandemia.</p>
+      <p class="project-text">Momentos intensos y genuinos, buena música y opiniones honestas sobre la realidad de la escena. Un registro que, ojalá, se mantenga donde pertenece: en manos de quienes valoran este tipo de trabajos.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/kwgF9zsxwZc?si=eeg4xVTQoCVA5Xyp" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 10 -->
+  <article class="project" id="las-canchitas">
+    <div class="project-header">
+      <span class="project-num">10 —</span>
+      <h2>LAS CANCHITAS<br>MÚSICA, ARTE & PATINETAS</h2>
+    </div>
+    <p class="project-subtitle">Cápsula MAP · Rotación en TDMás</p>
+    <div class="project-body">
+      <p class="project-quote">"Fueron piezas muy bien ejecutadas con lo mínimo: una sola cámara, un micrófono."</p>
+      <p class="project-text">Las Canchitas cuenta cómo, en un momento particular de la historia del skateboarding en Costa Rica, las canchas de básquet o planches para fútbol 5 se transformaban en skateparks improvisados durante ciertas horas del día. Una época en la que los parques de skate eran prácticamente inexistentes, y estos espacios se convertían en puntos de encuentro donde los barrios se retaban entre sí.</p>
+      <p class="project-text">Es un fragmento de historia al que la escena del skate en Costa Rica le ha prestado muy poca atención, y que merecía un registro. Un ejemplo claro de cómo contar la historia de una cultura y mostrar acción de manera que la pieza pueda interesar a un público mucho más amplio.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/hY9x9JfMutY?si=8qOVoPhyaGa8CxXx" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 11 -->
+  <article class="project" id="caidas-libres">
+    <div class="project-header">
+      <span class="project-num">11 —</span>
+      <h2>CAÍDAS LIBRES<br>SESIÓN EN SAN ISIDRO</h2>
+    </div>
+    <p class="project-subtitle">Post punk · San Isidro de Heredia</p>
+    <div class="project-body">
+      <p class="project-quote">"Colaborar con Caídas Libres fue una experiencia muy interesante."</p>
+      <p class="project-text">El clip combina material grabado en San Isidro de Heredia con un trabajo anterior en sala de ensayo. Este proyecto me recordó la importancia de cuidar cada detalle de producción. Con un par de elementos adicionales —luces mejor planteadas, un micrófono de escopeta o boom— el material habría ganado mucho más valor.</p>
+      <p class="project-text">No es la primera vez que me sucede: la fiebre de hacer y ejecutar puede ganarle a la razón, y termino rodando antes de planear lo suficiente. Aun así, el trabajo capturó momentos valiosos de la banda y refleja esa energía que me interesa conservar en este archivo.</p>
+      <div class="embed-wrap">
+        <iframe src="https://www.youtube.com/embed/kwgF9zsxwZc?si=eeg4xVTQoCVA5Xyp" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+  <!-- 12 -->
+  <article class="project" id="map-episodio7">
+    <div class="project-header">
+      <span class="project-num">12 —</span>
+      <h2>MAP EPISODIO 7<br>Y LA INCÓGNITA DEL 8</h2>
+    </div>
+    <p class="project-subtitle">Serie MAP: Música, Arte & Patinetas · ¿El último episodio?</p>
+    <div class="project-body">
+      <p class="project-quote">"El episodio 7 se realizó porque ya estaba planeado, siempre pensando en llegar al episodio 8. Ese cierre, a la fecha, sigue pendiente."</p>
+      <p class="project-text">En ese momento me sentía frustrado: no logramos una negociación con el canal, ni siquiera para tener un horario fijo. MAP se transmitía sin aviso, y la gente lo encontraba por azar, mientras tomaba un fresco en una soda o esperaba en algún lugar donde la televisión estaba sintonizada.</p>
+      <p class="project-text">Lo cierto es que MAP sí estaba generando algo: interés, conversación y un registro con calidad. El impacto estaba ahí, aunque el canal no lo viera. Tal vez el episodio 8 todavía pueda hacerse. Tal vez sea mejor dejarlo como una página pendiente. Pero lo que está claro es que el trabajo, la gente que participó y quienes lo vieron, le dieron sentido a cada minuto invertido.</p>
+      <div class="embed-wrap spotify">
+        <iframe src="https://open.spotify.com/embed/episode/3l7jiQBHvQYenRAgHj0YVz/video?utm_source=generator&theme=0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<footer>
+  <p>© 2025 MAP RADIO CR — <a href="https://www.mapradiocr.com">mapradiocr.com</a></p>
+  <p><a href="https://unticohostinado.github.io/map-landing-prueba/">← Volver al inicio</a></p>
+</footer>
+
+</body>
+</html>
