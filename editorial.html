@@ -171,7 +171,6 @@ function buildCard(post) {
   const excerpt = stripHtml(post.excerpt?.rendered || '').slice(0, 120).trim() + '…';
   const date = formatDate(post.date);
   const title = post.title?.rendered || '';
-
   return `
     <a class="tx-card" href="${post.link}" target="_blank">
       <div class="tx-card-img">
@@ -185,7 +184,6 @@ function buildCard(post) {
       </div>
     </a>`;
 }
-
 // Carga categorías y construye filtros
 async function loadCategories() {
   try {
