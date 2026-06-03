@@ -1,11 +1,66 @@
 <style>
+.map-search-input {
+    display: none !important;
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px solid #c8ff00;
+    color: #e8e4d9;
+    padding: 2px 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    outline: none;
+    width: 160px;
+}
+.map-search-input.visible { display: block !important; }
+.map-nav-bar {
+    display: flex;
+    align-items: center;
+    padding: 4px 20px;
+    background: #0a0a0a;
+    border-bottom: 0.5px solid #1a1a1a;
+    font-family: 'IBM Plex Mono', monospace;
+    gap: 12px;
+    line-height: 1;
+}
+.map-back { color: #c8ff00; text-decoration: none; font-size: 11px; letter-spacing: 0.08em; }
+.map-back:hover { opacity: 0.7; }
+.map-lupa { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; }
+.map-lupa svg { width: 20px; height: 20px; stroke: #c8ff00; fill: none; stroke-width: 2; }
+.map-search-input { display: none; background: transparent; border: none; border-bottom: 0.5px solid #c8ff00; color: #e8e4d9; padding: 2px 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; outline: none; width: 160px; }
+.map-search-input.visible { display: block; }
+.map-search-input::placeholder { color: #555; }
+</style>
+
+<div class="map-nav-bar">
+  <a class="map-back" href="https://www.mapradiocr.com">← INICIO</a>
+  <form style="display:flex;align-items:center;gap:6px;margin:0;" action="https://www.mapradiocr.com" method="get">
+    <button class="map-lupa" type="button" onclick="toggleSearch()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+      </svg>
+    </button>
+    <input class="map-search-input" id="mapSearchInput" type="text" name="s" placeholder="buscar...">
+  </form>
+</div>
+
+<script>
+  function toggleSearch() {
+    var input = document.getElementById('mapSearchInput');
+    input.classList.toggle('visible');
+    if (input.classList.contains('visible')) input.focus();
+  }
+</script>
+
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 
-.sa-root { background:#0a0a0a; color:#e8e4d9; font-family:'IBM Plex Sans',sans-serif; font-weight:300; }
-.sa-root a { color:inherit; text-decoration:none; }
+*, *::before, *::after { box-sizing: border-box; }
 
+.sa-root { background:#0a0a0a; color:#e8e4d9; font-family:'IBM Plex Sans',sans-serif; font-weight:300; width:100%; overflow-x:hidden; }
+.sa-root a { color:inherit; text-decoration:none; }
 .sa-sec { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; }
-.sa-label { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:#333; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
+.sa-label { font-family:'IBM Plex Mono',monospace; font-size:0.75rem; letter-spacing:0.22em; text-transform:uppercase; color:#333; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
 .sa-label::after { content:''; flex:1; height:0.5px; background:#1a1a1a; }
 
 /* HERO */
@@ -26,7 +81,6 @@
 .sa-bio-text strong { color:#e8e4d9; font-weight:500; }
 .sa-bio-text a { color:#c8ff00; border-bottom:0.5px solid #c8ff00; transition:opacity 0.2s; }
 .sa-bio-text a:hover { opacity:0.7; }
-.sa-bio-sidebar {}
 .sa-bio-card { border:0.5px solid #1a1a1a; margin-bottom:1rem; }
 .sa-bio-card-label { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase; color:#333; padding:0.7rem 1rem; border-bottom:0.5px solid #1a1a1a; }
 .sa-bio-card-val { font-size:0.82rem; color:#888; padding:0.8rem 1rem; line-height:1.5; }
@@ -42,22 +96,31 @@
 .sa-decl-title { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#e8e4d9; margin-bottom:1.5rem; letter-spacing:0.03em; }
 .sa-decl-text { font-size:1rem; line-height:1.9; color:#aaa; font-style:italic; max-width:680px; }
 
+/* ARCHIVO AV */
+.av-item { padding:3rem 0; border-top:0.5px solid #1a1a1a; }
+.av-item-header { display:flex; align-items:baseline; gap:1rem; margin-bottom:0.5rem; flex-wrap:wrap; max-width:680px; margin-left:auto; margin-right:auto;}
+.av-item-num { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#c8ff00; flex-shrink:0; }
+.av-item-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.3rem,3.5vw,2.2rem); letter-spacing:0.05em; color:#e8e4d9; line-height:1.05; }
+.av-item-sub { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#333; margin-bottom:1.5rem; max-width:680px; margin-left:auto; margin-right:auto;}
+.av-item-body { max-width: 100%; max-width:680px; margin-left:auto; margin-right:auto;}
+.av-quote { font-size:0.92rem; line-height:1.8; color:#c8ff00; font-style:italic; border-left:2px solid #c8ff00; padding-left:1rem; margin-bottom:1.2rem; }
+.av-text { font-size:0.9rem; line-height:1.85; color:#888; margin-bottom:1rem; }
+.av-anecdota { background:#111; border:0.5px solid #1a1a1a; padding:1rem 1.2rem; margin-bottom:1.5rem; }
+.av-link { display:inline-flex; align-items:center; gap:0.4rem; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:#c8ff00; text-decoration:none; border-bottom:0.5px solid #c8ff00; padding-bottom:2px; margin-bottom:1.5rem; letter-spacing:0.06em; }
+
+/* EMBEDS */
+.av-youtube { display:block; width:100%; max-width:680px; aspect-ratio:16/9; margin:1.5rem auto 0; border:0.5px solid #1a1a1a; overflow:hidden; background:#0a0a0a; }
+.av-youtube iframe { width:100% !important; height:100% !important; border:none; display:block; position:static !important; }
+.av-spotify { border:0.5px solid #1a1a1a; overflow:hidden; margin-top:1.5rem; max-width:680px; margin-left:auto; margin-right:auto; }
+.av-spotify iframe { width:100%; height:351px; border:none; display:block; }
+
 /* CREDO */
-.sa-credo-items {}
 .sa-credo-item { display:grid; grid-template-columns:200px 1fr; gap:2rem; align-items:start; padding:2rem 0; border-bottom:0.5px solid #1a1a1a; }
 .sa-credo-item:last-child { border-bottom:none; }
 .sa-credo-word { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:#1a1a1a; line-height:1; letter-spacing:0.03em; }
 .sa-credo-word em { font-style:normal; color:#c8ff00; }
 .sa-credo-text { font-size:0.95rem; line-height:1.85; color:#777; padding-top:0.5rem; }
 .sa-credo-text strong { color:#e8e4d9; font-weight:500; }
-
-/* MEDIA */
-.sa-media-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
-.sa-media-item {}
-.sa-media-label { font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:#333; margin-bottom:0.7rem; }
-.sa-media-embed { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border:0.5px solid #1a1a1a; }
-.sa-media-embed iframe { position:absolute; top:0; left:0; width:100%; height:100%; }
-.sa-media-spotify { border:0.5px solid #1a1a1a; overflow:hidden; border-radius:8px; }
 
 /* MANIFESTO */
 .sa-mani { padding:4rem 2rem; background:#050505; border-bottom:0.5px solid #1a1a1a; display:flex; align-items:center; justify-content:center; min-height:180px; }
@@ -66,17 +129,51 @@
 .sa-mani-q em { font-style:normal; color:#c8ff00; }
 .sa-mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
 
+/* FOOTER */
 .sa-footer { padding:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-.sa-footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.15em; color:#2a2a2a; }
-.sa-footer-txt { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:#2a2a2a; text-transform:uppercase; }
 
+/* BADGE */
+.av-badge { display:inline-flex; align-items:center; gap:0.5rem; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#0a0a0a; background:#c8ff00; padding:4px 10px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1.2rem; }
+
+/* RESPONSIVE MÓVIL */
 @media(max-width:768px) {
-  .sa-hero { grid-template-columns:1fr; }
-  .sa-hero-img-left { min-height:280px; }
-  .sa-bio-grid { grid-template-columns:1fr; }
+  .sa-root { width:100% !important; max-width:100% !important; }
+  .sa-sec { padding:2rem 1rem; }
+
+  /* Hero — apilado */
+  .sa-hero { grid-template-columns:1fr; min-height:auto; }
+  .sa-hero-img-left { min-height:240px; }
+  .sa-hero-img-left::after { background:linear-gradient(to bottom, transparent 50%, #0a0a0a 100%); }
+  .sa-hero-quote { padding:1.5rem 1rem; }
+  .sa-hero-quote-text { font-size:0.88rem; }
+  .sa-hero-name { font-size:2.2rem; }
+
+  /* Bio — una columna */
+  .sa-bio-grid { grid-template-columns:1fr; gap:2rem; }
+
+  /* Declaracion */
+  .sa-decl-content { padding:1.5rem; }
+  .sa-decl-title { font-size:1.8rem; }
+  .sa-decl-text { font-size:0.88rem; }
+
+  /* Archivo AV — sin padding izquierdo */
+  .av-item { padding:2rem 0; }
+  .av-item-sub { padding-left:0 !important; }
+  .av-item-body { padding-left:0 !important; }
+  .av-item-header { gap:0.5rem; }
+
+  /* Embeds full width en móvil */
+  .av-youtube { max-width:100%; }
+  .av-spotify { max-width:100%; }
+  .av-spotify iframe { height:200px; }
+
+  /* Credo — una columna */
   .sa-credo-item { grid-template-columns:1fr; gap:0.5rem; }
   .sa-credo-word { font-size:2.5rem; }
-  .sa-media-grid { grid-template-columns:1fr; }
+
+  /* Footer nav — columna */
+  .sa-footer { flex-direction:column; align-items:flex-start; gap:1.5rem; }
+  .sa-footer nav { flex-direction:column; gap:0.8rem; }
 }
 </style>
 
@@ -101,12 +198,12 @@
       <div class="sa-bio-text">
         <p>Soy Valdo Jiménez V., director de <strong>MAP RADIO RADIO PACHUKO</strong>. Desde el 2016 he sostenido este proyecto con el mismo espíritu con que se sostiene una barricada: convicción, terquedad y cariño por la música, el arte y la palabra libre. Acompañado siempre de la generosidad de entrañables amigos.</p>
         <p>Crecí entre cuentos fantásticos y cámaras prestadas, hasta hacer de la narrativa —oral, escrita y visual— mi oficio y mi refugio. He trabajado con bandas independientes, filmado documentales, creado videoclips y acompañado a artistas y colectivos que rara vez tienen espacio en la prensa tradicional.</p>
-        <p>El documental <strong><a href="https://youtu.be/_g5LaE4DjVA?si=JcdHNaLPNLKHZX53" target="_blank">RUIDO</a></strong>, del que soy director, se proyectó en el Festival Internacional de Cine de Costa Rica y también en el centro penitenciario La Reforma, frente a 400 internos, donde encantó contra todo pronóstico. Anteriormente tuve la oportunidad de grabar un corto documental en México junto al actor <strong><a href="https://open.spotify.com/episode/5yg67wrtr0rB70qXH3MiPk?si=CsbKcpa3RHu043r1Nkadpg" target="_blank">Eliseo Martínez</a></strong>, uno de los protagonistas de la película <em>Te Prometo Anarquía</em>.</p>
+        <p>El documental <strong><a href="https://youtu.be/_g5LaE4DjVA?si=JcdHNaLPNLKHZX53" target="_blank">RUIDO</a></strong>, del que soy director, se proyectó en el Festival Internacional de Cine de Costa Rica y también en el centro penitenciario La Reforma, frente a 400 internos, donde encantó contra todo pronóstico. Su origen, sin embargo, es más antiguo de lo que parece: cuando Nasional Skateboards nació en 2007, una de las ideas fundacionales era crear un documental sobre la escena skate costarricense. Casi diez años después, sin haberlo planeado así, RUIDO vería la luz. Anteriormente tuve la oportunidad de grabar un corto documental en México junto al actor <strong><a href="https://open.spotify.com/episode/5yg67wrtr0rB70qXH3MiPk?si=CsbKcpa3RHu043r1Nkadpg" target="_blank">Eliseo Martínez</a></strong>, uno de los protagonistas de la película <em>Te Prometo Anarquía</em>.</p>
         <p>MAP RADIO nació de esa necesidad: dar voz a quienes crean desde el margen, con la autenticidad que no se negocia en salas de redacción ni se mide por pautas publicitarias. Aquí no se simula neutralidad: aquí se escribe, se graba y se comparte con la convicción de que la cultura real no cabe en las vitrinas del poder.</p>
       </div>
       <div class="sa-bio-sidebar">
         <div class="sa-bio-card">
-          <div class="sa-bio-card-label">Proyecto principal</div>
+          <div class="sa-bio-card-label">Proyectos</div>
           <div class="sa-bio-card-val"><strong><a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB" target="_blank">MAP Radio Radio Pachuko</a></strong>Desde 2016 · 200+ episodios</div>
         </div>
         <div class="sa-bio-card">
@@ -139,6 +236,200 @@
     </div>
   </section>
 
+  <!-- ARCHIVO AUDIOVISUAL -->
+  <section class="sa-sec">
+    <div class="sa-label">Archivo audiovisual</div>
+    <p style="font-size:0.95rem;line-height:1.85;color:#888;max-width:680px;margin-bottom:3rem;margin-left:auto;margin-right:auto;">Este espacio reúne fragmentos y obras completas que han marcado mi recorrido en el audiovisual: clips de skate, cortos documentales, videoclips y proyectos que han viajado por publicaciones internacionales. Más que un archivo, es una forma de compartir el proceso, la energía y las circunstancias detrás de cada pieza.</p>
+
+    <!-- ÍNDICE -->
+    <div style="display:flex;flex-direction:column;margin-bottom:3rem;border-top:0.5px solid #1a1a1a;max-width:680px;margin-left:auto;margin-right:auto;">
+      <a href="#av-capitan-rooster" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">01</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Capitán Rooster — Barrio México</span>
+      </a>
+      <a href="#av-malas-palabras" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">02</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Malas Palabras — Do It Yourself</span>
+      </a>
+      <a href="#av-agent-orange" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">03</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Agent Orange en Costa Rica</span>
+      </a>
+      <a href="#av-tenochtitlan" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">04</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Tenochtitlan según Pelukaz</span>
+      </a>
+      <a href="#av-ruido" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">05</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">RUIDO — Tesis documental</span>
+      </a>
+      <a href="#av-chuck-jones" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">06</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Chuck Jones — Corto documental</span>
+      </a>
+      <a href="#av-circo" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">07</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">5irko-0-Seis — Hasta que las calles sangren</span>
+      </a>
+      <a href="#av-sentido-comun" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">08</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Sentido Común — Corto documental</span>
+      </a>
+      <a href="#av-continental" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">09</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Concierto Continental & La Versión Extendida</span>
+      </a>
+      <a href="#av-canchitas" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">10</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Las Canchitas — Música, Arte & Patinetas</span>
+      </a>
+      <a href="#av-caidas-libres" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">11</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">Caídas Libres — Sesión en San Isidro</span>
+      </a>
+      <a href="#av-map7" style="display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:0.5px solid #1a1a1a;text-decoration:none;" onmouseover="this.style.background='#111'" onmouseout="this.style.background='transparent'">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;min-width:28px;padding-top:2px;">12</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#e8e4d9;line-height:1.4;">MAP — Episodio 7 y la incógnita del 8</span>
+      </a>
+    </div>
+
+    <!-- 01 -->
+    <div class="av-item" id="av-capitan-rooster">
+      <div class="av-item-header"><span class="av-item-num">01 —</span><h3 class="av-item-title">CAPITÁN ROOSTER — BARRIO MÉXICO</h3></div>
+      <p class="av-item-sub">Corto documental · Publicado en Noisey / VICE</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Hace 11 años, con una cámara, un micrófono y mucha fiebre por hacer, grabé este capítulo sobre Capitán Rooster. Lo publicó Noisey (VICE) así, tal cual."</p>
+        <p class="av-text">Un paseo por Barrio México, un Distrito en San José famoso por sus esquinas, sus iglesias, sus cantinas y sus talleres. Es precisamente en un taller donde se puede ver un ensayo de Capitán Rooster y luego una charla sobre el barrio y la vida de una banda underground entre sus calles.</p>
+        <a href="https://www.vice.com/es/article/escuchen-a-capitan-rooster-la-banda-mas-marginal-de-costa-rica/" target="_blank" class="av-link">↗ Noisey: La banda más marginal de Costa Rica</a>
+        <div class="av-anecdota"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;letter-spacing:0.1em;">ANÉCDOTA — </span><span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#555;line-height:1.7;">En 2018 se robaron el canal de YouTube de Nasional Skateboards (abierto en 2006). Este video terminó en un canal ruso de "criptomonedas". Igual acá queda, en casa.</span></div>
+        <div class="av-spotify"><iframe src="https://open.spotify.com/embed/episode/2PJC801GYe35z66oUobqPT/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="av-item" id="av-malas-palabras">
+      <div class="av-item-header"><span class="av-item-num">02 —</span><h3 class="av-item-title">MALAS PALABRAS — DO IT YOURSELF</h3></div>
+      <p class="av-item-sub">Corto documental · Blank TV</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Hace 11 años filmé este corto documental con la alineación original de Malas Palabras. En ese momento había algo que valía la pena capturar: su energía en estudio y el espíritu DIY que los definía."</p>
+        <p class="av-text">Este trabajo refuerza lo que más disfruto del audiovisual: la narrativa documental. No necesito fingir nada, solo estar ahí y dejar que las historias se cuenten por sí solas. Con Malas Palabras, en una finca en Belén de Heredia, esas 6 horas de rodaje entre cables y anécdotas quedó registrado un momento irrepetible.</p>
+        <div class="av-spotify"><iframe src="https://open.spotify.com/embed/episode/2M3QyvydFx2ViMPzkJgGpS/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="av-item" id="av-agent-orange">
+      <div class="av-item-header"><span class="av-item-num">03 —</span><h3 class="av-item-title">AGENT ORANGE EN COSTA RICA</h3></div>
+      <p class="av-item-sub">Extracto de MAP: Música, Arte & Patineta — Episodio 4</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Este clip es un extracto del cuarto episodio de MAP, grabado hace 6 años con la asistencia de Randy Parker. Para mí marca un punto clave en la evolución de mi trabajo audiovisual."</p>
+        <p class="av-text">Dos personas enfocadas, con roles claros y respeto por el oficio, pueden lograr piezas que superan en calidad a muchas producciones que se ven en la televisión costarricense. Este clip es una prueba de cómo un equipo reducido pero comprometido puede capturar la intensidad de un evento sin artificios.</p>
+        <div class="av-spotify"><iframe src="https://open.spotify.com/embed/episode/5yg67wrtr0rB70qXH3MiPk/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="av-item" id="av-tenochtitlan">
+      <div class="av-item-header"><span class="av-item-num">04 —</span><h3 class="av-item-title">TENOCHTITLAN SEGÚN PELUKAZ</h3></div>
+      <p class="av-item-sub">Música, Arte & Patinetas · México</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Este clip recoge parte de un viaje a México hace 10 años. Entre León y Guadalajara, presencié escenas que no estaba acostumbrado a ver."</p>
+        <p class="av-text">México me impactó profundamente. Conocí a Eliseo Martínez, uno de los protagonistas de <em>Te Prometo Anarquía</em>. Este trabajo combina tres elementos que siempre he buscado en MAP: el relato de "Pelucas", la cultura del skate y una narrativa que va más allá de los trucos.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/u8Yw1QZw_5s" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="av-item" id="av-ruido">
+      <div class="av-item-header"><span class="av-item-num">05 —</span><h3 class="av-item-title">RUIDO — TESIS DOCUMENTAL</h3></div>
+      <p class="av-item-sub">Tesis de graduación · Universidad Veritas · 2016</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Con William Conejo comparto esa incomodidad —casi rabia— de vivir en un país que premia lo que no debería premiar."</p>
+        <p class="av-text">RUIDO fue mi tesis de graduación en la Universidad Veritas en 2016. Ese mismo año fue seleccionado para el Festival Internacional de Cine de Costa Rica, pero la escuela no lo permitió. El documental tuvo que esperar dos años para llegar a su audiencia.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/aaO3vJ_xMJU" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="av-item" id="av-chuck-jones">
+      <div class="av-item-header"><span class="av-item-num">06 —</span><h3 class="av-item-title">CHUCK JONES — CORTO DOCUMENTAL</h3></div>
+      <p class="av-item-sub">Álbum debut Aperitivo · Punk rock · 2019</p>
+      <div class="av-item-body">
+        <p class="av-quote">"La idea siempre fue clara: no caer en el morbo ni en los clichés que suelen rodear al punk rock. Queríamos mostrar a las personas detrás de la música."</p>
+        <p class="av-text">Durante casi dos meses seguimos a la banda en ensayos, conciertos y conversaciones. Cuatro amigos unidos por la urgencia de tocar y decir lo que piensan. El cierre es el videoclip de "No caminarás solo", un mensaje de resistencia que resume el espíritu de la banda.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/W5z7VqDv_HQ" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="av-item" id="av-circo">
+      <div class="av-item-header"><span class="av-item-num">07 —</span><h3 class="av-item-title">5IRKO-0-SEIS — HASTA QUE LAS CALLES SANGREN</h3></div>
+      <p class="av-item-sub">Videoclip · Hip hop · Primera vez trabajando con rap</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Este proyecto fue especial para mí porque marcó la primera vez que trabajaba con rap."</p>
+        <p class="av-text">El clip se aleja de lo que normalmente se acostumbra en el género. Aquí el concepto fue un poco más allá: entender el tempo, la cadencia y la intensidad del hip hop desde la óptica de la cámara. Con Tavo, uno de los integrantes, la conexión siguió más allá de este proyecto.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/8dDkYGbBD5o" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="av-item" id="av-sentido-comun">
+      <div class="av-item-header"><span class="av-item-num">08 —</span><h3 class="av-item-title">SENTIDO COMÚN — CORTO DOCUMENTAL</h3></div>
+      <p class="av-item-sub">Cartago · Skate or Die · Premio del Público 2024</p>
+      <div class="av-item-body">
+        <div class="av-badge">★ Premio del Público — Festival de Cine Cartago</div>
+        <p class="av-quote">"En 2024 tuve la oportunidad de trabajar con Sentido Común, una banda muy querida en Cartago y profundamente ligada a las patinetas."</p>
+        <p class="av-text">Este trabajo combina un corto documental en blanco y negro con el videoclip de <em>Skate or Die</em> en color. El resultado fue un registro que no solo documenta a la banda, sino también la comunidad que la rodea.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/22LSFONUBcc" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 09 -->
+    <div class="av-item" id="av-continental">
+      <div class="av-item-header"><span class="av-item-num">09 —</span><h3 class="av-item-title">CONCIERTO CONTINENTAL & LA VERSIÓN EXTENDIDA</h3></div>
+      <p class="av-item-sub">Registro en vivo · One Army Man · 2019</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Continental es una de esas bandas que considero de culto en Costa Rica: talentosa, sólida y con un sonido que merecería trascender mucho más allá de nuestras fronteras."</p>
+        <p class="av-text">Estuvimos ahí como era la costumbre: One Army Man. Momentos intensos y genuinos, buena música y opiniones honestas sobre la realidad de la escena. La noche fue en 2019, antes de la pandemia.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/kwgF9zsxwZc" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="av-item" id="av-canchitas">
+      <div class="av-item-header"><span class="av-item-num">10 —</span><h3 class="av-item-title">LAS CANCHITAS — MÚSICA, ARTE & PATINETAS</h3></div>
+      <p class="av-item-sub">Cápsula MAP · Rotación en TDMás</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Fueron piezas muy bien ejecutadas con lo mínimo: una sola cámara, un micrófono."</p>
+        <p class="av-text">Las Canchitas cuenta cómo las canchas de básquet se transformaban en skateparks improvisados en una época donde los parques de skate eran prácticamente inexistentes en Costa Rica. Un fragmento de historia que merecía un registro.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/hY9x9JfMutY" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="av-item" id="av-caidas-libres">
+      <div class="av-item-header"><span class="av-item-num">11 —</span><h3 class="av-item-title">CAÍDAS LIBRES — SESIÓN EN SAN ISIDRO</h3></div>
+      <p class="av-item-sub">Post punk · San Isidro de Heredia</p>
+      <div class="av-item-body">
+        <p class="av-quote">"Colaborar con Caídas Libres fue una experiencia muy interesante."</p>
+        <p class="av-text">El clip combina material grabado en San Isidro de Heredia con un trabajo anterior en sala de ensayo. Este proyecto me recordó la importancia de cuidar cada detalle de producción antes de rodar.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/hY9x9JfMutY" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="av-item" id="av-map7">
+      <div class="av-item-header"><span class="av-item-num">12 —</span><h3 class="av-item-title">MAP EPISODIO 7 Y LA INCÓGNITA DEL 8</h3></div>
+      <p class="av-item-sub">Serie MAP: Música, Arte & Patinetas · ¿El último episodio?</p>
+      <div class="av-item-body">
+        <p class="av-quote">"El episodio 7 se realizó porque ya estaba planeado, siempre pensando en llegar al episodio 8. Ese cierre, a la fecha, sigue pendiente."</p>
+        <p class="av-text">MAP se transmitía sin aviso, y la gente lo encontraba por azar. Lo cierto es que MAP sí estaba generando algo: interés, conversación y un registro con calidad. El impacto estaba ahí, aunque el canal no lo viera. Tal vez el episodio 8 todavía pueda hacerse.</p>
+        <div class="av-youtube"><iframe src="https://www.youtube.com/embed/xSK0iZdmSog" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+  </section>
+
   <!-- CREDO -->
   <section class="sa-sec">
     <div class="sa-label">Credo</div>
@@ -166,9 +457,17 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
   <div class="sa-footer">
-    <div class="sa-footer-logo">MAP — 2016</div>
-    <div class="sa-footer-txt">Música · Arte · Patinetas · Costa Rica · Independiente</div>
+    <a href="https://www.mapradiocr.com" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.15em;color:#2a2a2a;text-decoration:none;">MA<span style="color:#c8ff00;">P</span></a>
+    <nav style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <a href="https://www.mapradiocr.com/antologia/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Antología</a>
+      <a href="https://www.mapradiocr.com/serie/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Serie</a>
+      <a href="https://www.mapradiocr.com/editorial-opinion/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Textos</a>
+      <a href="https://www.mapradiocr.com/podcast-copy/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Podcast</a>
+      <a href="https://www.mapradiocr.com/sobre-el-director/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Sobre el autor</a>
+      <a href="https://www.mapradiocr.com/contacto/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Contacto</a>
+    </nav>
   </div>
 
 </div>
