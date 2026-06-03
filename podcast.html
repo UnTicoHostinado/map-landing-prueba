@@ -45,7 +45,7 @@ function toggleSearch() {
 .pc-hero h1 em { font-style:normal; color:#c8ff00; }
 .pc-hero-desc { font-size:1rem; color:#888; max-width:620px; line-height:1.85; }
 
-/* ÍNDICE — grid 4 col */
+/* ÍNDICE 4 col */
 .pc-index { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
 .pc-index-item { display:flex; flex-direction:column; gap:0.5rem; padding:1.5rem; border-right:0.5px solid #1a1a1a; border-bottom:0.5px solid #1a1a1a; text-decoration:none; transition:background 0.15s; }
 .pc-index-item:last-child { border-right:none; }
@@ -58,20 +58,17 @@ function toggleSearch() {
 .pc-universo { padding:3rem 2rem; border-bottom:0.5px solid #1a1a1a; }
 .pc-universo p { font-size:0.95rem; color:#888; line-height:1.85; }
 
-/* SERIE — 2 col: izquierda texto, derecha player */
-.pc-serie { padding:4rem 2rem; border-bottom:0.5px solid #1a1a1a; }
-.pc-serie-inner { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+/* SERIE — editorial float */
+.pc-serie { padding:4rem 2rem; border-bottom:0.5px solid #1a1a1a; overflow:hidden; }
+
 .pc-serie-num { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#c8ff00; letter-spacing:0.15em; margin-bottom:0.8rem; }
 .pc-serie-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,3vw,2.6rem); letter-spacing:0.04em; color:#e8e4d9; line-height:1; margin-bottom:1.5rem; }
 .pc-serie-title em { font-style:normal; color:#c8ff00; }
-.pc-serie-text { font-size:0.88rem; color:#666; line-height:1.85; }
-.pc-serie-text strong { color:#e8e4d9; font-weight:500; }
-.pc-serie-text a { color:#c8ff00; border-bottom:0.5px solid #c8ff00; }
-.pc-serie-text em { color:#888; font-style:italic; }
 
-/* LADO DERECHO */
+/* PLAYER flotado a la derecha */
+.pc-floated { float:right; width:45%; margin:0 0 1.5rem 2.5rem; }
 .pc-ep-label { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#c8ff00; margin-bottom:0.5rem; }
-.pc-ep-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:#e8e4d9; letter-spacing:0.04em; margin-bottom:1rem; line-height:1.05; }
+.pc-ep-title { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#e8e4d9; letter-spacing:0.04em; margin-bottom:1rem; line-height:1.05; }
 
 /* EMBEDS */
 .pc-audio { border:0.5px solid #1a1a1a; overflow:hidden; }
@@ -79,7 +76,14 @@ function toggleSearch() {
 .pc-video { position:relative; padding-top:56.25%; border:0.5px solid #1a1a1a; overflow:hidden; background:#0a0a0a; }
 .pc-video iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
 
-/* PLAYLISTS — centradas */
+/* TEXTO que fluye */
+.pc-serie-text { font-size:0.88rem; color:#666; line-height:1.85; }
+.pc-serie-text strong { color:#e8e4d9; font-weight:500; }
+.pc-serie-text a { color:#c8ff00; border-bottom:0.5px solid #c8ff00; }
+.pc-serie-text em { color:#888; font-style:italic; }
+.pc-clearfix::after { content:''; display:table; clear:both; }
+
+/* PLAYLISTS centradas */
 .pc-playlists-wrap { max-width:680px; margin:0 auto; }
 .pc-playlist-list { display:flex; flex-direction:column; gap:2rem; }
 .pc-playlist-label { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#333; margin-bottom:0.7rem; }
@@ -100,7 +104,7 @@ function toggleSearch() {
 @media(max-width:768px) {
   .pc-hero { padding:3rem 1rem 2rem; }
   .pc-serie { padding:3rem 1rem; }
-  .pc-serie-inner { grid-template-columns:1fr; gap:2rem; }
+  .pc-floated { float:none; width:100%; margin:0 0 1.5rem 0; }
   .pc-index { grid-template-columns:1fr 1fr; }
   .pc-index-item:nth-child(2) { border-right:none; }
   .pc-index-desc { display:none; }
@@ -116,7 +120,7 @@ function toggleSearch() {
     <p class="pc-hero-desc">Más de 200 episodios. Conversaciones, relatos y poesía con gente que vale la pena escuchar. Desde 2016, haciendo podcast con alma y siempre con una idea clara de lo que queremos decir. Destacan las series: <em>Los Bastardos de Poveda, RPGP, Relatos Cortos & Sopa de Letras.</em></p>
   </div>
 
-  <!-- ÍNDICE 4 col -->
+  <!-- ÍNDICE -->
   <section class="pc-sec" style="padding:0;">
     <div class="pc-index">
       <a href="#bastardos" class="pc-index-item">
@@ -149,75 +153,59 @@ function toggleSearch() {
   </section>
 
   <!-- 01 BASTARDOS -->
-  <section class="pc-serie" id="bastardos">
-    <div class="pc-serie-inner">
-      <div>
-        <div class="pc-serie-num">01 —</div>
-        <div class="pc-serie-title">LOS BASTARDOS<br>DE <em>POVEDA</em></div>
-        <p class="pc-serie-text">Nombre acuñado entre el escritor alajuelense Sergio Murillo y Bernardo Soto —quien todavía se resiste a llamarse "escritor". Serie de conversaciones con escritores, poetas, gestores culturales y artistas, casi todos de la ardiente Alajuela. Son charlas sin apuro: a veces intensas, otras llenas de carcajadas, siempre con la sensación de que la vida y la literatura se cruzan en la mesa.<br><br>Entre mis episodios favoritos están el de <strong>Luis Poveda</strong> y <a href="https://open.spotify.com/episode/30cZBWLrhIQnQaNmqrOoBZ?si=df2fa937c1fd458b" target="_blank">16 Reds, que debe una segunda parte</a>. Con Bernardo grabamos dos veces, en plena pandemia y en estados de consciencia bastante psicodélicos. Nadie esperaba mucho de ese episodio ni de MAPRADIO en aquel momento, sin embargo, hoy —con más de 200 programas— nos queda clarísimo: <em>Los Bastardos de Poveda</em> no es un hobby. Es parte del ADN de MAP RADIO.<br><br>El bicho empezaba a perder fuerza, no se grabó en noviembre sino en enero o febrero. En algún lugar de la garita de Alajuela. Entre cervezas y estados muy alterados de consciencia, tuvimos la oportunidad de conversar con Don Luis Poveda. Nos explotó la cabeza cuando todos, incluso quien leía los poemas que sacaba de un bolso tejido muy viejo, se maravillaba asombrado al descubrir aquellas piezas exquisitas. Así 3 quijotes, escondidos en una mandarina, sentían como les reventaba el cerebro al escuchar el poema: YO SOY MULTIPICHA.</p>
-      </div>
-      <div>
-        <div class="pc-ep-label">Episodio destacado · #10</div>
-        <div class="pc-ep-title">LUIS POVEDA</div>
-        <div class="pc-audio">
-          <iframe src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
+  <section class="pc-serie pc-clearfix" id="bastardos">
+    <div class="pc-serie-num">01 —</div>
+    <div class="pc-serie-title">LOS BASTARDOS<br>DE <em>POVEDA</em></div>
+    <div class="pc-floated">
+      <div class="pc-ep-label">Episodio destacado · #10</div>
+      <div class="pc-ep-title">LUIS POVEDA</div>
+      <div class="pc-audio">
+        <iframe src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
+    <p class="pc-serie-text">Nombre acuñado entre el escritor alajuelense Sergio Murillo y Bernardo Soto —quien todavía se resiste a llamarse "escritor". Serie de conversaciones con escritores, poetas, gestores culturales y artistas, casi todos de la ardiente Alajuela. Son charlas sin apuro: a veces intensas, otras llenas de carcajadas, siempre con la sensación de que la vida y la literatura se cruzan en la mesa.<br><br>Entre mis episodios favoritos están el de <strong>Luis Poveda</strong> y <a href="https://open.spotify.com/episode/30cZBWLrhIQnQaNmqrOoBZ?si=df2fa937c1fd458b" target="_blank">16 Reds, que debe una segunda parte</a>. Con Bernardo grabamos dos veces, en plena pandemia y en estados de consciencia bastante psicodélicos. Nadie esperaba mucho de ese episodio ni de MAPRADIO en aquel momento, sin embargo, hoy —con más de 200 programas— nos queda clarísimo: <em>Los Bastardos de Poveda</em> no es un hobby. Es parte del ADN de MAP RADIO.<br><br>El bicho empezaba a perder fuerza, no se grabó en noviembre sino en enero o febrero. En algún lugar de la garita de Alajuela. Entre cervezas y estados muy alterados de consciencia, tuvimos la oportunidad de conversar con Don Luis Poveda. Nos explotó la cabeza cuando todos, incluso quien leía los poemas que sacaba de un bolso tejido muy viejo, se maravillaba asombrado al descubrir aquellas piezas exquisitas. Así 3 quijotes, escondidos en una mandarina, sentían como les reventaba el cerebro al escuchar el poema: YO SOY MULTIPICHA.</p>
   </section>
 
   <!-- 02 RELATOS -->
-  <section class="pc-serie" id="relatos">
-    <div class="pc-serie-inner">
-      <div>
-        <div class="pc-serie-num">02 —</div>
-        <div class="pc-serie-title">RELATOS<br><em>CORTOS</em></div>
-        <p class="pc-serie-text">En Relatos Cortos el director de MAPRADIOCR comparte textos propios y de amigos cercanos a MAP. Algunas piezas nacieron para este espacio, otras son rescates que merecían una segunda vida.<br><br>Algunos textos vienen acompañados de música. En otros momentos el texto es seco; lo importante es que la palabra respire y tenga su propio pulso. No se trata de añadir música como elemento decorativo: también incorporamos efectos especiales de sonido para construir un ambiente que envuelva a quien escucha los relatos. Esta serie es para historias que se cuentan en pocos minutos pero se quedan rondando mucho tiempo después.<br><br>Andolfo Santa Tecla existió. Caminó por este mundo y ahora se encuentra en otro plano. Tal cual lo describe el relato, así fue también como se comportó en esta vida, décadas atrás, cuando su persona caminaba por las calles de este país y más allá.</p>
-      </div>
-      <div>
-        <div class="pc-ep-label">Episodio destacado</div>
-        <div class="pc-ep-title">ANDOLFO SANTA TECLA:<br>EL CARDENAL MATEMÁTICO</div>
-        <div class="pc-audio">
-          <iframe src="https://open.spotify.com/embed/episode/06das7jtb1ZkpBnxELyaDp?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
+  <section class="pc-serie pc-clearfix" id="relatos">
+    <div class="pc-serie-num">02 —</div>
+    <div class="pc-serie-title">RELATOS<br><em>CORTOS</em></div>
+    <div class="pc-floated">
+      <div class="pc-ep-label">Episodio destacado</div>
+      <div class="pc-ep-title">ANDOLFO SANTA TECLA:<br>EL CARDENAL MATEMÁTICO</div>
+      <div class="pc-audio">
+        <iframe src="https://open.spotify.com/embed/episode/06das7jtb1ZkpBnxELyaDp?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
+    <p class="pc-serie-text">En Relatos Cortos el director de MAPRADIOCR comparte textos propios y de amigos cercanos a MAP. Algunas piezas nacieron para este espacio, otras son rescates que merecían una segunda vida.<br><br>Algunos textos vienen acompañados de música. En otros momentos el texto es seco; lo importante es que la palabra respire y tenga su propio pulso. No se trata de añadir música como elemento decorativo: también incorporamos efectos especiales de sonido para construir un ambiente que envuelva a quien escucha los relatos. Esta serie es para historias que se cuentan en pocos minutos pero se quedan rondando mucho tiempo después.<br><br>Andolfo Santa Tecla existió. Caminó por este mundo y ahora se encuentra en otro plano. Tal cual lo describe el relato, así fue también como se comportó en esta vida, décadas atrás, cuando su persona caminaba por las calles de este país y más allá.</p>
   </section>
 
   <!-- 03 RPGP -->
-  <section class="pc-serie" id="rpgp">
-    <div class="pc-serie-inner">
-      <div>
-        <div class="pc-serie-num">03 —</div>
-        <div class="pc-serie-title">RPGP<br><em>RADIO PACHUKO</em></div>
-        <p class="pc-serie-text">En RPGP no buscamos "famosillos" ni figuras de vitrina. Aquí se sientan personas que apreciamos y que han marcado nuestra vida de una u otra manera. Sus historias pueden ser sorprendentes, divertidas, conmovedoras o todo al mismo tiempo.<br><br>Lo importante es que hay verdad y experiencia detrás de cada palabra. Son conversaciones que no escucharías en otros espacios porque no se trata de marketing, sino de compartir momentos reales con gente que tiene algo genuino que compartir.<br><br>Un sábado de mayo, aún con el bicho persiguiendo a todo mundo. Nos sentamos con el mítico Pincel a conversar, al aire libre, entre cervezas y más cervezas. Carlos Pincel, la génesis del artista, su mano y la extensión de un pincel que emerge de una mente creativa, la que desarrolló personajes y cómics en una Tiquicia de antaño.</p>
-      </div>
-      <div>
-        <div class="pc-ep-label">Episodio destacado · #22 · 2021</div>
-        <div class="pc-ep-title">CARLOS PINCEL</div>
-        <div class="pc-audio">
-          <iframe src="https://open.spotify.com/embed/episode/4Qsr3Tu2sDm58gGSM1eYU2?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
+  <section class="pc-serie pc-clearfix" id="rpgp">
+    <div class="pc-serie-num">03 —</div>
+    <div class="pc-serie-title">RPGP<br><em>RADIO PACHUKO</em></div>
+    <div class="pc-floated">
+      <div class="pc-ep-label">Episodio destacado · #22 · 2021</div>
+      <div class="pc-ep-title">CARLOS PINCEL</div>
+      <div class="pc-audio">
+        <iframe src="https://open.spotify.com/embed/episode/4Qsr3Tu2sDm58gGSM1eYU2?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
+    <p class="pc-serie-text">En RPGP no buscamos "famosillos" ni figuras de vitrina. Aquí se sientan personas que apreciamos y que han marcado nuestra vida de una u otra manera. Sus historias pueden ser sorprendentes, divertidas, conmovedoras o todo al mismo tiempo.<br><br>Lo importante es que hay verdad y experiencia detrás de cada palabra. Son conversaciones que no escucharías en otros espacios porque no se trata de marketing, sino de compartir momentos reales con gente que tiene algo genuino que compartir.<br><br>Un sábado de mayo, aún con el bicho persiguiendo a todo mundo. Nos sentamos con el mítico Pincel a conversar, al aire libre, entre cervezas y más cervezas. Carlos Pincel, la génesis del artista, su mano y la extensión de un pincel que emerge de una mente creativa, la que desarrolló personajes y cómics en una Tiquicia de antaño.</p>
   </section>
 
   <!-- 04 SOPA -->
-  <section class="pc-serie" id="sopa">
-    <div class="pc-serie-inner">
-      <div>
-        <div class="pc-serie-num">04 —</div>
-        <div class="pc-serie-title">SOPA<br>DE <em>LETRAS</em></div>
-        <p class="pc-serie-text">En Sopa de Letras se reúnen poetas de distintas partes del Valle Central para presentar sus versos en vídeo. No puedo decir que tengamos claro qué es exactamente <em>Sopa de Letras</em>, y sospecho que nuestro amigo Bernardo Soto tampoco lo sabe.<br><br>Lo que sí tenemos, es un piloto y más de 20 episodios grabados, todos desde <a href="https://www.instagram.com/casa_parker_project" target="_blank">Casa Parker</a>, custodiada —literalmente— por las nalgas de Juan Santamaría. Cada entrega es una mezcla de palabra, interpretación y contexto, donde la poesía cobra vida de formas poco comunes.<br><br>Bernardo Corrales nos regaló un poema que permea en el hondo del alma. Más allá de la sensibilidad está la sensatez: la poesía se usa como formato válido para la denuncia. Queda muy claro que no hay ningún motivo para celebrar la realidad de los niños de Gaza y que la violencia más grande es la desatención e indiferencia humana. Por eso, como dice Corrales: no es hora para ningún regocijo.</p>
-      </div>
-      <div>
-        <div class="pc-ep-label">Episodio destacado · #13 · 2025</div>
-        <div class="pc-ep-title">BERNARDO CORRALES</div>
-        <div class="pc-video">
-          <iframe src="https://www.youtube.com/embed/F-Xw0sL8dXo?si=fJLdLDug7Nna4XUc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-        </div>
+  <section class="pc-serie pc-clearfix" id="sopa">
+    <div class="pc-serie-num">04 —</div>
+    <div class="pc-serie-title">SOPA<br>DE <em>LETRAS</em></div>
+    <div class="pc-floated">
+      <div class="pc-ep-label">Episodio destacado · #13 · 2025</div>
+      <div class="pc-ep-title">BERNARDO CORRALES</div>
+      <div class="pc-video">
+        <iframe src="https://www.youtube.com/embed/F-Xw0sL8dXo?si=fJLdLDug7Nna4XUc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
+    <p class="pc-serie-text">En Sopa de Letras se reúnen poetas de distintas partes del Valle Central para presentar sus versos en vídeo. No puedo decir que tengamos claro qué es exactamente <em>Sopa de Letras</em>, y sospecho que nuestro amigo Bernardo Soto tampoco lo sabe.<br><br>Lo que sí tenemos, es un piloto y más de 20 episodios grabados, todos desde <a href="https://www.instagram.com/casa_parker_project" target="_blank">Casa Parker</a>, custodiada —literalmente— por las nalgas de Juan Santamaría. Cada entrega es una mezcla de palabra, interpretación y contexto, donde la poesía cobra vida de formas poco comunes.<br><br>Bernardo Corrales nos regaló un poema que permea en el hondo del alma. Más allá de la sensibilidad está la sensatez: la poesía se usa como formato válido para la denuncia. Queda muy claro que no hay ningún motivo para celebrar la realidad de los niños de Gaza y que la violencia más grande es la desatención e indiferencia humana. Por eso, como dice Corrales: no es hora para ningún regocijo.</p>
   </section>
 
   <!-- SERIES COMPLETAS -->
