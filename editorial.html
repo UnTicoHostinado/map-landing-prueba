@@ -190,7 +190,7 @@ async function loadCategories() {
     const res = await fetch(`${API}/categories?per_page=100&hide_empty=true`);
     const cats = await res.json();
     // Solo categorías con al menos 2 posts
-    const relevant = cats.filter(c => c.count >= 2 && c.name !== 'Uncategorized' && c.slug !== 'sin-categoria');
+    const relevant = cats.filter(c => c.count >= 1 && c.name !== 'Uncategorized' && c.slug !== 'sin-categoria');
     relevant.sort((a,b) => b.count - a.count);
     relevant.forEach(c => { categories[c.id] = c.name; });
 
