@@ -1,1 +1,240 @@
+<style>
+.map-search-input { display:none !important; background:transparent; border:none; border-bottom:0.5px solid #c8ff00; color:#e8e4d9; padding:2px 6px; font-family:'IBM Plex Mono',monospace; font-size:11px; outline:none; width:160px; }
+.map-search-input.visible { display:block !important; }
+.map-nav-bar { display:flex; align-items:center; padding:4px 20px; background:#0a0a0a; border-bottom:0.5px solid #1a1a1a; font-family:'IBM Plex Mono',monospace; gap:12px; line-height:1; }
+.map-back { color:#c8ff00; text-decoration:none; font-size:11px; letter-spacing:0.08em; }
+.map-back:hover { opacity:0.7; }
+.map-lupa { background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; }
+.map-lupa svg { width:20px; height:20px; stroke:#c8ff00; fill:none; stroke-width:2; }
+.map-search-input { display:none; background:transparent; border:none; border-bottom:0.5px solid #c8ff00; color:#e8e4d9; padding:2px 6px; font-family:'IBM Plex Mono',monospace; font-size:11px; outline:none; width:160px; }
+.map-search-input.visible { display:block; }
+.map-search-input::placeholder { color:#555; }
+</style>
 
+<div class="map-nav-bar">
+  <a class="map-back" href="https://www.mapradiocr.com">← INICIO</a>
+  <form style="display:flex;align-items:center;gap:6px;margin:0;" action="https://www.mapradiocr.com" method="get">
+    <button class="map-lupa" type="button" onclick="toggleSearch()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    </button>
+    <input class="map-search-input" id="mapSearchInput" type="text" name="s" placeholder="buscar...">
+  </form>
+</div>
+
+<script>
+function toggleSearch() {
+  var input = document.getElementById('mapSearchInput');
+  input.classList.toggle('visible');
+  if (input.classList.contains('visible')) input.focus();
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after { box-sizing:border-box; }
+
+.sm-root { background:#0a0a0a; color:#e8e4d9; font-family:'IBM Plex Sans',sans-serif; font-weight:300; width:100%; overflow-x:hidden; }
+.sm-root a { color:inherit; text-decoration:none; }
+
+/* HERO */
+.sm-hero { padding:4rem 2rem 3rem; border-bottom:0.5px solid #1a1a1a; max-width:680px; margin:0 auto; }
+.sm-hero-tag { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.2em; color:#c8ff00; text-transform:uppercase; margin-bottom:1.2rem; }
+.sm-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,8vw,6rem); letter-spacing:0.04em; line-height:0.95; color:#e8e4d9; margin-bottom:2rem; }
+.sm-hero h1 em { font-style:normal; color:#c8ff00; }
+.sm-hero-desc { font-size:0.95rem; color:#888; line-height:1.75; margin-bottom:1.5rem; }
+.sm-hero-desc strong { color:#e8e4d9; font-weight:500; }
+
+/* ÍNDICE */
+.sm-index { border-bottom:0.5px solid #1a1a1a; }
+.sm-index-inner { max-width:680px; margin:0 auto; padding:2rem; }
+.sm-index-label { font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.2em; color:#333; text-transform:uppercase; margin-bottom:1.5rem; }
+.sm-index-list { display:flex; flex-direction:column; }
+.sm-index-item { display:flex; align-items:baseline; gap:1rem; padding:0.7rem 0; border-bottom:0.5px solid #1a1a1a; text-decoration:none; transition:background 0.15s; }
+.sm-index-item:last-child { border-bottom:none; }
+.sm-index-item:hover { padding-left:0.5rem; }
+.sm-index-item:hover .sm-index-name { color:#c8ff00; }
+.sm-index-num { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#c8ff00; min-width:28px; }
+.sm-index-name { font-family:'IBM Plex Sans',sans-serif; font-size:0.85rem; color:#888; line-height:1.4; transition:color 0.2s; }
+
+/* PRINCIPIOS */
+.sm-principio { padding:3.5rem 2rem; border-bottom:0.5px solid #1a1a1a; }
+.sm-principio-inner { max-width:680px; margin:0 auto; }
+.sm-principio-num { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:#c8ff00; letter-spacing:0.15em; margin-bottom:0.6rem; }
+.sm-principio-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); letter-spacing:0.04em; color:#e8e4d9; line-height:1; margin-bottom:1.5rem; }
+.sm-principio-title em { font-style:normal; color:#c8ff00; }
+.sm-principio-text { font-size:0.92rem; color:#666; line-height:1.8; margin-bottom:2rem; }
+.sm-principio-text strong { color:#e8e4d9; font-weight:500; }
+.sm-principio-text a { color:#c8ff00; border-bottom:0.5px solid #c8ff00; }
+
+/* EMBED LABEL */
+.sm-embed-label { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#333; margin-bottom:0.5rem; }
+
+/* EMBEDS */
+.sm-youtube { display:block; width:100%; aspect-ratio:16/9; border:0.5px solid #1a1a1a; overflow:hidden; background:#0a0a0a; }
+.sm-youtube iframe { width:100%; height:100%; border:none; display:block; }
+.sm-spotify { border:0.5px solid #1a1a1a; overflow:hidden; }
+.sm-spotify iframe { width:100%; height:152px; border:none; display:block; }
+
+/* MANIFIESTO */
+.sm-mani { padding:4rem 2rem; background:#050505; border-bottom:0.5px solid #1a1a1a; text-align:center; }
+.sm-mani-inner { max-width:580px; margin:0 auto; }
+.sm-mani-q { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.4rem,4vw,2.6rem); line-height:1.1; color:#e8e4d9; margin-bottom:0.8rem; }
+.sm-mani-q em { font-style:normal; color:#c8ff00; }
+.sm-mani-src { font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#333; text-transform:uppercase; }
+
+/* FOOTER */
+.sm-footer { padding:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; border-top:0.5px solid #1a1a1a; }
+.sm-footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:0.15em; color:#2a2a2a; text-decoration:none; }
+
+/* RESPONSIVE MÓVIL */
+@media(max-width:768px) {
+  .sm-root { overflow-x:hidden; }
+  .sm-hero { padding:2.5rem 1rem 2rem; max-width:100%; }
+  .sm-hero-desc { font-size:0.88rem; line-height:1.65; }
+  .sm-index-inner { padding:1.5rem 1rem; max-width:100%; }
+  .sm-principio { padding:2.5rem 1rem; }
+  .sm-principio-inner { max-width:100%; }
+  .sm-principio-text { font-size:0.88rem; line-height:1.65; }
+  .sm-footer { flex-direction:column; align-items:flex-start; gap:1.2rem; padding:1.5rem 1rem; }
+  .sm-footer nav { flex-direction:column; gap:0.8rem; }
+}
+</style>
+
+<div class="sm-root">
+
+  <!-- HERO -->
+  <div class="sm-hero">
+    <p class="sm-hero-tag">MAP · Música, Arte & Patineta · Desde 2016</p>
+    <h1>SERIE<br><em>MAP</em></h1>
+    <p class="sm-hero-desc">MAP nació en 2016 como <strong>Música, Arte & Patineta</strong>. Durante varios años mostramos nuestro contenido en un canal de cable costarricense. La serie MAP fue de 8 episodios y varias cápsulas cortas. En paralelo, comenzamos a desarrollar nuestro podcast.<br><br>Desde el inicio, nuestra intención ha sido construir MAP con una visión clara y un plan que, aunque todavía no hemos podido ejecutar por completo, seguimos enfocados en concretar nuestra idea de lo que, visualmente y en cuanto a contenido, debe ser MAP.</p>
+    <a href="#principio-1" style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:#c8ff00;border-bottom:0.5px solid #c8ff00;padding-bottom:2px;">Ver los 8 principios →</a>
+  </div>
+
+  <!-- ÍNDICE -->
+  <div class="sm-index">
+    <div class="sm-index-inner">
+      <div class="sm-index-label">MAPRADIOCR — 8 principios para su funcionamiento</div>
+      <div class="sm-index-list">
+        <a href="#principio-1" class="sm-index-item"><span class="sm-index-num">01</span><span class="sm-index-name">Un Terreno de Resistencia Cultural</span></a>
+        <a href="#principio-2" class="sm-index-item"><span class="sm-index-num">02</span><span class="sm-index-name">La Autenticidad por Encima de Todo</span></a>
+        <a href="#principio-3" class="sm-index-item"><span class="sm-index-num">03</span><span class="sm-index-name">No Apropiar, Solo Retratar</span></a>
+        <a href="#principio-4" class="sm-index-item"><span class="sm-index-num">04</span><span class="sm-index-name">Contra la Espectacularización</span></a>
+        <a href="#principio-5" class="sm-index-item"><span class="sm-index-num">05</span><span class="sm-index-name">Un Proyecto Colectivo</span></a>
+        <a href="#principio-6" class="sm-index-item"><span class="sm-index-num">06</span><span class="sm-index-name">El Valor de lo Marginal</span></a>
+        <a href="#principio-7" class="sm-index-item"><span class="sm-index-num">07</span><span class="sm-index-name">Un Espacio para Desafiar Estructuras</span></a>
+        <a href="#principio-8" class="sm-index-item"><span class="sm-index-num">08</span><span class="sm-index-name">Cultura que No se Vende</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 -->
+  <section class="sm-principio" id="principio-1">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">01 —</div>
+      <div class="sm-principio-title">Un Terreno de<br><em>Resistencia Cultural</em></div>
+      <p class="sm-principio-text">El skateboarding, la música independiente y el arte no pertenecen a los circuitos convencionales; son movimientos que surgen de la resistencia a lo establecido. MAP es un reflejo de esa misma resistencia. No buscamos adaptarnos al sistema, sino cuestionarlo. Retratamos estas culturas no para integrarlas en la corriente dominante, sino para que sigan siendo espacios de subversión y libertad.</p>
+      <div class="sm-embed-label">Teaser MAP Episodio #7 · 2018</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/xSK0iZdmSog?si=CwlJd2HJ2L6dijiu" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sm-principio" id="principio-2">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">02 —</div>
+      <div class="sm-principio-title">La Autenticidad<br><em>por Encima de Todo</em></div>
+      <p class="sm-principio-text">La esencia de este proyecto reside en su autenticidad. Cobrar a los artistas, músicos o patinadores por aparecer en un espacio no solo traiciona el principio de la cultura que se quiere mostrar, sino que convierte al espacio en un instrumento de exclusión. La producción de este contenido debe ser financiada por quienes comprenden y respetan su valor intrínseco. Nuestro compromiso es con la verdad de estas culturas, y esa verdad no puede ser comprada ni vendida.</p>
+      <div class="sm-embed-label">Luis Poveda en Sopa de Letras · Ep. #23</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/kGxtP8Wf9ao?si=qxdV-kNDKz4Sw7Lx" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sm-principio" id="principio-3">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">03 —</div>
+      <div class="sm-principio-title">No Apropiar,<br><em>Solo Retratar</em></div>
+      <p class="sm-principio-text">Nuestro rol no es apropiarnos de estas expresiones, sino documentarlas en su forma más pura. No somos dueños de esta cultura; somos testigos. Retratamos la música, el skate y el arte urbano para que hablen por sí mismos, no para imponerles una narrativa externa. Al evitar la tentación de transformarlos en un producto, mantenemos intacta la esencia de lo que estos movimientos representan.</p>
+      <div class="sm-embed-label">Finca Fest · 2019</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/lVAREwuqz_A?si=xpq6VJ84PK2M1XhJ" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sm-principio" id="principio-4">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">04 —</div>
+      <div class="sm-principio-title">Contra la<br><em>Espectacularización</em></div>
+      <p class="sm-principio-text">MAP no debe ser una plataforma de entretenimiento vacío, sino un medio para que la gente comprenda el verdadero significado detrás del skateboarding, la música y el arte como parte de una CULTURA. Estos movimientos no son simples imágenes para un retrato: vienen cargados de ideas, historias y formas de ver el mundo. Y hay que contarlo como se merece. No buscamos "lo bonito" para la foto, sino lo que tiene peso; y eso exige investigar, observar y descubrir lo que realmente vale la pena contar.</p>
+      <div class="sm-embed-label">Cvlto al Rock and Roll · 2018</div>
+      <div class="sm-spotify"><iframe src="https://open.spotify.com/embed/episode/1EhYoyFeRAbuvaAV7Ck70H/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sm-principio" id="principio-5">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">05 —</div>
+      <div class="sm-principio-title">Un Proyecto<br><em>Colectivo</em></div>
+      <p class="sm-principio-text">MAP no es un esfuerzo aislado, sino una construcción colectiva que se alimenta de muchas manos y miradas. Apoyar este espacio no siempre significa aportar dinero; también es difundirlo, compartirlo, hablar de él, traer a otros a conocerlo. Cada vez que alguien recomienda un podcast, muestra un video o comparte una publicación, está ayudando a que esta cultura siga viva y visible. Pasar el proyecto de mano en mano es un acto de resistencia contra el olvido y la indiferencia. Aquí, toda forma de apoyo suma, porque este proyecto pertenece a quienes creen en él y lo defienden.</p>
+      <div class="sm-embed-label">La Banquita · 2016</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/4874YgRFtyE?si=gMPx32HWPoyFhq8e" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sm-principio" id="principio-6">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">06 —</div>
+      <div class="sm-principio-title">El Valor de<br><em>lo Marginal</em></div>
+      <p class="sm-principio-text">MAP no puede depender de las conveniencias, intereses o condiciones de quienes estén dispuestos a apoyar económicamente. La línea editorial y el contenido no se negocian para complacer a patrocinadores, instituciones o tendencias de moda. La verdadera independencia es la que permite retratar la cultura tal como es, sin pedir permiso ni ajustar el mensaje para no incomodar.</p>
+      <div class="sm-embed-label">4 Historias de Patineta · 2014</div>
+      <div class="sm-spotify"><iframe src="https://open.spotify.com/embed/episode/6PpvRiD3qNn6qnqR38oPIy/video?utm_source=generator" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="sm-principio" id="principio-7">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">07 —</div>
+      <div class="sm-principio-title">Un Espacio para<br><em>Desafiar Estructuras</em></div>
+      <p class="sm-principio-text">La relevancia de una obra, un artista o un movimiento no debe depender de cúpulas culturales o redes de favores. MAP busca mostrar lo que tiene valor real, aunque no provenga de entornos privilegiados ni goce de visibilidad heredada. Aquí la presencia se gana por mérito y autenticidad, no por conexiones.</p>
+      <div class="sm-embed-label">RUIDO · Documental · 2018</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/_g5LaE4DjVA?si=m8VIKwe9JyZLamGI" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="sm-principio" id="principio-8">
+    <div class="sm-principio-inner">
+      <div class="sm-principio-num">08 —</div>
+      <div class="sm-principio-title">Cultura que<br><em>No se Vende</em></div>
+      <p class="sm-principio-text">El verdadero éxito de MAP está en mantenerse fiel a sus principios y en respetar los espacios culturales que retrata. Si el objetivo se convierte en buscar likes, seguidores o validación fácil, se cae en lo que llamamos pornografía de la cultura: mostrar por mostrar, vaciando de contenido lo que alguna vez tuvo valor. Ese es el camino más rápido al fracaso.</p>
+      <div class="sm-embed-label">La Camisa Negra de Nasional</div>
+      <div class="sm-youtube"><iframe src="https://www.youtube.com/embed/SQyqoAPaFTY" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- MANIFIESTO -->
+  <div class="sm-mani">
+    <div class="sm-mani-inner">
+      <div class="sm-mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
+      <div class="sm-mani-src">Misión MAP · 2016 — mapradiocr.com</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sm-footer">
+    <a href="https://www.mapradiocr.com" class="sm-footer-logo">MA<span style="color:#c8ff00;">P</span></a>
+    <nav style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <a href="https://www.mapradiocr.com/antologia/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Antología</a>
+      <a href="https://www.mapradiocr.com/serie-map/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Serie</a>
+      <a href="https://www.mapradiocr.com/editorial-opinion/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Textos</a>
+      <a href="https://www.mapradiocr.com/podcast/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Podcast</a>
+      <a href="https://www.mapradiocr.com/sobre-el-director/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Sobre el autor</a>
+      <a href="https://www.mapradiocr.com/contacto-page/" style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;text-decoration:none;">Contacto</a>
+    </nav>
+  </div>
+
+</div>
