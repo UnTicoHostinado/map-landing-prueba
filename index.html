@@ -1,343 +1,324 @@
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()">× Cerrar</button>
-    <div class="lightbox-video">
-      <iframe id="lightbox-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>INICIO — MAP Radio CR · Vista previa Julio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0a0a0a;color:#e8e4d9;font-family:'IBM Plex Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem;}
+
+/* ===== NAV ===== */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(8px);border-bottom:0.5px solid #1a1a1a;}
+.nav-inner{max-width:1100px;margin:0 auto;padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.18em;color:#e8e4d9;}
+.nav-links{display:flex;gap:1.6rem;}
+.nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;transition:color 0.2s;}
+.nav-links a:hover{color:#c8ff00;}
+@media(max-width:760px){.nav-links{display:none;}}
+
+/* ===== MARQUEE ===== */
+.marquee{background:#050505;border-bottom:0.5px solid #1a1a1a;overflow:hidden;white-space:nowrap;}
+.marquee-track{display:inline-block;padding:0.6rem 0;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:#444;text-transform:uppercase;animation:scroll 38s linear infinite;}
+.marquee-track span{color:#c8ff00;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ===== HERO ===== */
+.hero{padding:4.5rem 0 4rem;border-bottom:0.5px solid #1a1a1a;}
+.hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:1.8rem;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,8vw,6rem);line-height:0.92;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:2rem;}
+.hero h1 em{font-style:normal;color:#c8ff00;}
+.hero-desc{font-size:1rem;color:#888;line-height:1.85;max-width:640px;margin-bottom:2.2rem;}
+.hero-desc strong{color:#e8e4d9;font-weight:500;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.85rem 1.5rem;border-radius:3px;transition:all 0.2s;white-space:nowrap;}
+.btn-primary{background:#c8ff00;color:#0a0a0a;}
+.btn-primary:hover{opacity:0.85;}
+.btn-ghost{border:0.5px solid #333;color:#e8e4d9;}
+.btn-ghost:hover{border-color:#c8ff00;color:#c8ff00;}
+
+/* ===== SECTION SHELL ===== */
+.sec{padding:4rem 0;border-bottom:0.5px solid #1a1a1a;}
+.label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#444;margin-bottom:2.2rem;display:flex;align-items:center;gap:1rem;}
+.label::after{content:'';flex:1;height:0.5px;background:#1a1a1a;}
+
+/* ===== ZONA PROYECTOS (Crónicas + Cantinas) ===== */
+.proyectos-grid{display:grid;grid-template-columns:380px 1fr;gap:1.5rem;align-items:stretch;}
+@media(max-width:820px){.proyectos-grid{grid-template-columns:1fr;}}
+
+/* Crónicas card */
+.cron-card{border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:#0c0c0c;transition:border-color 0.25s;}
+.cron-card:hover{border-color:#2a2a2a;}
+.cron-img{aspect-ratio:3/4;overflow:hidden;background:#1a1410;}
+.cron-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s;}
+.cron-card:hover .cron-img img{transform:scale(1.03);}
+.cron-body{padding:1.6rem;display:flex;flex-direction:column;gap:0.7rem;flex:1;}
+.cron-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#c8ff00;}
+.cron-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:0.98;letter-spacing:0.03em;color:#e8e4d9;}
+.cron-title em{font-style:normal;color:#c8ff00;}
+.cron-desc{font-size:0.85rem;color:#888;line-height:1.7;flex:1;}
+.cron-link{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;color:#c8ff00;border-bottom:0.5px solid #c8ff00;padding-bottom:2px;align-self:flex-start;}
+
+/* Cantinas banner */
+.cant-banner{position:relative;border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;min-height:100%;background:#0a0a0a;}
+.cant-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
+.cant-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.96) 0%,rgba(10,10,10,0.5) 50%,rgba(10,10,10,0.1) 100%);z-index:1;}
+.cant-content{position:relative;z-index:2;padding:2.2rem;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;}
+.cant-text{max-width:75%;}
+.cant-tag{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:0.7rem;}
+.cant-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:0.03em;line-height:0.95;color:#fff;margin-bottom:0.8rem;}
+.cant-desc{font-size:0.9rem;color:#cfcabb;line-height:1.65;max-width:460px;}
+.cant-btn{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;background:#c8ff00;padding:0.8rem 1.4rem;border-radius:3px;white-space:nowrap;transition:opacity 0.2s;}
+.cant-btn:hover{opacity:0.85;}
+@media(max-width:820px){.cant-banner{min-height:280px;}}
+@media(max-width:560px){.cant-content{flex-direction:column;align-items:flex-start;padding:1.5rem;}.cant-text{max-width:100%;}.cant-btn{width:100%;text-align:center;}}
+
+/* ===== ANTOLOGÍA REDUCIDA ===== */
+.anto-mini{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;border:0.5px solid #1a1a1a;border-radius:4px;padding:1.6rem 2rem;background:#0c0c0c;flex-wrap:wrap;}
+.anto-mini-left{display:flex;flex-direction:column;gap:0.5rem;}
+.anto-mini-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#555;}
+.anto-mini-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.03em;color:#e8e4d9;}
+.anto-mini-title em{font-style:normal;color:#c8ff00;}
+.anto-mini-sub{font-size:0.82rem;color:#888;}
+.anto-mini-date{text-align:right;}
+.anto-mini-date-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ff00;line-height:1;}
+.anto-mini-date-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#555;margin-top:0.3rem;}
+@media(max-width:560px){.anto-mini-date{text-align:left;}}
+
+/* ===== RUIDO ===== */
+.ruido{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
+@media(max-width:820px){.ruido{grid-template-columns:1fr;}}
+.ruido-year{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:#1f1f1f;}
+.ruido h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.04em;color:#e8e4d9;margin-bottom:1rem;}
+.ruido p{font-size:0.92rem;color:#888;line-height:1.8;margin-bottom:1.5rem;}
+.ruido p strong{color:#e8e4d9;font-weight:500;}
+.ruido-frame{aspect-ratio:16/9;border:0.5px solid #1a1a1a;border-radius:4px;background:#050505;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#333;letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ===== SERIE T2 ===== */
+.serie-intro{font-size:0.92rem;color:#888;line-height:1.85;max-width:680px;margin-bottom:2.5rem;}
+.serie-intro strong{color:#e8e4d9;font-weight:500;}
+.eps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.5px solid #1a1a1a;}
+@media(max-width:820px){.eps{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.eps{grid-template-columns:1fr;}}
+.ep{padding:1.4rem;border-right:0.5px solid #1a1a1a;border-bottom:0.5px solid #1a1a1a;}
+.ep-num{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;margin-bottom:0.8rem;}
+.ep-title{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;line-height:1.05;color:#e8e4d9;margin-bottom:0.6rem;letter-spacing:0.02em;}
+.ep-q{font-size:0.78rem;color:#777;line-height:1.55;margin-bottom:0.8rem;}
+.ep-phase{font-family:'IBM Plex Mono',monospace;font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:#444;}
+
+/* ===== TEXTOS (placeholder API) ===== */
+.textos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:680px){.textos-grid{grid-template-columns:1fr;}}
+.textos-col{border:0.5px solid #1a1a1a;border-radius:4px;padding:1.6rem;}
+.textos-col-title{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#888;margin-bottom:1.2rem;}
+.api-note{border:0.5px dashed #2a2a2a;border-radius:4px;padding:1.5rem;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#555;line-height:1.7;letter-spacing:0.06em;}
+.api-note span{color:#c8ff00;}
+
+/* ===== PODCAST ===== */
+.pod{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
+@media(max-width:820px){.pod{grid-template-columns:1fr;}}
+.pod-num{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:#c8ff00;}
+.pod-num-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:2rem;}
+.pod h2{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:0.04em;color:#e8e4d9;margin-bottom:1rem;}
+.pod p{font-size:0.9rem;color:#888;line-height:1.8;margin-bottom:1.5rem;}
+.pod-frame{aspect-ratio:1/1;max-height:352px;border:0.5px solid #1a1a1a;border-radius:4px;background:#050505;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ===== MANIFIESTO ===== */
+.mani{padding:5rem 0;background:#050505;border-bottom:0.5px solid #1a1a1a;text-align:center;}
+.mani-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.8rem);line-height:1.1;color:#e8e4d9;max-width:760px;margin:0 auto 1rem;letter-spacing:0.02em;}
+.mani-q em{font-style:normal;color:#c8ff00;}
+.mani-src{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;}
+
+/* ===== FOOTER ===== */
+.foot{padding:2.5rem 0;text-align:center;}
+.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.18em;color:#c8ff00;margin-bottom:0.8rem;}
+.foot-sig{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:#333;line-height:1.6;}
+
+/* preview badge */
+.preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#c8ff00;color:#0a0a0a;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.85;}
+</style>
+</head>
+<body>
+
+<!-- PREVIEW BADGE -->
+<div class="preview-badge">Vista previa · Julio</div>
+
+<!-- NAV -->
 <nav class="nav">
-  <div class="logo">MA<span>P</span></div>
-  <div class="nav-links">
-    <a href="#convocatoria">Antología</a>
-    <a href="#serie">Serie</a>
-    <a href="#textos">Textos</a>
-    <a href="#podcast">Podcast</a>
-    <a href="https://www.mapradiocr.com/sobre-el-director/">Sobre el autor</a>
-    <a href="https://www.mapradiocr.com/contacto-page/">Contacto</a>
+  <div class="nav-inner">
+    <div class="nav-logo">MAP</div>
+    <div class="nav-links">
+      <a href="#cronicas">Crónicas</a>
+      <a href="#cantinas">Cantinas</a>
+      <a href="#serie">Serie</a>
+      <a href="#textos">Textos</a>
+      <a href="#podcast">Podcast</a>
+      <a href="#">Sobre el autor</a>
+      <a href="#">Contacto</a>
+    </div>
   </div>
 </nav>
 
-<div class="ticker">
-  <div class="ticker-in">
-    <span class="tick-i"><span>///</span> Música Arte Patinetas</span>
-    <span class="tick-i"><span>///</span> Desde 2016</span>
-    <span class="tick-i"><span>///</span> RUIDO · Festival Internacional de Cine CR 2018</span>
-    <span class="tick-i"><span>///</span> Antología Literaria · Cierre 1 julio 2026</span>
-    <span class="tick-i"><span>///</span> 200+ episodios de podcast</span>
-    <span class="tick-i"><span>///</span> Nasional Skateboards · 2007</span>
-    <span class="tick-i"><span>///</span> Música Arte Patinetas</span>
-    <span class="tick-i"><span>///</span> Desde 2016</span>
-    <span class="tick-i"><span>///</span> RUIDO · Festival Internacional de Cine CR 2018</span>
-    <span class="tick-i"><span>///</span> Antología Literaria · Cierre 1 julio 2026</span>
-    <span class="tick-i"><span>///</span> 200+ episodios de podcast</span>
-    <span class="tick-i"><span>///</span> Nasional Skateboards · 2007</span>
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 ///&nbsp;
   </div>
 </div>
 
 <!-- HERO -->
-<section class="hero">
-  <div>
+<header class="hero">
+  <div class="wrap">
     <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
-    <h1 class="hero-h1">Donde el<br>sistema<br>termina,<br><em>empieza</em><br>MAP.</h1>
-  </div>
-  <div class="hero-right">
-    <p class="hero-body">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: crónicas, opinión, podcast, serie documental y una antología literaria abierta a todos.</p>
-    <div class="hero-pills">
-      <span class="pill">Serie documental</span>
-      <span class="pill">Crónicas</span>
-      <span class="pill">Podcast · 200+ ep.</span>
+    <h1>Donde el sistema termina,<br><em>empieza</em> MAP.</h1>
+    <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
+    <div class="hero-btns">
+      <a href="#cronicas" class="btn btn-primary">Proyecto literario →</a>
+      <a href="#serie" class="btn btn-ghost">Ver la serie MAP</a>
     </div>
-    <div class="btn-row">
-      <a href="#convocatoria" class="btn btn-p">Antología literaria →</a>
-      <a href="#serie" class="btn btn-g">Ver la serie MAP</a>
+  </div>
+</header>
+
+<!-- ZONA PROYECTOS: CRÓNICAS + CANTINAS -->
+<section class="sec" id="cronicas">
+  <div class="wrap">
+    <div class="label">Dos proyectos vivos</div>
+    <div class="proyectos-grid">
+
+      <!-- Crónicas card -->
+      <a href="https://www.mapradiocr.com/cronicas-del-refugio/" class="cron-card">
+        <div class="cron-img">
+          <img src="https://www.mapradiocr.com/wp-content/uploads/2026/04/idcdr2.webp" alt="Crónicas del Refugio — portada: un niño descalzo sentado en la rama de un palo de mango con un mango rojo suspendido a su lado, grabado en blanco y negro">
+        </div>
+        <div class="cron-body">
+          <div class="cron-tag">Proyecto literario</div>
+          <div class="cron-title">Crónicas<br>del <em>Refugio</em></div>
+          <div class="cron-desc">Veinte crónicas de una Costa Rica que no aparece en las guías turísticas: el barrio, la bicicleta, la rabia y las formas extrañas en que la gente resiste.</div>
+          <span class="cron-link">Leer el libro →</span>
+        </div>
+      </a>
+
+      <!-- Cantinas banner -->
+      <a href="https://www.mapradiocr.com/cantinas/" class="cant-banner" id="cantinas">
+        <img class="cant-bg" src="https://www.mapradiocr.com/wp-content/uploads/2026/mapa/cantinaslmr.webp" alt="Hombre mayor con bigote levantando un tarro de cerveza espumada en una cantina en penumbra, bajo un rótulo de neón rojo que dice Cantinas Legendarias">
+        <div class="cant-content">
+          <div class="cant-text">
+            <div class="cant-tag">Mapa Vivo · MAP Radio CR</div>
+            <div class="cant-title">Cantinas Legendarias</div>
+            <div class="cant-desc">Un mapa de las cantinas que sostienen la memoria del país. Joyas, íconos y malditas: cada una con su crónica.</div>
+          </div>
+          <span class="cant-btn">Abrir el mapa →</span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- CONVOCATORIA -->
-<section class="sec" id="convocatoria">
-  <div class="sec-label">Prioridad · Convocatoria abierta</div>
-  <div class="conv">
-    <div class="conv-img-wrap" onclick="openLightbox('lUth7IqbDdA')">
-      <img src="https://www.mapradiocr.com/wp-content/uploads/2026/05/antologia-f.webp" alt="Antología MAP" loading="lazy">
-      <div class="conv-play-overlay">
-        <div class="conv-play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
+<!-- ANTOLOGÍA REDUCIDA -->
+<section class="sec">
+  <div class="wrap">
+    <div class="anto-mini">
+      <div class="anto-mini-left">
+        <div class="anto-mini-tag">Convocatoria cerrada</div>
+        <div class="anto-mini-title">Antología <em>Literaria</em> MAP</div>
+        <div class="anto-mini-sub">La recepción de textos cerró el 1 de julio. Gracias a todas las voces que participaron.</div>
       </div>
-      <div class="conv-play-label">Ver invitación en video</div>
-    </div>
-    <div>
-      <div class="conv-deadline">Cierre: 1 de julio de 2026 — ¡Un mes!</div>
-      <h2 class="conv-title">Antología<br><em>Literaria</em><br>MAP</h2>
-      <div class="conv-sub">Cuento & Poesía · Tema libre · Libro impreso</div>
-      <p class="conv-desc">Estamos armando una antología de cuento y poesía. <strong>Tema libre.</strong> No importa si sos un escritor reconocido o si nunca has publicado. Los textos seleccionados serán publicados en un <strong>libro impreso</strong> y cada autor recibe un ejemplar.</p>
-      <div class="btn-row">
-        <a href="mailto:maptvshowcr@gmail.com?subject=CONVOCATORIA ANTOLOGÍA – Tu Nombre" class="btn btn-p">Enviar mi texto →</a>
+      <div class="anto-mini-date">
+        <div class="anto-mini-date-num">1 AGO</div>
+        <div class="anto-mini-date-lbl">Selección de textos</div>
       </div>
-    </div>
-  </div>
-
-  <div class="conv-rules">
-    <div class="conv-rule">
-      <div class="conv-rule-num">01</div>
-      <div>
-        <div class="conv-rule-title">¿Qué se puede enviar?</div>
-        <p class="conv-rule-text">Poesías o cuentos. Una pieza o varias, siempre que <strong>no excedan 10 páginas en total</strong>. Tema completamente libre.</p>
-      </div>
-    </div>
-    <div class="conv-rule">
-      <div class="conv-rule-num">02</div>
-      <div>
-        <div class="conv-rule-title">Formato requerido</div>
-        <p class="conv-rule-text">Fuente <strong>Arial o Times New Roman, tamaño 12, a doble espacio</strong>. Textos originales e inéditos únicamente.</p>
-      </div>
-    </div>
-    <div class="conv-rule">
-      <div class="conv-rule-num">03</div>
-      <div>
-        <div class="conv-rule-title">Sin inteligencia artificial</div>
-        <p class="conv-rule-text">No se aceptan textos generados mediante IA. <strong>Causa de descalificación automática.</strong> Queremos voz humana y experiencia real.</p>
-      </div>
-    </div>
-    <div class="conv-rule">
-      <div class="conv-rule-num">04</div>
-      <div>
-        <div class="conv-rule-title">Publicación</div>
-        <p class="conv-rule-text">Los textos seleccionados se publican en un <strong>libro impreso</strong>. Cada autor seleccionado recibe un ejemplar de la obra.</p>
-      </div>
-    </div>
-    <div class="conv-rule">
-      <div class="conv-rule-num">05</div>
-      <div>
-        <div class="conv-rule-title">Asunto del correo — formato obligatorio</div>
-        <p class="conv-rule-text"><strong style="color:#c8ff00;">CONVOCATORIA ANTOLOGÍA – Nombre del autor</strong><br>Ejemplo: CONVOCATORIA ANTOLOGÍA – Laura Méndez</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="conv-email-block">
-    <div>
-      <div class="conv-email-label">Enviá tu texto a este correo</div>
-      <div class="conv-email-addr">maptvshowcr@gmail.com</div>
-    </div>
-    <a href="mailto:maptvshowcr@gmail.com?subject=CONVOCATORIA ANTOLOGÍA – Tu Nombre" class="btn btn-p">Enviar ahora →</a>
-  </div>
-
-  <div class="conv-dates">
-    <div class="conv-date">
-      <div class="conv-date-label">Fecha límite de envío</div>
-      <div class="conv-date-val">1 Julio 2026</div>
-      <div class="conv-date-sub">Textos recibidos después no serán considerados</div>
-    </div>
-    <div class="conv-date">
-      <div class="conv-date-label">Publicación de seleccionados</div>
-      <div class="conv-date-val">1 Agosto 2026</div>
-      <div class="conv-date-sub">Se anuncian los textos incluidos en el libro</div>
     </div>
   </div>
 </section>
 
 <!-- RUIDO -->
-<section class="sec" style="padding-top:2rem;padding-bottom:2rem;">
-  <div class="sec-label">El origen · Documental 2018</div>
-  <div class="ruido-wrap">
-    <div class="ruido-inner">
-      <div class="ruido-info">
-        <div class="ruido-badge">Selección oficial · Festival Internacional de Cine CR</div>
+<section class="sec">
+  <div class="wrap">
+    <div class="label">El origen · Documental 2018</div>
+    <div class="ruido">
+      <div>
         <div class="ruido-year">2018</div>
-        <div class="ruido-title">RUIDO</div>
-        <p class="ruido-desc">Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong> RUIDO es el punto de partida de todo lo que MAP es hoy.</p>
-        <a href="https://youtu.be/_g5LaE4DjVA?si=obbydxltSBvLygtQ" target="_blank" class="btn btn-g" style="font-size:0.6rem;display:inline-block;">Ver documental completo →</a>
+        <h2>RUIDO</h2>
+        <p>Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong></p>
+        <a href="https://youtu.be/_g5LaE4DjVA" class="btn btn-ghost">Ver documental completo →</a>
       </div>
-      <div class="ruido-video">
-        <iframe src="https://www.youtube.com/embed/u8Yw1QZw_5s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+      <div class="ruido-frame">video · youtube embed</div>
     </div>
   </div>
 </section>
 
-<!-- SERIE -->
+<!-- SERIE T2 -->
 <section class="sec" id="serie">
-  <div class="sec-label">Serie documental · Temporada 2</div>
-  <div class="serie-intro-banner">
-    <p class="serie-intro-text">La primera temporada demostró que existía un público sediento de autenticidad. <strong>Artistas ninguneados, músicos que nunca salieron en la tele, patinadores que construyeron cultura con las uñas.</strong> La segunda temporada va más lejos: ocho episodios que trazan el arco completo de lo que significa crear sin red de seguridad, desde la herida inicial hasta la decisión de seguir aunque nadie esté mirando.</p>
-  </div>
-  <div class="serie-grid">
-    <div>
-      <div class="serie-video-wrap">
-        <iframe src="https://www.youtube.com/embed/SQyqoAPaFTY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <p class="serie-video-label">Extracto · Temporada 1 · MAP</p>
-    </div>
-    <div class="ep-list">
-      <div class="ep"><div class="ep-n">01</div><div><div class="ep-t">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div></div><div class="ep-phase">La herida</div></div>
-      <div class="ep"><div class="ep-n">02</div><div><div class="ep-t">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div></div><div class="ep-phase">La herida</div></div>
-      <div class="ep"><div class="ep-n">03</div><div><div class="ep-t">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div></div><div class="ep-phase">El tiempo</div></div>
-      <div class="ep"><div class="ep-n">04</div><div><div class="ep-t">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div></div><div class="ep-phase">El tiempo</div></div>
-      <div class="ep"><div class="ep-n">05</div><div><div class="ep-t">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div></div><div class="ep-phase">La rabia</div></div>
-      <div class="ep"><div class="ep-n">06</div><div><div class="ep-t">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div></div><div class="ep-phase">La rabia</div></div>
-      <div class="ep"><div class="ep-n">07</div><div><div class="ep-t">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div></div><div class="ep-phase">El resto</div></div>
-      <div class="ep"><div class="ep-n">08</div><div><div class="ep-t">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div></div><div class="ep-phase">El resto</div></div>
+  <div class="wrap">
+    <div class="label">Serie documental · Temporada 2</div>
+    <p class="serie-intro">La primera temporada demostró que existía un público sediento de autenticidad. <strong>Artistas ninguneados, músicos que nunca salieron en la tele, patinadores que construyeron cultura con las uñas.</strong> La segunda va más lejos: ocho episodios que trazan el arco completo de crear sin red de seguridad.</p>
+    <div class="eps">
+      <div class="ep"><div class="ep-num">01</div><div class="ep-title">El visionario ignorado</div><div class="ep-q">¿Qué mueve a alguien a crear sin audiencia?</div><div class="ep-phase">La herida</div></div>
+      <div class="ep"><div class="ep-num">02</div><div class="ep-title">El testimonio del abandono</div><div class="ep-q">¿Por qué este país niega a sus mejores hijos?</div><div class="ep-phase">La herida</div></div>
+      <div class="ep"><div class="ep-num">03</div><div class="ep-title">El cuerpo que persiste</div><div class="ep-q">¿Qué pasa cuando el arte también es físico?</div><div class="ep-phase">El tiempo</div></div>
+      <div class="ep"><div class="ep-num">04</div><div class="ep-title">El eco de lo que fue</div><div class="ep-q">¿Qué significa envejecer siendo invisible?</div><div class="ep-phase">El tiempo</div></div>
+      <div class="ep"><div class="ep-num">05</div><div class="ep-title">El grito sin micrófono</div><div class="ep-q">¿Qué es un artista sin escenario?</div><div class="ep-phase">La rabia</div></div>
+      <div class="ep"><div class="ep-num">06</div><div class="ep-title">La furia como testamento</div><div class="ep-q">¿Puede la rabia sostener una carrera?</div><div class="ep-phase">La rabia</div></div>
+      <div class="ep"><div class="ep-num">07</div><div class="ep-title">El culto sin religión</div><div class="ep-q">¿Quién sostiene a los genios cuando caen?</div><div class="ep-phase">El resto</div></div>
+      <div class="ep"><div class="ep-num">08</div><div class="ep-title">El fuego que no se apaga</div><div class="ep-q">¿Y si no hace falta que te reconozcan nunca?</div><div class="ep-phase">El resto</div></div>
     </div>
   </div>
 </section>
 
-<!-- TEXTOS -->
+<!-- TEXTOS (placeholder API) -->
 <section class="sec" id="textos">
-  <div class="sec-label">Textos recientes & Lo más leído</div>
-  <div class="txt-cols">
-    <div class="txt-col">
-      <div class="txt-col-title">Recientes</div>
-      <div id="recientes-list"><div class="txt-loading">Cargando...</div></div>
+  <div class="wrap">
+    <div class="label">Textos recientes & Lo más leído</div>
+    <div class="textos-grid">
+      <div class="textos-col">
+        <div class="textos-col-title">Recientes</div>
+        <div class="api-note">Aquí cargan los textos vía <span>API REST de WordPress</span><br>(/wp-json/map/v1/populares)<br><br>En GitHub se ve vacío — en el sitio real funciona</div>
+      </div>
+      <div class="textos-col">
+        <div class="textos-col-title">Lo más leído</div>
+        <div class="api-note">Aquí cargan los textos vía <span>API REST de WordPress</span><br>(/wp-json/map/v1/populares)<br><br>En GitHub se ve vacío — en el sitio real funciona</div>
+      </div>
     </div>
-    <div class="txt-col">
-      <div class="txt-col-title">Lo más leído</div>
-      <div id="populares-list"><div class="txt-loading">Cargando...</div></div>
-    </div>
-  </div>
-  <div style="margin-top:1.5rem;text-align:right;">
-    <a href="https://www.mapradiocr.com/cronicas-del-refugio/" class="btn btn-g" style="font-size:0.6rem;">Proyecto literario: Crónicas del Refugio →</a>
   </div>
 </section>
 
 <!-- PODCAST -->
 <section class="sec" id="podcast">
-  <div class="sec-label">Podcast · Desde 2016</div>
-  <div class="pod-layout">
-    <div class="pod-left">
+  <div class="wrap">
+    <div class="label">Podcast · Desde 2016</div>
+    <div class="pod">
       <div>
-        <div class="pod-num-big">200</div>
-        <div class="pod-num-label">Episodios grabados</div>
-        <div class="pod-since">Desde 2016</div>
-        <div class="pod-title">MAP Radio</div>
-        <p class="pod-desc">Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie. Algunos episodios son legendarios. Todos son independientes.</p>
+        <div class="pod-num">200</div>
+        <div class="pod-num-lbl">Episodios grabados · desde 2016</div>
+        <h2>MAP Radio</h2>
+        <p>Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie. Algunos episodios son legendarios. Todos son independientes.</p>
+        <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB" class="btn btn-primary">Escuchar el archivo →</a>
       </div>
-      <div class="btn-row" style="margin-top:1rem;">
-        <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB" target="_blank" class="btn btn-p" style="font-size:0.6rem;">Escuchar el archivo →</a>
-      </div>
-    </div>
-    <div class="pod-right">
-      <div class="pod-embed-wrap">
-        <div class="pod-embed-label">Episodio legendario</div>
-        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/0bQOtOpPP0W8T4Aj1Gtwma?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-      <div class="pod-platforms-vertical">
-        <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB?si=85bf7d21b96c4102" target="_blank" class="pod-plat-row">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.9 10.9C14.7 9 9.35 8.8 6.3 9.75c-.5.15-1-.15-1.15-.6-.15-.5.15-1 .6-1.15 3.55-1.05 9.4-.85 13.1 1.35.45.25.6.85.35 1.3-.25.35-.85.5-1.3.25zm-.1 2.8c-.25.4-.75.5-1.15.25-2.7-1.65-6.8-2.15-9.95-1.15-.4.1-.85-.1-.95-.5-.1-.4.1-.85.5-.95 3.65-1.1 8.15-.55 11.25 1.35.4.25.5.75.3 1zm-1.3 2.75c-.2.35-.6.45-.95.25-2.35-1.45-5.3-1.75-8.8-.95-.35.1-.65-.15-.75-.45-.1-.35.15-.65.45-.75 3.8-.85 7.1-.5 9.7 1.1.35.15.45.55.35.8z" fill="white"/></svg>
-          <span class="pod-plat-name-v">Spotify</span>
-          <span class="pod-plat-sub-v">MAP Radio Pachuko</span>
-        </a>
-        <a href="https://go.ivoox.com/sq/687687" target="_blank" class="pod-plat-row">
-          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#F5A623"/><text x="24" y="30" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">iVoox</text></svg>
-          <span class="pod-plat-name-v">iVoox</span>
-          <span class="pod-plat-sub-v">Archivo completo</span>
-        </a>
-        <a href="https://youtu.be/SQyqoAPaFTY?si=iAarE7rrQQCgd8Xm" target="_blank" class="pod-plat-row">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#FF0000"/><path d="M19.6 7.8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.8C14.6 4.8 12 4.8 12 4.8s-2.6 0-4.9.2c-.4 0-1.2.1-1.9.8-.6.6-.8 2-.8 2S4.2 9.4 4.2 11v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.7.8 1.7.7 2.1.8C8.6 18.6 12 18.6 12 18.6s2.6 0 4.9-.3c.4 0 1.2-.1 1.9-.8.6-.6.8-2 .8-2s.2-1.6.2-3.2V11c0-1.6-.2-3.2-.2-3.2zm-11.3 6.5V9.7l5.2 2.3-5.2 2.3z" fill="white"/></svg>
-          <span class="pod-plat-name-v">YouTube</span>
-          <span class="pod-plat-sub-v">Video podcast</span>
-        </a>
-      </div>
+      <div class="pod-frame">spotify · embed</div>
     </div>
   </div>
 </section>
 
-<!-- MANIFESTO -->
+<!-- MANIFIESTO -->
 <div class="mani">
-  <div class="mani-inner">
+  <div class="wrap">
     <div class="mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
     <div class="mani-src">Misión MAP · 2016 — mapradiocr.com</div>
   </div>
 </div>
 
-<div class="footer">
-  <div class="footer-logo">MAP — 2016</div>
-  <div class="footer-txt">Música · Arte · Patinetas · Costa Rica · Independiente · Nasional 2007</div>
-</div>
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-logo">MAP — 2016 ⚡</div>
+  <div class="foot-sig">Ingeniería web — Dr. Arkady Volkov Lazenko<br>Instituto Cuántico Costarricense para la Investigación Interdimensional</div>
+</footer>
 
-<script>
-const API = 'https://www.mapradiocr.com/wp-json/wp/v2';
-const API_POP = 'https://www.mapradiocr.com/wp-json/map/v1/populares';
-
-function formatTime(dateStr) {
-  const d = new Date(dateStr);
-  const h = String(d.getHours()).padStart(2,'0');
-  const m = String(d.getMinutes()).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  return day + ' ' + months[d.getMonth()] + ' · ' + h + ':' + m;
-}
-
-function stripHtml(html) {
-  const t = document.createElement('div');
-  t.innerHTML = html;
-  return t.textContent || t.innerText || '';
-}
-
-async function loadRecientes() {
-  try {
-    const r = await fetch(`${API}/posts?per_page=5&orderby=date&order=desc&_embed`);
-    const posts = await r.json();
-    document.getElementById('recientes-list').innerHTML = posts.map(post => {
-      const title = stripHtml(post.title.rendered);
-      const excerpt = stripHtml(post.excerpt.rendered).substring(0,100) + '…';
-      const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'MAP';
-      const time = formatTime(post.date);
-      return `<a href="${post.link}" target="_blank" class="txt-item">
-        <div class="txt-item-meta">
-          <span class="txt-item-cat">${cat}</span>
-          <span class="txt-item-time">${time}</span>
-        </div>
-        <div class="txt-item-title">${title}</div>
-        <div class="txt-item-desc">${excerpt}</div>
-      </a>`;
-    }).join('');
-  } catch(e) {
-    document.getElementById('recientes-list').innerHTML = '<div class="txt-loading">No disponible</div>';
-  }
-}
-
-async function loadPopulares() {
-  try {
-    const r = await fetch(API_POP);
-    const posts = await r.json();
-    if (Array.isArray(posts) && posts.length) {
-      document.getElementById('populares-list').innerHTML = posts.map(post => {
-        const cat = Array.isArray(post.categories) && post.categories.length ? post.categories[0] : 'MAP';
-        const excerpt = post.excerpt ? post.excerpt.substring(0,100) + '…' : '';
-        return `<a href="${post.link}" target="_blank" class="txt-item">
-          <div class="txt-item-meta"><span class="txt-item-cat">${cat}</span></div>
-          <div class="txt-item-title">${post.title}</div>
-          <div class="txt-item-desc">${excerpt}</div>
-        </a>`;
-      }).join('');
-    } else {
-      document.getElementById('populares-list').innerHTML = '<div class="txt-loading">Sin datos</div>';
-    }
-  } catch(e) {
-    document.getElementById('populares-list').innerHTML = '<div class="txt-loading">No disponible</div>';
-  }
-}
-
-function openLightbox(videoId) {
-  document.getElementById('lightbox-iframe').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
-  document.getElementById('lightbox').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox(e) {
-  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
-    document.getElementById('lightbox-iframe').src = '';
-    document.getElementById('lightbox').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
-loadRecientes();
-loadPopulares();
-</script>
+</body>
+</html>
