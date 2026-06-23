@@ -1,518 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SERIE MAP — Vista previa</title>
 <style>
-.map-serie-page {
-  background: #0a0a0a;
-  color: #e8e4d9;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 300;
-}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a0a;color:#e8e4d9;font-family:'IBM Plex Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem;}
 
 /* NAV */
-.map-serie-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 2rem;
-  border-bottom: 0.5px solid #1e1e1e;
-  background: #0a0a0a;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.map-serie-nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  letter-spacing: 0.15em;
-  color: #e8e4d9;
-  line-height: 1;
-  text-decoration: none;
-}
-.map-serie-nav-logo span { color: #c8ff00; }
-.map-serie-nav-links {
-  display: flex;
-  gap: 1.5rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.map-serie-nav-links a {
-  color: #888;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.map-serie-nav-links a:hover { color: #e8e4d9; }
-.map-serie-nav-links a.active { color: #c8ff00; }
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(8px);border-bottom:0.5px solid #1a1a1a;}
+.nav-inner{max-width:1100px;margin:0 auto;padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.18em;color:#e8e4d9;}
+.nav-links{display:flex;gap:1.6rem;}
+.nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;transition:color 0.2s;}
+.nav-links a:hover{color:#c8ff00;}
+@media(max-width:760px){.nav-links{display:none;}}
 
-/* HERO */
-.map-serie-hero {
-  padding: 4rem 2rem 3rem;
-  border-bottom: 0.5px solid #1a1a1a;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  align-items: start;
-}
-.map-serie-hero > div:first-child {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-  padding-right: 3rem;
-}
-.map-serie-hero-eyebrow::before { display: none; }
-.map-serie-hero-eyebrow { justify-content: flex-end; }
-.map-serie-hero-eyebrow {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  color: #c8ff00;
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.map-serie-hero-eyebrow::before {
-  content: '';
-  width: 16px;
-  height: 1px;
-  background: #c8ff00;
-  display: inline-block;
-}
-.map-serie-hero-h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(4rem, 10vw, 7rem);
-  line-height: 0.88;
-  letter-spacing: 0.02em;
-}
-.map-serie-hero-h1 em {
-  font-style: normal;
-  color: #c8ff00;
-  display: block;
-}
-.map-serie-hero-body {
-  font-size: 0.88rem;
-  line-height: 1.85;
-  color: #666;
-  border-left: 2px solid #1e1e1e;
-  padding-left: 1.2rem;
-  padding-top: 1rem;
-}
-.map-serie-hero-body strong { color: #e8e4d9; font-weight: 500; }
+/* HEADER */
+.head{padding:4rem 0 2rem;border-bottom:0.5px solid #1a1a1a;}
+.head-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:1.5rem;}
+.head h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);line-height:0.92;letter-spacing:0.02em;color:#e8e4d9;}
+.head h1 em{font-style:normal;color:#c8ff00;}
+.head-intro{font-size:0.95rem;color:#888;line-height:1.85;max-width:640px;margin-top:1.5rem;}
+.head-intro strong{color:#e8e4d9;font-weight:500;}
 
-/* PRINCIPIOS */
-.map-principios-wrap {
-  padding: 3rem 2rem;
-  border-bottom: 0.5px solid #1a1a1a;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.map-principios-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #555;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  max-width: 900px;
-}
-.map-principios-label::after {
-  content: '';
-  flex: 1;
-  height: 0.5px;
-  background: #1a1a1a;
-}
-.map-principios-layout {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0;
-  border: 0.5px solid #1a1a1a;
-  align-items: stretch;
-  width: 100%;
-  max-width: 900px;
+/* ===== STICKY SCROLL ===== */
+.sticky-sec{padding:3rem 0;border-bottom:0.5px solid #1a1a1a;}
+.sticky-grid{display:grid;grid-template-columns:42% 1fr;gap:3rem;align-items:start;}
+.sticky-img{position:sticky;top:90px;}
+.sticky-img img{width:100%;height:auto;border:0.5px solid #1a1a1a;border-radius:3px;}
+.sticky-img-cap{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#444;margin-top:0.8rem;line-height:1.5;}
+
+.piezas{display:flex;flex-direction:column;gap:4rem;padding:1rem 0 3rem;}
+.pieza-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:1rem;}
+.pieza h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,2.8rem);line-height:1;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:1.5rem;}
+.pieza p{font-size:0.95rem;color:#999;line-height:1.95;margin-bottom:1.2rem;}
+.pieza p:last-child{margin-bottom:0;}
+.pieza p strong{color:#e8e4d9;font-weight:500;}
+.pieza .destacado{color:#e8e4d9;font-weight:400;border-left:2px solid #c8ff00;padding-left:1.2rem;font-style:italic;}
+
+@media(max-width:820px){
+  .sticky-grid{grid-template-columns:1fr;gap:1.5rem;}
+  .sticky-img{position:relative;top:0;max-width:360px;}
+  .piezas{gap:3rem;padding-top:0;}
 }
 
-/* SIDEBAR */
-.map-sidebar {
-  border-right: 0.5px solid #1a1a1a;
-  position: sticky;
-  top: 72px;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-}
-.map-sidebar-item {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.9rem 1.2rem;
-  border-bottom: 0.5px solid #141414;
-  cursor: pointer;
-  transition: background 0.2s;
-  user-select: none;
-  position: relative;
-  flex: 1;
-  width: 100%;
-}
-.map-sidebar-item:last-child { border-bottom: none; }
-.map-sidebar-item:hover { background: #0f0f0f; }
-.map-sidebar-item.active { background: #0f0f0f; }
-.map-sidebar-item.active::before {
-  content: '';
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: #c8ff00;
-}
-.map-sidebar-item.active .map-sidebar-num { color: #c8ff00; }
-.map-sidebar-item.active .map-sidebar-text { color: #e8e4d9; }
-.map-sidebar-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.6rem;
-  color: #222;
-  line-height: 1;
-  transition: color 0.2s;
-  flex-shrink: 0;
-}
-.map-sidebar-text {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #444;
-  line-height: 1.4;
-  transition: color 0.2s;
-  text-align: right;
-}
-
-/* CONTENIDO */
-.map-content {
-  padding: 2rem 2.5rem;
-  min-height: 520px;
-  display: flex;
-  align-items: center;
-}
-.map-content-inner {
-  display: none;
-  animation: fadeIn 0.3s ease;
-  width: 72%;
-  margin: 0 auto;
-}
-.map-content-inner.active { display: block; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.map-content-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 5rem;
-  color: #141414;
-  line-height: 1;
-  margin-bottom: -0.5rem;
-}
-.map-content-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  color: #e8e4d9;
-  line-height: 1;
-  margin-bottom: 1.2rem;
-}
-.map-content-text {
-  font-size: 0.88rem;
-  line-height: 1.85;
-  color: #777;
-  border-left: 2px solid #1e1e1e;
-  padding-left: 1.2rem;
-  margin-bottom: 1.8rem;
-}
-.map-content-video {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-  border: 0.5px solid #1a1a1a;
-}
-.map-content-video iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-}
+/* ===== PRINCIPIOS ===== */
+.prin-sec{padding:4rem 0;border-bottom:0.5px solid #1a1a1a;}
+.prin-label{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#444;margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;}
+.prin-label::after{content:'';flex:1;height:0.5px;background:#1a1a1a;}
+.prin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.5px solid #1a1a1a;}
+@media(max-width:820px){.prin-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.prin-grid{grid-template-columns:1fr;}}
+.prin{padding:1.6rem;border-right:0.5px solid #1a1a1a;border-bottom:0.5px solid #1a1a1a;}
+.prin-num{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;margin-bottom:1rem;}
+.prin-title{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;line-height:1.05;color:#e8e4d9;letter-spacing:0.02em;}
 
 /* MANIFIESTO */
-.map-serie-mani {
-  padding: 4rem 2rem;
-  border-bottom: 0.5px solid #1a1a1a;
-  background: #050505;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 220px;
-}
-.map-serie-mani-inner { max-width: 620px; text-align: center; }
-.map-serie-mani-q {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.6rem, 4vw, 2.8rem);
-  line-height: 1.1;
-  color: #e8e4d9;
-  margin-bottom: 1rem;
-}
-.map-serie-mani-q em { font-style: normal; color: #c8ff00; }
-.map-serie-mani-src {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  color: #333;
-  text-transform: uppercase;
-}
+.mani{padding:5rem 0;background:#050505;text-align:center;}
+.mani-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.8rem);line-height:1.1;color:#e8e4d9;max-width:760px;margin:0 auto 1rem;letter-spacing:0.02em;}
+.mani-q em{font-style:normal;color:#c8ff00;}
+.mani-src{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;}
 
 /* FOOTER */
-.map-serie-footer {
-  padding: 2rem;
-  border-top: 0.5px solid #1a1a1a;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.map-serie-footer-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.15em;
-  color: #2a2a2a;
-  text-decoration: none;
-}
-.map-serie-footer-links {
-  display: flex;
-  gap: 1.5rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.map-serie-footer-links a {
-  color: #2a2a2a;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.map-serie-footer-links a:hover { color: #888; }
+.foot{padding:2.5rem 0;text-align:center;border-top:0.5px solid #1a1a1a;}
+.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.18em;color:#c8ff00;margin-bottom:0.8rem;}
+.foot-sig{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:#333;line-height:1.6;}
 
-/* RESPONSIVE */
-@media(max-width: 768px) {
-  .map-serie-nav { flex-wrap: wrap; gap: 0.8rem; padding: 1rem; }
-  .map-serie-nav-links { flex-wrap: wrap; gap: 0.5rem 1rem; width: 100%; }
-  .map-serie-hero { grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem 1rem; }
-  .map-principios-wrap { padding: 2rem 1rem; }
-  .map-principios-layout { grid-template-columns: 1fr; }
-  .map-sidebar {
-    position: static;
-    border-right: none;
-    border-bottom: 0.5px solid #1a1a1a;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .map-sidebar-item {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    padding: 0.8rem 0.4rem;
-    border-bottom: none;
-    border-right: 0.5px solid #141414;
-    text-align: center;
-  }
-  .map-sidebar-item:nth-child(4n) { border-right: none; }
-  .map-sidebar-text { display: none; }
-  .map-content { padding: 1.5rem 1rem; }
-  .map-serie-footer { flex-direction: column; align-items: flex-start; }
-  .map-serie-footer-links { flex-wrap: wrap; gap: 0.5rem 1rem; }
-}
+.preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#c8ff00;color:#0a0a0a;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.85;}
 </style>
+</head>
+<body>
 
-<div class="map-serie-page">
+<div class="preview-badge">Vista previa · Serie MAP</div>
 
-  <!-- NAV -->
-  <nav class="map-serie-nav">
-    <a href="https://www.mapradiocr.com/" class="map-serie-nav-logo">MA<span>P</span></a>
-    <div class="map-serie-nav-links">
-      <a href="https://www.mapradiocr.com/#convocatoria">Antología</a>
-      <a href="https://www.mapradiocr.com/serie-map/" class="active">Serie</a>
-      <a href="https://www.mapradiocr.com/#textos">Textos</a>
-      <a href="https://www.mapradiocr.com/#podcast">Podcast</a>
-      <a href="https://www.mapradiocr.com/sobre-el-director/">Sobre el autor</a>
-      <a href="https://www.mapradiocr.com/contacto-page/">Contacto</a>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">MAP</div>
+    <div class="nav-links">
+      <a href="#">Antología</a>
+      <a href="#">Serie MAP</a>
+      <a href="#">Textos</a>
+      <a href="#">Podcast</a>
+      <a href="#">Sobre el autor</a>
+      <a href="#">Contacto</a>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- HERO -->
-  <section class="map-serie-hero">
-    <div>
-      <div class="map-serie-hero-eyebrow">MAP · Música, Arte & Patineta · Desde 2016</div>
-      <h1 class="map-serie-hero-h1">Serie<em>MAP</em></h1>
-    </div>
-    <div class="map-serie-hero-body">
-      MAP nació en 2016 como <strong>Música, Arte & Patineta</strong>. Durante varios años mostramos nuestro contenido en un canal de cable costarricense. La serie MAP fue de 8 episodios y varias cápsulas cortas. En paralelo, comenzamos a desarrollar nuestro podcast.<br><br>
-      Desde el inicio, nuestra intención ha sido construir MAP con una visión clara y un plan que, aunque todavía no hemos podido ejecutar por completo, seguimos enfocados en concretar nuestra idea de lo que, visualmente y en cuanto a contenido, debe ser MAP.
-    </div>
-  </section>
+<!-- HEADER -->
+<header class="head">
+  <div class="wrap">
+    <div class="head-eyebrow">MAP · Música, Arte & Patineta · Desde 2016</div>
+    <h1>Serie <em>MAP</em></h1>
+    <p class="head-intro">MAP nació en 2016 como <strong>Música, Arte & Patineta</strong>. Durante varios años mostramos nuestro contenido en un canal de cable costarricense. La serie MAP fue de varios episodios y cápsulas cortas. En paralelo, comenzamos a desarrollar nuestro podcast.</p>
+  </div>
+</header>
 
-  <!-- 8 PRINCIPIOS -->
-  <section class="map-principios-wrap">
-    <div class="map-principios-label">MAPRADIOCR · 8 principios para su funcionamiento</div>
+<!-- STICKY SCROLL: imagen fija + dos piezas -->
+<section class="sticky-sec">
+  <div class="wrap">
+    <div class="sticky-grid">
 
-    <div class="map-principios-layout">
-
-      <!-- SIDEBAR -->
-      <div class="map-sidebar">
-        <div class="map-sidebar-item active" onclick="showPrincipio(1)">
-          <div class="map-sidebar-num">01</div>
-          <div class="map-sidebar-text">Un Terreno de Resistencia Cultural</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(2)">
-          <div class="map-sidebar-num">02</div>
-          <div class="map-sidebar-text">La Autenticidad por Encima de Todo</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(3)">
-          <div class="map-sidebar-num">03</div>
-          <div class="map-sidebar-text">No Apropiar, Solo Retratar</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(4)">
-          <div class="map-sidebar-num">04</div>
-          <div class="map-sidebar-text">Contra la Espectacularización</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(5)">
-          <div class="map-sidebar-num">05</div>
-          <div class="map-sidebar-text">Un Proyecto Colectivo</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(6)">
-          <div class="map-sidebar-num">06</div>
-          <div class="map-sidebar-text">El Valor de lo Marginal</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(7)">
-          <div class="map-sidebar-num">07</div>
-          <div class="map-sidebar-text">Un Espacio para Desafiar Estructuras</div>
-        </div>
-        <div class="map-sidebar-item" onclick="showPrincipio(8)">
-          <div class="map-sidebar-num">08</div>
-          <div class="map-sidebar-text">Cultura que No se Vende</div>
-        </div>
+      <!-- Imagen fija -->
+      <div class="sticky-img">
+        <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp" alt="Skater haciendo un truco aéreo sobre un bowl cubierto de grafiti mientras un camarógrafo, en cuclillas, lo graba de cerca">
+        <div class="sticky-img-cap">MAP documentándose a sí mismo · 2016</div>
       </div>
 
-      <!-- CONTENIDO -->
-      <div class="map-content">
+      <!-- Texto que scrollea -->
+      <div class="piezas">
 
-        <div class="map-content-inner active" id="p1">
-          <div class="map-content-num">01</div>
-          <div class="map-content-title">Un Terreno de Resistencia Cultural</div>
-          <p class="map-content-text">El skateboarding, la música independiente y el arte no pertenecen a los circuitos convencionales; son movimientos que surgen de la resistencia a lo establecido. MAP es un reflejo de esa misma resistencia. No buscamos adaptarnos al sistema, sino cuestionarlo. Retratamos estas culturas no para integrarlas en la corriente dominante, sino para que sigan siendo espacios de subversión y libertad.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/xSK0iZdmSog?si=CwlJd2HJ2L6dijiu" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
+        <div class="pieza">
+          <div class="pieza-eyebrow">MAP · Serie documental</div>
+          <h2>¿Qué es MAP?</h2>
+          <p>Enciendo la televisión y nada me habla a mí. La grilla entera parece hecha para premiar al que no tiene vergüenza, al que grita más fuerte, al que convirtió el ridículo en carrera. Y esa misma fórmula vacía que llena las pantallas del mundo se replica igualita en lo local, sin que nadie se sonroje.</p>
+          <p class="destacado">En algún momento dejamos de quejarnos y entendimos algo simple: si no vemos lo que queremos ver, lo tenemos que hacer nosotros.</p>
+          <p>Así nace MAP. Conocemos gente con un talento enorme —pintan, patinan, hacen música, escriben prosa y poesía— y la mayoría nunca va a salir en ningún lado, porque no juega el juego del espectáculo. MAP es la ventana que los expone. Una serie que va a buscar las historias que de verdad valen la pena y las cuenta bien, con cuidado, sin convertirlas en circo.</p>
+          <p>Porque esas historias existen. Lo que no existe es el ojo para reconocerlas. Los que deciden qué se produce en este país se mueven por una sola cosa, y no es la cultura: es la taquilla. No hay curaduría, no hay olfato, no hay interés en mirar donde no hay plata fácil. Por eso las mejores historias de Costa Rica siguen sin contarse.</p>
+          <p><strong>MAP es para contarlas.</strong></p>
         </div>
 
-        <div class="map-content-inner" id="p2">
-          <div class="map-content-num">02</div>
-          <div class="map-content-title">La Autenticidad por Encima de Todo</div>
-          <p class="map-content-text">La esencia de este proyecto reside en su autenticidad. Cobrar a los artistas, músicos o patinadores por aparecer en un espacio no solo traiciona el principio de la cultura que se quiere mostrar, sino que convierte al espacio en un instrumento de exclusión. La producción de este contenido debe ser financiada por quienes comprenden y respetan su valor intrínseco. Nuestro compromiso es con la verdad de estas culturas, y esa verdad no puede ser comprada ni vendida.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/kGxtP8Wf9ao?si=qxdV-kNDKz4Sw7Lx" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p3">
-          <div class="map-content-num">03</div>
-          <div class="map-content-title">No Apropiar, Solo Retratar</div>
-          <p class="map-content-text">Nuestro rol no es apropiarnos de estas expresiones, sino documentarlas en su forma más pura. No somos dueños de esta cultura; somos testigos. Retratamos la música, el skate y el arte urbano para que hablen por sí mismos, no para imponerles una narrativa externa. Al evitar la tentación de transformarlos en un producto, mantenemos intacta la esencia de lo que estos movimientos representan.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/lVAREwuqz_A?si=xpq6VJ84PK2M1XhJ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p4">
-          <div class="map-content-num">04</div>
-          <div class="map-content-title">Contra la Espectacularización</div>
-          <p class="map-content-text">MAP no debe ser una plataforma de entretenimiento vacío, sino un medio para que la gente comprenda el verdadero significado detrás del skateboarding, la música y el arte como parte de una CULTURA. Estos movimientos no son simples imágenes para un retrato: vienen cargados de ideas, historias y formas de ver el mundo. No buscamos "lo bonito" para la foto, sino lo que tiene peso; y eso exige investigar, observar y descubrir lo que realmente vale la pena contar.</p>
-          <div class="map-content-video">
-            <iframe src="https://open.spotify.com/embed/episode/1EhYoyFeRAbuvaAV7Ck70H/video?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p5">
-          <div class="map-content-num">05</div>
-          <div class="map-content-title">Un Proyecto Colectivo</div>
-          <p class="map-content-text">MAP no es un esfuerzo aislado, sino una construcción colectiva que se alimenta de muchas manos y miradas. Apoyar este espacio no siempre significa aportar dinero; también es difundirlo, compartirlo, hablar de él, traer a otros a conocerlo. Cada vez que alguien recomienda un podcast, muestra un video o comparte una publicación, está ayudando a que esta cultura siga viva y visible. Pasar el proyecto de mano en mano es un acto de resistencia contra el olvido y la indiferencia.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/4874YgRFtyE?si=gMPx32HWPoyFhq8e" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p6">
-          <div class="map-content-num">06</div>
-          <div class="map-content-title">El Valor de lo Marginal</div>
-          <p class="map-content-text">MAP no puede depender de las conveniencias, intereses o condiciones de quienes estén dispuestos a apoyar económicamente. La línea editorial y el contenido no se negocian para complacer a patrocinadores, instituciones o tendencias de moda. La verdadera independencia es la que permite retratar la cultura tal como es, sin pedir permiso ni ajustar el mensaje para no incomodar.</p>
-          <div class="map-content-video">
-            <iframe src="https://open.spotify.com/embed/episode/6PpvRiD3qNn6qnqR38oPIy/video?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p7">
-          <div class="map-content-num">07</div>
-          <div class="map-content-title">Un Espacio para Desafiar Estructuras</div>
-          <p class="map-content-text">La relevancia de una obra, un artista o un movimiento no debe depender de cúpulas culturales o redes de favores. MAP busca mostrar lo que tiene valor real, aunque no provenga de entornos privilegiados ni goce de visibilidad heredada. Aquí la presencia se gana por mérito y autenticidad, no por conexiones.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/_g5LaE4DjVA?si=m8VIKwe9JyZLamGI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-
-        <div class="map-content-inner" id="p8">
-          <div class="map-content-num">08</div>
-          <div class="map-content-title">Cultura que No se Vende</div>
-          <p class="map-content-text">El verdadero éxito de MAP está en mantenerse fiel a sus principios y en respetar los espacios culturales que retrata. Si el objetivo se convierte en buscar likes, seguidores o validación fácil, se cae en lo que llamamos pornografía de la cultura: mostrar por mostrar, vaciando de contenido lo que alguna vez tuvo valor. Ese es el camino más rápido al fracaso.</p>
-          <div class="map-content-video">
-            <iframe src="https://www.youtube.com/embed/dxRJO021p78?si=5DOOTw5W-sGn9OiJ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
+        <div class="pieza">
+          <div class="pieza-eyebrow">Temporada 2</div>
+          <h2>¿Por qué esta segunda temporada importa?</h2>
+          <p>La primera temporada se transmitió en un canal de cable. Habíamos planeado ocho episodios y llegamos a siete. No porque se nos acabaran las historias, sino porque éramos dos personas sosteniendo todo. Construimos un producto de calidad entre dos, y el único apoyo que teníamos —un espacio en un canal de televisión— en algún punto del proyecto quedó claro que no sería suficiente para sostener algo serial como MAP. El combustible se nos fue agotando en el camino.</p>
+          <p>Y aun así, funcionó. La gente que vio MAP lo amó. Eso nos dejó una certeza y una espina: la certeza de que el contenido importaba, y la espina de no haber podido cerrarlo como merecía.</p>
+          <p>La segunda temporada es volver a hacerlo bien. Ocho episodios que esta vez sí forman una sola historia, un arco que va desde la herida de no ser visto hasta la decisión de seguir creando aunque nadie esté mirando.</p>
+          <p>No volvemos porque sea fácil. Volvemos porque las historias siguen ahí, sin contarse, y porque ya demostramos que cuando se cuentan, conectan. Tenemos claro qué nos faltó en la primera temporada, y sabemos cómo potenciar MAP ahora. Por eso arrancamos esta segunda temporada: no para repetir lo que hicimos, sino para llevarlo donde siempre debió estar.</p>
         </div>
 
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- MANIFIESTO -->
-  <div class="map-serie-mani">
-    <div class="map-serie-mani-inner">
-      <div class="map-serie-mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
-      <div class="map-serie-mani-src">Misión MAP · 2016 — mapradiocr.com</div>
+<!-- PRINCIPIOS -->
+<section class="prin-sec">
+  <div class="wrap">
+    <div class="prin-label">MAPRADIOCR · 8 principios para su funcionamiento</div>
+    <div class="prin-grid">
+      <div class="prin"><div class="prin-num">01</div><div class="prin-title">Un Terreno de Resistencia Cultural</div></div>
+      <div class="prin"><div class="prin-num">02</div><div class="prin-title">La Autenticidad por Encima de Todo</div></div>
+      <div class="prin"><div class="prin-num">03</div><div class="prin-title">No Apropiar, Solo Retratar</div></div>
+      <div class="prin"><div class="prin-num">04</div><div class="prin-title">Contra la Espectacularización</div></div>
+      <div class="prin"><div class="prin-num">05</div><div class="prin-title">Un Proyecto Colectivo</div></div>
+      <div class="prin"><div class="prin-num">06</div><div class="prin-title">El Valor de lo Marginal</div></div>
+      <div class="prin"><div class="prin-num">07</div><div class="prin-title">Un Espacio para Desafiar Estructuras</div></div>
+      <div class="prin"><div class="prin-num">08</div><div class="prin-title">Cultura que No se Vende</div></div>
     </div>
   </div>
+</section>
 
-  <!-- FOOTER -->
-  <div class="map-serie-footer">
-    <a href="https://www.mapradiocr.com/" class="map-serie-footer-logo">MAP — 2016</a>
-    <div class="map-serie-footer-links">
-      <a href="https://www.mapradiocr.com/#convocatoria">Antología</a>
-      <a href="https://www.mapradiocr.com/serie-map/">Serie</a>
-      <a href="https://www.mapradiocr.com/#textos">Textos</a>
-      <a href="https://www.mapradiocr.com/#podcast">Podcast</a>
-      <a href="https://www.mapradiocr.com/sobre-el-director/">Sobre el autor</a>
-      <a href="https://www.mapradiocr.com/contacto-page/">Contacto</a>
-    </div>
+<!-- MANIFIESTO -->
+<div class="mani">
+  <div class="wrap">
+    <div class="mani-q">MAP no entrevista famosos. MAP encuentra personas que tienen historias <em>increíbles</em> que contar, aunque nadie los haya <em>escuchado</em> todavía.</div>
+    <div class="mani-src">Misión MAP · 2016 — mapradiocr.com</div>
   </div>
-
 </div>
 
-<script>
-function showPrincipio(n) {
-  document.querySelectorAll('.map-sidebar-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.map-content-inner').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.map-sidebar-item')[n - 1].classList.add('active');
-  document.getElementById('p' + n).classList.add('active');
-}
-</script>
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-logo">MAP — 2016 ⚡</div>
+  <div class="foot-sig">Ingeniería web — Dr. Arkady Volkov Lazenko<br>Instituto Cuántico Costarricense para la Investigación Interdimensional</div>
+</footer>
+
+</body>
+</html>
