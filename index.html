@@ -51,12 +51,22 @@ img{display:block;max-width:100%;}
 .serie-eyebrow::before{content:'';width:28px;height:1px;background:#c8ff00;}
 .serie-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,11vw,8rem);line-height:0.85;letter-spacing:0.02em;color:#fff;margin-bottom:1.2rem;opacity:0;animation:fadeInTitle 1s ease forwards;animation-delay:0.7s;}
 .serie-sub{font-size:1rem;color:#cfcabb;line-height:1.6;max-width:440px;margin-bottom:2rem;font-weight:300;opacity:0;animation:riseUp 0.8s ease forwards;animation-delay:1.3s;}
-.serie-btn{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;background:#c8ff00;padding:0.9rem 1.6rem;border-radius:3px;transition:opacity 0.2s;position:relative;opacity:0;animation:laserReveal 0.9s ease forwards;animation-delay:1.9s;}
+.serie-btn{display:inline-flex;align-items:center;justify-content:center;position:relative;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;padding:0.9rem 1.6rem;border-radius:3px;min-width:170px;min-height:46px;text-decoration:none;opacity:0;}
+.serie-btn.go{opacity:1;}
+.laser-border{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+.laser-border rect{stroke-dasharray:488;stroke-dashoffset:488;}
+.serie-btn.draw .laser-border rect{animation:drawBorder 0.6s ease forwards;}
+.laser-fill{position:absolute;inset:0;background:#c8ff00;border-radius:3px;z-index:0;transform:scaleX(0);transform-origin:left;}
+.serie-btn.fill .laser-fill{animation:fillBtn 0.35s ease forwards;}
+.laser-text{position:relative;z-index:2;white-space:nowrap;}
+.laser-text .ch{opacity:0;}
+.laser-text .ch.lit{opacity:1;}
+@keyframes drawBorder{to{stroke-dashoffset:0;}}
+@keyframes fillBtn{to{transform:scaleX(1);}}
 .serie-btn:hover{opacity:0.85;}
 @keyframes dropIn{0%{opacity:0;transform:translateY(-25px);}100%{opacity:1;transform:translateY(0);}}
 @keyframes fadeInTitle{0%{opacity:0;filter:blur(8px);}100%{opacity:1;filter:blur(0);}}
 @keyframes riseUp{0%{opacity:0;transform:translateY(25px);}100%{opacity:1;transform:translateY(0);}}
-@keyframes laserReveal{0%{opacity:0;clip-path:inset(0 100% 0 0);}1%{opacity:1;}100%{opacity:1;clip-path:inset(0 0 0 0);}}
 .scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:scrollbreath 2.2s ease-in-out infinite;}
 .scroll-hint-arrow{width:1px;height:28px;background:linear-gradient(to bottom,transparent,#c8ff00);}
 @keyframes scrollbreath{0%,100%{transform:translateX(-50%) translateY(0);opacity:0.45;}50%{transform:translateX(-50%) translateY(8px);opacity:1;}}
@@ -245,7 +255,11 @@ img{display:block;max-width:100%;}
     <div class="serie-eyebrow">Música, Arte & Patinetas · Desde 2016</div>
     <h1 class="serie-title">SERIE MAP</h1>
     <p class="serie-sub">El corazón del proyecto: una serie documental sobre quienes crean cultura desde los márgenes.</p>
-    <a href="https://www.mapradiocr.com/serie-map/" class="serie-btn">Ver la serie →</a>
+    <a href="https://www.mapradiocr.com/serie-map/" class="serie-btn" id="laserBtn">
+      <svg class="laser-border" viewBox="0 0 200 48" preserveAspectRatio="none"><rect x="1" y="1" width="198" height="46" rx="3" fill="none" stroke="#c8ff00" stroke-width="1.5"/></svg>
+      <span class="laser-fill"></span>
+      <span class="laser-text" id="laserText">Ver la serie →</span>
+    </a>
   </div>
   <div class="scroll-hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
 </section>
@@ -402,6 +416,32 @@ img{display:block;max-width:100%;}
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+})();
+</script>
+<script>
+(function(){
+  var btn = document.getElementById('laserBtn');
+  var textEl = document.getElementById('laserText');
+  if(!btn || !textEl) return;
+  var full = textEl.textContent;
+  textEl.innerHTML = '';
+  var spans = [];
+  for(var i=0;i<full.length;i++){
+    var s = document.createElement('span');
+    s.className = 'ch';
+    s.textContent = full[i];
+    if(full[i]===' ') s.innerHTML = '&nbsp;';
+    textEl.appendChild(s);
+    spans.push(s);
+  }
+  setTimeout(function(){ btn.classList.add('go'); btn.classList.add('draw'); }, 1900);
+  setTimeout(function(){ btn.classList.add('fill'); }, 2550);
+  setTimeout(function(){
+    var d = 2950;
+    spans.forEach(function(s, idx){
+      setTimeout(function(){ s.classList.add('lit'); }, idx*45);
+    });
+  }, 2900);
 })();
 </script>
 </body>
