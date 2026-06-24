@@ -179,12 +179,14 @@ img{display:block;max-width:100%;}
 
 /* preview badge */
 .preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#c8ff00;color:#0a0a0a;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.85;}
-.hero-cierre{text-align:center;}
-.hero-cierre .hero-eyebrow{justify-content:center;display:flex;}
+.hero-cierre .hero-eyebrow{color:#c8ff00;}
+.cierre-grid{display:grid;grid-template-columns:1fr 0.85fr;gap:3rem;align-items:start;}
+@media(max-width:880px){.cierre-grid{grid-template-columns:1fr;gap:2.5rem;}}
 .cierre-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,4.6rem);line-height:0.95;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:2rem;}
 .cierre-h1 .l{display:block;white-space:nowrap;}
 .cierre-h1 em{font-style:normal;color:#c8ff00;}
-.hero-cierre .hero-desc{max-width:640px;margin:0 auto;}
+.cierre-video{aspect-ratio:16/9;border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;background:#050505;}
+.cierre-video iframe{width:100%;height:100%;border:0;display:block;}
 @media(max-width:880px){.cierre-h1 .l{white-space:normal;display:inline;}}
 </style>
 </head>
@@ -350,9 +352,16 @@ img{display:block;max-width:100%;}
 <!-- HERO DE TEXTO — ahora como CIERRE -->
 <section class="sec hero-cierre">
   <div class="wrap">
-    <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
-    <h1 class="cierre-h1"><span class="l">Donde el sistema</span> <span class="l">termina, <em>empieza</em></span> <span class="l">MAP.</span></h1>
-    <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
+    <div class="cierre-grid">
+      <div class="cierre-text">
+        <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
+        <h1 class="cierre-h1"><span class="l">Donde el sistema</span> <span class="l">termina, <em>empieza</em></span> <span class="l">MAP.</span></h1>
+        <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
+      </div>
+      <div class="cierre-video">
+        <iframe src="https://www.youtube.com/embed/kwgF9zsxwZc" title="MAP — teaser" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
   </div>
 </section>
 
