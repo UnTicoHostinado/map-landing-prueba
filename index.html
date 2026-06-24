@@ -28,6 +28,16 @@ img{display:block;max-width:100%;}
 .nav-over .nav-links a{color:#ddd;}
 .nav-over .nav-logo{color:#fff;}
 
+/* ===== NAV STICKY (aparece al bajar) ===== */
+.nav-sticky{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(10,10,10,0.92);backdrop-filter:blur(10px);border-bottom:0.5px solid rgba(200,255,0,0.25);transform:translateY(-100%);transition:transform 0.35s ease;}
+.nav-sticky.visible{transform:translateY(0);}
+.nav-sticky .nav-inner{max-width:1100px;margin:0 auto;padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-sticky .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.18em;color:#e8e4d9;}
+.nav-sticky .nav-links{display:flex;gap:1.6rem;}
+.nav-sticky .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;transition:color 0.2s;}
+.nav-sticky .nav-links a:hover{color:#c8ff00;}
+@media(max-width:760px){.nav-sticky .nav-links{display:none;}}
+
 /* ===== BANNER SERIE FULL-HEIGHT ===== */
 .serie-hero{position:relative;height:100vh;min-height:560px;overflow:hidden;background:#0a0a0a;display:flex;align-items:flex-end;}
 .serie-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
@@ -182,6 +192,22 @@ img{display:block;max-width:100%;}
 
 <!-- PREVIEW BADGE -->
 <div class="preview-badge">Vista previa · Julio</div>
+
+<!-- NAV STICKY (aparece al bajar del banner) -->
+<nav class="nav-sticky" id="navSticky">
+  <div class="nav-inner">
+    <div class="nav-logo">MAP</div>
+    <div class="nav-links">
+      <a href="#cronicas">Crónicas</a>
+      <a href="#cantinas">Cantinas</a>
+      <a href="#serie">Serie</a>
+      <a href="#textos">Textos</a>
+      <a href="#podcast">Podcast</a>
+      <a href="#">Sobre el autor</a>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+</nav>
 
 <!-- BANNER SERIE MAP — full height con video de fondo -->
 <section class="serie-hero" id="serie-top">
@@ -362,5 +388,19 @@ img{display:block;max-width:100%;}
   <div class="foot-sig">Ingeniería web — Dr. Arkady Volkov Lazenko<br>Instituto Cuántico Costarricense para la Investigación Interdimensional</div>
 </footer>
 
+<script>
+(function(){
+  var nav = document.getElementById('navSticky');
+  var banner = document.getElementById('serie-top');
+  if(!nav || !banner) return;
+  function onScroll(){
+    var limite = banner.offsetHeight - 80;
+    if(window.scrollY > limite){ nav.classList.add('visible'); }
+    else { nav.classList.remove('visible'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
 </body>
 </html>
