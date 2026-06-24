@@ -23,6 +23,27 @@ img{display:block;max-width:100%;}
 .nav-links a:hover{color:#c8ff00;}
 @media(max-width:760px){.nav-links{display:none;}}
 
+/* ===== NAV TRANSPARENTE (sobre el banner) ===== */
+.nav-over{position:absolute;top:0;left:0;right:0;z-index:10;background:transparent;border:none;backdrop-filter:none;}
+.nav-over .nav-links a{color:#ddd;}
+.nav-over .nav-logo{color:#fff;}
+
+/* ===== BANNER SERIE FULL-HEIGHT ===== */
+.serie-hero{position:relative;height:100vh;min-height:560px;overflow:hidden;background:#0a0a0a;display:flex;align-items:flex-end;}
+.serie-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.serie-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.4) 35%,rgba(10,10,10,0.12) 60%,rgba(10,10,10,0.5) 100%);z-index:1;}
+.serie-hero-content{position:relative;z-index:2;padding:0 2rem 5rem;max-width:1100px;margin:0 auto;width:100%;}
+.serie-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#c8ff00;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.7rem;}
+.serie-eyebrow::before{content:'';width:28px;height:1px;background:#c8ff00;}
+.serie-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,11vw,8rem);line-height:0.85;letter-spacing:0.02em;color:#fff;margin-bottom:1.2rem;}
+.serie-sub{font-size:1rem;color:#cfcabb;line-height:1.6;max-width:440px;margin-bottom:2rem;font-weight:300;}
+.serie-btn{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;background:#c8ff00;padding:0.9rem 1.6rem;border-radius:3px;transition:opacity 0.2s;}
+.serie-btn:hover{opacity:0.85;}
+.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+.scroll-hint-arrow{width:1px;height:28px;background:linear-gradient(to bottom,transparent,#c8ff00);animation:scrollpulse 2s ease-in-out infinite;}
+@keyframes scrollpulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+@media(max-width:600px){.serie-hero-content{padding-bottom:4rem;}.serie-sub{max-width:100%;}}
+
 /* ===== MARQUEE ===== */
 .marquee{background:#050505;border-bottom:0.5px solid #1a1a1a;overflow:hidden;white-space:nowrap;}
 .marquee-track{display:inline-block;padding:0.6rem 0;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:#444;text-transform:uppercase;animation:scroll 38s linear infinite;}
@@ -148,6 +169,13 @@ img{display:block;max-width:100%;}
 
 /* preview badge */
 .preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#c8ff00;color:#0a0a0a;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.85;}
+.hero-cierre{text-align:center;}
+.hero-cierre .hero-eyebrow{justify-content:center;display:flex;}
+.cierre-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,4.6rem);line-height:0.95;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:2rem;}
+.cierre-h1 .l{display:block;white-space:nowrap;}
+.cierre-h1 em{font-style:normal;color:#c8ff00;}
+.hero-cierre .hero-desc{max-width:640px;margin:0 auto;}
+@media(max-width:880px){.cierre-h1 .l{white-space:normal;display:inline;}}
 </style>
 </head>
 <body>
@@ -155,21 +183,33 @@ img{display:block;max-width:100%;}
 <!-- PREVIEW BADGE -->
 <div class="preview-badge">Vista previa · Julio</div>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-logo">MAP</div>
-    <div class="nav-links">
-      <a href="#cronicas">Crónicas</a>
-      <a href="#cantinas">Cantinas</a>
-      <a href="#serie">Serie</a>
-      <a href="#textos">Textos</a>
-      <a href="#podcast">Podcast</a>
-      <a href="#">Sobre el autor</a>
-      <a href="#">Contacto</a>
+<!-- BANNER SERIE MAP — full height con video de fondo -->
+<section class="serie-hero" id="serie-top">
+  <nav class="nav nav-over">
+    <div class="nav-inner">
+      <div class="nav-logo">MAP</div>
+      <div class="nav-links">
+        <a href="#cronicas">Crónicas</a>
+        <a href="#cantinas">Cantinas</a>
+        <a href="#serie">Serie</a>
+        <a href="#textos">Textos</a>
+        <a href="#podcast">Podcast</a>
+        <a href="#">Sobre el autor</a>
+        <a href="#">Contacto</a>
+      </div>
     </div>
+  </nav>
+  <video class="serie-hero-bg" autoplay muted loop playsinline poster="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp">
+    <source src="https://www.mapradiocr.com/wp-content/uploads/2026/06/404.mp4" type="video/mp4">
+  </video>
+  <div class="serie-hero-content">
+    <div class="serie-eyebrow">Música, Arte & Patinetas · Desde 2016</div>
+    <h1 class="serie-title">SERIE MAP</h1>
+    <p class="serie-sub">El corazón del proyecto: una serie documental sobre quienes crean cultura desde los márgenes.</p>
+    <a href="https://www.mapradiocr.com/serie-map/" class="serie-btn">Ver la serie →</a>
   </div>
-</nav>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+</section>
 
 <!-- MARQUEE -->
 <div class="marquee">
@@ -177,26 +217,6 @@ img{display:block;max-width:100%;}
     /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 ///&nbsp;
   </div>
 </div>
-
-<!-- HERO -->
-<header class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
-        <h1><span class="l">Donde el sistema</span> <span class="l">termina, <em>empieza</em></span> <span class="l">MAP.</span></h1>
-        <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
-        <div class="hero-btns">
-          <a href="#cronicas" class="btn btn-primary">Proyecto literario →</a>
-          <a href="#serie" class="btn btn-ghost">Ver la serie MAP</a>
-        </div>
-      </div>
-      <div class="hero-video">
-        <iframe src="https://www.youtube.com/embed/xSK0iZdmSog" title="MAP — extracto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</header>
 
 <!-- ZONA PROYECTOS: CRÓNICAS + CANTINAS -->
 <section class="sec" id="cronicas">
@@ -316,6 +336,15 @@ img{display:block;max-width:100%;}
       </div>
       <div class="pod-frame">spotify · embed</div>
     </div>
+  </div>
+</section>
+
+<!-- HERO DE TEXTO — ahora como CIERRE -->
+<section class="sec hero-cierre">
+  <div class="wrap">
+    <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
+    <h1 class="cierre-h1"><span class="l">Donde el sistema</span> <span class="l">termina, <em>empieza</em></span> <span class="l">MAP.</span></h1>
+    <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
   </div>
 </section>
 
