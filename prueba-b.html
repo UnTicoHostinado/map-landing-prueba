@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAP · Prueba cortinilla — Página B</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e8e4d9;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .map-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 2.5rem;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+  .map-nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    color: #e8e4d9;
+  }
+  .map-nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+  .map-nav-links a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .map-nav-links a:hover { color: #c8ff00; }
+
+  /* CONTENIDO DE LA PÁGINA */
+  .map-page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    min-height: 70vh;
+  }
+  .map-page-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c8ff00;
+    margin-bottom: 1.2rem;
+  }
+  .map-page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.9;
+    color: #e8e4d9;
+  }
+  .map-page-note {
+    font-size: 0.9rem;
+    color: #666;
+    max-width: 420px;
+    line-height: 1.8;
+    margin-top: 1.5rem;
+  }
+
+  /* ===== CORTINILLA ===== */
+  #map-curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  #map-curtain.active { pointer-events: all; }
+
+  .curtain-blk-l, .curtain-blk-r {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+  }
+  .curtain-blk-l {
+    left: 0;
+    background: #0a0a0a;
+    transform: translateX(-100%);
+    border-right: 1px solid #1a1a1a;
+  }
+  .curtain-blk-r {
+    right: 0;
+    background: #c8ff00;
+    transform: translateX(100%);
+  }
+
+  .curtain-art {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .curtain-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    border: 1.5px solid #c8ff00;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .curtain-circle img {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    transform: scale(0.4);
+  }
+
+  @media (max-width: 600px) {
+    .map-nav { padding: 1.2rem 1.2rem; flex-direction: column; gap: 1rem; }
+    .map-nav-links { gap: 1.2rem; }
+    .curtain-circle { width: 120px; height: 120px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="map-nav">
+    <div class="map-nav-logo">MAP</div>
+    <div class="map-nav-links">
+      <a href="prueba-a.html" data-curtain>Inicio</a>
+      <a href="prueba-b.html" data-curtain>Podcast</a>
+      <a href="prueba-a.html" data-curtain>Textos</a>
+      <a href="prueba-b.html" data-curtain>Serie MAP</a>
+    </div>
+  </nav>
+
+  <main class="map-page-body">
+    <div class="map-page-eyebrow">Página B · Podcast</div>
+    <h1 class="map-page-title">PODCAST</h1>
+    <p class="map-page-note">Llegaste a la página B. Probá volver con otro enlace del menú — la cortinilla corre igual en ambas direcciones.</p>
+  </main>
+
+  <!-- CORTINILLA -->
+  <div id="map-curtain">
+    <div class="curtain-blk-l"></div>
+    <div class="curtain-blk-r"></div>
+
+    <svg class="curtain-art" width="220" height="220" viewBox="0 0 220 220">
+      <line x1="110" y1="0" x2="110" y2="50" stroke="#888" stroke-width="0.5"/>
+      <line x1="110" y1="170" x2="110" y2="220" stroke="#888" stroke-width="0.5"/>
+      <line x1="0" y1="110" x2="50" y2="110" stroke="#888" stroke-width="0.5"/>
+      <line x1="170" y1="110" x2="220" y2="110" stroke="#888" stroke-width="0.5"/>
+      <circle cx="110" cy="110" r="60" fill="none" stroke="#888" stroke-width="0.5"/>
+      <circle cx="110" cy="110" r="72" fill="none" stroke="#c8ff00" stroke-width="0.5" stroke-dasharray="3 5"/>
+    </svg>
+
+    <div class="curtain-circle">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/logo-map-mapradiocr-1.webp" alt="Logo MAP">
+    </div>
+  </div>
+
+  <script src="cortinilla.js" defer></script>
+</body>
+</html>
