@@ -1,1 +1,232 @@
+<!DOCTYPE html>
+<html lang="es-CR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PESCA DEL DÍA · MAP Radio CR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #e8e4d9;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .pesca {
+    width: 100%;
+    max-width: 560px;
+    background: #0a0a0a;
+    border: 0.5px solid #1a1a1a;
+    padding: 2.5rem 2rem;
+  }
+  .pesca-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pesca-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: #1a1a1a;
+  }
+  .pesca-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem;
+    line-height: 0.92;
+    color: #e8e4d9;
+    margin-bottom: 0.4rem;
+  }
+  .pesca-title em { font-style: normal; color: #c8ff00; }
+  .pesca-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: #444;
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+  }
+  .pesca-player {
+    margin-bottom: 1.5rem;
+    min-height: 152px;
+  }
+  .pesca-player iframe { display: block; border: 0; }
+  .pesca-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pesca-meta .dot { color: #c8ff00; }
+  .pesca-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.8rem 1.5rem;
+    background: transparent;
+    border: 0.5px solid #c8ff00;
+    color: #c8ff00;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .pesca-btn:hover { background: #c8ff00; color: #0a0a0a; }
+  .pesca-btn:active { transform: scale(0.98); }
+</style>
+</head>
+<body>
+  <section class="pesca">
+    <div class="pesca-label">Podcast · MAP Radio CR</div>
+    <h2 class="pesca-title">Pesca del <em>día.</em></h2>
+    <div class="pesca-sub">Un episodio distinto cada vez que caés por aquí</div>
 
+    <div class="pesca-player" id="pescaPlayer"></div>
+
+    <div class="pesca-meta">
+      <span class="dot">●</span>
+      <span id="pescaFuente">Cargando del archivo...</span>
+    </div>
+
+    <button class="pesca-btn" id="pescaBtn">↺ Tirar el gancho otra vez</button>
+  </section>
+
+<script>
+(function(){
+  // ===== ARCHIVO DE EPISODIOS (79 · Spotify + iVoox) =====
+  var EPISODIOS = [
+  { p: "spotify", id: "1aCkB7yUOM3npEyvDplgvZ" },
+  { p: "spotify", id: "7mr7UlXgYpglFI2BvWEbpU" },
+  { p: "spotify", id: "2s8WQ4r6em50gJSCa9ytbH" },
+  { p: "spotify", id: "6KhZYMNa6XrtyBkot7aqaV" },
+  { p: "spotify", id: "5WsW9yj8Jxup4AWqa9X9ZC" },
+  { p: "spotify", id: "3pJGAeZNwM7jyPANmSW5rH" },
+  { p: "spotify", id: "4LeskpPQvXMiSJAk9QEkB6" },
+  { p: "spotify", id: "4Qsr3Tu2sDm58gGSM1eYU2" },
+  { p: "spotify", id: "0wcIRWG1xuCiDVZsaPSoUM" },
+  { p: "spotify", id: "3C1MyCChkWTudnNDdRDwlQ" },
+  { p: "spotify", id: "4lIUneutIZt1M8N6xiCVVi" },
+  { p: "spotify", id: "5yzt36rWrvxByBrVPxiJwm" },
+  { p: "spotify", id: "72ivPu5gLA7IAqnwJBggBY" },
+  { p: "spotify", id: "5N7sdneBenqNCbDfuvP19b" },
+  { p: "spotify", id: "5l7sfS4o1IBacm6ZLjHLhM" },
+  { p: "spotify", id: "4WgYe3dCdDqhNTlQtE84zX" },
+  { p: "spotify", id: "06das7jtb1ZkpBnxELyaDp" },
+  { p: "spotify", id: "3q2Op51UqZIxhnfbeu5yBB" },
+  { p: "spotify", id: "7s7cdHPqRvOvfSWbFglFSJ" },
+  { p: "spotify", id: "7eP9Py5kW6JL4s6uYVhdM0" },
+  { p: "ivoox",   id: "159513244" },
+  { p: "spotify", id: "4MVmYoKazDIKYm50J6vTbY" },
+  { p: "spotify", id: "1Jmp92lnUezGNPaXsz3Vzu" },
+  { p: "spotify", id: "2n6MkXdZqPlqKRQG7Q0neY" },
+  { p: "spotify", id: "5Iq6Gh8i37JyXus96PZCKH" },
+  { p: "spotify", id: "4yfeuV9wZNJsXnxFKpoM6m" },
+  { p: "spotify", id: "2ejNd1xl1vwJR9Blhi2ztl" },
+  { p: "spotify", id: "3l7jiQBHvQYenRAgHj0YVz" },
+  { p: "spotify", id: "1eLJ9CxMm7BpwBtV1rqzXS" },
+  { p: "spotify", id: "4MfdUiOFquqEZrOFABGGp0" },
+  { p: "spotify", id: "0sr3OW4rOc68Bh2O0dOO2q" },
+  { p: "spotify", id: "0bQOtOpPP0W8T4Aj1Gtwma" },
+  { p: "spotify", id: "1wbp43vNmlT75UrDvqjgOb" },
+  { p: "spotify", id: "3sfP2f6qG8UgFzoo6K4hpH" },
+  { p: "spotify", id: "30cZBWLrhIQnQaNmqrOoBZ" },
+  { p: "spotify", id: "5lV7wZ6SSdosiBAtRI1WHE" },
+  { p: "spotify", id: "6ovbEL7YPhrgSSUNQTpyNw" },
+  { p: "spotify", id: "7iuOfei1sK3fTmA3tWCpd9" },
+  { p: "spotify", id: "1ZsxkDORlb4qmw7XEVFh4b" },
+  { p: "spotify", id: "4hR9BZzsEUIPAUGPSpSW46" },
+  { p: "ivoox",   id: "51683811" },
+  { p: "spotify", id: "5sop0FY5UKqnunoWNaHaso" },
+  { p: "spotify", id: "1RxYNvgJ0CLcyeEhiTXsfp" },
+  { p: "spotify", id: "7oMsmdJ5RcrKucWPG43Zj8" },
+  { p: "spotify", id: "3MiULdg71J2Z0hIdIxO6Dl" },
+  { p: "spotify", id: "46MQrRhQa57o4aYON9YPOa" },
+  { p: "spotify", id: "2njKfs8DyqcI2dnZGYvt2a" },
+  { p: "spotify", id: "6q19SLfpQaZ4Rrd6QIHopX" },
+  { p: "spotify", id: "46nlRV720uVkpW9NrxipS8" },
+  { p: "spotify", id: "2b9A8f7G6NdtQwGOLjMgDB" },
+  { p: "spotify", id: "27C82VBds6J8ykaec4bGCy" },
+  { p: "spotify", id: "0B5z9eQR7Jb4uA5dH9kCO6" },
+  { p: "spotify", id: "5ytOXUnQIgn91ol9YONmhU" },
+  { p: "spotify", id: "7aFs8cAmjpuTuhDNtT0IDO" },
+  { p: "spotify", id: "5zgD4Sil4oA7tdn1pDuZM7" },
+  { p: "spotify", id: "0vhlfx9mAcVz60clc69LXt" },
+  { p: "spotify", id: "1Nz89BjPTDJe60tbfMlGV3" },
+  { p: "spotify", id: "6huxDCoU8iOoL7dhn0Gl9w" },
+  { p: "spotify", id: "19cdoRz7kFhfCjIzQbqmHk" },
+  { p: "spotify", id: "1s2gu8YIw5qhCowRDCxv60" },
+  { p: "spotify", id: "5qa5WAAkWYVxUWtWGH1y4D" },
+  { p: "spotify", id: "2BDZm85mwFWqiPCKmTpt2E" },
+  { p: "spotify", id: "1GnUppEyCxwSC4Z1FMT2fI" },
+  { p: "spotify", id: "1EhYoyFeRAbuvaAV7Ck70H" },
+  { p: "spotify", id: "2M3QyvydFx2ViMPzkJgGpS" },
+  { p: "spotify", id: "5Heb84yOfgmc2h7nae0k4u" },
+  { p: "spotify", id: "7g9qTsH16GToz0HuEoSiLV" },
+  { p: "spotify", id: "3V8IDAN3LpaCZ9pMh88Z5F" },
+  { p: "spotify", id: "5yg67wrtr0rB70qXH3MiPk" },
+  { p: "spotify", id: "5orn17IvpUNswHxR6NnA3o" },
+  { p: "spotify", id: "5eknDOvIRjFVY70StmuYBU" },
+  { p: "spotify", id: "1wz4BJV0e7HlpL1ZLt5pnO" },
+  { p: "spotify", id: "6yB8sMlQTEa7pVJr1QuNwI" },
+  { p: "spotify", id: "2HgTiQvsXcAX5AlOxNrHqW" },
+  { p: "spotify", id: "6PpvRiD3qNn6qnqR38oPIy" },
+  { p: "spotify", id: "3h3rWkgDDwlaMER5wSkFMQ" },
+  { p: "spotify", id: "2vIrmMqRXUWt3sIRTsWhwp" },
+  { p: "spotify", id: "4eeeQWOPRaVVEl5XRKLhhW" },
+  { p: "spotify", id: "5V03H8kuvM5adzf6rCAxCu" },
+  ];
+
+  var KEY_ULTIMO = 'mapPescaUltimo';
+
+  function buildPlayer(ep) {
+    if (ep.p === 'spotify') {
+      return '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/' + ep.id + '?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>';
+    } else {
+      return '<iframe src="https://www.ivoox.com/player_ej_' + ep.id + '_6_1.html" width="100%" height="200" frameborder="0" allowfullscreen scrolling="no" loading="lazy"></iframe>';
+    }
+  }
+
+  function pescar() {
+    var ultimo = null;
+    try { ultimo = localStorage.getItem(KEY_ULTIMO); } catch(e){}
+
+    // Elegir al azar EVITANDO el último mostrado
+    var candidatos = EPISODIOS;
+    if (ultimo && EPISODIOS.length > 1) {
+      candidatos = EPISODIOS.filter(function(ep){ return ep.id !== ultimo; });
+    }
+    var elegido = candidatos[Math.floor(Math.random() * candidatos.length)];
+
+    try { localStorage.setItem(KEY_ULTIMO, elegido.id); } catch(e){}
+
+    document.getElementById('pescaPlayer').innerHTML = buildPlayer(elegido);
+    document.getElementById('pescaFuente').textContent =
+      (elegido.p === 'spotify' ? 'Spotify' : 'iVoox') + ' · del archivo MAP';
+  }
+
+  document.getElementById('pescaBtn').addEventListener('click', pescar);
+  pescar();
+})();
+</script>
+</body>
+</html>
