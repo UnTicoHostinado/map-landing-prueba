@@ -61,38 +61,9 @@
     margin-bottom: 1.8rem;
   }
   .pesca-player {
-    margin-bottom: 1.5rem;
     min-height: 152px;
   }
   .pesca-player iframe { display: block; border: 0; }
-  .pesca-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .pesca-meta .dot { color: #c8ff00; }
-  .pesca-btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.8rem 1.5rem;
-    background: transparent;
-    border: 0.5px solid #c8ff00;
-    color: #c8ff00;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-  }
-  .pesca-btn:hover { background: #c8ff00; color: #0a0a0a; }
-  .pesca-btn:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
@@ -100,15 +71,7 @@
     <div class="pesca-label">Podcast · MAP Radio CR</div>
     <h2 class="pesca-title">Pesca del <em>día.</em></h2>
     <div class="pesca-sub">Un episodio distinto cada vez que caés por aquí</div>
-
     <div class="pesca-player" id="pescaPlayer"></div>
-
-    <div class="pesca-meta">
-      <span class="dot">●</span>
-      <span id="pescaFuente">Cargando del archivo...</span>
-    </div>
-
-    <button class="pesca-btn" id="pescaBtn">↺ Tirar el gancho otra vez</button>
   </section>
 
 <script>
@@ -220,11 +183,8 @@
     try { localStorage.setItem(KEY_ULTIMO, elegido.id); } catch(e){}
 
     document.getElementById('pescaPlayer').innerHTML = buildPlayer(elegido);
-    document.getElementById('pescaFuente').textContent =
-      (elegido.p === 'spotify' ? 'Spotify' : 'iVoox') + ' · del archivo MAP';
   }
 
-  document.getElementById('pescaBtn').addEventListener('click', pescar);
   pescar();
 })();
 </script>
