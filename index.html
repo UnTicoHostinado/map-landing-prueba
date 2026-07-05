@@ -3,295 +3,303 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>INICIO — MAP Radio CR · Vista previa Julio</title>
+<title>INICIO — MAP Radio CR · Vista previa Diciembre</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Oswald:wght@600;700&family=Space+Grotesk:wght@700&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:#0a0a0a;color:#e8e4d9;font-family:'IBM Plex Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
+body{background:#F3EEE3;color:#171310;font-family:'IBM Plex Sans',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6;}
 a{color:inherit;text-decoration:none;}
 img{display:block;max-width:100%;}
 .wrap{max-width:1100px;margin:0 auto;padding:0 2rem;}
 
 /* ===== NAV ===== */
-.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(8px);border-bottom:0.5px solid #1a1a1a;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(243,238,227,0.94);backdrop-filter:blur(8px);border-bottom:1px solid #171310;}
 .nav-inner{max-width:1100px;margin:0 auto;padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.18em;color:#e8e4d9;}
+.nav-logo{font-family:'Archivo Black',sans-serif;font-size:1.2rem;letter-spacing:0.02em;color:#171310;}
 .nav-links{display:flex;gap:1.6rem;}
-.nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;transition:color 0.2s;}
-.nav-links a:hover{color:#c8ff00;}
+.nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#544c40;transition:color 0.2s;}
+.nav-links a:hover{color:#5B3E8C;}
 @media(max-width:760px){.nav-links{display:none;}}
 
-/* ===== NAV TRANSPARENTE (sobre el banner) ===== */
 .nav-over{position:absolute;top:0;left:0;right:0;z-index:10;background:transparent;border:none;backdrop-filter:none;}
-.nav-over .nav-links a{color:#ddd;}
-.nav-over .nav-logo{color:#fff;}
+.nav-over .nav-links a{color:#e6e0d2;}
+.nav-over .nav-logo{color:#F3EEE3;}
 
-/* ===== NAV STICKY (aparece al bajar) ===== */
-.nav-sticky{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(10,10,10,0.92);backdrop-filter:blur(10px);border-bottom:0.5px solid rgba(200,255,0,0.25);transform:translateY(-100%);transition:transform 0.35s ease;}
+.nav-sticky{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(243,238,227,0.96);backdrop-filter:blur(10px);border-bottom:1px solid #171310;transform:translateY(-100%);transition:transform 0.35s ease;}
 .nav-sticky.visible{transform:translateY(0);}
 .nav-sticky .nav-inner{max-width:1100px;margin:0 auto;padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;}
-.nav-sticky .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.18em;color:#e8e4d9;}
+.nav-sticky .nav-logo{font-family:'Archivo Black',sans-serif;font-size:1.1rem;letter-spacing:0.02em;color:#171310;}
 .nav-sticky .nav-links{display:flex;gap:1.6rem;}
-.nav-sticky .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;transition:color 0.2s;}
-.nav-sticky .nav-links a:hover{color:#c8ff00;}
+.nav-sticky .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#544c40;transition:color 0.2s;}
+.nav-sticky .nav-links a:hover{color:#5B3E8C;}
 @media(max-width:760px){.nav-sticky .nav-links{display:none;}}
 
-/* ===== BANNER SERIE FULL-HEIGHT ===== */
+/* ===== HERO SLIDER — último artículo + recientes, auto-avance 25s c/u ===== */
 .serie-hero{position:relative;height:100vh;min-height:560px;overflow:hidden;background:#0a0a0a;display:flex;align-items:flex-end;}
-.serie-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(0.85) contrast(1.05);}
-.tv-scanlines{position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);mix-blend-mode:multiply;}
+.hero-slide-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(0.9) contrast(1.05);opacity:0;transition:opacity 1s ease;}
+.hero-slide-bg.active{opacity:.55;}
 .tv-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(0,0,0,0.55) 100%);}
+.tv-scanlines{position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);mix-blend-mode:multiply;}
 .tv-flicker{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(255,255,255,0.06);animation:tvflicker 0.12s steps(3) infinite;}
-@keyframes tvflicker{0%{opacity:0.28;background:rgba(255,255,255,0.06);}25%{opacity:0.08;background:rgba(0,0,0,0.10);}50%{opacity:0.32;background:rgba(255,255,255,0.05);}75%{opacity:0.05;background:rgba(0,0,0,0.08);}100%{opacity:0.22;background:rgba(255,255,255,0.06);}}
-.serie-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.4) 35%,rgba(10,10,10,0.12) 60%,rgba(10,10,10,0.5) 100%);z-index:1;}
-.serie-hero-content{position:relative;z-index:2;padding:0 2rem 5rem;max-width:1100px;margin:0 auto;width:100%;}
-.serie-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#c8ff00;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.7rem;opacity:0;animation:dropIn 0.7s ease forwards;animation-delay:0.2s;}
-.serie-eyebrow::before{content:'';width:28px;height:1px;background:#c8ff00;}
-.serie-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,11vw,8rem);line-height:0.85;letter-spacing:0.02em;color:#fff;margin-bottom:1.2rem;opacity:0;animation:fadeInTitle 1s ease forwards;animation-delay:0.7s;}
-.serie-sub{font-size:1rem;color:#cfcabb;line-height:1.6;max-width:440px;margin-bottom:2rem;font-weight:300;opacity:0;animation:riseUp 0.8s ease forwards;animation-delay:1.3s;}
-.serie-btn{display:inline-flex;align-items:center;justify-content:center;position:relative;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;padding:0.9rem 1.6rem;border-radius:3px;min-width:170px;min-height:46px;text-decoration:none;opacity:0;}
-.serie-btn.go{opacity:1;}
-.laser-border{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
-.laser-border rect{stroke-dasharray:488;stroke-dashoffset:488;}
-.serie-btn.draw .laser-border rect{animation:drawBorder 0.6s ease forwards;}
-.laser-fill{position:absolute;inset:0;background:#c8ff00;border-radius:3px;z-index:0;transform:scaleX(0);transform-origin:left;}
-.serie-btn.fill .laser-fill{animation:fillBtn 0.35s ease forwards;}
-.laser-text{position:relative;z-index:2;white-space:nowrap;}
-.laser-text .ch{opacity:0;}
-.laser-text .ch.lit{opacity:1;}
-@keyframes drawBorder{to{stroke-dashoffset:0;}}
-@keyframes fillBtn{to{transform:scaleX(1);}}
+@keyframes tvflicker{0%{opacity:0.28;}25%{opacity:0.08;}50%{opacity:0.32;}75%{opacity:0.05;}100%{opacity:0.22;}}
+.serie-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.94) 0%,rgba(10,10,10,0.42) 35%,rgba(10,10,10,0.12) 60%,rgba(10,10,10,0.5) 100%);z-index:1;}
+.serie-hero-content{position:relative;z-index:2;padding:0 2rem 3.4rem;max-width:1100px;margin:0 auto;width:100%;}
+.serie-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#C8FF00;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.7rem;}
+.serie-eyebrow::before{content:'';width:28px;height:1px;background:#C8FF00;}
+.serie-eyebrow-cat{color:#F3EEE3;opacity:.7;}
+.serie-title{font-family:'Archivo Black',sans-serif;font-size:clamp(2.4rem,6.4vw,4.6rem);line-height:0.94;letter-spacing:-0.01em;color:#F3EEE3;margin-bottom:1rem;max-width:820px;}
+.serie-sub{font-size:0.95rem;color:#d8d3c6;line-height:1.65;max-width:520px;margin-bottom:1.8rem;font-weight:300;}
+
+/* Slide 1 — MÚSICA ARTE & PATINETAS / SERIE MAP, más grande, es la identidad */
+.hero-slide-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(0.9) contrast(1.05);opacity:0;transition:opacity 1s ease;}
+.hero-slide-video.active{opacity:.82;}
+.video-title{font-family:'Archivo Black',sans-serif;font-size:clamp(3rem,10vw,7rem);line-height:0.9;letter-spacing:-0.01em;color:#F3EEE3;margin-bottom:1.2rem;}
+.video-sub{font-size:1rem;color:#d8d3c6;line-height:1.6;max-width:460px;margin-bottom:2rem;font-weight:300;}
+
+/* Botón láser: SVG traza el borde, texto se revela letra por letra */
+.laser-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:190px;min-height:50px;text-decoration:none;}
+.laser-btn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+.laser-btn rect{fill:none;stroke:#C8FF00;stroke-width:2;stroke-dasharray:480;stroke-dashoffset:480;filter:drop-shadow(0 0 4px #C8FF00);}
+.laser-btn.drawn rect{transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);stroke-dashoffset:0;}
+.laser-btn-fill{position:absolute;inset:0;background:#C8FF00;opacity:0;transform:scaleX(0);transform-origin:left;transition:transform 0.5s ease 1.05s,opacity 0.1s ease 1.05s;}
+.laser-btn.drawn .laser-btn-fill{opacity:1;transform:scaleX(1);}
+.laser-btn-label{position:relative;z-index:2;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.9rem 1.6rem;color:#C8FF00;transition:color 0.3s ease 1.05s;white-space:nowrap;}
+.laser-btn.drawn .laser-btn-label{color:#171310;}
+.laser-btn-label span{display:inline-block;opacity:0;transform:translateY(6px);transition:opacity 0.25s ease,transform 0.25s ease;}
+.laser-btn.drawn .laser-btn-label span{opacity:1;transform:translateY(0);}
+.serie-btn{display:inline-flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#171310;background:#C8FF00;padding:0.9rem 1.6rem;border-radius:3px;min-width:170px;min-height:46px;text-decoration:none;transition:opacity 0.2s;}
 .serie-btn:hover{opacity:0.85;}
-@keyframes dropIn{0%{opacity:0;transform:translateY(-25px);}100%{opacity:1;transform:translateY(0);}}
-@keyframes fadeInTitle{0%{opacity:0;filter:blur(8px);}100%{opacity:1;filter:blur(0);}}
-@keyframes riseUp{0%{opacity:0;transform:translateY(25px);}100%{opacity:1;transform:translateY(0);}}
-.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:scrollbreath 2.2s ease-in-out infinite;}
-.scroll-hint-arrow{width:1px;height:28px;background:linear-gradient(to bottom,transparent,#c8ff00);}
-@keyframes scrollbreath{0%,100%{transform:translateX(-50%) translateY(0);opacity:0.45;}50%{transform:translateX(-50%) translateY(8px);opacity:1;}}
-@media(max-width:600px){.serie-hero-content{padding-bottom:4rem;}.serie-sub{max-width:100%;}}
+
+.hero-progress{position:relative;z-index:2;max-width:1100px;margin:0 auto;width:100%;padding:0 2rem 1.6rem;display:flex;gap:6px;}
+.hero-bar{flex:1;height:2px;background:rgba(243,238,227,0.25);border-radius:2px;overflow:hidden;cursor:pointer;}
+.hero-bar-fill{display:block;height:100%;width:0%;background:#C8FF00;}
+.hero-bar-fill.filling{transition:width 25s linear;width:100%;}
+.hero-bar-fill.filled{width:100%;transition:none;}
+
+.hero-content-video, .hero-content-article{position:relative;z-index:2;padding:0 2rem 3.4rem;max-width:1100px;margin:0 auto;width:100%;display:none;}
+.hero-content-video.active, .hero-content-article.active{display:block;}
+
+.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:3;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#bdb6a4;display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+.scroll-hint-arrow{width:1px;height:28px;background:linear-gradient(to bottom,transparent,#C8FF00);}
+@media(max-width:600px){.serie-sub{max-width:100%;}}
 
 /* ===== MARQUEE ===== */
-.marquee{background:#050505;border-bottom:0.5px solid #1a1a1a;overflow:hidden;white-space:nowrap;}
-.marquee-track{display:inline-block;padding:0.6rem 0;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:#444;text-transform:uppercase;animation:scroll 38s linear infinite;}
-.marquee-track span{color:#c8ff00;}
+.marquee{background:#171310;border-bottom:1px solid #171310;overflow:hidden;white-space:nowrap;}
+.marquee-track{display:inline-block;padding:0.6rem 0;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:#7a7264;text-transform:uppercase;animation:scroll 38s linear infinite;}
+.marquee-track span{color:#C8FF00;}
 @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* ===== HERO ===== */
-.hero{padding:4.5rem 0 4rem;border-bottom:0.5px solid #1a1a1a;}
-.hero-grid{display:grid;grid-template-columns:1fr 0.85fr;gap:3rem;align-items:start;}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:2.5rem;}}
-.hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:1.8rem;}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,4.6rem);line-height:0.95;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:2rem;}
-.hero h1 .l{display:block;white-space:nowrap;}
-.hero h1 em{font-style:normal;color:#c8ff00;}
-@media(max-width:880px){.hero h1 .l{white-space:normal;display:inline;}}
-.hero-desc{font-size:1rem;color:#888;line-height:1.85;margin-bottom:2.2rem;}
-.hero-desc strong{color:#e8e4d9;font-weight:500;}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
-.hero-video{aspect-ratio:16/9;border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;background:#050505;}
-.hero-video iframe{width:100%;height:100%;border:0;display:block;}
-.btn{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.85rem 1.5rem;border-radius:3px;transition:all 0.2s;white-space:nowrap;}
-.btn-primary{background:#c8ff00;color:#0a0a0a;}
-.btn-primary:hover{opacity:0.85;}
-.btn-ghost{border:0.5px solid #333;color:#e8e4d9;}
-.btn-ghost:hover{border-color:#c8ff00;color:#c8ff00;}
+.sec{padding:4rem 0;border-bottom:1px solid #171310;}
+.label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a8170;margin-bottom:2.2rem;display:flex;align-items:center;gap:1rem;}
+.label::after{content:'';flex:1;height:1px;background:#d8d0be;}
 
-/* ===== SECTION SHELL ===== */
-.sec{padding:4rem 0;border-bottom:0.5px solid #1a1a1a;}
-.label{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#444;margin-bottom:2.2rem;display:flex;align-items:center;gap:1rem;}
-.label::after{content:'';flex:1;height:0.5px;background:#1a1a1a;}
+/* ===== ANTOLOGÍA — banda morada full-bleed, protagonista destacado ===== */
+.anto-sec{background:#5B3E8C;border-bottom:1px solid #171310;padding:4rem 0;}
+.anto-sec .label{color:#cbb8ec;}
+.anto-sec .label::after{background:#7a5cae;}
+.anto-banner{display:grid;grid-template-columns:auto 1fr;gap:2.6rem;align-items:center;}
+.anto-cover{width:150px;height:auto;box-shadow:0 14px 30px rgba(0,0,0,.35);flex-shrink:0;}
+.anto-tag{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#e8dfff;margin-bottom:0.7rem;}
+.anto-title{font-family:'Archivo Black',sans-serif;font-size:clamp(1.8rem,3.8vw,2.8rem);line-height:0.95;color:#F3EEE3;margin-bottom:0.8rem;letter-spacing:-0.01em;}
+.anto-sub{font-family:'IBM Plex Sans',sans-serif;font-size:0.9rem;color:#d9c9ff;line-height:1.65;max-width:560px;margin-bottom:1.4rem;}
+.anto-btn{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#5B3E8C;background:#F3EEE3;padding:0.85rem 1.4rem;border-radius:3px;white-space:nowrap;}
+@media(max-width:560px){.anto-banner{grid-template-columns:1fr;}.anto-cover{width:100px;}}
 
-/* ===== ZONA PROYECTOS (Crónicas + Cantinas) ===== */
+/* ===== ZONA PROYECTOS ===== */
 .proyectos-grid{display:grid;grid-template-columns:380px 1fr;gap:1.5rem;align-items:stretch;}
 @media(max-width:820px){.proyectos-grid{grid-template-columns:1fr;}}
 
-/* Crónicas card */
-.cron-card{border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:#0c0c0c;transition:border-color 0.25s;}
-.cron-card:hover{border-color:#2a2a2a;}
-.cron-img{aspect-ratio:3/4;overflow:hidden;background:#0a0a0a;padding-top:1.5rem;}.cron-img img{width:100%;height:100%;object-fit:contain;background:#0a0a0a;transition:transform 0.5s;}
-.cron-card:hover .cron-img img{transform:scale(1);}
+.cron-card{border:1px solid #171310;border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:#F3EEE3;transition:box-shadow 0.25s;}
+.cron-card:hover{box-shadow:6px 6px 0 #5B3E8C;}
+.cron-img{aspect-ratio:3/4;overflow:hidden;background:#F3EEE3;padding-top:1.5rem;}
+.cron-img img{width:100%;height:100%;object-fit:contain;background:#F3EEE3;}
 .cron-body{padding:1.6rem;display:flex;flex-direction:column;gap:0.7rem;flex:1;}
-.cron-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#c8ff00;}
-.cron-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:0.98;letter-spacing:0.03em;color:#e8e4d9;}
-.cron-title em{font-style:normal;color:#c8ff00;}
-.cron-desc{font-size:0.85rem;color:#888;line-height:1.7;flex:1;}
-.cron-link{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;color:#c8ff00;border-bottom:0.5px solid #c8ff00;padding-bottom:2px;align-self:flex-start;}
+.cron-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#B71C2B;font-weight:700;}
+.cron-title{font-family:'Archivo Black',sans-serif;font-size:1.55rem;line-height:1;letter-spacing:-0.01em;color:#171310;}
+.cron-desc{font-size:0.85rem;color:#544c40;line-height:1.7;flex:1;}
+.cron-link{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;color:#B71C2B;border-bottom:1px solid #B71C2B;padding-bottom:2px;align-self:flex-start;}
 
-/* Cantinas banner */
-.cant-banner{position:relative;border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;min-height:100%;background:#0a0a0a;}
-.cant-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;}
-.cant-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.96) 0%,rgba(10,10,10,0.5) 50%,rgba(10,10,10,0.1) 100%);z-index:1;}
+.cant-banner{position:relative;border:1px solid #171310;border-radius:4px;overflow:hidden;display:flex;align-items:flex-end;min-height:100%;background:#171310;}
+.cant-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;opacity:.85;}
+.cant-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(23,19,16,0.95) 0%,rgba(23,19,16,0.45) 55%,rgba(23,19,16,0.1) 100%);z-index:1;}
 .cant-content{position:relative;z-index:2;padding:2.2rem;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;}
 .cant-text{max-width:75%;}
-.cant-tag{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8ff00;margin-bottom:0.7rem;}
-.cant-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:0.03em;line-height:0.95;color:#fff;margin-bottom:0.8rem;}
-.cant-desc{font-size:0.9rem;color:#cfcabb;line-height:1.65;max-width:460px;}
-.cant-btn{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0a;background:#c8ff00;padding:0.8rem 1.4rem;border-radius:3px;white-space:nowrap;transition:opacity 0.2s;}
+.cant-tag{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#C8FF00;margin-bottom:0.7rem;}
+.cant-title{font-family:'Archivo Black',sans-serif;font-size:clamp(2rem,4.6vw,3.2rem);letter-spacing:-0.01em;line-height:0.95;color:#F3EEE3;margin-bottom:0.8rem;}
+.cant-desc{font-size:0.9rem;color:#d8d3c6;line-height:1.65;max-width:460px;}
+.cant-btn{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:#171310;background:#C8FF00;padding:0.8rem 1.4rem;border-radius:3px;white-space:nowrap;transition:opacity 0.2s;}
 .cant-btn:hover{opacity:0.85;}
 @media(max-width:820px){.cant-banner{min-height:280px;}}
 @media(max-width:560px){.cant-content{flex-direction:column;align-items:flex-start;padding:1.5rem;}.cant-text{max-width:100%;}.cant-btn{width:100%;text-align:center;}}
 
-/* ===== ANTOLOGÍA REDUCIDA ===== */
-.anto-mini{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;border:0.5px solid #1a1a1a;border-radius:4px;padding:1.6rem 2rem;background:#0c0c0c;flex-wrap:wrap;}
-.anto-mini-left{display:flex;flex-direction:column;gap:0.5rem;}
-.anto-mini-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#555;}
-.anto-mini-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.03em;color:#e8e4d9;}
-.anto-mini-title em{font-style:normal;color:#c8ff00;}
-.anto-mini-sub{font-size:0.82rem;color:#888;}
-.anto-mini-date{text-align:right;}
-.anto-mini-date-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8ff00;line-height:1;}
-.anto-mini-date-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#555;margin-top:0.3rem;}
-@media(max-width:560px){.anto-mini-date{text-align:left;}}
-
 /* ===== RUIDO ===== */
 .ruido{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
 @media(max-width:820px){.ruido{grid-template-columns:1fr;}}
-.ruido-year{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:#1f1f1f;}
-.ruido h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.04em;color:#e8e4d9;margin-bottom:1rem;}
-.ruido p{font-size:0.92rem;color:#888;line-height:1.8;margin-bottom:1.5rem;}
-.ruido p strong{color:#e8e4d9;font-weight:500;}
-.ruido-frame{aspect-ratio:16/9;border:0.5px solid #1a1a1a;border-radius:4px;background:#050505;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#333;letter-spacing:0.1em;text-transform:uppercase;}
+.ruido-year{font-family:'Archivo Black',sans-serif;font-size:4rem;line-height:1;color:#e1d9c6;}
+.ruido h2{font-family:'Archivo Black',sans-serif;font-size:2.4rem;letter-spacing:-0.01em;color:#171310;margin-bottom:1rem;}
+.ruido p{font-size:0.92rem;color:#544c40;line-height:1.8;margin-bottom:1.5rem;}
+.ruido p strong{color:#171310;font-weight:500;}
+.ruido-frame{aspect-ratio:16/9;border:1px solid #171310;border-radius:4px;background:#171310;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:#7a7264;letter-spacing:0.1em;text-transform:uppercase;}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.85rem 1.5rem;border-radius:3px;transition:all 0.2s;white-space:nowrap;display:inline-block;}
+.btn-primary{background:#C8FF00;color:#171310;}
+.btn-primary:hover{opacity:0.85;}
+.btn-ghost{border:1px solid #171310;color:#171310;}
+.btn-ghost:hover{border-color:#5B3E8C;color:#5B3E8C;}
 
-/* ===== SERIE T2 ===== */
-.serie-intro{font-size:0.92rem;color:#888;line-height:1.85;max-width:680px;margin-bottom:2.5rem;}
-.serie-intro strong{color:#e8e4d9;font-weight:500;}
-.eps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.5px solid #1a1a1a;}
-@media(max-width:820px){.eps{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:480px){.eps{grid-template-columns:1fr;}}
-.ep{padding:1.4rem;border-right:0.5px solid #1a1a1a;border-bottom:0.5px solid #1a1a1a;}
-.ep-num{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#c8ff00;margin-bottom:0.8rem;}
-.ep-title{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;line-height:1.05;color:#e8e4d9;margin-bottom:0.6rem;letter-spacing:0.02em;}
-.ep-q{font-size:0.78rem;color:#777;line-height:1.55;margin-bottom:0.8rem;}
-.ep-phase{font-family:'IBM Plex Mono',monospace;font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:#444;}
-
-/* ===== TEXTOS (placeholder API) ===== */
+/* ===== TEXTOS ===== */
 .textos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
 @media(max-width:680px){.textos-grid{grid-template-columns:1fr;}}
-.textos-col{border:0.5px solid #1a1a1a;border-radius:4px;padding:1.6rem;}
-.textos-col-title{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#888;margin-bottom:1.2rem;}
-.api-note{border:0.5px dashed #2a2a2a;border-radius:4px;padding:1.5rem;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#555;line-height:1.7;letter-spacing:0.06em;}
-.api-note span{color:#c8ff00;}
+.textos-col{border:1px solid #171310;border-radius:4px;padding:1.6rem;}
+.textos-col-title{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#544c40;margin-bottom:1.2rem;}
+.api-note{border:1px dashed #a89f8e;border-radius:4px;padding:1.5rem;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#8a8170;line-height:1.7;letter-spacing:0.06em;}
+.api-note span{color:#B71C2B;}
 
 /* ===== PODCAST ===== */
 .pod{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
 @media(max-width:820px){.pod{grid-template-columns:1fr;}}
-.pod-num{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:#c8ff00;}
-.pod-num-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#555;margin-bottom:2rem;}
-.pod h2{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:0.04em;color:#e8e4d9;margin-bottom:1rem;}
-.pod p{font-size:0.9rem;color:#888;line-height:1.8;margin-bottom:1.5rem;}
-.pod-frame{aspect-ratio:1/1;max-height:352px;border:0.5px solid #1a1a1a;border-radius:4px;background:#050505;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:0.1em;text-transform:uppercase;}
+.pod-num{font-family:'Archivo Black',sans-serif;font-size:4rem;line-height:1;color:#5B3E8C;}
+.pod-num-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a8170;margin-bottom:2rem;}
+.pod h2{font-family:'Archivo Black',sans-serif;font-size:2.2rem;letter-spacing:-0.01em;color:#171310;margin-bottom:1rem;}
+.pod p{font-size:0.9rem;color:#544c40;line-height:1.8;margin-bottom:1.5rem;}
+.pod-frame{aspect-ratio:1/1;max-height:352px;border:1px solid #171310;border-radius:4px;background:#171310;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:#7a7264;letter-spacing:0.1em;text-transform:uppercase;}
 
 /* ===== MANIFIESTO ===== */
-.mani{padding:5rem 0;background:#050505;border-bottom:0.5px solid #1a1a1a;text-align:center;}
-.mani-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.8rem);line-height:1.1;color:#e8e4d9;max-width:760px;margin:0 auto 1rem;letter-spacing:0.02em;}
-.mani-q em{font-style:normal;color:#c8ff00;}
-.mani-src{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;}
+.mani{padding:5rem 0;background:#171310;border-bottom:1px solid #171310;text-align:center;}
+.mani-q{font-family:'Archivo Black',sans-serif;font-size:clamp(1.4rem,3.6vw,2.4rem);line-height:1.15;color:#F3EEE3;max-width:760px;margin:0 auto 1rem;letter-spacing:-0.005em;}
+.mani-q em{font-style:normal;color:#C8FF00;}
+.mani-src{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:#7a7264;}
 
 /* ===== FOOTER ===== */
 .foot{padding:2.5rem 0;text-align:center;}
-.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.18em;color:#c8ff00;margin-bottom:0.8rem;}
-.foot-sig{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:#333;line-height:1.6;}
+.foot-logo{font-family:'Archivo Black',sans-serif;font-size:1.1rem;letter-spacing:0.02em;color:#5B3E8C;margin-bottom:0.8rem;}
+.foot-sig{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;color:#8a8170;line-height:1.6;}
 
-/* preview badge */
-.preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#c8ff00;color:#0a0a0a;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.85;}
-.hero-cierre .hero-eyebrow{color:#c8ff00;}
-.cierre-grid{display:grid;grid-template-columns:1fr 0.85fr;gap:3rem;align-items:start;}
-@media(max-width:880px){.cierre-grid{grid-template-columns:1fr;gap:2.5rem;}}
-.cierre-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,6vw,4.6rem);line-height:0.95;letter-spacing:0.02em;color:#e8e4d9;margin-bottom:2rem;}
-.cierre-h1 .l{display:block;white-space:nowrap;}
-.cierre-h1 em{font-style:normal;color:#c8ff00;}
-.cierre-video{aspect-ratio:16/9;border:0.5px solid #1a1a1a;border-radius:4px;overflow:hidden;background:#050505;}
-.cierre-video iframe{width:100%;height:100%;border:0;display:block;}
-@media(max-width:880px){.cierre-h1 .l{white-space:normal;display:inline;}}
+.preview-badge{position:fixed;bottom:1rem;left:1rem;z-index:200;background:#5B3E8C;color:#F3EEE3;font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.9rem;border-radius:3px;opacity:0.92;}
 </style>
 </head>
 <body>
 
-<!-- PREVIEW BADGE -->
-<div class="preview-badge">Vista previa · Julio</div>
+<div class="preview-badge">Vista previa · Diciembre</div>
 
-<!-- NAV STICKY (aparece al bajar del banner) -->
+<!-- TIPOGRAFÍA — comparativa temporal, borrar cuando elijas -->
+<div style="background:#171310;padding:2.5rem 2rem;">
+  <div class="wrap" style="display:flex;flex-direction:column;gap:1.6rem;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#7a7264;">Opciones tipográficas para "MAP RADIO CR" — comparar y elegir</div>
+    <div style="font-family:'Archivo Black',sans-serif;font-size:2.6rem;color:#F3EEE3;line-height:1;">MAP RADIO CR <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#C8FF00;letter-spacing:.1em;">— ARCHIVO BLACK (actual)</span></div>
+    <div style="font-family:'Anton',sans-serif;font-size:2.6rem;color:#F3EEE3;line-height:1;">MAP RADIO CR <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#C8FF00;letter-spacing:.1em;">— ANTON</span></div>
+    <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:2.6rem;color:#F3EEE3;line-height:1;">MAP RADIO CR <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#C8FF00;letter-spacing:.1em;">— OSWALD BOLD</span></div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2.6rem;color:#F3EEE3;line-height:1;">MAP RADIO CR <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#C8FF00;letter-spacing:.1em;">— SPACE GROTESK BOLD</span></div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:2.9rem;color:#F3EEE3;line-height:1;letter-spacing:.03em;">MAP RADIO CR <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;color:#C8FF00;letter-spacing:.1em;">— BEBAS NEUE (identidad original)</span></div>
+  </div>
+</div>
+
 <nav class="nav-sticky" id="navSticky">
   <div class="nav-inner">
     <div class="nav-logo">MAP</div>
     <div class="nav-links">
+      <a href="#antologia">Antología</a>
       <a href="#cronicas">Crónicas</a>
       <a href="#cantinas">Cantinas</a>
       <a href="https://www.mapradiocr.com/serie-map/">Serie</a>
       <a href="#textos">Textos</a>
       <a href="#podcast">Podcast</a>
-      <a href="#">Sobre el autor</a>
       <a href="#">Contacto</a>
     </div>
   </div>
 </nav>
 
-<!-- BANNER SERIE MAP — full height con video de fondo -->
+<!-- HERO — slider de artículos recientes, autoavance 25s por slide -->
 <section class="serie-hero" id="serie-top">
   <nav class="nav nav-over">
     <div class="nav-inner">
       <div class="nav-logo">MAP</div>
       <div class="nav-links">
+        <a href="#antologia">Antología</a>
         <a href="#cronicas">Crónicas</a>
         <a href="#cantinas">Cantinas</a>
         <a href="https://www.mapradiocr.com/serie-map/">Serie</a>
         <a href="#textos">Textos</a>
         <a href="#podcast">Podcast</a>
-        <a href="#">Sobre el autor</a>
         <a href="#">Contacto</a>
       </div>
     </div>
   </nav>
-  <video class="serie-hero-bg" autoplay muted loop playsinline poster="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp">
-    <source src="https://www.mapradiocr.com/wp-content/uploads/2026/06/404.mp4" type="video/mp4">
-  </video>
+
+  <div id="heroSlides"><!-- fondos (video + imágenes), uno por slide, inyectados por JS --></div>
+
   <div class="tv-scanlines"></div>
   <div class="tv-vignette"></div>
   <div class="tv-flicker"></div>
-  <div class="serie-hero-content">
-    <div class="serie-eyebrow">Música, Arte & Patinetas · Desde 2016</div>
-    <h1 class="serie-title">SERIE MAP</h1>
-    <p class="serie-sub">El corazón del proyecto: una serie documental sobre quienes crean cultura desde los márgenes.</p>
-    <a href="https://www.mapradiocr.com/serie-map/" class="serie-btn" id="laserBtn">
-      <svg class="laser-border" viewBox="0 0 200 48" preserveAspectRatio="none"><rect x="1" y="1" width="198" height="46" rx="3" fill="none" stroke="#c8ff00" stroke-width="1.5"/></svg>
-      <span class="laser-fill"></span>
-      <span class="laser-text" id="laserText">Ver la serie →</span>
+
+  <!-- contenido slide 1 — identidad / SERIE MAP -->
+  <div class="hero-content-video" id="heroContentVideo">
+    <div class="serie-eyebrow">Música, Arte &amp; Patinetas · Desde 2016</div>
+    <h1 class="video-title">SERIE MAP</h1>
+    <p class="video-sub">El corazón del proyecto: una serie documental sobre quienes crean cultura desde los márgenes.</p>
+    <a href="https://www.mapradiocr.com/serie-map/" class="laser-btn" id="laserBtn">
+      <svg viewBox="0 0 190 50" preserveAspectRatio="none"><rect x="1" y="1" width="188" height="48" rx="3"></rect></svg>
+      <span class="laser-btn-fill"></span>
+      <span class="laser-btn-label" id="laserLabel">Ver la serie →</span>
     </a>
   </div>
+
+  <!-- contenido slides 2+ — artículos recientes -->
+  <div class="hero-content-article" id="heroContentArticle">
+    <div class="serie-eyebrow"><span id="heroCat">Cine</span><span class="serie-eyebrow-cat" id="heroMeta">· Radio Pachuko · 6 min lectura</span></div>
+    <h1 class="serie-title" id="heroTitle">GIALLO</h1>
+    <p class="serie-sub" id="heroExcerpt">Sangre amarilla, navajas y la banda sonora que lo volvió adictivo.</p>
+    <a href="https://www.mapradiocr.com/giallo/" class="serie-btn" id="heroLink">Leer el artículo →</a>
+  </div>
+
+  <div class="hero-progress" id="heroProgress"><!-- una barra por slide, inyectada por JS --></div>
+
   <div class="scroll-hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
 </section>
 
-<!-- MARQUEE -->
 <div class="marquee">
   <div class="marquee-track">
-    /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 /// Música Arte Patinetas /// Desde 2016 /// <span>RUIDO · Festival Internacional de Cine CR 2018</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 ///&nbsp;
+    /// Música Arte Patinetas /// Desde 2016 /// <span>ANTOLOGÍA · Señales todavía activas — diciembre 2026</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 /// Música Arte Patinetas /// Desde 2016 /// <span>ANTOLOGÍA · Señales todavía activas — diciembre 2026</span> /// 200+ episodios de podcast /// Nasional Skateboards · 2007 ///&nbsp;
   </div>
 </div>
 
-<!-- ZONA PROYECTOS: CRÓNICAS + CANTINAS -->
+<!-- ANTOLOGÍA — libro físico diciembre, banda morada destacada -->
+<section class="anto-sec" id="antologia">
+  <div class="wrap">
+    <div class="label">Libro físico · PÚA Ediciones · Diciembre 2026</div>
+    <div class="anto-banner">
+      <img class="anto-cover" src="antologia.jpg" alt="Portada de ANTOLOGÍA — Señales todavía activas">
+      <div>
+        <div class="anto-tag">Varios autores · Poetas, escritores y MCs</div>
+        <div class="anto-title">ANTOLOGÍA — Señales todavía activas</div>
+        <div class="anto-sub">Faunos persistentes. Cantinas ocultas. Café para el descenso. Material recuperado de una época que todavía no termina de morirse. Con el sello de MAP Radio CR.</div>
+        <a href="#" class="anto-btn">Reservar copia →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRÓNICAS + CANTINAS -->
 <section class="sec" id="cronicas">
   <div class="wrap">
     <div class="label">Dos proyectos vivos</div>
     <div class="proyectos-grid">
 
-      <!-- Crónicas card -->
       <a href="https://www.mapradiocr.com/cronicas-del-refugio/" class="cron-card">
         <div class="cron-img">
-          <img src="https://www.mapradiocr.com/wp-content/uploads/2026/04/idcdr2.webp" alt="Crónicas del Refugio — portada: un niño descalzo sentado en la rama de un palo de mango con un mango rojo suspendido a su lado, grabado en blanco y negro">
+          <img src="https://www.mapradiocr.com/wp-content/uploads/2026/04/idcdr2.webp" alt="Crónicas del Refugio — portada">
         </div>
         <div class="cron-body">
-          <div class="cron-tag">Proyecto literario</div>
-          <div class="cron-title">Crónicas<br>del <em>Refugio</em></div>
+          <div class="cron-tag">Proyecto literario en curso</div>
+          <div class="cron-title">Crónicas del Refugio</div>
           <div class="cron-desc">Veinte crónicas de una Costa Rica que no aparece en las guías turísticas: el barrio, la bicicleta, la rabia y las formas extrañas en que la gente resiste.</div>
           <span class="cron-link">Leer el libro →</span>
         </div>
       </a>
 
-      <!-- Cantinas banner -->
       <a href="https://www.mapradiocr.com/cantinas/" class="cant-banner" id="cantinas">
-        <img class="cant-bg" src="https://www.mapradiocr.com/wp-content/uploads/2026/06/cantinas-legendarias-vertical.png" alt="Hombre mayor con bigote levantando un tarro de cerveza espumada en una cantina en penumbra, bajo un rótulo de neón rojo que dice Cantinas Legendarias">
+        <img class="cant-bg" src="https://www.mapradiocr.com/wp-content/uploads/2026/06/cantinas-legendarias-vertical.png" alt="Cantinas Legendarias">
         <div class="cant-content">
           <div class="cant-text">
             <div class="cant-tag">Mapa Vivo · MAP Radio CR</div>
@@ -306,23 +314,6 @@ img{display:block;max-width:100%;}
   </div>
 </section>
 
-<!-- ANTOLOGÍA REDUCIDA -->
-<section class="sec">
-  <div class="wrap">
-    <div class="anto-mini">
-      <div class="anto-mini-left">
-        <div class="anto-mini-tag">Convocatoria cerrada</div>
-        <div class="anto-mini-title">Antología <em>Literaria</em> MAP</div>
-        <div class="anto-mini-sub">La recepción de textos cerró el 1 de julio. Gracias a todas las voces que participaron.</div>
-      </div>
-      <div class="anto-mini-date">
-        <div class="anto-mini-date-num">1 AGO</div>
-        <div class="anto-mini-date-lbl">Selección en proceso</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- RUIDO -->
 <section class="sec">
   <div class="wrap">
@@ -331,7 +322,7 @@ img{display:block;max-width:100%;}
       <div>
         <div class="ruido-year">2018</div>
         <h2>RUIDO</h2>
-        <p>Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas. La pregunta que lo atraviesa: <strong>¿quién define lo que vale y lo que no?</strong></p>
+        <p>Un documental sobre jóvenes costarricenses que encontraron en la patineta, la música y el arte <strong>una forma de construir identidad</strong> donde las opciones parecían limitadas.</p>
         <a href="https://youtu.be/_g5LaE4DjVA" class="btn btn-ghost">Ver documental completo →</a>
       </div>
       <div class="ruido-frame">video · youtube embed</div>
@@ -339,10 +330,10 @@ img{display:block;max-width:100%;}
   </div>
 </section>
 
-<!-- TEXTOS (placeholder API) -->
+<!-- TEXTOS -->
 <section class="sec" id="textos">
   <div class="wrap">
-    <div class="label">Textos recientes & Lo más leído</div>
+    <div class="label">Textos recientes &amp; Lo más leído</div>
     <div class="textos-grid">
       <div class="textos-col">
         <div class="textos-col-title">Recientes</div>
@@ -365,26 +356,10 @@ img{display:block;max-width:100%;}
         <div class="pod-num">200</div>
         <div class="pod-num-lbl">Episodios grabados · desde 2016</div>
         <h2>MAP Radio</h2>
-        <p>Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie. Algunos episodios son legendarios. Todos son independientes.</p>
+        <p>Músicos, artistas, patinadores, escritores y gente que tiene algo real que decir. Conversaciones sin filtro, sin pauta publicitaria, sin permiso de nadie.</p>
         <a href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB" class="btn btn-primary">Escuchar el archivo →</a>
       </div>
       <div class="pod-frame">spotify · embed</div>
-    </div>
-  </div>
-</section>
-
-<!-- HERO DE TEXTO — ahora como CIERRE -->
-<section class="sec hero-cierre">
-  <div class="wrap">
-    <div class="cierre-grid">
-      <div class="cierre-text">
-        <div class="hero-eyebrow">Costa Rica · Cultura independiente · 2016</div>
-        <h1 class="cierre-h1"><span class="l">Donde el sistema</span> <span class="l">termina, <em>empieza</em></span> <span class="l">MAP.</span></h1>
-        <p class="hero-desc">MAP nació después de <strong>RUIDO</strong>, documental seleccionado en el Festival Internacional de Cine de Costa Rica 2018. Lo que empezó como una serie sobre patinadores, músicos y artistas ignorados por los medios, se convirtió en un archivo vivo: <strong>serie documental, crónicas, opinión y un podcast con más de 200 episodios</strong>.</p>
-      </div>
-      <div class="cierre-video">
-        <iframe src="https://www.youtube.com/embed/kwgF9zsxwZc" title="MAP — teaser" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
     </div>
   </div>
 </section>
@@ -397,7 +372,6 @@ img{display:block;max-width:100%;}
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="foot">
   <div class="foot-logo">MAP — 2016 ⚡</div>
   <div class="foot-sig">Ingeniería web — Dr. Arkady Volkov Lazenko<br>Instituto Cuántico Costarricense para la Investigación Interdimensional</div>
@@ -416,31 +390,191 @@ img{display:block;max-width:100%;}
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 })();
-</script>
-<script>
+
+/* ===== HERO SLIDER =====
+   Slide 1: identidad del proyecto (video en loop + botón láser) — se mantiene tal cual.
+   Slides siguientes: artículo más reciente (GIALLO) fijo primero,
+   y después una selección ALEATORIA (se reordena en cada carga de página)
+   del resto de artículos recientes. 25s de sostenido por slide.
+   En WordPress, el pool de "otros" se reemplaza por un fetch real a
+   /wp-json/wp/v2/posts?per_page=8&_embed (excluyendo el primero, ya mostrado). */
 (function(){
-  var btn = document.getElementById('laserBtn');
-  var textEl = document.getElementById('laserText');
-  if(!btn || !textEl) return;
-  var full = textEl.textContent;
-  textEl.innerHTML = '';
-  var spans = [];
-  for(var i=0;i<full.length;i++){
-    var s = document.createElement('span');
-    s.className = 'ch';
-    s.textContent = full[i];
-    if(full[i]===' ') s.innerHTML = '&nbsp;';
-    textEl.appendChild(s);
-    spans.push(s);
+  var SLIDE_DURATION = 25000; // 25s
+
+  var VIDEO_SLIDE = {
+    type: "video",
+    video: "https://www.mapradiocr.com/wp-content/uploads/2025/10/mapradiocr-2025-B.mp4"
+  };
+
+  var LATEST = {
+    type: "article",
+    title: "GIALLO",
+    cat: "Cine",
+    meta: "Radio Pachuko · 3 jul 2026 · 6 min lectura",
+    excerpt: "Sangre amarilla, navajas y la banda sonora que lo volvió adictivo: el giallo italiano y su estética inconfundible.",
+    link: "https://www.mapradiocr.com/giallo/",
+    image: "https://www.mapradiocr.com/wp-content/uploads/2026/07/l6OXiP8RNc1xdqmycBdX0NBsnMS.webp"
+  };
+
+  var POOL = [
+    {
+      type: "article",
+      title: "CARLOS ALVARADO Y EL MORBO LITERARIO DEL PODER",
+      cat: "Editorial",
+      meta: "Radio Pachuko · 4 ago 2025 · 10 min lectura",
+      excerpt: "Un mar encendido, un barco diminuto y la metáfora de un país a la deriva.",
+      link: "https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",
+      image: "https://www.mapradiocr.com/wp-content/uploads/2025/08/la-guilita-de-mar-carlos-alvarado-quesada-expresidente.jpg"
+    },
+    {
+      type: "article",
+      title: "GRANDES INFELICES PODCAST",
+      cat: "Podcast",
+      meta: "Radio Pachuko · 15 jun 2026 · 5 min lectura",
+      excerpt: "Los rostros de Grandes Infelices: las luces y las sombras de grandes autores.",
+      link: "https://www.mapradiocr.com/grandes-infelices/",
+      image: "https://www.mapradiocr.com/wp-content/uploads/2026/06/javier-pena-grandes-infelices.webp"
+    },
+    {
+      type: "article",
+      title: "DIEZ AÑOS DETRÁS DE UNA BARRA",
+      cat: "Cine",
+      meta: "Radio Pachuko · 8 jun 2026 · 8 min lectura",
+      excerpt: "Terminal Bar (2002) de Stefan Nadelman: las fotografías de Sheldon Nadelman y las historias que nadie registró.",
+      link: "https://www.mapradiocr.com/terminal-bar-documental/",
+      image: "https://www.mapradiocr.com/wp-content/uploads/2026/06/812b4d73-87b3-4ce5-9e73-c3ca33a68bb2.jpg"
+    },
+    {
+      type: "article",
+      title: "ESTUDIOS DE CAMPO 2",
+      cat: "Crónicas",
+      meta: "Radio Pachuko · 22 jun 2026",
+      excerpt: "Segunda bitácora de campo: notas sueltas desde el terreno, sin editar el ruido de fondo.",
+      link: "https://www.mapradiocr.com/estudios-de-campo-bitacora-2/",
+      image: "" /* TODO: pegar URL de imagen destacada real de este artículo */
+    },
+    {
+      type: "article",
+      title: "ENTRE EL IDEALISMO Y EL VALEVERGUISMO",
+      cat: "Editorial",
+      meta: "Radio Pachuko · 17 jun 2026",
+      excerpt: "Una reflexión sobre las dos formas en que este país decide no comprometerse con nada.",
+      link: "https://www.mapradiocr.com/entre-el-idealismo-y-el-valeverguismo/",
+      image: "" /* TODO: pegar URL de imagen destacada real de este artículo */
+    }
+  ];
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
   }
-  setTimeout(function(){ btn.classList.add('go'); btn.classList.add('draw'); }, 1900);
-  setTimeout(function(){ btn.classList.add('fill'); }, 2550);
-  setTimeout(function(){
-    var d = 2950;
-    spans.forEach(function(s, idx){
-      setTimeout(function(){ s.classList.add('lit'); }, idx*45);
+
+  var slides = [VIDEO_SLIDE, LATEST].concat(shuffle(POOL));
+
+  var slidesWrap = document.getElementById('heroSlides');
+  var progressWrap = document.getElementById('heroProgress');
+  var contentVideo = document.getElementById('heroContentVideo');
+  var contentArticle = document.getElementById('heroContentArticle');
+  var laserBtn = document.getElementById('laserBtn');
+  var laserLabel = document.getElementById('laserLabel');
+  var catEl = document.getElementById('heroCat');
+  var metaEl = document.getElementById('heroMeta');
+  var titleEl = document.getElementById('heroTitle');
+  var excerptEl = document.getElementById('heroExcerpt');
+  var linkEl = document.getElementById('heroLink');
+
+  // envolver cada letra del botón láser en su propio span para el reveal
+  (function wrapLetters(){
+    var text = laserLabel.textContent;
+    laserLabel.innerHTML = '';
+    text.split('').forEach(function(ch, idx){
+      var span = document.createElement('span');
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      span.style.transitionDelay = (1.05 + idx * 0.02) + 's';
+      laserLabel.appendChild(span);
     });
-  }, 2900);
+  })();
+
+  var bgEls = [];
+  var barFills = [];
+  var current = 0;
+  var timer = null;
+
+  slides.forEach(function(s, i){
+    var bg;
+    if (s.type === 'video') {
+      bg = document.createElement('video');
+      bg.className = 'hero-slide-video';
+      bg.src = s.video;
+      bg.autoplay = true; bg.muted = true; bg.loop = true; bg.playsInline = true;
+    } else {
+      bg = document.createElement('div');
+      bg.className = 'hero-slide-bg';
+      if (s.image) { bg.style.backgroundImage = 'url(' + s.image + ')'; }
+      bg.style.backgroundSize = 'cover';
+      bg.style.backgroundPosition = 'center';
+      if (!s.image) { bg.style.background = '#171310'; }
+    }
+    slidesWrap.appendChild(bg);
+    bgEls.push(bg);
+
+    var bar = document.createElement('div');
+    bar.className = 'hero-bar';
+    bar.addEventListener('click', function(){ goTo(i); });
+    var fill = document.createElement('span');
+    fill.className = 'hero-bar-fill';
+    bar.appendChild(fill);
+    progressWrap.appendChild(bar);
+    barFills.push(fill);
+  });
+
+  function render(i){
+    var s = slides[i];
+    bgEls.forEach(function(el, idx){ el.classList.toggle('active', idx === i); });
+
+    if (s.type === 'video') {
+      contentVideo.classList.add('active');
+      contentArticle.classList.remove('active');
+      laserBtn.classList.remove('drawn');
+      void laserBtn.offsetWidth;
+      requestAnimationFrame(function(){ laserBtn.classList.add('drawn'); });
+    } else {
+      contentVideo.classList.remove('active');
+      contentArticle.classList.add('active');
+      catEl.textContent = s.cat;
+      metaEl.textContent = '· ' + s.meta;
+      titleEl.textContent = s.title;
+      excerptEl.textContent = s.excerpt;
+      linkEl.href = s.link;
+    }
+
+    barFills.forEach(function(f, idx){
+      f.classList.remove('filling','filled');
+      void f.offsetWidth;
+      if (idx < i) f.classList.add('filled');
+      else if (idx === i) requestAnimationFrame(function(){ f.classList.add('filling'); });
+    });
+  }
+
+  function goTo(i){
+    current = (i + slides.length) % slides.length;
+    render(current);
+    resetTimer();
+  }
+
+  function next(){ goTo(current + 1); }
+
+  function resetTimer(){
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(next, SLIDE_DURATION);
+  }
+
+  render(current);
+  resetTimer();
 })();
 </script>
 </body>
