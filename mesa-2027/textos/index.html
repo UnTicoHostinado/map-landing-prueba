@@ -312,6 +312,20 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .ap-ficha .ap-boton{margin-top:auto}
 .ar-menu a[aria-current="page"]{color:var(--ar-papel)!important;border-bottom:2px solid var(--ar-acento)}
 @media (prefers-reduced-motion:reduce){.ap-ultima__foto img{transition:none}}
+
+/* listas a lo ancho */
+.ap-lista-ancha{margin-top:80px}
+.ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr) auto;gap:0 22px;min-height:76px}
+.ap-lista-ancha .ar-lista li>div{display:contents}
+.ap-lista-ancha .ar-lista a{font-size:19px;max-width:62ch}
+.ap-lista-ancha .ar-meta{margin:0;text-align:right;white-space:nowrap}
+@media (max-width:700px){
+  .ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr)}
+  .ap-lista-ancha .ar-lista li>div{display:block}
+  .ap-lista-ancha .ar-meta{text-align:left;margin-top:5px;white-space:normal}
+}
+.ap-aire__txt{gap:6px}
+.ap-aire__nombre{font-size:clamp(28px,3.4vw,40px)}
 </style>
 
 <div class="ar-maqueta">
@@ -365,29 +379,28 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     </div>
   </section></div>
 
-  <!-- 2 · registro y lo más leído, lado a lado -->
-  <div class="hr-wrap ap-wrap"><section class="ar-dos ap-dos">
-    <div class="ar-col">
-      <div class="ar-tit"><h2>Registro</h2><span>últimos artículos</span></div>
-      <div class="ap-filtros" id="ap-filtros" role="group" aria-label="Filtrar por categoría"></div>
-      <ol class="ar-lista" id="ap-registro"></ol>
-      <p class="ap-vacio" id="ap-vacio" hidden>Todavía no hay textos en esta categoría.</p>
-      <button type="button" class="ap-mas" id="ap-mas">Cargar más →</button>
-    </div>
-    <div class="ar-eje" aria-hidden="true"></div>
-    <div class="ar-col">
-      <div class="ar-tit"><h2>Lo más leído</h2><span>30 días · orden de ejemplo</span></div>
-      <ol class="ar-lista">
+  <!-- 2 · últimos artículos, a lo ancho -->
+  <div class="ap-wrap"><section class="ap-lista-ancha ap-ancho" aria-labelledby="ap-ult-t">
+    <div class="ar-tit"><h2 id="ap-ult-t">Últimos artículos</h2><span>registro del archivo</span></div>
+    <div class="ap-filtros" id="ap-filtros" role="group" aria-label="Filtrar por categoría"></div>
+    <ol class="ar-lista" id="ap-registro"></ol>
+    <p class="ap-vacio" id="ap-vacio" hidden>Todavía no hay textos en esta categoría.</p>
+    <button type="button" class="ap-mas" id="ap-mas">Cargar más →</button>
+  </section></div>
+
+  <!-- 3 · lo más leído, a lo ancho -->
+  <div class="ap-wrap"><section class="ap-lista-ancha ap-ancho" aria-labelledby="ap-top-t">
+    <div class="ar-tit"><h2 id="ap-top-t">Lo más leído</h2><span>30 días · orden de ejemplo</span></div>
+    <ol class="ar-lista">
         <li><span class="ar-marca">1</span><div><a href="https://www.mapradiocr.com/el-cine-independiente-en-costa-rica/">El cine independiente en Costa Rica</a><span class="ar-meta">Cine</span></div></li>
         <li><span class="ar-marca">2</span><div><a href="https://www.mapradiocr.com/jose-maria-villalta-el-politico-profesional-que-vide-de-la-pose/">José María Villalta: el político profesional que vive de la pose</a><span class="ar-meta">Editorial</span></div></li>
         <li><span class="ar-marca">3</span><div><a href="https://www.mapradiocr.com/juan-el-bautista-en-el-bar-buenos-aires/">Bar Buenos Aires: la cantina legendaria de San José</a><span class="ar-meta">Cantinas</span></div></li>
         <li><span class="ar-marca">4</span><div><a href="https://www.mapradiocr.com/cannabis-airlines-entre-la-pista-y-el-cielo/">Cannabis Airlines: crónica entre la pista y el cielo</a><span class="ar-meta">Crónicas</span></div></li>
         <li><span class="ar-marca">5</span><div><a href="https://www.mapradiocr.com/emperador-tertuliano/">Emperador Tertuliano</a><span class="ar-meta">Literatura</span></div></li>
       </ol>
-    </div>
   </section></div>
 
-  <!-- 3 · proyecto literario en curso -->
+  <!-- 4 · proyecto literario en curso -->
   <div class="ap-wrap"><section class="ap-proyecto ap-ancho" aria-labelledby="ap-cr">
     <a class="ap-libro" href="https://www.mapradiocr.com/cronicas-del-refugio/" aria-label="Crónicas del Refugio, portada del libro">
       <img src="https://www.mapradiocr.com/wp-content/uploads/2026/04/idcdr2.webp" width="1200" height="1800" loading="lazy" alt="Portada del libro Crónicas del Refugio" onerror="this.parentNode.classList.add('sin-foto')">
@@ -404,35 +417,17 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 
   <!-- 4 · al aire -->
   <div class="ap-wrap"><section class="ap-aire ap-ancho" aria-labelledby="ap-aire-t">
-    <div class="ar-tit"><h2 id="ap-aire-t">Al aire</h2><span>MAP Radio Pachuko · podcast</span></div>
+    <div class="ar-tit"><h2 id="ap-aire-t">Al aire</h2><span>la última narración</span></div>
     <div class="ap-aire__fila">
-      <a class="ar-play ap-aire__play" href="https://www.mapradiocr.com/podcast" aria-label="Escuchar el episodio"><i aria-hidden="true"></i></a>
+      <a class="ar-play ap-aire__play" href="https://www.mapradiocr.com/bitacora-6/" aria-label="Escuchar la Bitácora 6"><i aria-hidden="true"></i></a>
       <div class="ap-aire__txt">
-        <a class="ap-aire__nombre" href="https://www.mapradiocr.com/podcast">Los Bastardos de Poveda</a>
-        <span class="ar-meta">Con Luis Poveda · Acerca de las causas perdidas</span>
+        <span class="ar-meta">Los Estudios de Campo del Dr. Arkady Volkov Lazenko · Bitácora 6</span>
+        <a class="ap-aire__nombre" href="https://www.mapradiocr.com/bitacora-6/">Receptor transdimensional de banda vacante residual VX-996</a>
       </div>
       <a class="ap-aire__todos" href="https://www.mapradiocr.com/podcast">Todos los episodios →</a>
     </div>
   </section></div>
 
-  <!-- 5 · el pañol y el astillero -->
-  <div class="ap-wrap"><section class="ap-dos-fichas ap-ancho" aria-label="Merch y servicios">
-    <article class="ap-ficha">
-      <p class="ap-kicker">El Pañol · merch</p>
-      <h2>En el taller</h2>
-      <ul>
-        <li>Coach jacket</li><li>Crewneck negro y gris ratón</li><li>Camisetas de lino, pocas</li><li>Medias</li><li>Gorras ripstop retro</li>
-      </ul>
-      <a class="ap-boton ap-boton--linea" href="https://www.mapradiocr.com/contacto">Preguntar por la merch →</a>
-    </article>
-    <article class="ap-ficha">
-      <p class="ap-kicker">El Astillero · servicios</p>
-      <h2>Patrocinio y producción</h2>
-      <p>Producción audiovisual, podcast y series con el sello MAP.</p>
-      <p>¿Le gustaría ser parte de este archivo, colaborando como patrocinador? Escríbanos.</p>
-      <a class="ap-boton ap-boton--linea" href="https://www.mapradiocr.com/contacto">Escribir a MAP →</a>
-    </article>
-  </section></div>
 </main>
 
 <footer class="ar-pie">
