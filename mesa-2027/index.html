@@ -439,7 +439,7 @@ async function tocarSenal(t){
   if(!b||S.activa!==t) return;
   const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
   s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
-  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(.035,1.2)}};
+  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(0,1)}};
 }
 
 /* ===== estado ===== */
@@ -575,7 +575,8 @@ function bucle(now){
   S.marc=((Math.round(S.rumbo)%360)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
   const n=Math.round(k*9);
   segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
-  if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
+  // la estática solo vive mientras alguien busca: girar el aro o mover la carta; en reposo se apaga
+  if(A.ctx&&!A.fuente&&S.fase==="libre"){const busca=performance.now()-(S.ultimoMov||0)<2500;nivelEstatica(busca?.015+.05*(1-k):0,busca?.8:2.5)}
   if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
   requestAnimationFrame(bucle);
 }
@@ -616,10 +617,10 @@ function aro(){
     st={id:e.pointerId,a:angDe(e)}; ult=Math.round(S.rumbo/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
   });
   // la carátula y el mundo siguen al dedo: girar a la derecha gira la carta a la derecha
-  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;const a=angDe(e);const d=((a-st.a+540)%360)-180;st.a=a;S.rumbo-=d;const m=Math.round(S.rumbo/10);if(m!==ult){ult=m;tic()}});
+  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;const a=angDe(e);const d=((a-st.a+540)%360)-180;st.a=a;S.rumbo-=d;S.ultimoMov=performance.now();const m=Math.round(S.rumbo/10);if(m!==ult){ult=m;tic()}});
   const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
   hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
-  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){if($("#ficha").classList.contains("abierta"))cerrarFicha();S.rumbo+=e.key==="]"?5:-5;tic()}});
+  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){if($("#ficha").classList.contains("abierta"))cerrarFicha();S.rumbo+=e.key==="]"?5:-5;S.ultimoMov=performance.now();tic()}});
 }
 const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
 
@@ -631,13 +632,13 @@ function arrastre(){
   cv.addEventListener("pointermove",e=>{
     const p=toques.get(e.pointerId); if(!p) return;
     if(toques.size===2){const [a,b]=[...toques.values()];const d0=Math.hypot(a.x-b.x,a.y-b.y);p.x=e.clientX;p.y=e.clientY;const [c,d]=[...toques.values()];const d1=Math.hypot(c.x-d.x,c.y-d.y);if(d0>0&&d1>0){V.d=clamp(V.d*d0/d1,7,120);V.p=clamp(22+(V.d-7)*.45,22,78)}return}
-    const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+    const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;S.ultimoMov=performance.now();
     const k=V.d*.0016, h=-S.rumbo*Math.PI/180;
     V.tx=clamp(V.tx+(-Math.cos(h)*dx-Math.sin(h)*dy)*k,-WD/2,WD/2); V.tz=clamp(V.tz+(Math.sin(h)*dx-Math.cos(h)*dy)*k,-HD/2,HD/2);
   });
   const soltar=e=>{toques.delete(e.pointerId);if(!toques.size)cv.classList.remove("arrastrando")};
   cv.addEventListener("pointerup",soltar); cv.addEventListener("pointercancel",soltar);
-  cv.addEventListener("wheel",e=>{if(!activo())return;e.preventDefault();if(vuelo)vuelo.fin(false);V.d=clamp(V.d*Math.exp(e.deltaY*.0012),7,120);V.p=clamp(22+(V.d-7)*.45,22,78)},{passive:false});
+  cv.addEventListener("wheel",e=>{if(!activo())return;e.preventDefault();S.ultimoMov=performance.now();if(vuelo)vuelo.fin(false);V.d=clamp(V.d*Math.exp(e.deltaY*.0012),7,120);V.p=clamp(22+(V.d-7)*.45,22,78)},{passive:false});
   window.addEventListener("keydown",e=>{
     if(!activo()||document.querySelector(".pliego:not([hidden])")) return;
     const m={ArrowUp:[0,1],ArrowDown:[0,-1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key]; if(!m) return; e.preventDefault();
@@ -670,7 +671,7 @@ async function sintonizar(t){
   const llego=await volarA({tx:t.w.x,tz:t.w.z,d:t.tipo==="nubes"?26:16,p:t.tipo==="nubes"?40:30,rumbo:r},clamp(1300+lejos*.9,1300,3000));
   if(!llego||S.activa!==t) return;
   abrirFicha(t);
-  if(t.tipo==="senal"){ nivelEstatica(.006,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
+  if(t.tipo==="senal"){ nivelEstatica(0,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
 }
 function despertarTodo(){
   T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
@@ -769,7 +770,7 @@ function abrirFicha(t){
 }
 function cerrarFicha(silencioso){
   const f=$("#ficha"); f.classList.remove("abierta");
-  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(.04,.5); $("#aviso").classList.add("oculto");}
+  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(0,.5); $("#aviso").classList.add("oculto");}
 }
 
 /* ===== portada y collage ===== */
@@ -852,7 +853,7 @@ function revelar(els){
   setTimeout(()=>{$("#collage").innerHTML="";tr.innerHTML=""},reduce?0:1500);
   setTimeout(()=>{
     T.forEach(t=>t.el.classList.add("viva"));
-    if(A.ctx) nivelEstatica(.05,.6);
+    if(A.ctx) nivelEstatica(0,3);
     esperar();
   },reduce?0:650);
   S.visto=true; store.set("map27.visto",true);
@@ -889,7 +890,8 @@ function mandos(){
   });
   $("#b-audio").addEventListener("click",e=>{
     A.on=!A.on; const b=e.currentTarget; b.setAttribute("aria-pressed",A.on); b.classList.toggle("encendida",A.on);
-    if(A.ctx){A.master.gain.setTargetAtTime(A.on?1:0,A.ctx.currentTime,.05)}
+    // apagar el audio apaga el aparato de sonido completo, no solo el volumen
+    if(A.ctx){A.master.gain.setTargetAtTime(A.on?1:0,A.ctx.currentTime,.05); if(A.on){A.ctx.resume()}else{setTimeout(()=>{if(!A.on)A.ctx.suspend()},120)}}
   });
   $("#b-carta").addEventListener("click",()=>abrirPliego("p-carta"));
   $("#b-apagar").addEventListener("click",apagar);
@@ -910,7 +912,7 @@ function mandos(){
   $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
 }
 function apagar(){
-  pararSenal(); nivelEstatica(0,.1); clack(); leve(null);
+  pararSenal(); nivelEstatica(0,.1); clack(); if(A.ctx) setTimeout(()=>{if(S.fase==="portada")A.ctx.suspend()},400); leve(null);
   $$(".pliego").forEach(p=>p.hidden=true); $("#ficha").classList.remove("abierta");
   if(vuelo) vuelo.fin(false); clearInterval(avisoT); $("#aviso").textContent="";
   S.activa=null; S.objetivo=null; S.alineada=null; S.fase="portada";

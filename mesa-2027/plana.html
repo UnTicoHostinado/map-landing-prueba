@@ -442,7 +442,7 @@ async function tocarSenal(t){
   if(!b||S.activa!==t) return;
   const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
   s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
-  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(.035,1.2)}};
+  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(0,1)}};
 }
 
 /* ===== construcción del dial ===== */
@@ -555,7 +555,8 @@ function bucle(){
   S.marc=((Math.round(S.aguja)%360)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
   const n=Math.round(k*9);
   segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
-  if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
+  // la estática solo vive mientras alguien busca: girar el aro o mover la carta; en reposo se apaga
+  if(A.ctx&&!A.fuente&&S.fase==="libre"){const busca=performance.now()-(S.ultimoMov||0)<2500;nivelEstatica(busca?.015+.05*(1-k):0,busca?.8:2.5)}
   if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
   requestAnimationFrame(bucle);
 }
@@ -619,7 +620,7 @@ function aro(){
     if(!S.manual){S.manual=true;$("#rumbo").classList.remove("llamado")}
     st={id:e.pointerId,off:angDe(e)-S.aguja}; ult=Math.round(S.aguja/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
   });
-  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;let a=angDe(e)-st.off;const d=((a-S.aguja+540)%360)-180;S.aguja+=d;const m=Math.round(S.aguja/10);if(m!==ult){ult=m;tic()}});
+  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;let a=angDe(e)-st.off;const d=((a-S.aguja+540)%360)-180;S.aguja+=d;S.ultimoMov=performance.now();const m=Math.round(S.aguja/10);if(m!==ult){ult=m;tic()}});
   const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
   hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
   // teclado: [ y ] giran el aro 5°
@@ -641,7 +642,7 @@ function arrastre(){
     if(!S.movido&&Math.hypot(dx,dy)>7){S.movido=true;mapa.classList.add("arrastrando");try{mapa.setPointerCapture(p.id)}catch(_){}}
     if(!S.movido) return;
     const nx=p.ox-dx/S.s, ny=p.oy-dy/S.s, now=performance.now(), dt=Math.max(1,now-last);
-    vx=(nx-S.x)/dt; vy=(ny-S.y)/dt; last=now; S.x=nx; S.y=ny; aplicar();
+    vx=(nx-S.x)/dt; vy=(ny-S.y)/dt; last=now; S.x=nx; S.y=ny; S.ultimoMov=now; aplicar();
   });
   const fin=e=>{
     if(!p||e.pointerId!==p.id) return; p=null; mapa.classList.remove("arrastrando");
@@ -690,7 +691,7 @@ async function sintonizar(t){
   // pequeño giro de la perilla de rumbo como si el aparato buscara
   await panA(t.x,t.y,850);
   abrirFicha(t);
-  if(t.tipo==="senal"){ nivelEstatica(.006,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
+  if(t.tipo==="senal"){ nivelEstatica(0,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
   if(S.fase==="espera"){ S.fase="libre"; despertarTodo(); }
 }
 function despertarTodo(){
@@ -717,7 +718,7 @@ function abrirFicha(t){
 }
 function cerrarFicha(silencioso){
   const f=$("#ficha"); f.classList.remove("abierta");
-  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(.04,.5); $("#aviso").classList.add("oculto");}
+  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(0,.5); $("#aviso").classList.add("oculto");}
 }
 
 /* ===== portada y collage ===== */
@@ -802,7 +803,7 @@ function revelar(els){
   setTimeout(()=>{
     $("#instrumento").classList.add("listo"); $$(".hud").forEach(h=>h.classList.add("listo"));
     T.forEach(t=>t.el.classList.add("viva"));
-    if(A.ctx) nivelEstatica(.05,.6);
+    if(A.ctx) nivelEstatica(0,3);
     setTimeout(esperar,reduce?0:700);
   },reduce?0:650);
   S.visto=true; store.set("map27.visto",true);
@@ -832,7 +833,8 @@ function mandos(){
   });
   $("#b-audio").addEventListener("click",e=>{
     A.on=!A.on; const b=e.currentTarget; b.setAttribute("aria-pressed",A.on); b.classList.toggle("encendida",A.on);
-    if(A.ctx){A.master.gain.setTargetAtTime(A.on?1:0,A.ctx.currentTime,.05)}
+    // apagar el audio apaga el aparato de sonido completo, no solo el volumen
+    if(A.ctx){A.master.gain.setTargetAtTime(A.on?1:0,A.ctx.currentTime,.05); if(A.on){A.ctx.resume()}else{setTimeout(()=>{if(!A.on)A.ctx.suspend()},120)}}
   });
   $("#b-carta").addEventListener("click",()=>abrirPliego("p-carta"));
   $("#b-apagar").addEventListener("click",apagar);
@@ -853,7 +855,7 @@ function mandos(){
   $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
 }
 function apagar(){
-  pararSenal(); nivelEstatica(0,.1); clack();
+  pararSenal(); nivelEstatica(0,.1); clack(); if(A.ctx) setTimeout(()=>{if(S.fase==="portada")A.ctx.suspend()},400);
   $$(".pliego").forEach(p=>p.hidden=true); $("#ficha").classList.remove("abierta");
   cancelAnimationFrame(S.pan||0); clearInterval(avisoT); $("#aviso").textContent="";
   S.activa=null; S.objetivo=null; S.fase="portada";
