@@ -188,7 +188,7 @@ a{color:inherit}
   padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));transition:opacity .6s ease}
 #portada.fuera{opacity:0;pointer-events:none}
 .portada-placa{width:min(420px,100%);display:grid;justify-items:center;gap:16px;padding:26px 22px 22px;text-align:center}
-.portada-placa .sello{width:132px;height:132px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--metal-osc),0 8px 20px rgba(0,0,0,.4)}
+.portada-placa .sello{width:150px;height:auto;aspect-ratio:666/673;max-width:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
 .portada-placa h1{margin:0;color:var(--rotulo);font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,40px);line-height:.95;letter-spacing:.05em;text-wrap:balance}
 .coord{color:var(--rotulo);font-family:var(--mono);font-size:clamp(10px,2.9vw,12px);font-weight:600;letter-spacing:.08em;white-space:nowrap;min-height:1.5em;font-variant-numeric:tabular-nums}
 .inst{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:rgba(233,228,212,.85);margin:0;display:grid;gap:2px}
@@ -255,7 +255,7 @@ a{color:inherit}
 
   <div class="hud" id="placa-sup">
     <div class="placa marca-map">
-      <img src="assets/img/map-sello.png" alt="">
+      <img src="assets/img/map-sello-claro.png" alt="">
       <div><b>MAP · RG-27</b><span>Radiogoniómetro</span><span title="Instituto Cuántico Costarricense para la Investigación Interdimensional">IQCPLII</span></div>
     </div>
     <dl class="placa lecturas" aria-live="off">
@@ -345,7 +345,7 @@ a{color:inherit}
   <!-- PORTADA -->
   <div id="portada">
     <div class="portada-placa placa">
-      <img class="sello" src="assets/img/map-sello.png" alt="Sello de MAP: Música, Arte &amp; Patinetas">
+      <img class="sello" src="assets/img/map-sello-claro.png" alt="Sello de MAP: Música, Arte &amp; Patinetas">
       <h1 class="sr">MAP Radio CR: Música, Arte &amp; Patinetas</h1>
       <div class="coord" id="coord-portada" aria-label="09°56' Norte, 84°05' Oeste. San José, Costa Rica"></div>
       <button class="interruptor" id="encender" type="button" role="switch" aria-checked="false" aria-label="Encender">
@@ -730,13 +730,34 @@ function escribirCoord(){
 }
 const clackEl=new Audio("assets/sonidos/clack.mp3"); clackEl.preload="auto";
 function clack(){if(!A.on)return;try{clackEl.currentTime=0;const p=clackEl.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+/* transmisión en clave Morse: "MAP CR" mientras se telegrafían las coordenadas */
+const MORSE={M:"--",A:".-",P:".--.",C:"-.-.",R:".-."};
+function transmitir(){
+  const el=$("#coord-portada"), txt="09°56'N · 84°05'W · SAN JOSÉ, COSTA RICA", u=.055;
+  const tonos=[]; let t=.15;
+  "MAP CR".split(" ").forEach(w=>{[...w].forEach(ch=>{[...MORSE[ch]].forEach(sg=>{const d=sg==="."?u:3*u;tonos.push([t,d]);t+=d+u});t+=2*u});t+=4*u});
+  const total=t;
+  if(A.ctx&&A.on){
+    const t0=A.ctx.currentTime, o=A.ctx.createOscillator(), g=A.ctx.createGain(), f=A.ctx.createBiquadFilter();
+    o.type="square"; o.frequency.value=640; f.type="lowpass"; f.frequency.value=1800; g.gain.value=0;
+    o.connect(f).connect(g).connect(A.master);
+    tonos.forEach(([a,d])=>{g.gain.setValueAtTime(0,t0+a);g.gain.linearRampToValueAtTime(.075,t0+a+.006);g.gain.setValueAtTime(.075,t0+a+d-.006);g.gain.linearRampToValueAtTime(0,t0+a+d)});
+    o.start(t0); o.stop(t0+total+.1);
+  }
+  // cada pulso suelta un pedazo del texto: la línea entra telegrafiada
+  el.textContent="";
+  const n=txt.length, por=n/tonos.length;
+  tonos.forEach(([a],i)=>setTimeout(()=>{el.textContent=txt.slice(0,Math.round((i+1)*por))},a*1000));
+  return new Promise(res=>setTimeout(()=>{el.textContent=txt;res()},total*1000+250));
+}
 async function encender(){
   if(S.fase!=="portada") return;
   clack();
+  S.fase="collage";
   const sw=$("#encender"); sw.setAttribute("aria-checked","true");
   iniciarAudio(); if(A.ctx&&A.ctx.state==="suspended"){try{await A.ctx.resume()}catch(e){}}
-  S.fase="collage";
-  setTimeout(()=>{$("#portada").classList.add("fuera");collage()},reduce?0:420);
+  if(!reduce) await transmitir();
+  $("#portada").classList.add("fuera"); collage();
 }
 function collage(){
   const lay=$("#collage"), saltar=$("#saltar");
