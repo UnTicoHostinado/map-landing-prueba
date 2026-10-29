@@ -245,7 +245,7 @@ a{color:inherit}
 <div id="app">
   <div id="mapa" aria-label="Carta aérea de San José, Costa Rica. Arrastre para recorrerla.">
     <div id="lienzo">
-      <img class="carta" id="carta" alt="Joint Operations Graphic (Air), hoja NC 17-9, San José, Costa Rica, escala 1:250.000" src="assets/carta/san-jose-640.jpg" draggable="false">
+      <img class="carta" id="carta" alt="Joint Operations Graphic (Air), hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000" src="assets/carta/carta-640.jpg" draggable="false">
     </div>
     <div class="vineta"></div>
   </div>
@@ -290,7 +290,7 @@ a{color:inherit}
   <!-- CARTA PLEGADA: índice clásico, también para buscadores -->
   <section class="pliego" id="p-carta" hidden role="dialog" aria-modal="true" aria-labelledby="t-carta">
     <div class="hoja">
-      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hoja NC 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hojas NC 17-5 y NC 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
       <p>Los ocho territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
       <ul class="indice" id="indice"></ul>
       <div class="secciones">
@@ -299,7 +299,7 @@ a{color:inherit}
         <a class="btn vacio" href="https://www.mapradiocr.com/sobre-el-director/" target="_blank" rel="noopener">Sobre el autor</a>
         <a class="btn vacio" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Contacto</a>
       </div>
-      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hoja NC 17-9, San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
+      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
     </div>
   </section>
 
@@ -364,16 +364,16 @@ a{color:inherit}
 /* ===== Datos: la carta y los ocho territorios =====
    Coordenadas en píxeles de la hoja NC 17-9 a 2576 px de ancho.
    Neatline calibrada: x 231 = 84°30'W, x 2526 = 83°00'W, y 61 = 10°00'N, y 1607 = 9°00'N. */
-const CARTA={w:2576,h:1998,x0:231,x1:2526,y0:61,y1:1607,lon0:-84.5,lon1:-83.0,lat0:10.0,lat1:9.0};
+const CARTA={w:2576,h:3556,x0:231,x1:2526,y0:1619,y1:3165,lon0:-84.5,lon1:-83.0,lat0:10.0,lat1:9.0};
 const T=[
- {id:"la-barra",nombre:"La Barra",lugar:"San José",x:867,y:177,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
- {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",x:1135,y:292,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
- {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",x:1168,y:655,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
- {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:232,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
- {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:955,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
- {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:834,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
- {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:1162,tipo:"nubes",sub:"Arquitectura"},
- {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:1188,tipo:"nubes",sub:"Arte"}
+ {id:"la-barra",nombre:"La Barra",lugar:"San José",x:867,y:1735,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
+ {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",x:1135,y:1850,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
+ {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",x:1168,y:2213,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
+ {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:1790,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
+ {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:2513,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
+ {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:2392,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
+ {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:2720,tipo:"nubes",sub:"Arquitectura"},
+ {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:2746,tipo:"nubes",sub:"Arte"}
 ];
 const COLLAGE=[ // foto y clip alternados: 9 y 9
  ["banda-vivo","en-vivo"],["clip-aire","traccion-humana","v"],["tapis","la-barra"],["clip-gente","la-barra","v"],
@@ -385,7 +385,7 @@ const COLLAGE=[ // foto y clip alternados: 9 y 9
 /* Voz del Dr. Arkadi */
 const AV={
  deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
- libre:"Arrastre la carta. La aguja apunta a la señal más cercana",
+ libre:"Gire el aro del dial para buscar señales. Arrastre la carta para recorrerla",
  nube:"Zona sin cartografiar. Las nubes taparon la foto aérea",
  rumbo:"Rumbo aleatorio. El instrumento elige por usted"
 };
@@ -403,7 +403,7 @@ const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
 T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
 
 /* ===== estado ===== */
-const S={s:1,x:1010,y:340,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada",activa:null,oidas:new Set(store.get("map27.oidas",[])),visto:store.get("map27.visto",false),aguja:0,marc:0};
+const S={s:1,x:1010,y:1898,manual:false,alineada:null,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada",activa:null,oidas:new Set(store.get("map27.oidas",[])),visto:store.get("map27.visto",false),aguja:0,marc:0};
 
 /* ===== audio: Web Audio, todo arranca con el interruptor ===== */
 const A={ctx:null,master:null,estatica:null,estGain:null,bufs:{},on:true,fuente:null,ini:0,dur:0};
@@ -460,14 +460,17 @@ function dibujarDial(){
   el("circle",{cx:"0",cy:"0",r:"99",fill:"#ece5cf",mask:"url(#aro)"});
   el("circle",{cx:"0",cy:"0",r:"84.5",fill:"none",stroke:"#1b1d1b","stroke-width":"1.6"});
   el("circle",{cx:"0",cy:"0",r:"99",fill:"none",stroke:"#1b1d1b","stroke-width":".8"});
-  const esc=el("g",{"font-family":"IBM Plex Mono, monospace","font-size":"5.6","font-weight":"600",fill:"#1b1d1b","text-anchor":"middle"});
+  const rotor=el("g",{id:"rotor"});
+  const esc=el("g",{"font-family":"IBM Plex Mono, monospace","font-size":"5.6","font-weight":"600",fill:"#1b1d1b","text-anchor":"middle"},rotor);
   for(let g=0;g<360;g+=2){
     const a=(g-90)*Math.PI/180, L=g%10===0?9:(g%5===0?6:4), r0=84.5, r1=r0+L;
     el("line",{x1:(Math.cos(a)*r0).toFixed(2),y1:(Math.sin(a)*r0).toFixed(2),x2:(Math.cos(a)*r1).toFixed(2),y2:(Math.sin(a)*r1).toFixed(2),stroke:"#1b1d1b","stroke-width":g%10===0?".9":".5"},esc);
     if(g%30===0){const rr=92.5;const t=el("text",{x:(Math.cos(a)*rr).toFixed(2),y:(Math.sin(a)*rr+2).toFixed(2),transform:`rotate(${g} ${(Math.cos(a)*rr).toFixed(2)} ${(Math.sin(a)*rr).toFixed(2)})`},esc);t.textContent=String(g).padStart(3,"0");}
   }
   // marca roja de referencia (como en el Sichtfunkpeiler)
-  el("circle",{cx:"0",cy:"-80",r:"2.2",fill:"#c6361f"});
+  el("circle",{cx:"0",cy:"-80",r:"2.2",fill:"#c6361f"},rotor);
+  // índice fijo: donde se lee la marcación
+  el("path",{d:"M0,-104.5 L-3.6,-111 L3.6,-111 Z",fill:"#1b1d1b"});
   // cristal: retícula fina sobre la carta
   el("circle",{cx:"0",cy:"0",r:"84",fill:"rgba(236,229,207,.06)"});
   el("line",{x1:"-84",y1:"0",x2:"84",y2:"0",stroke:"rgba(27,29,27,.45)","stroke-width":".5"});
@@ -482,6 +485,9 @@ function dibujarDial(){
   // intensidad: arco de lámparas bajo el dial
   const vu=el("g",{id:"vu"});
   for(let i=0;i<9;i++){const a=(22+i*5)*Math.PI/180; el("rect",{x:(Math.cos(a)*117-2).toFixed(2),y:(Math.sin(a)*117-2).toFixed(2),width:"4",height:"4",rx:"1",fill:"#3a2a14",class:"seg"},vu);}
+  // zona de agarre del aro: girarlo es girar la antena
+  const hit=el("circle",{id:"aro-hit",cx:"0",cy:"0",r:"95",fill:"none",stroke:"rgba(0,0,0,0)","stroke-width":"28"});
+  hit.style.pointerEvents="stroke"; hit.style.cursor="grab"; hit.style.touchAction="none";
 }
 
 /* ===== marcas sobre la carta ===== */
@@ -511,14 +517,15 @@ function medir(){
   lienzo.style.width=CARTA.w*S.s+"px"; lienzo.style.height=CARTA.h*S.s+"px";
   // las marcas están en px de la carta a escala 1; las escalamos con el lienzo
   T.forEach(t=>{t.el.style.left=t.x*S.s+"px";t.el.style.top=t.y*S.s+"px"});
-  if(S.fase==="portada") S.y=Math.max(340,S.cy/S.s+24);
   $("#aviso").style.top=(S.cy+S.r*1.12+6)+"px";
   if($("#aviso").getBoundingClientRect().bottom>S.vh-inf){$("#aviso").style.top=(sup+4)+"px"}
   aplicar();
 }
 function limites(){
-  // la carta puede correrse hasta su borde: cualquier territorio cabe en el centro del cristal
-  return {mx:40,Mx:CARTA.w-40,my:20,My:CARTA.h-20};
+  // la carta siempre cubre la pantalla; si es más angosta que la vista, queda centrada
+  let mx=S.cx/S.s, Mx=CARTA.w-(S.vw-S.cx)/S.s, my=S.cy/S.s, My=CARTA.h-(S.vh-S.cy)/S.s;
+  if(mx>Mx){mx=Mx=CARTA.w/2} if(my>My){my=My=CARTA.h/2}
+  return {mx,Mx,my,My};
 }
 function aplicar(){
   const L=limites(); S.x=clamp(S.x,L.mx,L.Mx); S.y=clamp(S.y,L.my,L.My);
@@ -530,25 +537,84 @@ function aPantalla(t){return {x:S.cx+(t.x-S.x)*S.s,y:S.cy+(t.y-S.y)*S.s}}
 /* ===== aguja e intensidad (bucle) ===== */
 let segs=[];
 function bucle(){
-  const vivos=T.filter(t=>t.tipo==="senal"&&t.el.dataset.dormida!=="true"||t===S.objetivo);
-  let obj=S.activa||S.objetivo, dmin=Infinity;
-  T.forEach(t=>{const d=Math.hypot(t.x-S.x,t.y-S.y); if(t.tipo==="senal"&&d<dmin){dmin=d; if(!S.activa&&!S.objetivo) obj=t;}});
-  if(!S.activa&&S.fase==="libre"){let best=null,bd=Infinity;T.forEach(t=>{const d=Math.hypot(t.x-S.x,t.y-S.y);if(d<bd){bd=d;best=t}});obj=best;}
-  let ang=S.aguja;
-  if(obj){const dx=obj.x-S.x,dy=obj.y-S.y; if(Math.hypot(dx,dy)>4) ang=Math.atan2(dx,-dy)*180/Math.PI;}
-  // perturbación magnética: temblor leve
-  const temblor=(Math.sin(performance.now()/370)+Math.sin(performance.now()/113))*.6;
-  let diff=((ang-S.aguja+540)%360)-180; S.aguja+=diff*.12;
-  const ag=document.getElementById("aguja"); if(ag) ag.setAttribute("transform",`rotate(${(S.aguja+temblor).toFixed(2)})`);
-  S.marc=(Math.round(S.aguja)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
-  // intensidad según cercanía a cualquier señal
-  const dObj=obj?Math.hypot(obj.x-S.x,obj.y-S.y):9999;
-  const k=clamp(1-dObj/700,0,1), n=Math.round(k*9);
+  const now=performance.now();
+  const temblor=S.arrastrandoAro?0:(Math.sin(now/370)+Math.sin(now/113))*.6;
+  let k=0;
+  if(!S.manual){
+    // modo automático: el aro busca solo la señal más cercana
+    let obj=S.activa||S.objetivo;
+    if(!obj){let bd=Infinity;T.forEach(t=>{if(S.fase!=="libre"&&t.tipo!=="senal")return;const d=Math.hypot(t.x-S.x,t.y-S.y);if(d<bd){bd=d;obj=t}});}
+    let ang=S.aguja;
+    if(obj){const dx=obj.x-S.x,dy=obj.y-S.y,d=Math.hypot(dx,dy);if(d>4)ang=Math.atan2(dx,-dy)*180/Math.PI;k=clamp(1-d/700,0,1);}
+    const diff=((ang-S.aguja+540)%360)-180; S.aguja+=diff*.12;
+  } else {
+    k=antena();
+  }
+  const rot=`rotate(${(S.aguja+temblor).toFixed(2)})`;
+  const ag=document.getElementById("aguja"), ro=document.getElementById("rotor");
+  if(ag) ag.setAttribute("transform",rot); if(ro) ro.setAttribute("transform",rot);
+  S.marc=((Math.round(S.aguja)%360)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
+  const n=Math.round(k*9);
   segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
   if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
-  // progreso de la señal en la ficha
   if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
   requestAnimationFrame(bucle);
+}
+/* ===== antena: girar el aro hasta alinear una señal ===== */
+const angDif=(a,b)=>Math.abs(((a-b+540)%360)-180);
+function antena(){
+  if(S.fase!=="libre"||A.fuente||$("#ficha").classList.contains("abierta")){if(S.alineada){S.alineada.el.classList.remove("detectada");S.alineada=null}leve(null);return 0}
+  let best=null,bk=0;
+  T.forEach(t=>{
+    const dx=t.x-S.x,dy=t.y-S.y,d=Math.hypot(dx,dy); if(d<60||d>2200) return;
+    const df=angDif(Math.atan2(dx,-dy)*180/Math.PI,S.aguja), tope=(t===S.alineada)?10:7; if(df>tope) return;
+    const kk=(1-df/10)*clamp(1.3-d/1700,.25,1); if(kk>bk){bk=kk;best=t}
+  });
+  if(best!==S.alineada){
+    if(S.alineada) S.alineada.el.classList.remove("detectada");
+    S.alineada=best;
+    if(best){best.el.classList.add("detectada");const g=String(S.marc).padStart(3,"0");aviso(best.tipo==="nubes"?`Eco a ${g}°: ${best.nombre}. Zona de nubes`:`Señal a ${g}°: ${best.nombre}. Toque la marca para sintonizar`,true);}
+    else aviso(AV.libre);
+  }
+  leve(best,bk);
+  return bk;
+}
+async function leve(t,k=0){
+  if(!A.ctx) return;
+  const L=A.leve||(A.leve={t:null,src:null,g:null});
+  if(t!==L.t){
+    if(L.src){const g=L.g,s=L.src;g.gain.setTargetAtTime(0,A.ctx.currentTime,.08);setTimeout(()=>{try{s.stop()}catch(e){}},500)}
+    L.t=t;L.src=null;L.g=null;
+    if(!t) return;
+    const key=t.tipo==="nubes"?"nubes":"s-"+t.id, url=t.tipo==="nubes"?SON.nubes:`assets/senales/${t.id}-01.mp3`;
+    const b=await buf(key,url); if(!b||L.t!==t) return;
+    const s=A.ctx.createBufferSource(),lp=A.ctx.createBiquadFilter(),g=A.ctx.createGain();
+    lp.type="lowpass";lp.frequency.value=1300;g.gain.value=0;s.buffer=b;s.loop=true;
+    s.connect(lp).connect(g).connect(A.master);s.start(0,Math.random()*b.duration*.6);L.src=s;L.g=g;
+  }
+  if(L.g) L.g.gain.setTargetAtTime(A.on?k*.34:0,A.ctx.currentTime,.12);
+}
+let ticBuf=null;
+function tic(){
+  if(!A.ctx||!A.on) return;
+  if(!ticBuf){const n=Math.floor(A.ctx.sampleRate*.014);ticBuf=A.ctx.createBuffer(1,n,A.ctx.sampleRate);const d=ticBuf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,4);}
+  const s=A.ctx.createBufferSource(),f=A.ctx.createBiquadFilter(),g=A.ctx.createGain();
+  f.type="bandpass";f.frequency.value=3000;f.Q.value=2;g.gain.value=.55;s.buffer=ticBuf;s.connect(f).connect(g).connect(A.master);s.start();
+}
+function aro(){
+  const hit=document.getElementById("aro-hit"); let st=null, ult=0;
+  const angDe=e=>{const r=$("#instrumento").getBoundingClientRect();return Math.atan2(e.clientX-(r.left+r.width/2),-(e.clientY-(r.top+r.height/2)))*180/Math.PI};
+  hit.addEventListener("pointerdown",e=>{
+    if(S.fase!=="libre") return; e.preventDefault(); e.stopPropagation();
+    try{hit.setPointerCapture(e.pointerId)}catch(_){}
+    if(!S.manual){S.manual=true;$("#rumbo").classList.remove("llamado")}
+    st={id:e.pointerId,off:angDe(e)-S.aguja}; ult=Math.round(S.aguja/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
+  });
+  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;let a=angDe(e)-st.off;const d=((a-S.aguja+540)%360)-180;S.aguja+=d;const m=Math.round(S.aguja/10);if(m!==ult){ult=m;tic()}});
+  const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
+  hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
+  // teclado: [ y ] giran el aro 5°
+  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){S.manual=true;S.aguja+=e.key==="]"?5:-5;tic()}});
 }
 const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
 
@@ -606,7 +672,7 @@ function aviso(txt,alerta){
 async function sintonizar(t){
   if(S.fase==="portada"||S.fase==="collage") return;
   if(S.fase==="espera"&&t!==S.objetivo) return;
-  S.activa=t; S.objetivo=null; cerrarFicha(true);
+  S.activa=t; S.objetivo=null; leve(null); if(S.alineada){S.alineada=null} cerrarFicha(true);
   T.forEach(o=>o.el.classList.remove("detectada"));
   pararSenal();
   if(t.tipo==="nubes"){ sonar("nubes",.9); nivelEstatica(.05,.3); aviso(AV.nube); }
@@ -765,7 +831,7 @@ function apagar(){
   T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"});
   $("#rumbo").classList.remove("llamado");
   $("#encender").setAttribute("aria-checked","false"); $("#portada").classList.remove("fuera");
-  S.x=1010; S.y=Math.max(340,S.cy/S.s+24); aplicar(); setTimeout(()=>$("#encender").focus(),300);
+  S.x=1010; S.y=1898; S.manual=false; S.alineada=null; leve(null); aplicar(); setTimeout(()=>$("#encender").focus(),300);
 }
 let ultimoFoco=null;
 function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimoFoco=document.activeElement;const p=$("#"+id);p.hidden=false;sonar("perillas",.5);p.querySelector(".cerrar").focus()}
@@ -773,10 +839,10 @@ function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catc
 
 /* ===== arranque ===== */
 function cargarCarta(){
-  const grande=(window.innerWidth>=760)?"assets/carta/san-jose-2576.jpg":"assets/carta/san-jose-1932.jpg";
+  const grande=(window.innerWidth>=760)?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg";
   const im=new Image(); im.onload=()=>{carta.src=grande}; im.src=grande;
 }
-dibujarDial(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
+dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
