@@ -612,7 +612,11 @@ a.pc-play{text-decoration:none}
 @media (max-width:520px){.sm-rollo__pie{flex-direction:column;gap:2px}}
 
 .sm-nowrap{white-space:nowrap}
-.sm .lb-cierre p{max-width:none;font-size:clamp(40px,7.4vw,104px)}
+.sm .lb-cierre .sm-frase{max-width:none;line-height:.9}
+.sm-frase.lista .sm-linea{display:block;width:max-content;white-space:nowrap}
+.sm .lb-cierre .sm-frase .sm-linea{color:var(--ar-tinta)}
+.sm .lb-cierre .sm-frase .sm-linea>span{color:var(--ar-acento)}
+.sm .lb-cierre{overflow:hidden}
 </style>
 
 <div class="ar-maqueta"><span>Maqueta · Serie MAP · textos de la página actual; los episodios se proyectan al tocar</span></div>
@@ -718,7 +722,7 @@ a.pc-play{text-decoration:none}
 
   <!-- 6 · cierre -->
   <div class="ap-wrap"><section class="lb-cierre ap-ancho">
-    <p>MAP no entrevista famosos. MAP encuentra personas que tienen historias increíbles que contar, <span>aunque nadie los haya escuchado todavía.</span></p>
+    <p class="sm-frase"><span class="sm-linea">MAP no entrevista famosos.</span> <span class="sm-linea">MAP encuentra personas que</span> <span class="sm-linea">tienen historias increíbles</span> <span class="sm-linea">que contar, <span>aunque nadie</span></span> <span class="sm-linea"><span>los haya escuchado todavía.</span></span></p>
     <span class="lb-cierre__src">Misión MAP · 2016 · mapradiocr.com</span>
     <div class="sm-cierre__acciones">
       <span class="sm-cierre__lab">La temporada 2 arranca con apoyo</span>
@@ -746,6 +750,19 @@ a.pc-play{text-decoration:none}
   $('#ar-buscar-cerrar').addEventListener('click',function(){bus.hidden=true});
   bus.addEventListener('click',function(e){if(e.target===bus)bus.hidden=true});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')bus.hidden=true});
+
+  /* frase de cierre: cada línea llega de borde a borde */
+  var frase=$('.sm-frase');
+  function ajustar(){
+    frase.classList.add('lista');
+    var ancho=frase.clientWidth;
+    $$('.sm-linea').forEach(function(l){
+      var f=100; l.style.fontSize=f+'px';
+      for(var i=0;i<3;i++){f=f*ancho/l.getBoundingClientRect().width;l.style.fontSize=(f*.997)+'px'}
+    });
+  }
+  if(frase){ajustar();if(document.fonts&&document.fonts.load)document.fonts.load('100px "Bebas Neue"').then(ajustar,ajustar);
+    var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(ajustar,120)});}
 
   /* sala de proyección: un solo reproductor, carga al tocar */
   var puede=/github\.io$|localhost|127\.0\.0\.1|mapradiocr\.com$/.test(location.hostname)||location.protocol==='file:';
