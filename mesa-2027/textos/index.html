@@ -329,16 +329,16 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .ap-aire__nombre{font-size:clamp(28px,3.4vw,40px)}
 
 /* antología: libro en preparación, sin página propia todavía */
-.ap-anto{grid-column:1/-1;margin-top:40px;padding-top:28px;border-top:1px dashed var(--ar-linea);display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 32px;align-items:center}
+.ap-anto{margin-top:80px;padding-block:28px;border-top:2px solid var(--ar-tinta);border-bottom:2px solid var(--ar-tinta);display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 32px;align-items:center}
 .ap-anto__tapa{margin:0;position:relative;aspect-ratio:400/536;background:var(--ar-tinta);box-shadow:6px 6px 0 var(--ar-papel-2),6px 6px 0 1.5px var(--ar-tinta)}
 .ap-anto__tapa img{display:block;width:100%;height:100%;object-fit:cover}
 .ap-anto__alt{display:none}
 .ap-anto__tapa.sin-foto img{display:none}
 .ap-anto__tapa.sin-foto .ap-anto__alt{position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px;font:400 22px/1 var(--ar-tit);color:var(--ar-papel)}
 .ap-anto__cuerpo{display:flex;flex-direction:column;gap:8px;min-width:0}
-.ap-anto h3{margin:0;font:400 clamp(28px,3.4vw,40px)/.95 var(--ar-tit);letter-spacing:.02em}
+.ap-anto h2{margin:0;font:400 clamp(28px,3.4vw,40px)/.95 var(--ar-tit);letter-spacing:.02em}
 .ap-anto p{margin:0;max-width:62ch;font-size:16px;line-height:1.6;color:var(--ar-gris)}
-@media (max-width:560px){.ap-anto{grid-template-columns:88px minmax(0,1fr);gap:0 18px;align-items:start}.ap-anto h3{font-size:26px}}
+@media (max-width:560px){.ap-anto{grid-template-columns:88px minmax(0,1fr);gap:0 18px;align-items:start}.ap-anto h2{font-size:26px}}
 </style>
 
 <div class="ar-maqueta">
@@ -405,17 +405,6 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
       <p>Comenzó a tomar forma en el 2022, luego de que una crecida desapareciera mi casa. Son crónicas de una Costa Rica que no aparece en las guías turísticas, y que sin embargo está muy viva.</p>
       <a class="ap-boton" href="https://www.mapradiocr.com/cronicas-del-refugio/">Entrar a las crónicas →</a>
     </div>
-    <div class="ap-anto" aria-labelledby="ap-anto-t">
-      <figure class="ap-anto__tapa">
-        <img src="https://www.mapradiocr.com/wp-content/uploads/2026/10/antologia-portada-nc-400.webp" width="400" height="536" loading="lazy" alt="Portada del libro Antología: Señales todavía activas, de Púa Ediciones: un hombre bebe de un vaso de cerveza en una cantina" onerror="this.parentNode.classList.add('sin-foto')">
-        <span class="ap-anto__alt" aria-hidden="true">Antología</span>
-      </figure>
-      <div class="ap-anto__cuerpo">
-        <div class="ap-proyecto__ficha"><span>Libro físico</span><span>Púa Ediciones</span><span>Varios autores</span><span>En preparación</span></div>
-        <h3 id="ap-anto-t">Antología — Señales todavía activas</h3>
-        <p>Faunos persistentes. Cantinas ocultas. Café para el descenso. Material recuperado de una época que todavía no termina de morirse. Con el sello de MAP Radio CR.</p>
-      </div>
-    </div>
   </section></div>
 
   <!-- 3 · al aire -->
@@ -431,7 +420,20 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     </div>
   </section></div>
 
-  <!-- 4 · últimos artículos, a lo ancho -->
+  <!-- 4 · antología: libro en preparación, sin página propia -->
+  <div class="ap-wrap"><section class="ap-anto ap-ancho" aria-labelledby="ap-anto-t">
+    <figure class="ap-anto__tapa">
+      <img src="https://www.mapradiocr.com/wp-content/uploads/2026/10/antologia-portada-nc-400.webp" width="400" height="536" loading="lazy" alt="Portada del libro Antología: Señales todavía activas, de Púa Ediciones: un hombre bebe de un vaso de cerveza en una cantina" onerror="this.parentNode.classList.add('sin-foto')">
+      <span class="ap-anto__alt" aria-hidden="true">Antología</span>
+    </figure>
+    <div class="ap-anto__cuerpo">
+      <div class="ap-proyecto__ficha"><span>Libro físico</span><span>Púa Ediciones</span><span>Varios autores</span><span>En preparación</span></div>
+      <h2 id="ap-anto-t">Antología — Señales todavía activas</h2>
+      <p>Faunos persistentes. Cantinas ocultas. Café para el descenso. Material recuperado de una época que todavía no termina de morirse. Con el sello de MAP Radio CR.</p>
+    </div>
+  </section></div>
+
+  <!-- 5 · últimos artículos, a lo ancho -->
   <div class="ap-wrap"><section class="ap-lista-ancha ap-ancho" aria-labelledby="ap-ult-t">
     <div class="ar-tit"><h2 id="ap-ult-t">Últimos artículos</h2><span>registro del archivo</span></div>
     <div class="ap-filtros" id="ap-filtros" role="group" aria-label="Filtrar por categoría"></div>
@@ -440,7 +442,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     <button type="button" class="ap-mas" id="ap-mas">Cargar más →</button>
   </section></div>
 
-  <!-- 5 · lo más leído, a lo ancho -->
+  <!-- 6 · lo más leído, a lo ancho -->
   <div class="ap-wrap"><section class="ap-lista-ancha ap-ancho" aria-labelledby="ap-top-t">
     <div class="ar-tit"><h2 id="ap-top-t">Lo más leído</h2><span>30 días · orden de ejemplo</span></div>
     <ol class="ar-lista">
