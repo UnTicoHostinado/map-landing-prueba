@@ -68,24 +68,6 @@ a{color:inherit}
 
 
 
-/* ---------- cantinas legendarias ---------- */
-.cantina,.grupo-cant{position:absolute;left:0;top:0;display:grid;justify-items:center;gap:2px;pointer-events:auto;transform-origin:50% 12px;will-change:transform}
-.cant-ico{position:relative;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(242,239,230,.94);border:2px solid #b8741a;color:#d9902a;box-shadow:0 2px 6px rgba(0,0,0,.35)}
-.cantina.iconica .cant-ico{border-color:#4f8a3a;animation:halo 1.8s ease-out infinite}
-@keyframes halo{0%{box-shadow:0 0 0 0 rgba(110,190,90,.8)}100%{box-shadow:0 0 0 16px rgba(110,190,90,0)}}
-.cantina.maldita .cant-ico{border-color:#c6361f;background:#2a1a17}
-.cant-ico .radio{position:absolute;left:-10px;top:-10px;width:40px;height:40px;animation:gira 7s linear infinite;pointer-events:none}
-@keyframes gira{to{transform:rotate(360deg)}}
-.cantina .rotulo,.grupo-cant .rotulo{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(242,239,230,.94);color:var(--tinta);padding:1px 5px;border:1px solid var(--tinta);white-space:nowrap}
-.grupo-cant .cant-ico{width:30px;height:30px}
-.grupo-cant .num{position:absolute;right:-14px;top:-7px;background:#b8741a;color:#fff;font-family:var(--mono);font-size:10px;font-weight:600;border-radius:9px;padding:1px 5px;line-height:1.3}
-.ficha-cant{display:grid;place-items:center;background:#f2efe6;color:#d9902a}
-.ficha-cant svg{width:34%;height:auto}
-.ficha-cant.maldita{background:#2a1a17}
-.estado-cant{font-weight:600}.estado-cant.joya{color:#a8661a}.estado-cant.iconica{color:#4f8a3a}.estado-cant.maldita{color:#c6361f}
-.resena{margin:8px 0 0;font-size:14.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-.cruz{margin:6px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:#c6361f;text-transform:uppercase}
-
 /* ---------- instrumento ---------- */
 #instrumento{position:absolute;pointer-events:none;opacity:0;transform:scale(1.08);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
 #instrumento.listo{opacity:1;transform:scale(1)}
@@ -569,77 +551,8 @@ function proyectar(){
     t.el.style.transform=`translate(${t.sx.toFixed(1)}px,${t.sy.toFixed(1)}px) translate(-50%,-11px) scale(${sc.toFixed(2)})`;
     t.el.style.zIndex=String(1000-Math.round(dist));
   });
-  proyectarCantinas();
 }
 function aPantalla(t){return {x:t.sx??S.vw/2,y:t.sy??S.vh/2}}
-/* ===== Cantinas Legendarias: viven dentro de La Barra =====
-   En WordPress se leen del endpoint propio; en el borrador, de una copia local. */
-const CANT={lista:[],grupos:[],cerca:20};
-const estadoDe=c=>c.desparasitante?"maldita":(c.iconico?"iconica":"joya");
-const NOMBRE_ESTADO={joya:"Joya",iconica:"Icónica",maldita:"Maldita"};
-const SVG_BOTELLA='<svg viewBox="0 0 14 26" width="10" height="19" aria-hidden="true"><path d="M5 1h4v5c0 1 3 2.5 3 6v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V12c0-3.5 3-5 3-6z" fill="currentColor" stroke="#1b1d1b" stroke-width="1"/><rect x="2.6" y="14" width="8.8" height="5" fill="#f2efe6" opacity=".85"/></svg>';
-const SVG_CALAVERA='<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M10 2a7 7 0 0 0-7 7c0 2.6 1.4 4 2.5 4.8V17h9v-3.2C15.6 13 17 11.6 17 9a7 7 0 0 0-7-7z" fill="#f2efe6" stroke="#1b1d1b" stroke-width="1.2"/><circle cx="7.3" cy="9.3" r="1.9" fill="#1b1d1b"/><circle cx="12.7" cy="9.3" r="1.9" fill="#1b1d1b"/><path d="M8 17v-2.5M10 17v-2.5M12 17v-2.5" stroke="#1b1d1b" stroke-width="1"/></svg>';
-const SVG_RADIO=(()=>{let p="";for(let i=0;i<3;i++){const a0=(i*120-90-30)*Math.PI/180,a1=(i*120-90+30)*Math.PI/180,r0=4,r1=10;
-  p+=`<path d="M${(Math.cos(a0)*r0).toFixed(2)},${(Math.sin(a0)*r0).toFixed(2)} L${(Math.cos(a0)*r1).toFixed(2)},${(Math.sin(a0)*r1).toFixed(2)} A${r1},${r1} 0 0 1 ${(Math.cos(a1)*r1).toFixed(2)},${(Math.sin(a1)*r1).toFixed(2)} L${(Math.cos(a1)*r0).toFixed(2)},${(Math.sin(a1)*r0).toFixed(2)} A${r0},${r0} 0 0 0 ${(Math.cos(a0)*r0).toFixed(2)},${(Math.sin(a0)*r0).toFixed(2)}Z"/>`}
-  return `<svg class="radio" viewBox="-11 -11 22 22" aria-hidden="true"><g fill="#c6361f" opacity=".75">${p}</g></svg>`})();
-async function cargarCantinas(){
-  for(const u of ["/wp-json/map/v1/cantinas","assets/datos/cantinas.json"]){
-    try{const r=await fetch(u,{cache:"no-store"}); if(!r.ok) continue; const d=await r.json(); if(Array.isArray(d)&&d.length){montarCantinas(d);return}}catch(e){}
-  }
-}
-function montarCantinas(datos){
-  CANT.lista=datos.map(c=>{const lo=+c.lng,la=+c.lat;return {...c,lo,la,estado:estadoDe(c),
-    x:(lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w,y:(CARTA.lat0-la)/(CARTA.lat0-CARTA.lat1)*CARTA.h,w:aMundo((lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w,(CARTA.lat0-la)/(CARTA.lat0-CARTA.lat1)*CARTA.h)}})
-    .filter(c=>isFinite(c.lo)&&isFinite(c.la)&&c.lo>CARTA.lon0&&c.lo<CARTA.lon1&&c.la<CARTA.lat0&&c.la>CARTA.lat1);
-  // constelaciones: cantinas a menos de ~6 km se agrupan cuando la nave va alta
-  CANT.lista.forEach(c=>{let g=CANT.grupos.find(g=>Math.hypot(g.lo-c.lo,g.la-c.la)<.06);
-    if(!g){g={lo:c.lo,la:c.la,miembros:[]};CANT.grupos.push(g)} g.miembros.push(c);
-    g.lo=g.miembros.reduce((s,m)=>s+m.lo,0)/g.miembros.length; g.la=g.miembros.reduce((s,m)=>s+m.la,0)/g.miembros.length;});
-  CANT.grupos.forEach(g=>{g.x=(g.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w;g.y=(CARTA.lat0-g.la)/(CARTA.lat0-CARTA.lat1)*CARTA.h;g.w=aMundo(g.x,g.y);g.solo=g.miembros.length===1;
-    if(!g.solo){const b=document.createElement("button");b.type="button";b.className="grupo-cant";b.setAttribute("aria-label",`${g.miembros.length} cantinas legendarias en esta zona`);
-      b.innerHTML=`<span class="cant-ico">${SVG_BOTELLA}<span class="num">×${g.miembros.length}</span></span><span class="rotulo">Cantinas</span>`;
-      b.addEventListener("click",()=>{if(S.fase!=="libre")return;cerrarFicha();volarA({tx:g.w.x,tz:g.w.z,d:9,p:36,rumbo:S.rumbo},1600).then(ok=>{if(ok)aviso(`Cantinas Legendarias: ${g.miembros.length} en esta zona`,false,3000)})});
-      lienzo.appendChild(b);g.el=b;}
-    g.miembros.forEach(c=>{c.grupo=g;});
-  });
-  CANT.lista.forEach(c=>{const b=document.createElement("button");b.type="button";b.className="cantina "+c.estado;
-    b.setAttribute("aria-label",`${c.nombre}, cantina ${NOMBRE_ESTADO[c.estado].toLowerCase()}. ${c.ubicacion||""}`);
-    b.innerHTML=`<span class="cant-ico">${c.estado==="maldita"?SVG_RADIO+SVG_CALAVERA:SVG_BOTELLA}</span><span class="rotulo">${c.nombre}</span>`;
-    b.addEventListener("click",()=>abrirCantina(c)); lienzo.appendChild(b); c.el=b;});
-}
-async function abrirCantina(c){
-  if(S.fase!=="libre") return;
-  S.activa=null; pararSenal(); leve(null); cerrarFicha(true); sonar("perillas",.6);
-  const lejos=Math.hypot(c.x-S.x,c.y-S.y), r=lejos>40?rumboHacia(S.x,S.y,c.x,c.y):S.rumbo;
-  const ok=await volarA({tx:c.w.x,tz:c.w.z,d:8,p:36,rumbo:r},clamp(900+lejos*.9,900,2600)); if(!ok) return;
-  const f=$("#ficha"), foto=(c.imagenes||[]).find(Boolean);
-  const coord=`${gms(c.la,"N")} ${gms(c.lo,"W")}`;
-  f.innerHTML=`<div class="ficha-cab"><b>Cantinas Legendarias</b><span>${coord}</span></div><div class="ficha-cuerpo">
-    ${foto?`<div class="ficha-foto"><img src="${foto}" alt="${c.nombre}"></div>`:`<div class="ficha-foto ficha-cant ${c.estado}">${c.estado==="maldita"?SVG_CALAVERA:SVG_BOTELLA}</div>`}
-    <div class="ficha-texto"><h2>${c.nombre}</h2><p class="sub"><span class="estado-cant ${c.estado}">${NOMBRE_ESTADO[c.estado]}</span> · ${c.ubicacion||""}</p>
-    ${c.resena?`<p class="resena">${c.resena}</p>`:""}${c.estado==="maldita"&&c.motivo_cruz?`<p class="cruz">Necesita desparasitante: ${c.motivo_cruz}</p>`:""}
-    <div class="ficha-acciones">${c.cronica?`<a class="btn lleno" href="${c.cronica}" target="_blank" rel="noopener">Crónica</a>`:""}${c.podcast?`<a class="btn ${c.cronica?"vacio":"lleno"}" href="${c.podcast}" target="_blank" rel="noopener">Podcast</a>`:""}<button class="btn vacio" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
-  f.querySelector("[data-cerrar]").addEventListener("click",()=>cerrarFicha());
-  requestAnimationFrame(()=>f.classList.add("abierta"));
-}
-// proyección de cantinas y constelaciones; los rótulos que chocan se ocultan
-function proyectarCantinas(){
-  if(!CANT.lista.length) return;
-  const libre=S.fase==="libre", cerca=V.d<CANT.cerca, cajas=[];
-  const poner=(el,w,lift,mostrar,conRotulo)=>{
-    if(!mostrar){el.style.visibility="hidden";return}
-    v3.set(w.x,alturaEn(w.x,w.z)+lift,w.z); const dist=camara.position.distanceTo(v3); v3.project(camara);
-    if(v3.z>1||Math.abs(v3.x)>1.1||Math.abs(v3.y)>1.1){el.style.visibility="hidden";return}
-    const sx=(v3.x*.5+.5)*S.vw, sy=(-v3.y*.5+.5)*S.vh, sc=clamp(14/dist,.6,1.15);
-    el.style.visibility=""; el.style.transform=`translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-12px) scale(${sc.toFixed(2)})`; el.style.zIndex=String(900-Math.round(dist));
-    if(conRotulo){const r=el.querySelector(".rotulo"), bw=(r.textContent.length*6.4+14)*sc, box={x0:sx-bw/2,x1:sx+bw/2,y0:sy+8,y1:sy+26};
-      const choca=cajas.some(b=>!(box.x1<b.x0||box.x0>b.x1||box.y1<b.y0||box.y0>b.y1)); r.style.visibility=choca?"hidden":""; if(!choca)cajas.push(box);}
-  };
-  CANT.grupos.forEach(g=>{if(g.el) poner(g.el,g.w,.3,libre&&!cerca,true)});
-  CANT.lista.forEach(c=>poner(c.el,c.w,.15,libre&&(cerca||c.grupo.solo),true));
-}
-
-
 /* ===== geometría de la cabina: el radiogoniómetro abajo, el parabrisas libre ===== */
 function medir(){
   S.vw=app.clientWidth; S.vh=app.clientHeight;
@@ -1027,7 +940,7 @@ function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimo
 function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catch(e){}}
 
 /* ===== arranque ===== */
-dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta(); cargarCantinas();
+dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
