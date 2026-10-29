@@ -57,6 +57,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:420px){.ar-archivo{display:none}}
 
 /* buscador */
+.ar-buscador[hidden]{display:none}
 .ar-buscador{position:fixed;inset:0;z-index:60;background:rgba(20,18,14,.96);display:grid;place-items:start center;
   padding:calc(12vh + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
 .ar-buscador__in{width:min(720px,100%);display:flex;flex-direction:column;gap:14px;color:var(--ar-papel)}
@@ -569,13 +570,21 @@ a.pc-play{text-decoration:none}
 .sm-rollo.activo .sm-rollo__pie{background:var(--ar-tinta);color:var(--ar-papel)}
 .sm-rollo.activo .sm-rollo__pie i{color:var(--ar-tiza)}
 /* el 08: el que quedó pendiente */
-.sm-rollo--vacio{cursor:default;border-style:dashed;border-color:var(--ar-gris)}
-.sm-rollo--vacio .sm-rollo__img{background:repeating-linear-gradient(135deg,transparent 0 10px,var(--ar-linea) 10px 11px),var(--ar-papel-2)}
-.sm-rollo--vacio .sm-rollo__num{color:var(--ar-tiza)}
-.sm-rollo--vacio .sm-rollo__pie{color:var(--ar-gris)}
+.sm-rollo--vacio{cursor:default;border-style:dashed;border-color:var(--ar-acento)}
+.sm-tanque{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sm-tanque text{font-family:var(--ar-tit)}
+.sm-tanque__e{font-size:30px;fill:var(--ar-acento)}
+.sm-tanque__f{font-size:30px;fill:var(--ar-papel);opacity:.5}
+.sm-tanque__m{font-size:18px;fill:var(--ar-papel);opacity:.45}
+.sm-tanque__lampara{animation:sm-reserva 1.6s steps(1,end) infinite}
+@keyframes sm-reserva{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.sm-tanque__lampara{animation:none}}
+.sm-rollo--vacio .sm-rollo__num{top:2px;bottom:auto;color:var(--ar-tiza)}
+.sm-rollo--vacio .sm-rollo__pie i{color:var(--ar-acento)}
 
 /* temporada 2 · escaleta */
-.sm-arco{margin:0 0 26px;max-width:62ch;font-size:17px;line-height:1.65}
+.sm-arco{margin:0 0 28px;font:300 clamp(20px,2.3vw,27px)/1.5 var(--ar-txt);text-align:justify;hyphens:auto}
+@media (max-width:640px){.sm-arco{text-align:left}}
 .sm-escaleta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:2px solid var(--ar-tinta);border-left:1px solid var(--ar-linea)}
 @media (max-width:760px){.sm-escaleta{grid-template-columns:minmax(0,1fr)}}
 .sm-acto{padding:18px 20px 22px;border-right:1px solid var(--ar-linea);border-bottom:1px solid var(--ar-linea);display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -601,6 +610,9 @@ a.pc-play{text-decoration:none}
 .sm-cierre__acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:6px}
 .sm-cierre__lab{flex-basis:100%;font:700 11px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-acento)}
 @media (max-width:520px){.sm-rollo__pie{flex-direction:column;gap:2px}}
+
+.sm-nowrap{white-space:nowrap}
+.sm .lb-cierre p{max-width:none;font-size:clamp(40px,7.4vw,104px)}
 </style>
 
 <div class="ar-maqueta"><span>Maqueta · Serie MAP · textos de la página actual; los episodios se proyectan al tocar</span></div>
@@ -642,7 +654,7 @@ a.pc-play{text-decoration:none}
     </div>
     <figure class="pc-cab__foto">
       <img src="https://www.mapradiocr.com/wp-content/uploads/2025/08/MAP-copy-1-scaled.webp" alt="Skater haciendo un truco aéreo sobre un bowl cubierto de grafiti mientras un camarógrafo, en cuclillas, lo graba de cerca" onerror="this.parentNode.classList.add('sin-foto')">
-      <figcaption>MAP documentándose a sí mismo · 2016 · Fotografía: Randy Parker</figcaption>
+      <figcaption>MAP documentándose a sí mismo · 2016 · <span class="sm-nowrap">Fotografía: Randy Parker</span></figcaption>
     </figure>
   </header></div>
 
@@ -673,7 +685,7 @@ a.pc-play{text-decoration:none}
       <li><button type="button" class="sm-rollo" data-yt="GbF4s9WTb74" data-titulo="Serie MAP · Episodio 05" aria-pressed="false" aria-label="Proyectar el episodio 05"><span class="sm-rollo__img"><img src="https://i.ytimg.com/vi/GbF4s9WTb74/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="sm-rollo__num">05</span><span class="sm-rollo__play" aria-hidden="true"></span></span><span class="sm-rollo__pie"><b>Episodio 05</b><i>Temporada 1</i></span></button></li>
       <li><button type="button" class="sm-rollo" data-yt="Wa-5an6RgW4" data-titulo="Serie MAP · Episodio 06" aria-pressed="false" aria-label="Proyectar el episodio 06"><span class="sm-rollo__img"><img src="https://i.ytimg.com/vi/Wa-5an6RgW4/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="sm-rollo__num">06</span><span class="sm-rollo__play" aria-hidden="true"></span></span><span class="sm-rollo__pie"><b>Episodio 06</b><i>Temporada 1</i></span></button></li>
       <li><button type="button" class="sm-rollo" data-yt="QQUH3Go5VnA" data-titulo="Serie MAP · Episodio 07" aria-pressed="false" aria-label="Proyectar el episodio 07"><span class="sm-rollo__img"><img src="https://i.ytimg.com/vi/QQUH3Go5VnA/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="sm-rollo__num">07</span><span class="sm-rollo__play" aria-hidden="true"></span></span><span class="sm-rollo__pie"><b>Episodio 07</b><i>Temporada 1</i></span></button></li>
-      <li><div class="sm-rollo sm-rollo--vacio"><span class="sm-rollo__img"><span class="sm-rollo__num">08</span></span><span class="sm-rollo__pie"><b>Episodio 08</b><i>Pendiente</i></span></div></li>
+      <li><div class="sm-rollo sm-rollo--vacio" role="img" aria-label="Episodio 08: pendiente. Se acabó el combustible."><span class="sm-rollo__img"><svg class="sm-tanque" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="180" fill="var(--ar-tinta)"/><path d="M81.7 106.0 A104 104 0 0 1 270.3 106.0" fill="none" stroke="var(--ar-papel)" stroke-opacity=".35" stroke-width="1"/><line x1="81.7" y1="106.0" x2="96.2" y2="112.8" stroke="var(--ar-acento)" stroke-width="3"/><line x1="88.9" y1="93.2" x2="95.6" y2="97.5" stroke="var(--ar-acento)" stroke-width="1.5"/><line x1="97.8" y1="81.4" x2="103.8" y2="86.7" stroke="var(--ar-acento)" stroke-width="1.5"/><line x1="108.3" y1="71.1" x2="113.5" y2="77.1" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="120.1" y1="62.3" x2="128.7" y2="75.8" stroke="var(--ar-papel)" stroke-width="3"/><line x1="133.1" y1="55.3" x2="136.4" y2="62.6" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="146.9" y1="50.2" x2="149.1" y2="57.8" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="161.3" y1="47.0" x2="162.4" y2="55.0" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="176.0" y1="46.0" x2="176.0" y2="62.0" stroke="var(--ar-papel)" stroke-width="3"/><line x1="190.7" y1="47.0" x2="189.6" y2="55.0" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="205.1" y1="50.2" x2="202.9" y2="57.8" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="218.9" y1="55.3" x2="215.6" y2="62.6" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="231.9" y1="62.3" x2="223.3" y2="75.8" stroke="var(--ar-papel)" stroke-width="3"/><line x1="243.7" y1="71.1" x2="238.5" y2="77.1" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="254.2" y1="81.4" x2="248.2" y2="86.7" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="263.1" y1="93.2" x2="256.4" y2="97.5" stroke="var(--ar-papel)" stroke-width="1.5"/><line x1="270.3" y1="106.0" x2="255.8" y2="112.8" stroke="var(--ar-papel)" stroke-width="3"/><text x="112.6" y="126.4" text-anchor="middle" class="sm-tanque__e">E</text><text x="239.4" y="126.4" text-anchor="middle" class="sm-tanque__f">F</text><text x="176.0" y="88.0" text-anchor="middle" class="sm-tanque__m">½</text><line x1="176" y1="150" x2="88.0" y2="131.3" stroke="var(--ar-acento)" stroke-width="3.5" stroke-linecap="round"/><circle cx="176" cy="150" r="9" fill="var(--ar-papel)"/><circle cx="176" cy="150" r="3.5" fill="var(--ar-tinta)"/><g class="sm-tanque__lampara" transform="translate(276 26)"><circle r="17" fill="var(--ar-acento)"/><rect x="-7" y="-9" width="9" height="17" rx="1.5" fill="var(--ar-tinta)"/><rect x="-5" y="-6.5" width="5" height="4" fill="var(--ar-acento)"/><path d="M2 -6 h3 l3 3 v9 a2 2 0 0 1 -4 0 v-5 h-2" fill="none" stroke="var(--ar-tinta)" stroke-width="1.8"/></g></svg><span class="sm-rollo__num">08</span></span><span class="sm-rollo__pie"><b>Episodio 08</b><i>Sin combustible</i></span></div></li>
     </ol>
   </section></div>
 
