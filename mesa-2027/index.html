@@ -188,8 +188,10 @@ a{color:inherit}
 .portada-placa{width:min(420px,100%);display:grid;justify-items:center;gap:16px;padding:26px 22px 22px;text-align:center}
 .portada-placa .sello{width:132px;height:132px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--metal-osc),0 8px 20px rgba(0,0,0,.4)}
 .portada-placa h1{margin:0;color:var(--rotulo);font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,40px);line-height:.95;letter-spacing:.05em;text-wrap:balance}
-.coord{color:var(--rotulo);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;min-height:1.5em;font-variant-numeric:tabular-nums}
-.inst{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:rgba(233,228,212,.85);max-width:34ch}
+.coord{color:var(--rotulo);font-family:var(--mono);font-size:clamp(10px,2.9vw,12px);font-weight:600;letter-spacing:.08em;white-space:nowrap;min-height:1.5em;font-variant-numeric:tabular-nums}
+.inst{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:rgba(233,228,212,.85);margin:0;display:grid;gap:2px}
+.inst span{white-space:nowrap}
+.inst em{margin-top:6px}
 .inst em{font-style:normal;color:#f08a6c}
 .interruptor{display:grid;justify-items:center;gap:6px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rotulo)}
 .interruptor .foto{position:relative;display:block;width:clamp(120px,34vw,150px);aspect-ratio:314/360;max-width:100%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.5));transition:transform .08s}
@@ -342,13 +344,13 @@ a{color:inherit}
   <div id="portada">
     <div class="portada-placa placa">
       <img class="sello" src="assets/img/map-sello.png" alt="Sello de MAP: Música, Arte &amp; Patinetas">
-      <h1>Estación radiogoniométrica MAP</h1>
+      <h1 class="sr">MAP Radio CR: Música, Arte &amp; Patinetas</h1>
       <div class="coord" id="coord-portada" aria-label="09°56' Norte, 84°05' Oeste. San José, Costa Rica"></div>
       <button class="interruptor" id="encender" type="button" role="switch" aria-checked="false" aria-label="Encender">
         <span class="foto"><img class="off" src="assets/img/interruptor-off.webp" alt="" width="314" height="360"><img class="on" src="assets/img/interruptor-on.webp" alt="" width="314" height="360"></span>
         <span>Encender</span>
       </button>
-      <p class="inst">Instituto Cuántico Costarricense para la Investigación Interdimensional. <em>Calibre antes de cada marcación.</em></p>
+      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em></p>
     </div>
   </div>
 
