@@ -329,16 +329,16 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .ap-aire__nombre{font-size:clamp(28px,3.4vw,40px)}
 
 /* antología: libro en preparación, sin página propia todavía */
-.ap-anto{grid-column:1/-1;margin-top:40px;padding-top:28px;border-top:1px dashed var(--ar-linea);display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 32px;align-items:center}
+.ap-anto{margin-top:80px;padding-block:28px;border-top:2px solid var(--ar-tinta);border-bottom:2px solid var(--ar-tinta);display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 32px;align-items:center}
 .ap-anto__tapa{margin:0;position:relative;aspect-ratio:400/536;background:var(--ar-tinta);box-shadow:6px 6px 0 var(--ar-papel-2),6px 6px 0 1.5px var(--ar-tinta)}
 .ap-anto__tapa img{display:block;width:100%;height:100%;object-fit:cover}
 .ap-anto__alt{display:none}
 .ap-anto__tapa.sin-foto img{display:none}
 .ap-anto__tapa.sin-foto .ap-anto__alt{position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px;font:400 22px/1 var(--ar-tit);color:var(--ar-papel)}
 .ap-anto__cuerpo{display:flex;flex-direction:column;gap:8px;min-width:0}
-.ap-anto h3{margin:0;font:400 clamp(28px,3.4vw,40px)/.95 var(--ar-tit);letter-spacing:.02em}
+.ap-anto h2{margin:0;font:400 clamp(28px,3.4vw,40px)/.95 var(--ar-tit);letter-spacing:.02em}
 .ap-anto p{margin:0;max-width:62ch;font-size:16px;line-height:1.6;color:var(--ar-gris)}
-@media (max-width:560px){.ap-anto{grid-template-columns:88px minmax(0,1fr);gap:0 18px;align-items:start}.ap-anto h3{font-size:26px}}
+@media (max-width:560px){.ap-anto{grid-template-columns:88px minmax(0,1fr);gap:0 18px;align-items:start}.ap-anto h2{font-size:26px}}
 
 /* CRÓNICAS DEL REFUGIO · la página como un libro abierto: portada, presentación e índice de imprenta. Prefijo .lb- */
 .lb-col{max-width:760px;margin-left:auto;margin-right:auto}
@@ -434,7 +434,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   <div class="ar-barra__in">
     <a class="ar-sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/" title="Volver a la carta">MAP</a>
     <nav class="ar-menu" id="ar-menu" aria-label="Secciones">
-      <a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/" aria-current="page">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://www.mapradiocr.com/sobre-el-director">Sobre el autor</a><a href="https://www.mapradiocr.com/contacto">Contacto</a>
+      <a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/" aria-current="page">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/sobre-el-director/">Sobre el director</a><a href="https://www.mapradiocr.com/contacto">Contacto</a>
     </nav>
     <button type="button" class="ar-btn ar-btn--menu" id="ar-menu-btn" aria-expanded="false" aria-controls="ar-menu">Menú</button>
     <button type="button" class="ar-btn" id="ar-buscar-btn">Buscar ⌕</button>
