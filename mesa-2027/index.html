@@ -1,0 +1,797 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Radiogoniómetro MAP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="MAP Radio CR: música, arte, patinetas, cine, letras y cantinas de Costa Rica. Una estación radiogoniométrica para sintonizar el archivo de MAP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Concepto: la carta aérea de San José es el territorio; un radiogoniómetro de posguerra fijo al centro la escanea.
+   Un solo mundo visual (metal martillado, panel negro, carátula crema, aguja roja): tema único, colores explícitos. */
+:root{
+  --papel:#f2efe6;      /* margen de la carta */
+  --tinta:#1b1d1b;      /* texto sobre papel */
+  --metal:#9a9f9c;      /* gris martillado del aparato */
+  --metal-osc:#5b605d;
+  --panel:#1d1f1e;      /* panel negro inferior */
+  --panel-2:#2a2d2b;
+  --rotulo:#e9e4d4;     /* serigrafía blanca del panel */
+  --caratula:#ece5cf;   /* carátula crema del dial */
+  --senal:#c6361f;      /* aguja y señal */
+  --lampara:#e9a23b;    /* lámpara ámbar */
+  --sintonia:#86b06f;   /* aro verde de sintonía */
+  --fondo:#252725;
+  --display:"Bebas Neue","Oswald","Arial Narrow",Impact,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--fondo);color:var(--tinta);font-family:var(--sans);overflow:hidden;-webkit-tap-highlight-color:transparent;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--lampara);outline-offset:2px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- escenario ---------- */
+#app{position:fixed;inset:0;overflow:hidden;background:var(--fondo);touch-action:none;user-select:none;-webkit-user-select:none}
+#mapa{position:absolute;inset:0;cursor:grab}
+#mapa.arrastrando{cursor:grabbing}
+#lienzo{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#lienzo img.carta{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none}
+.vineta{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(20,18,12,.38) 100%)}
+
+/* marcas de territorio */
+.marca{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:4px;pointer-events:auto;opacity:.5;transition:opacity .5s}
+.marca[data-dormida="true"]{pointer-events:none}
+.marca.viva{opacity:1}
+.marca .punto{position:relative;width:22px;height:22px;border-radius:50%;border:3px solid var(--senal);background:rgba(242,239,230,.85);box-shadow:0 0 0 2px rgba(242,239,230,.7)}
+.marca .punto::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--senal)}
+.marca .onda{position:absolute;left:50%;top:11px;width:22px;height:22px;margin-left:-11px;margin-top:-11px;border-radius:50%;border:2px solid var(--senal);opacity:0;pointer-events:none}
+.marca.viva .onda{animation:onda 2.8s ease-out infinite;animation-delay:var(--d,0s)}
+.marca.viva .onda.b{animation-delay:calc(var(--d,0s) + 1.4s)}
+.marca.detectada .onda{animation-duration:1.4s;animation-delay:0s}
+.marca.detectada .onda.b{animation-delay:.7s}
+@keyframes onda{0%{transform:scale(1);opacity:.95;filter:blur(0)}70%{opacity:.25}100%{transform:scale(4.6);opacity:0;filter:blur(1.5px)}}
+.marca.detectada .punto{animation:parpadeo .8s steps(2,end) infinite}
+@keyframes parpadeo{50%{background:var(--senal)}}
+.marca .rotulo{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--papel);color:var(--tinta);padding:2px 6px;border:1px solid var(--tinta);white-space:nowrap;line-height:1.3}
+.marca .rotulo small{display:block;font-weight:400;font-size:9.5px;letter-spacing:.06em;color:var(--metal-osc)}
+.marca.oida .punto::after{background:var(--tinta)}
+/* zonas de nubes: manchas blancas como las de la carta militar */
+.marca.nube .punto{width:86px;height:46px;border:0;border-radius:50%;opacity:.62;background:
+  radial-gradient(circle at 30% 55%,#fff 0 30%,transparent 31%),radial-gradient(circle at 55% 40%,#fff 0 34%,transparent 35%),
+  radial-gradient(circle at 75% 60%,#fff 0 28%,transparent 29%),radial-gradient(ellipse at 50% 70%,#fff 0 45%,transparent 46%);box-shadow:none;filter:blur(1.2px)}
+.marca.nube .rotulo{opacity:.92}
+.marca.nube .punto::after{content:"NUBES";font-weight:600;inset:auto;left:50%;top:52%;transform:translate(-50%,-50%);background:none;border-radius:0;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--tinta)}
+.marca.nube .onda{display:none}
+
+/* ---------- instrumento ---------- */
+#instrumento{position:absolute;pointer-events:none;opacity:0;transform:scale(1.08);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+#instrumento.listo{opacity:1;transform:scale(1)}
+#instrumento svg{display:block;width:100%;height:100%;overflow:visible}
+.hud{position:absolute;opacity:0;transition:opacity .7s ease .3s,transform .7s ease .3s}
+.hud.listo{opacity:1;transform:none}
+.placa{background:rgba(48,52,50,.56);-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);border:1px solid rgba(233,228,212,.22);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.28);color:var(--rotulo)}
+#placa-sup{top:calc(10px + env(safe-area-inset-top,0px));left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));
+  display:flex;justify-content:space-between;align-items:stretch;gap:10px;transform:translateY(-12px);pointer-events:none}
+#placa-sup .placa{padding:8px 12px;font-family:var(--mono);font-size:10.5px;line-height:1.45;letter-spacing:.06em;text-transform:uppercase}
+.marca-map{display:flex;align-items:center;gap:10px;min-width:0}
+.marca-map img{width:38px;height:38px;border-radius:50%;flex:none}
+.marca-map b{display:block;font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.06em;line-height:1}
+.marca-map span{display:block;color:rgba(233,228,212,.72);font-size:9.5px}
+.lecturas{display:grid;grid-template-columns:auto auto;column-gap:10px;font-variant-numeric:tabular-nums;text-align:right}
+.lecturas dt{color:rgba(233,228,212,.72)}
+.lecturas dd{margin:0;font-weight:600}
+.solo-ancho{display:none!important}
+#placa-sup.listo,#tablero.listo{transform:none}
+#aviso.listo{transform:translate(-50%,0)}
+
+/* aviso de Arkadi */
+#aviso{left:50%;transform:translate(-50%,8px);max-width:min(560px,calc(100vw - 32px));text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--rotulo);background:rgba(29,31,30,.92);border:1px solid rgba(233,228,212,.25);padding:8px 14px;border-radius:3px;pointer-events:none}
+#aviso.alerta{color:var(--lampara)}
+#aviso .cursor{display:inline-block;width:.6em;animation:cursor 1s steps(2) infinite}
+@keyframes cursor{50%{opacity:0}}
+
+/* tablero inferior */
+#tablero{left:0;right:0;bottom:0;transform:translateY(16px);background:var(--panel);
+  background-image:linear-gradient(180deg,rgba(255,255,255,.05),transparent 30%);border-top:3px solid var(--metal-osc);
+  padding:10px max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));color:var(--rotulo)}
+.mandos{display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"izq perilla der" "fila fila fila";align-items:center;gap:10px 14px;max-width:1100px;margin:0 auto}
+.mandos .izq{grid-area:izq;display:flex;gap:8px;justify-content:flex-end}
+.mandos .der{grid-area:der;display:flex;gap:8px}
+.mandos .fila{grid-area:fila;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tecla{display:grid;justify-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--rotulo);padding:2px;line-height:1.2;text-align:center}
+.tecla .cuerpo{display:grid;place-items:center;width:46px;height:30px;border-radius:5px;background:linear-gradient(#3a3e3c,#232624);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 2px 0 #0d0e0d,0 3px 6px rgba(0,0,0,.5)}
+.tecla:active .cuerpo{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 0 #0d0e0d}
+.tecla .luz{width:7px;height:7px;border-radius:50%;background:#4a3a1d;box-shadow:inset 0 1px 1px rgba(0,0,0,.6)}
+.tecla[aria-pressed="true"] .luz,.tecla.encendida .luz{background:var(--lampara);box-shadow:0 0 8px var(--lampara)}
+.borde{display:flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:6px 8px;border:1px solid rgba(233,228,212,.35);border-radius:3px;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--rotulo);background:rgba(255,255,255,.03)}
+.borde:hover{background:rgba(255,255,255,.08)}
+.borde i{font-style:normal;color:var(--lampara)}
+#rumbo{display:grid;justify-items:center;gap:4px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--rotulo)}
+#rumbo .perilla{position:relative;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4a4f4c,#151716 70%);box-shadow:0 0 0 4px var(--sintonia),0 0 0 6px #111,0 6px 12px rgba(0,0,0,.6);transition:transform .6s cubic-bezier(.3,1.4,.4,1)}
+#rumbo .perilla::before{content:"";position:absolute;left:50%;top:6px;width:3px;height:16px;margin-left:-1.5px;background:var(--rotulo);border-radius:2px}
+#rumbo .perilla::after{content:"";position:absolute;inset:18px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#6c726f,#2a2d2b)}
+#rumbo.llamado .perilla{animation:llamado 1.2s ease-in-out 2}
+@keyframes llamado{50%{box-shadow:0 0 0 4px var(--lampara),0 0 22px 6px var(--lampara),0 6px 12px rgba(0,0,0,.6)}}
+.pie-panel{max-width:1100px;margin:8px auto 0;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#d0442c;text-align:center;opacity:.9}
+
+/* ---------- ficha ---------- */
+#ficha{position:absolute;left:0;right:0;bottom:0;z-index:30;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  background:var(--papel);color:var(--tinta);border-top:3px solid var(--tinta);box-shadow:0 -10px 30px rgba(0,0,0,.45);
+  padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));max-height:72%;overflow:auto}
+#ficha.abierta{transform:none}
+.ficha-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--tinta);padding-bottom:6px}
+.ficha-cab b{font-weight:600}
+.ficha-cab span{color:var(--metal-osc);font-variant-numeric:tabular-nums;text-align:right}
+.ficha-cuerpo{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:start;margin-top:12px}
+.ficha-foto{position:relative;width:112px;aspect-ratio:1;max-width:100%;background:var(--tinta);overflow:hidden;border:1px solid var(--tinta)}
+.ficha-foto img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.05)}
+.ficha-foto .sello-foto{position:absolute;left:4px;bottom:4px;font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.1em;background:var(--papel);padding:1px 4px}
+.ficha-texto{min-width:0}
+.ficha-texto h2{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-height:.95;letter-spacing:.03em;text-wrap:balance}
+.ficha-texto .sub{margin:4px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--metal-osc)}
+.frase{margin:12px 0 0;font-size:19px;line-height:1.35;font-style:italic;text-wrap:pretty;max-width:34ch}
+.medidor{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.medidor .barra{flex:1;height:8px;background:repeating-linear-gradient(90deg,var(--tinta) 0 2px,transparent 2px 6px);opacity:.25;position:relative}
+.medidor .barra i{position:absolute;inset:0 auto 0 0;width:0;background:var(--senal);opacity:1}
+.medidor-wrap{position:relative;flex:1;height:8px}
+.medidor-wrap .fondo{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(27,29,27,.28) 0 2px,transparent 2px 6px)}
+.medidor-wrap .lleno{position:absolute;inset:0 auto 0 0;width:0;background:repeating-linear-gradient(90deg,var(--senal) 0 2px,transparent 2px 6px)}
+.ficha-acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:2px solid var(--tinta);border-radius:2px}
+.btn.lleno{background:var(--tinta);color:var(--papel)}
+.btn.lleno:hover{background:var(--senal);border-color:var(--senal)}
+.btn.vacio:hover{background:rgba(27,29,27,.08)}
+.nube-arte{width:112px;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fff;border:1px dashed var(--tinta);font-family:var(--mono);font-size:10px;letter-spacing:.15em}
+
+/* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
+.pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.hoja{width:min(760px,100%);max-height:100%;overflow:auto;background:var(--papel);color:var(--tinta);border:2px solid var(--tinta);box-shadow:0 20px 50px rgba(0,0,0,.5);padding:20px clamp(16px,4vw,32px) 24px;touch-action:pan-y;user-select:text;-webkit-user-select:text}
+.hoja-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid var(--tinta);padding-bottom:10px}
+.hoja-cab .eti{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--metal-osc)}
+.hoja-cab h2{margin:2px 0 0;font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,48px);line-height:.95;letter-spacing:.03em}
+.cerrar{flex:none;width:44px;height:44px;border:2px solid var(--tinta);font-family:var(--mono);font-size:18px;line-height:1}
+.cerrar:hover{background:var(--tinta);color:var(--papel)}
+.hoja p{font-size:16px;line-height:1.55;max-width:62ch}
+.indice{list-style:none;margin:14px 0 0;padding:0;display:grid}
+.indice li{display:grid;grid-template-columns:3.2em 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed rgba(27,29,27,.4)}
+.indice .frec{font-family:var(--mono);font-size:11px;font-variant-numeric:tabular-nums;color:var(--metal-osc)}
+.indice h3{margin:0;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.04em;line-height:1}
+.indice .lugar{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--metal-osc)}
+.indice .fr{margin:3px 0 0;font-size:14.5px;font-style:italic;line-height:1.4}
+.indice .acc{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.indice .acc .btn{min-height:36px;padding:0 10px;font-size:10px}
+.secciones{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.creditos{margin-top:18px;font-family:var(--mono);font-size:10px;line-height:1.6;letter-spacing:.04em;color:var(--metal-osc)}
+.piezas{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:16px}
+.pieza{border:1px solid var(--tinta);padding:10px;display:grid;gap:8px;align-content:start}
+.pieza .hueco{aspect-ratio:1;max-width:100%;border:1px dashed var(--metal-osc);display:grid;place-items:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--metal-osc);text-align:center;padding:6px;background:repeating-linear-gradient(45deg,transparent 0 10px,rgba(27,29,27,.04) 10px 20px)}
+.pieza h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.04em;line-height:1}
+.pieza p{margin:0;font-size:13px;line-height:1.4}
+.pieza .estado{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--senal)}
+.apuntarse{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;align-items:end}
+.apuntarse label{display:grid;gap:4px;flex:1 1 220px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.apuntarse input{min-height:44px;padding:0 12px;border:2px solid var(--tinta);background:#fff;font:16px var(--sans);color:var(--tinta);border-radius:0}
+.respuesta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin-top:8px;min-height:1.4em}
+
+/* ---------- portada ---------- */
+#portada{position:absolute;inset:0;z-index:50;display:grid;place-items:center;background:rgba(22,23,21,.22);
+  padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));transition:opacity .6s ease}
+#portada.fuera{opacity:0;pointer-events:none}
+.portada-placa{width:min(420px,100%);display:grid;justify-items:center;gap:16px;padding:26px 22px 22px;text-align:center}
+.portada-placa .sello{width:132px;height:132px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--metal-osc),0 8px 20px rgba(0,0,0,.4)}
+.portada-placa h1{margin:0;color:var(--rotulo);font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,40px);line-height:.95;letter-spacing:.05em;text-wrap:balance}
+.coord{color:var(--rotulo);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;min-height:1.5em;font-variant-numeric:tabular-nums}
+.inst{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:rgba(233,228,212,.85);max-width:34ch}
+.inst em{font-style:normal;color:#f08a6c}
+.interruptor{display:grid;justify-items:center;gap:6px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rotulo)}
+.interruptor svg{display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+.interruptor .palanca{transform-box:view-box;transform-origin:60px 100px;transition:transform .16s cubic-bezier(.5,1.7,.5,1)}
+.interruptor[aria-checked="true"] .palanca{transform:scaleY(-1)}
+.interruptor:hover svg{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(233,162,59,.55))}
+
+/* ---------- collage ---------- */
+#collage{position:absolute;inset:0;z-index:20;pointer-events:none}
+.pieza-c{position:absolute;left:0;top:0;background:#fff;padding:6px 6px 18px;box-shadow:0 8px 22px rgba(0,0,0,.45);transform-origin:50% 50%;will-change:transform,opacity}
+.pieza-c img,.pieza-c video{display:block;width:100%;height:auto}
+.pieza-c::before{content:"";position:absolute;top:-9px;left:50%;width:62px;height:20px;margin-left:-31px;background:rgba(222,210,170,.78);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.pieza-c.bn img{filter:grayscale(1) contrast(1.15)}
+.pieza-c .tag{position:absolute;left:6px;bottom:3px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:#444}
+#trazos{position:absolute;inset:0;z-index:21;pointer-events:none;width:100%;height:100%}
+#trazos line,#trazos circle{stroke:var(--senal);stroke-width:1.2;fill:none;opacity:.8}
+#saltar{position:absolute;z-index:22;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#fff;background:rgba(0,0,0,.6);padding:10px 14px;border:1px solid rgba(255,255,255,.4)}
+
+/* ---------- pantallas anchas ---------- */
+@media (min-width:760px){
+  .solo-ancho{display:block!important}
+  #placa-sup .placa{font-size:11px}
+  .marca-map img{width:44px;height:44px}
+  .marca-map b{font-size:24px}
+  #ficha{left:auto;right:max(18px,env(safe-area-inset-right,0px));bottom:auto;top:50%;width:380px;max-height:calc(100% - 200px);transform:translate(calc(100% + 40px),-50%);border:2px solid var(--tinta)}
+  #ficha.abierta{transform:translate(0,-50%)}
+  .ficha-cuerpo{grid-template-columns:1fr}
+  .ficha-foto,.nube-arte{width:100%;aspect-ratio:4/3}
+  .frase{font-size:21px}
+}
+@media (min-width:760px){
+  .mandos{display:flex;justify-content:center;align-items:center;gap:14px}
+  .mandos .fila{display:contents}
+  .mandos .izq{order:0}
+  .mandos .fila .borde:nth-child(1){order:1}
+  .mandos .fila .borde:nth-child(2){order:2}
+  #rumbo{order:3;margin:0 8px}
+  .mandos .fila .borde:nth-child(3){order:4}
+  .mandos .der{order:5}
+  .borde{min-width:150px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div id="app">
+  <div id="mapa" aria-label="Carta aérea de San José, Costa Rica. Arrastre para recorrerla.">
+    <div id="lienzo">
+      <img class="carta" id="carta" alt="Joint Operations Graphic (Air), hoja NC 17-9, San José, Costa Rica, escala 1:250.000" src="assets/carta/san-jose-640.jpg" draggable="false">
+    </div>
+    <div class="vineta"></div>
+  </div>
+
+  <div id="instrumento" aria-hidden="true"><svg id="dial" viewBox="-130 -130 260 260"></svg></div>
+
+  <div class="hud" id="placa-sup">
+    <div class="placa marca-map">
+      <img src="assets/img/map-sello.png" alt="">
+      <div><b>MAP · RG-27</b><span>Radiogoniómetro</span><span class="solo-ancho">Instituto Cuántico Costarricense</span></div>
+    </div>
+    <dl class="placa lecturas" aria-live="off">
+      <dt>Lat</dt><dd id="lat">09°56'N</dd>
+      <dt>Lon</dt><dd id="lon">84°05'W</dd>
+      <dt>Frec</dt><dd id="frec">312 kHz</dd>
+      <dt class="solo-ancho">Marc.</dt><dd class="solo-ancho" id="marc">000°</dd>
+    </dl>
+  </div>
+
+  <div class="hud" id="aviso" role="status"></div>
+
+  <div class="hud" id="tablero">
+    <div class="mandos">
+      <div class="izq"><button class="tecla" id="b-carta" type="button"><span class="cuerpo"><span class="luz"></span></span>Carta plegada</button></div>
+      <button id="rumbo" type="button" aria-label="Rumbo aleatorio: sintonizar una señal al azar"><span class="perilla"></span>Rumbo aleatorio</button>
+      <div class="der"><button class="tecla encendida" id="b-audio" type="button" aria-pressed="true"><span class="cuerpo"><span class="luz"></span></span>Audio</button><button class="tecla" id="b-apagar" type="button" aria-label="Apagar el instrumento y volver al inicio"><span class="cuerpo"><span class="luz" style="background:#6a1b10"></span></span>Apagar</button></div>
+      <div class="fila">
+        <button class="borde" type="button" data-pliego="p-frecuencia"><i>●</i>Frecuencia abierta</button>
+        <button class="borde" type="button" data-pliego="p-panol"><i>●</i>El Pañol</button>
+        <button class="borde" type="button" data-pliego="p-astillero"><i>●</i>Astillero</button>
+      </div>
+    </div>
+    <p class="pie-panel">Perturbaciones magnéticas locales afectan la confiabilidad de este instrumento</p>
+  </div>
+
+  <aside id="ficha" aria-live="polite" aria-label="Señal sintonizada"></aside>
+
+  <div id="collage" aria-hidden="true"></div>
+  <svg id="trazos" aria-hidden="true"></svg>
+  <button id="saltar" type="button" hidden>Saltar ›</button>
+
+  <!-- CARTA PLEGADA: índice clásico, también para buscadores -->
+  <section class="pliego" id="p-carta" hidden role="dialog" aria-modal="true" aria-labelledby="t-carta">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hoja NC 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Los ocho territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
+      <ul class="indice" id="indice"></ul>
+      <div class="secciones">
+        <a class="btn vacio" href="https://www.mapradiocr.com/podcast/" target="_blank" rel="noopener">Podcast</a>
+        <a class="btn vacio" href="https://www.mapradiocr.com/serie-map/" target="_blank" rel="noopener">Serie MAP</a>
+        <a class="btn vacio" href="https://www.mapradiocr.com/sobre-el-director/" target="_blank" rel="noopener">Sobre el autor</a>
+        <a class="btn vacio" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Contacto</a>
+      </div>
+      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hoja NC 17-9, San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-frecuencia" hidden role="dialog" aria-modal="true" aria-labelledby="t-frec">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Canal de contacto · siempre en escucha</div><h2 id="t-frec">Frecuencia abierta</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Una historia de cantina, una banda que hay que grabar, un patinador que nadie ha documentado, una pregunta por la merch que todavía no existe. Esta frecuencia recibe todo.</p>
+      <div class="secciones"><a class="btn lleno" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Escribirle a MAP</a></div>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-panol" hidden role="dialog" aria-modal="true" aria-labelledby="t-panol">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Depósito de a bordo · MAP × Nasional 20 años</div><h2 id="t-panol">El Pañol</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Piezas en el taller. Pocas, bien hechas y pensadas para el calor de este país. Apúntese y le avisamos primero cuando salgan.</p>
+      <div class="piezas">
+        <article class="pieza"><div class="hueco">Mockup<br>pendiente</div><h3>Coach jacket</h3><p>La pieza ancla. Cien hechas para Nasional, cien vendidas.</p><span class="estado">En el taller</span></article>
+        <article class="pieza"><div class="hueco">Mockup<br>pendiente</div><h3>Crewneck</h3><p>Negro y gris ratón.</p><span class="estado">En el taller</span></article>
+        <article class="pieza"><div class="hueco">Mockup<br>pendiente</div><h3>Camiseta de lino</h3><p>Pocas. Fresca para el invierno tico, que también es caliente.</p><span class="estado">En el taller</span></article>
+        <article class="pieza"><div class="hueco">Mockup<br>pendiente</div><h3>Gorra ripstop</h3><p>Tela liviana, aire retro.</p><span class="estado">En el taller</span></article>
+        <article class="pieza"><div class="hueco">Foto<br>pendiente</div><h3>Medias</h3><p>Calidad mundial, proveedor confirmado.</p><span class="estado">Próxima tanda</span></article>
+      </div>
+      <form class="apuntarse" id="f-panol" novalidate>
+        <label for="correo-panol">Correo para la lista
+          <input id="correo-panol" type="email" autocomplete="email" placeholder="nombre@correo.com" required>
+        </label>
+        <button class="btn lleno" type="submit">Apuntarme</button>
+      </form>
+      <p class="respuesta" id="r-panol" role="status"></p>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-astillero" hidden role="dialog" aria-modal="true" aria-labelledby="t-ast">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Donde se construye para otros</div><h2 id="t-ast">Astillero</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Documentales, series, podcasts, registro de bandas en vivo y gráfica. Todo lo que suena en esta carta salió de aquí; el sitio entero es el portafolio.</p>
+      <p>La segunda temporada de la Serie MAP busca patrocinio. Las marcas que la acompañen quedan en los créditos y en la carta.</p>
+      <div class="secciones"><a class="btn lleno" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Proponer un proyecto</a><a class="btn vacio" href="https://www.mapradiocr.com/serie-map/" target="_blank" rel="noopener">Ver la Serie MAP</a></div>
+    </div>
+  </section>
+
+  <!-- PORTADA -->
+  <div id="portada">
+    <div class="portada-placa placa">
+      <img class="sello" src="assets/img/map-sello.png" alt="Sello de MAP: Música, Arte &amp; Patinetas">
+      <h1>Estación radiogoniométrica MAP</h1>
+      <div class="coord" id="coord-portada" aria-label="09°56' Norte, 84°05' Oeste. San José, Costa Rica"></div>
+      <button class="interruptor" id="encender" type="button" role="switch" aria-checked="false" aria-label="Encender">
+        <svg viewBox="0 0 120 200" width="96" height="160" aria-hidden="true">
+          <defs>
+            <linearGradient id="g-placa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f5f4"/><stop offset=".55" stop-color="#cfd3d1"/><stop offset="1" stop-color="#9da3a0"/></linearGradient>
+            <linearGradient id="g-cromo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5e6361"/><stop offset=".3" stop-color="#f7f8f7"/><stop offset=".55" stop-color="#b9bebc"/><stop offset=".8" stop-color="#e9ecea"/><stop offset="1" stop-color="#4e5351"/></linearGradient>
+            <radialGradient id="g-tuerca" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c3c8c6"/><stop offset="1" stop-color="#6c7270"/></radialGradient>
+            <filter id="f-sombra" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <path d="M38 8h44a6 6 0 0 1 6 6v44a44 44 0 0 1 0 84v44a6 6 0 0 1-6 6H38a6 6 0 0 1-6-6v-44a44 44 0 0 1 0-84V14a6 6 0 0 1 6-6z" fill="url(#g-placa)" stroke="#7d8380" stroke-width="1.2"/>
+          <rect x="40" y="14" width="40" height="30" rx="2" fill="#c8281e"/>
+          <text x="60" y="36" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19" fill="#fff">ON</text>
+          <rect x="38" y="156" width="44" height="30" rx="2" fill="#1b1d1b"/>
+          <text x="60" y="178" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#fff">OFF</text>
+          <polygon points="60,72 84,86 84,114 60,128 36,114 36,86" fill="url(#g-tuerca)" stroke="#6c7270" stroke-width="1"/>
+          <circle cx="60" cy="100" r="19" fill="#d9dddb" stroke="#7d8380" stroke-width="1"/>
+          <circle cx="60" cy="100" r="12" fill="#4a4f4d"/>
+          <g class="palanca">
+            <ellipse cx="47" cy="136" rx="9" ry="18" fill="rgba(0,0,0,.45)" filter="url(#f-sombra)"/>
+            <path d="M54.5 100 L51 140 Q60 150 69 140 L65.5 100 Z" fill="url(#g-cromo)" stroke="#5e6361" stroke-width=".8"/>
+            <ellipse cx="60" cy="141" rx="9.5" ry="6.5" fill="url(#g-cromo)" stroke="#5e6361" stroke-width=".8"/>
+            <circle cx="60" cy="100" r="7" fill="url(#g-tuerca)"/>
+          </g>
+        </svg>
+        <span>Encender</span>
+      </button>
+      <p class="inst">Instituto Cuántico Costarricense para la Investigación Interdimensional. <em>Calibre antes de cada marcación.</em></p>
+    </div>
+  </div>
+
+  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ===== Datos: la carta y los ocho territorios =====
+   Coordenadas en píxeles de la hoja NC 17-9 a 2576 px de ancho.
+   Neatline calibrada: x 231 = 84°30'W, x 2526 = 83°00'W, y 61 = 10°00'N, y 1607 = 9°00'N. */
+const CARTA={w:2576,h:1998,x0:231,x1:2526,y0:61,y1:1607,lon0:-84.5,lon1:-83.0,lat0:10.0,lat1:9.0};
+const T=[
+ {id:"la-barra",nombre:"La Barra",lugar:"San José",x:867,y:177,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
+ {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",x:1135,y:292,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
+ {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",x:1168,y:655,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
+ {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:232,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
+ {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:955,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
+ {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:834,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
+ {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:1162,tipo:"nubes",sub:"Arquitectura"},
+ {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:1188,tipo:"nubes",sub:"Arte"}
+];
+const COLLAGE=[
+ ["banda-vivo","en-vivo"],["clip-aire","traccion-humana","v"],["tapis","la-barra"],["ruido","sala-oscura","bn"],["deck","taller"],
+ ["clip-microfono","en-vivo","v"],["esteban-cartago","traccion-humana"],["mascaradas","letra"],["clip-silla","zona-restringida","v"],
+ ["punk-bnw","en-vivo"],["calavera","taller"],["clip-fosforo","la-barra","v"],["revista","traccion-humana"],["bote","sala-oscura"],
+ ["clip-cartones","obra-gris","v"],["retrato","letra"],["luchadores","taller"],["podcast-mural","en-vivo"],["gradas","traccion-humana"],["manos","la-barra"]
+];
+/* Voz del Dr. Arkadi */
+const AV={
+ deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
+ libre:"Arrastre la carta. La aguja apunta a la señal más cercana",
+ nube:"Zona sin cartografiar. Las nubes taparon la foto aérea",
+ rumbo:"Rumbo aleatorio. El instrumento elige por usted"
+};
+
+/* ===== utilidades ===== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const app=$("#app"), mapa=$("#mapa"), lienzo=$("#lienzo"), carta=$("#carta");
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lonDe=x=>CARTA.lon0+(x-CARTA.x0)/(CARTA.x1-CARTA.x0)*(CARTA.lon1-CARTA.lon0);
+const latDe=y=>CARTA.lat0+(y-CARTA.y0)/(CARTA.y1-CARTA.y0)*(CARTA.lat1-CARTA.lat0);
+const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a),m=Math.round((a-g)*60);const mm=m===60?0:m,gg=m===60?g+1:g;return String(gg).padStart(2,"0")+"°"+String(mm).padStart(2,"0")+"'"+h};
+const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
+T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
+
+/* ===== estado ===== */
+const S={s:1,x:1010,y:340,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada",activa:null,oidas:new Set(store.get("map27.oidas",[])),visto:store.get("map27.visto",false),aguja:0,marc:0};
+
+/* ===== audio: Web Audio, todo arranca con el interruptor ===== */
+const A={ctx:null,master:null,estatica:null,estGain:null,bufs:{},on:true,fuente:null,ini:0,dur:0};
+const SON={clack:"assets/sonidos/clack.mp3",corta:"assets/sonidos/estatica-corta.mp3",larga:"assets/sonidos/estatica-larga.mp3",sintonia:"assets/sonidos/sintonia.mp3",perillas:"assets/sonidos/perillas.mp3",nubes:"assets/sonidos/nubes.mp3"};
+const crudos={};
+Object.entries(SON).forEach(([k,u])=>{crudos[k]=fetch(u).then(r=>r.arrayBuffer()).catch(()=>null)});
+async function buf(k,u){
+  if(A.bufs[k]) return A.bufs[k];
+  const ab=await (crudos[k]||fetch(u).then(r=>r.arrayBuffer()));
+  if(!ab||!A.ctx) return null;
+  try{A.bufs[k]=await A.ctx.decodeAudioData(ab.slice(0));}catch(e){return null}
+  return A.bufs[k];
+}
+function iniciarAudio(){
+  if(A.ctx) return;
+  const C=window.AudioContext||window.webkitAudioContext; if(!C) return;
+  A.ctx=new C(); A.master=A.ctx.createGain(); A.master.gain.value=1; A.master.connect(A.ctx.destination);
+  // estática continua generada: ruido filtrado con chasquidos; no se repite ni pesa
+  const n=A.ctx.sampleRate*2, b=A.ctx.createBuffer(1,n,A.ctx.sampleRate), d=b.getChannelData(0);
+  for(let i=0;i<n;i++){d[i]=(Math.random()*2-1)*.5; if(Math.random()<.0004){const L=40+Math.random()*200;for(let j=0;j<L&&i+j<n;j++)d[i+j]+=(Math.random()*2-1)*.9*(1-j/L)}}
+  const src=A.ctx.createBufferSource(); src.buffer=b; src.loop=true;
+  const bp=A.ctx.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=2200; bp.Q.value=.6;
+  A.estGain=A.ctx.createGain(); A.estGain.gain.value=0;
+  src.connect(bp).connect(A.estGain).connect(A.master); src.start();
+  A.estatica=src;
+}
+function sonar(k,vol=1,u){
+  if(!A.ctx||!A.on) return;
+  buf(k,u||SON[k]).then(b=>{if(!b||!A.on)return;const s=A.ctx.createBufferSource(),g=A.ctx.createGain();g.gain.value=vol;s.buffer=b;s.connect(g).connect(A.master);s.start();});
+}
+function nivelEstatica(v,t=.3){if(!A.ctx)return;const g=A.estGain.gain;g.cancelScheduledValues(A.ctx.currentTime);g.setTargetAtTime(A.on?v:0,A.ctx.currentTime,t/3)}
+function pararSenal(){if(A.fuente){try{A.fuente.stop()}catch(e){}A.fuente=null}}
+async function tocarSenal(t){
+  pararSenal();
+  if(!A.ctx) return;
+  const b=await buf("s-"+t.id,`assets/senales/${t.id}-01.mp3`);
+  if(!b||S.activa!==t) return;
+  const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
+  s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
+  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(.035,1.2)}};
+}
+
+/* ===== construcción del dial ===== */
+function dibujarDial(){
+  const svg=$("#dial"), NS="http://www.w3.org/2000/svg";
+  const el=(n,a,p=svg)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+  const defs=el("defs",{});
+    const m=el("mask",{id:"aro"},defs); el("rect",{x:"-140",y:"-140",width:"280",height:"280",fill:"#fff"},m); el("circle",{cx:"0",cy:"0",r:"84",fill:"#000"},m);
+  // retícula exterior: como el sello MAP
+  [["-128","0","-104","0"],["104","0","128","0"],["0","-128","0","-104"],["0","104","0","128"]].forEach(([a,b,c,d])=>el("line",{x1:a,y1:b,x2:c,y2:d,stroke:"#1b1d1b","stroke-width":"1.2"}));
+  el("circle",{cx:"0",cy:"0",r:"112",fill:"none",stroke:"#1b1d1b","stroke-width":".8","stroke-dasharray":"2.5 2.5"});
+  // bisel martillado y carátula crema
+  el("circle",{cx:"0",cy:"0",r:"104",fill:"#9a9f9c",mask:"url(#aro)",stroke:"#5b605d","stroke-width":"1.5"});
+  el("circle",{cx:"0",cy:"0",r:"99",fill:"#ece5cf",mask:"url(#aro)"});
+  el("circle",{cx:"0",cy:"0",r:"84.5",fill:"none",stroke:"#1b1d1b","stroke-width":"1.6"});
+  el("circle",{cx:"0",cy:"0",r:"99",fill:"none",stroke:"#1b1d1b","stroke-width":".8"});
+  const esc=el("g",{"font-family":"IBM Plex Mono, monospace","font-size":"5.6","font-weight":"600",fill:"#1b1d1b","text-anchor":"middle"});
+  for(let g=0;g<360;g+=2){
+    const a=(g-90)*Math.PI/180, L=g%10===0?9:(g%5===0?6:4), r0=84.5, r1=r0+L;
+    el("line",{x1:(Math.cos(a)*r0).toFixed(2),y1:(Math.sin(a)*r0).toFixed(2),x2:(Math.cos(a)*r1).toFixed(2),y2:(Math.sin(a)*r1).toFixed(2),stroke:"#1b1d1b","stroke-width":g%10===0?".9":".5"},esc);
+    if(g%30===0){const rr=92.5;const t=el("text",{x:(Math.cos(a)*rr).toFixed(2),y:(Math.sin(a)*rr+2).toFixed(2),transform:`rotate(${g} ${(Math.cos(a)*rr).toFixed(2)} ${(Math.sin(a)*rr).toFixed(2)})`},esc);t.textContent=String(g).padStart(3,"0");}
+  }
+  // marca roja de referencia (como en el Sichtfunkpeiler)
+  el("circle",{cx:"0",cy:"-80",r:"2.2",fill:"#c6361f"});
+  // cristal: retícula fina sobre la carta
+  el("circle",{cx:"0",cy:"0",r:"84",fill:"rgba(236,229,207,.06)"});
+  el("line",{x1:"-84",y1:"0",x2:"84",y2:"0",stroke:"rgba(27,29,27,.45)","stroke-width":".5"});
+  el("line",{x1:"0",y1:"-84",x2:"0",y2:"84",stroke:"rgba(27,29,27,.45)","stroke-width":".5"});
+  el("circle",{cx:"0",cy:"0",r:"42",fill:"none",stroke:"rgba(27,29,27,.4)","stroke-width":".5","stroke-dasharray":"1.5 2"});
+  // aguja: línea de marcación que cruza el cristal
+  const ag=el("g",{id:"aguja"});
+  el("line",{x1:"0",y1:"80",x2:"0",y2:"-80",stroke:"#c6361f","stroke-width":"1.4","stroke-linecap":"round"},ag);
+  el("path",{d:"M0,-82 L-3.2,-72 L3.2,-72 Z",fill:"#c6361f"},ag);
+  el("circle",{cx:"0",cy:"0",r:"3.4",fill:"#1b1d1b"},ag);
+  el("circle",{cx:"0",cy:"0",r:"1.3",fill:"#ece5cf"},ag);
+  // intensidad: arco de lámparas bajo el dial
+  const vu=el("g",{id:"vu"});
+  for(let i=0;i<9;i++){const a=(22+i*5)*Math.PI/180; el("rect",{x:(Math.cos(a)*117-2).toFixed(2),y:(Math.sin(a)*117-2).toFixed(2),width:"4",height:"4",rx:"1",fill:"#3a2a14",class:"seg"},vu);}
+}
+
+/* ===== marcas sobre la carta ===== */
+function montarMarcas(){
+  T.forEach(t=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":""); b.dataset.id=t.id; b.dataset.dormida="true";
+    b.style.left=t.x+"px"; b.style.top=t.y+"px"; b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
+    b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
+    b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"sin cartografiar":t.frec+" kHz"}</small></span>`;
+    b.addEventListener("click",e=>{if(S.movido){e.preventDefault();return}sintonizar(t)});
+    lienzo.appendChild(b); t.el=b;
+    if(S.oidas.has(t.id)) b.classList.add("oida");
+  });
+}
+
+/* ===== geometría y vista ===== */
+function medir(){
+  S.vw=app.clientWidth; S.vh=app.clientHeight;
+  const ancho=S.vw>=760;
+  S.s=ancho?1:.75;
+  const sup=ancho?92:84, inf=($("#tablero").offsetHeight||150);
+  S.cx=S.vw/2; S.cy=sup+(S.vh-sup-inf)/2;
+  S.r=Math.max(110,Math.min(S.vw*.5-14,(S.vh-sup-inf)*.5-8,300));
+  const ins=$("#instrumento"), lado=S.r*2*(130/104);
+  ins.style.width=ins.style.height=lado+"px"; ins.style.left=(S.cx-lado/2)+"px"; ins.style.top=(S.cy-lado/2)+"px";
+  lienzo.style.width=CARTA.w*S.s+"px"; lienzo.style.height=CARTA.h*S.s+"px";
+  // las marcas están en px de la carta a escala 1; las escalamos con el lienzo
+  T.forEach(t=>{t.el.style.left=t.x*S.s+"px";t.el.style.top=t.y*S.s+"px"});
+  if(S.fase==="portada") S.y=Math.max(340,S.cy/S.s+24);
+  $("#aviso").style.top=(S.cy+S.r*1.12+6)+"px";
+  if($("#aviso").getBoundingClientRect().bottom>S.vh-inf){$("#aviso").style.top=(sup+4)+"px"}
+  aplicar();
+}
+function limites(){
+  // la carta puede correrse hasta su borde: cualquier territorio cabe en el centro del cristal
+  return {mx:40,Mx:CARTA.w-40,my:20,My:CARTA.h-20};
+}
+function aplicar(){
+  const L=limites(); S.x=clamp(S.x,L.mx,L.Mx); S.y=clamp(S.y,L.my,L.My);
+  lienzo.style.transform=`translate3d(${(S.cx-S.x*S.s).toFixed(1)}px,${(S.cy-S.y*S.s).toFixed(1)}px,0)`;
+  $("#lat").textContent=gms(latDe(S.y),"N"); $("#lon").textContent=gms(lonDe(S.x),"W"); $("#frec").textContent=frecDe(S.x)+" kHz";
+}
+function aPantalla(t){return {x:S.cx+(t.x-S.x)*S.s,y:S.cy+(t.y-S.y)*S.s}}
+
+/* ===== aguja e intensidad (bucle) ===== */
+let segs=[];
+function bucle(){
+  const vivos=T.filter(t=>t.tipo==="senal"&&t.el.dataset.dormida!=="true"||t===S.objetivo);
+  let obj=S.activa||S.objetivo, dmin=Infinity;
+  T.forEach(t=>{const d=Math.hypot(t.x-S.x,t.y-S.y); if(t.tipo==="senal"&&d<dmin){dmin=d; if(!S.activa&&!S.objetivo) obj=t;}});
+  if(!S.activa&&S.fase==="libre"){let best=null,bd=Infinity;T.forEach(t=>{const d=Math.hypot(t.x-S.x,t.y-S.y);if(d<bd){bd=d;best=t}});obj=best;}
+  let ang=S.aguja;
+  if(obj){const dx=obj.x-S.x,dy=obj.y-S.y; if(Math.hypot(dx,dy)>4) ang=Math.atan2(dx,-dy)*180/Math.PI;}
+  // perturbación magnética: temblor leve
+  const temblor=(Math.sin(performance.now()/370)+Math.sin(performance.now()/113))*.6;
+  let diff=((ang-S.aguja+540)%360)-180; S.aguja+=diff*.12;
+  const ag=document.getElementById("aguja"); if(ag) ag.setAttribute("transform",`rotate(${(S.aguja+temblor).toFixed(2)})`);
+  S.marc=(Math.round(S.aguja)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
+  // intensidad según cercanía a cualquier señal
+  const dObj=obj?Math.hypot(obj.x-S.x,obj.y-S.y):9999;
+  const k=clamp(1-dObj/700,0,1), n=Math.round(k*9);
+  segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
+  if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
+  // progreso de la señal en la ficha
+  if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
+  requestAnimationFrame(bucle);
+}
+const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
+
+/* ===== arrastre de la carta ===== */
+function arrastre(){
+  let p=null,vx=0,vy=0,last=0,inercia=0;
+  mapa.addEventListener("pointerdown",e=>{
+    if(S.fase==="portada"||S.fase==="collage") return;
+    cancelAnimationFrame(inercia); cancelAnimationFrame(S.pan||0);
+    p={x:e.clientX,y:e.clientY,ox:S.x,oy:S.y,id:e.pointerId}; S.movido=false; last=performance.now(); vx=vy=0;
+  });
+  window.addEventListener("pointermove",e=>{
+    if(!p||e.pointerId!==p.id) return;
+    const dx=e.clientX-p.x, dy=e.clientY-p.y;
+    if(!S.movido&&Math.hypot(dx,dy)>7){S.movido=true;mapa.classList.add("arrastrando");try{mapa.setPointerCapture(p.id)}catch(_){}}
+    if(!S.movido) return;
+    const nx=p.ox-dx/S.s, ny=p.oy-dy/S.s, now=performance.now(), dt=Math.max(1,now-last);
+    vx=(nx-S.x)/dt; vy=(ny-S.y)/dt; last=now; S.x=nx; S.y=ny; aplicar();
+  });
+  const fin=e=>{
+    if(!p||e.pointerId!==p.id) return; p=null; mapa.classList.remove("arrastrando");
+    if(S.movido){setTimeout(()=>S.movido=false,30); let t0=performance.now();
+      const paso=()=>{const now=performance.now(),dt=now-t0;t0=now;vx*=.92;vy*=.92;S.x+=vx*dt;S.y+=vy*dt;aplicar();if(Math.hypot(vx,vy)>.01)inercia=requestAnimationFrame(paso)};
+      inercia=requestAnimationFrame(paso);}
+  };
+  window.addEventListener("pointerup",fin); window.addEventListener("pointercancel",fin);
+  // teclado: flechas mueven la carta
+  window.addEventListener("keydown",e=>{
+    if(S.fase!=="libre"&&S.fase!=="espera") return; if(document.querySelector(".pliego:not([hidden])")) return;
+    const k={ArrowLeft:[-60,0],ArrowRight:[60,0],ArrowUp:[0,-60],ArrowDown:[0,60]}[e.key]; if(!k) return;
+    e.preventDefault(); S.x+=k[0]; S.y+=k[1]; aplicar();
+  });
+}
+function panA(x,y,ms=900){
+  return new Promise(res=>{
+    cancelAnimationFrame(S.pan||0);
+    const L=limites(); x=clamp(x,L.mx,L.Mx); y=clamp(y,L.my,L.My);
+    const x0=S.x,y0=S.y,t0=performance.now(), d=reduce?1:ms;
+    const e=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const paso=now=>{const k=clamp((now-t0)/d,0,1),q=e(k);S.x=x0+(x-x0)*q;S.y=y0+(y-y0)*q;aplicar();if(k<1)S.pan=requestAnimationFrame(paso);else res()};
+    S.pan=requestAnimationFrame(paso);
+  });
+}
+
+/* ===== aviso de Arkadi (máquina de escribir) ===== */
+let avisoT=0;
+function aviso(txt,alerta){
+  const el=$("#aviso"); clearInterval(avisoT); el.classList.toggle("alerta",!!alerta);
+  if(reduce){el.textContent=txt;return}
+  let i=0; el.innerHTML='<span class="cursor">▌</span>';
+  avisoT=setInterval(()=>{i++;el.innerHTML=txt.slice(0,i)+'<span class="cursor">▌</span>';if(i>=txt.length){clearInterval(avisoT)}},22);
+}
+
+/* ===== sintonizar ===== */
+async function sintonizar(t){
+  if(S.fase==="portada"||S.fase==="collage") return;
+  if(S.fase==="espera"&&t!==S.objetivo) return;
+  S.activa=t; S.objetivo=null; cerrarFicha(true);
+  T.forEach(o=>o.el.classList.remove("detectada"));
+  pararSenal();
+  if(t.tipo==="nubes"){ sonar("nubes",.9); nivelEstatica(.05,.3); aviso(AV.nube); }
+  else { sonar("sintonia",.7); nivelEstatica(.09,.2); }
+  // pequeño giro de la perilla de rumbo como si el aparato buscara
+  await panA(t.x,t.y,850);
+  abrirFicha(t);
+  if(t.tipo==="senal"){ nivelEstatica(.006,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
+  if(S.fase==="espera"){ S.fase="libre"; despertarTodo(); }
+}
+function despertarTodo(){
+  T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
+  setTimeout(()=>{$("#rumbo").classList.add("llamado");aviso(AV.libre)},reduce?0:1400);
+}
+
+/* ===== ficha ===== */
+function abrirFicha(t){
+  const f=$("#ficha");
+  const cab=`<div class="ficha-cab"><b>${t.nombre}</b><span>${t.lat} ${t.lon}${t.tipo==="senal"?" · "+t.frec+" kHz":""}</span></div>`;
+  if(t.tipo==="nubes"){
+    f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="nube-arte">NUBES</div><div class="ficha-texto"><h2>Zona sin cartografiar</h2><p class="sub">${t.sub} · ${t.lugar}</p>
+      <p class="frase">Las nubes taparon la foto aérea. El territorio existe; todavía nadie lo registró.</p>
+      <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span><button class="btn lleno" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+  } else {
+    f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${t.id}-01.jpg" alt="${t.nombre}: imagen de la señal">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
+      <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${t.frase}</p>
+      <div class="medidor"><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
+      <div class="ficha-acciones"><a class="btn lleno" href="${t.link}" target="_blank" rel="noopener">Abrir</a><button class="btn vacio" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+  }
+  f.querySelector("[data-cerrar]").addEventListener("click",()=>{cerrarFicha();});
+  requestAnimationFrame(()=>f.classList.add("abierta"));
+}
+function cerrarFicha(silencioso){
+  const f=$("#ficha"); f.classList.remove("abierta");
+  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(.04,.5); aviso(AV.libre);}
+}
+
+/* ===== portada y collage ===== */
+function escribirCoord(){
+  const txt="09°56'N · 84°05'W · SAN JOSÉ, COSTA RICA", el=$("#coord-portada");
+  if(reduce){el.textContent=txt;return}
+  let i=0; const iv=setInterval(()=>{el.textContent=txt.slice(0,++i);if(i>=txt.length)clearInterval(iv)},45);
+}
+async function encender(){
+  if(S.fase!=="portada") return;
+  const sw=$("#encender"); sw.setAttribute("aria-checked","true");
+  iniciarAudio(); if(A.ctx&&A.ctx.state==="suspended"){try{await A.ctx.resume()}catch(e){}}
+  sonar("clack",1);
+  S.fase="collage";
+  setTimeout(()=>{$("#portada").classList.add("fuera");collage()},reduce?0:420);
+}
+function collage(){
+  const lay=$("#collage"), saltar=$("#saltar");
+  const largo=!S.visto&&!reduce;
+  const piezas=largo?COLLAGE:COLLAGE.slice(0,6);
+  const paso=largo?150:110;
+  if(A.ctx){sonar("larga",.8); nivelEstatica(.12,.2); [300,1100,1900].forEach(ms=>setTimeout(()=>sonar("perillas",.7),ms));}
+  if(reduce){revelar([]);return}
+  saltar.hidden=false;
+  const els=[]; let fuera=false;
+  const terminar=()=>{if(fuera)return;fuera=true;saltar.hidden=true;revelar(els)};
+  saltar.onclick=terminar;
+  piezas.forEach(([n,ter,tipo],i)=>setTimeout(()=>{
+    if(fuera) return;
+    const d=document.createElement("div"); d.className="pieza-c"+(tipo==="bn"?" bn":"");
+    const w=Math.round(clamp(S.vw*(.32+Math.random()*.16),130,340));
+    d.style.width=w+"px";
+    if(tipo==="v"){d.innerHTML=`<video src="assets/collage/${n}.mp4" muted playsinline autoplay loop preload="auto"></video>`}
+    else d.innerHTML=`<img src="assets/collage/${n}.jpg" alt="">`;
+    d.insertAdjacentHTML("beforeend",`<span class="tag">${(T.find(t=>t.id===ter)||{}).nombre||""}</span>`);
+    const x=Math.random()*(S.vw-w*.7)-w*.15, y=Math.random()*(S.vh*.78)-30, r=(Math.random()*16-8);
+    d.dataset.ter=ter; d.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(1.25)`; d.style.opacity="0";
+    lay.appendChild(d); els.push(d);
+    requestAnimationFrame(()=>{d.style.transition="transform .22s cubic-bezier(.2,1.4,.4,1),opacity .12s";d.style.opacity="1";d.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(1)`;d._x=x;d._y=y;d._w=w;d._r=r});
+  },i*paso));
+  setTimeout(terminar,piezas.length*paso+(largo?650:300));
+}
+function revelar(els){
+  S.fase="reveal"; const tr=$("#trazos");
+  // líneas de la carta que se trazan sobre el desorden
+  if(!reduce){
+    tr.innerHTML=""; const NS="http://www.w3.org/2000/svg";
+    const L=(x1,y1,x2,y2,dl)=>{const l=document.createElementNS(NS,"line");l.setAttribute("x1",x1);l.setAttribute("y1",y1);l.setAttribute("x2",x2);l.setAttribute("y2",y2);const len=Math.hypot(x2-x1,y2-y1);l.style.strokeDasharray=len;l.style.strokeDashoffset=len;l.style.transition=`stroke-dashoffset .7s ease ${dl}s, opacity .5s ease 1.4s`;tr.appendChild(l);requestAnimationFrame(()=>requestAnimationFrame(()=>{l.style.strokeDashoffset=0;l.style.opacity=0}))};
+    for(let i=0;i<12;i++){const a=i*Math.PI/6;L(S.cx,S.cy,S.cx+Math.cos(a)*Math.max(S.vw,S.vh),S.cy+Math.sin(a)*Math.max(S.vw,S.vh),i*.03)}
+  }
+  // cada pieza vuela a su territorio y se vuelve un punto
+  els.forEach((d,i)=>{
+    const t=T.find(o=>o.id===d.dataset.ter); const p=t?aPantalla(t):{x:S.cx,y:S.cy};
+    d.style.transition=`transform .75s cubic-bezier(.6,0,.3,1) ${i*.025}s, opacity .35s ease ${.5+i*.025}s`;
+    d.style.transform=`translate(${p.x-d._w/2}px,${p.y-d._w/2}px) rotate(0deg) scale(.06)`; d.style.opacity="0";
+  });
+  setTimeout(()=>{$("#collage").innerHTML="";tr.innerHTML=""},reduce?0:1500);
+  setTimeout(()=>{
+    $("#instrumento").classList.add("listo"); $$(".hud").forEach(h=>h.classList.add("listo"));
+    T.forEach(t=>t.el.classList.add("viva"));
+    if(A.ctx) nivelEstatica(.05,.6);
+    setTimeout(esperar,reduce?0:700);
+  },reduce?0:650);
+  S.visto=true; store.set("map27.visto",true);
+}
+function esperar(){
+  // la señal apunta a lo nuevo: la primera que el visitante no ha oído
+  const sen=T.filter(t=>t.tipo==="senal");
+  const obj=sen.find(t=>!S.oidas.has(t.id))||sen[Math.floor(Math.random()*sen.length)];
+  S.objetivo=obj; S.fase="espera";
+  T.forEach(t=>{t.el.classList.toggle("viva",t===obj);t.el.dataset.dormida=t===obj?"false":"true"});
+  obj.el.classList.add("detectada");
+  // que la señal quede dentro del cristal, fuera del centro, para que la aguja la marque
+  const off=S.r*.55/S.s; panA(obj.x+off*.6,obj.y+off*.7,700);
+  aviso(AV.deteccion(obj),true);
+}
+
+/* ===== mandos ===== */
+function mandos(){
+  $("#encender").addEventListener("click",encender);
+  $("#rumbo").addEventListener("click",()=>{
+    if(S.fase==="espera"){sintonizar(S.objetivo);return}
+    if(S.fase!=="libre") return;
+    const p=$("#rumbo .perilla"); S.giro=(S.giro||0)+120+Math.random()*240; p.style.transform=`rotate(${S.giro}deg)`;
+    $("#rumbo").classList.remove("llamado"); sonar("perillas",.8);
+    const pool=T.filter(t=>t!==S.activa&&(t.tipo==="senal"||Math.random()<.35));
+    const t=pool[Math.floor(Math.random()*pool.length)]; aviso(AV.rumbo); setTimeout(()=>sintonizar(t),350);
+  });
+  $("#b-audio").addEventListener("click",e=>{
+    A.on=!A.on; const b=e.currentTarget; b.setAttribute("aria-pressed",A.on); b.classList.toggle("encendida",A.on);
+    if(A.ctx){A.master.gain.setTargetAtTime(A.on?1:0,A.ctx.currentTime,.05)}
+  });
+  $("#b-carta").addEventListener("click",()=>abrirPliego("p-carta"));
+  $("#b-apagar").addEventListener("click",apagar);
+  $$("[data-pliego]").forEach(b=>b.addEventListener("click",()=>abrirPliego(b.dataset.pliego)));
+  $$(".pliego").forEach(p=>{
+    p.addEventListener("click",e=>{if(e.target===p)cerrarPliego(p)});
+    p.querySelector(".cerrar").addEventListener("click",()=>cerrarPliego(p));
+  });
+  window.addEventListener("keydown",e=>{if(e.key==="Escape"){const p=document.querySelector(".pliego:not([hidden])");if(p)cerrarPliego(p);else if($("#ficha").classList.contains("abierta"))cerrarFicha()}});
+  $("#f-panol").addEventListener("submit",e=>{
+    e.preventDefault(); const i=$("#correo-panol"), r=$("#r-panol");
+    if(!i.value||!i.checkValidity()){r.textContent="Revise el correo: falta la arroba o el dominio.";i.focus();return}
+    r.textContent="Anotado en la bitácora. (Borrador: este formulario todavía no envía nada.)"; i.value="";
+  });
+  // índice de la carta plegada
+  $("#indice").innerHTML=T.map(t=>`<li><span class="frec">${t.tipo==="senal"?t.frec+"<br>kHz":"—"}</span><div><h3>${t.nombre}</h3><div class="lugar">${t.sub} · ${t.lugar} · ${t.lat} ${t.lon}</div>${t.tipo==="senal"?`<p class="fr">${t.frase}</p>`:`<p class="fr">Zona de nubes. Señal en preparación.</p>`}</div>
+    <div class="acc"><button class="btn vacio" type="button" data-sint="${t.id}">Sintonizar</button>${t.link?`<a class="btn lleno" href="${t.link}" target="_blank" rel="noopener">Abrir</a>`:""}</div></li>`).join("");
+  $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
+}
+function apagar(){
+  pararSenal(); nivelEstatica(0,.1); sonar("clack",.9);
+  $$(".pliego").forEach(p=>p.hidden=true); $("#ficha").classList.remove("abierta");
+  cancelAnimationFrame(S.pan||0); clearInterval(avisoT); $("#aviso").textContent="";
+  S.activa=null; S.objetivo=null; S.fase="portada";
+  $("#instrumento").classList.remove("listo"); $$(".hud").forEach(h=>h.classList.remove("listo"));
+  T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"});
+  $("#rumbo").classList.remove("llamado");
+  $("#encender").setAttribute("aria-checked","false"); $("#portada").classList.remove("fuera");
+  S.x=1010; S.y=Math.max(340,S.cy/S.s+24); aplicar(); setTimeout(()=>$("#encender").focus(),300);
+}
+let ultimoFoco=null;
+function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimoFoco=document.activeElement;const p=$("#"+id);p.hidden=false;sonar("perillas",.5);p.querySelector(".cerrar").focus()}
+function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catch(e){}}
+
+/* ===== arranque ===== */
+function cargarCarta(){
+  const grande=(window.innerWidth>=760)?"assets/carta/san-jose-2576.jpg":"assets/carta/san-jose-1932.jpg";
+  const im=new Image(); im.onload=()=>{carta.src=grande}; im.src=grande;
+}
+dibujarDial(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
+window.addEventListener("resize",medir);
+if(window.visualViewport) visualViewport.addEventListener("resize",medir);
+requestAnimationFrame(bucle);
+// precarga liviana del collage: la portada espera el toque
+COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}});
+})();
+</script>
+</body></html>
