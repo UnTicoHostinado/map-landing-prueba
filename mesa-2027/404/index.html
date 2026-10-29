@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Sin señal · MAP Radio CR</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap">
+<style>
+:root{--ar-papel:#F4F3EF;--ar-tinta:#14120E;--ar-acento:#E8412C;--ar-plano:#2C5876;--ar-tiza:#B9B6AC;
+  --ar-rot:'B612 Mono','IBM Plex Mono',ui-monospace,Consolas,monospace;--ar-tit:'Bebas Neue',Impact,'Arial Narrow',sans-serif;--ar-txt:'IBM Plex Sans',system-ui,sans-serif}
+html,body{margin:0;background:var(--ar-tinta)}
+.tv,.tv *,.tv *::before,.tv *::after{box-sizing:border-box}
+.tv{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:var(--ar-tinta);color:var(--ar-papel);font-family:var(--ar-txt);display:flex;flex-direction:column}
+
+/* capas del televisor */
+.tv__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);opacity:.25;animation:tv-tiembla .18s steps(2) infinite}
+.tv__estatica{position:absolute;inset:-60px;pointer-events:none;opacity:.32;mix-blend-mode:screen;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");animation:tv-ruido .25s steps(4) infinite}
+.tv__barrido{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px)}
+.tv__vineta{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.78) 100%)}
+.tv__franja{position:absolute;left:0;right:0;height:18vh;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(244,243,239,.05),transparent);animation:tv-franja 6s linear infinite}
+
+/* OSD */
+.tv__osd{position:absolute;top:max(22px,env(safe-area-inset-top,0px));font:700 clamp(13px,1.4vw,18px) var(--ar-rot);letter-spacing:.2em;text-transform:uppercase;color:var(--ar-papel);text-shadow:0 0 6px rgba(244,243,239,.45);z-index:3}
+.tv__osd--izq{left:max(24px,env(safe-area-inset-left,0px));animation:tv-parpadeo 3s steps(1) infinite}
+.tv__osd--der{right:max(24px,env(safe-area-inset-right,0px));font-weight:400;color:var(--ar-tiza)}
+.tv__osd--izq::before{content:"";display:inline-block;width:.6em;height:.6em;margin-right:.6em;border-radius:50%;background:var(--ar-acento);box-shadow:0 0 8px var(--ar-acento);vertical-align:.05em}
+
+/* centro */
+.tv__centro{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:72px max(20px,env(safe-area-inset-right,0px)) 64px max(20px,env(safe-area-inset-left,0px))}
+.tv__titulo{margin:0;font:400 clamp(84px,15vw,210px)/.82 var(--ar-tit);letter-spacing:.03em;color:var(--ar-papel);
+  text-shadow:-.035em 0 rgba(232,65,44,.85),.035em 0 rgba(44,88,118,.95),0 0 28px rgba(244,243,239,.18)}
+.tv__mensaje{margin:0;max-width:34ch;font:400 clamp(16px,1.7vw,21px)/1.5 var(--ar-rot);letter-spacing:.04em;color:var(--ar-papel)}
+.tv__volver{display:inline-flex;align-items:center;gap:10px;margin-top:4px;padding:14px 22px;background:var(--ar-acento);color:var(--ar-papel);font:700 13px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;text-decoration:none}
+.tv__volver:hover,.tv__volver:focus-visible{background:var(--ar-papel);color:var(--ar-tinta);outline:none}
+
+/* teletexto: tres al azar */
+.tv__tele{margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:12px;width:min(720px,100%)}
+.tv__tele-lab{font:12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-tiza);white-space:nowrap}
+.tv__tele-lab::before,.tv__tele-lab::after{content:"──";margin:0 .7em;color:var(--ar-acento)}
+@media (max-width:560px){.tv__tele-lab{white-space:normal}.tv__tele-lab::before,.tv__tele-lab::after{content:none}}
+.tv__tele ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:100%}
+.tv__tele a{display:block;padding:6px 10px;font:15px/1.45 var(--ar-rot);color:var(--ar-papel);text-decoration:none;background:rgba(20,18,14,.55)}
+.tv__tele a b{font-weight:700;color:var(--ar-acento);letter-spacing:.1em;text-transform:uppercase;font-size:12px}
+.tv__tele a:hover,.tv__tele a:focus-visible{background:var(--ar-papel);color:var(--ar-tinta);outline:none}
+
+/* buscar desde aquí */
+.tv__buscar{margin-top:16px;display:flex;align-items:stretch;gap:0;width:min(460px,100%);border-bottom:1.5px solid var(--ar-papel)}
+.tv__buscar label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tv__buscar input{flex:1;min-width:0;background:transparent;border:0;color:var(--ar-papel);font:15px var(--ar-rot);letter-spacing:.06em;padding:10px 4px}
+.tv__buscar input::placeholder{color:var(--ar-tiza);opacity:.8}
+.tv__buscar input:focus{outline:none}
+.tv__buscar button{background:none;border:0;color:var(--ar-acento);font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0 4px}
+.tv__buscar:focus-within{border-color:var(--ar-acento)}
+
+@keyframes tv-tiembla{50%{transform:translate(1px,-1px)}}
+@keyframes tv-ruido{0%{transform:translate(0,0)}25%{transform:translate(-4px,3px)}50%{transform:translate(3px,-4px)}75%{transform:translate(-3px,-3px)}}
+@keyframes tv-parpadeo{0%,70%{opacity:1}71%,100%{opacity:.15}}
+@keyframes tv-franja{from{top:-20vh}to{top:110vh}}
+@media (prefers-reduced-motion:reduce){.tv__video,.tv__estatica,.tv__osd--izq,.tv__franja{animation:none}.tv__franja{display:none}}
+</style>
+
+<main class="tv">
+  <video class="tv__video" src="https://www.mapradiocr.com/wp-content/uploads/2026/06/404.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+  <div class="tv__estatica" aria-hidden="true"></div>
+  <div class="tv__barrido" aria-hidden="true"></div>
+  <div class="tv__franja" aria-hidden="true"></div>
+  <div class="tv__vineta" aria-hidden="true"></div>
+
+  <span class="tv__osd tv__osd--izq">Canal 404</span>
+  <span class="tv__osd tv__osd--der">AV-1</span>
+
+  <div class="tv__centro">
+    <h1 class="tv__titulo">Sin señal</h1>
+    <p class="tv__mensaje">Esta página no existe. Como tantas cosas buenas que le hacen falta a este país.</p>
+    <a class="tv__volver" href="https://www.mapradiocr.com/">Volver a la programación</a>
+
+    <div class="tv__tele">
+      <span class="tv__tele-lab">Hasta que vuelva la señal, sintonice esto:</span>
+      <ul id="tv-tele"></ul>
+    </div>
+
+    <form class="tv__buscar" id="tv-buscar" role="search">
+      <label for="tv-q">Buscar en el archivo</label>
+      <input id="tv-q" type="search" placeholder="O busque en el archivo…" autocomplete="off">
+      <button type="submit">Buscar ⌕</button>
+    </form>
+  </div>
+</main>
+
+<script>
+(function(){
+  /* tres textos del archivo al azar, distintos en cada visita */
+  var D={"cats": {"15": "Cine", "4": "Editorial", "34": "Literatura", "908": "Crónicas", "32": "Cantinas", "545": "Taller Literatura Alajuela", "35": "Podcast", "173": "Fotografía", "33": "Ciudades", "196": "Opinión crítica", "230": "Taller literario", "479": "Clásicos revisados", "364": "Cannabis", "1": "Sin categoría"}, "posts": [["2026-10-26", "El cine independiente en Costa Rica", "el-cine-independiente-en-costa-rica", [15]], ["2026-10-25", "El terror de los 70 visto desde acá", "el-terror-de-los-70-visto-desde-aca", [15]], ["2026-10-22", "El largo declive de la izquierda europea", "el-largo-declive-de-la-izquierda-europea", [1]], ["2026-10-17", "Bitácora de un cortometraje: Falsi Prophetae", "bitacora-de-un-cortometraje-falsi-prophetae", [15]], ["2026-10-11", "10 misterios de Costa Rica", "10-misterios-de-costa-rica", [1]], ["2026-10-06", "Bitácora de un videoclip", "bitacora-de-un-videoclip", [15]], ["2026-09-15", "Los estudios de campo del Dr. Arkady Volkov Lazenko. Bitácora 6: receptor transdimensional de banda vacante residual VX-996", "bitacora-6", [908]], ["2026-09-06", "La Garita 71, una carta desde Londres", "la-garita-71-una-carta-desde-londres", [34]], ["2026-08-20", "La Ley de Usura", "la-ley-de-usura", [4]], ["2026-08-18", "La ardiente Alajuela – en desarrollo (película)", "la-ardiente-alajuela-pelicula", [15]], ["2026-08-11", "La Copa Cannábica", "la-copa-cannabica", [364]], ["2026-08-10", "Los estudios de campo del Dr. Arkady Volkov Lazenko: Escuela de Brujos", "los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos", [908]], ["2026-07-31", "La crisis planetaria del bicho THX 1138: tributo a Armando Manzanero", "tri", [908]], ["2026-07-27", "Arder por devosión", "arder-por-devosion", [4]], ["2026-07-26", "El narcisismo y la grandiosidad de las celebridades", "el-narcisismo-y-la-grandiosidad-de-las-celebridades", [196]], ["2026-07-25", "México no tiene una industria de cine: ¡tiene varias!", "mexico-no-tiene-una-industria-de-cine-tiene-varias", [15]], ["2026-07-25", "Escuela pal autor noventero: ¡su lista de cintas si no sabe qué videar un fin de semana!", "escuela-pal-autor-noventero-su-lista-de-cintas-si-no-sabe-que-videar", [15]], ["2026-07-24", "¿No sabe qué videar este domingo?", "no-sabe-que-videar-este-domingo", [15]], ["2026-07-20", "La moralización del debate trans", "la-moralizacion-del-debate-trans", [4]], ["2026-07-19", "¿Podría la IA ser consciente?", "podria-la-ia-ser-conscient", [4]], ["2026-07-18", "Todos contra Argentina", "todos-contra-argentina", [4]], ["2026-07-16", "Ícaro: poemario y cancionero", "icaro-poemario-y-cancionero", [34]], ["2026-07-14", "Paralelismos esféricos", "paralelismos-esfericos", [4]], ["2026-07-14", "Lilith", "lilith", [34]], ["2026-07-12", "Estudios de campo 3", "estudios-de-campo-3", [908]], ["2026-07-03", "Giallo", "giallo", [15]], ["2026-06-22", "Estudios de campo 2", "estudios-de-campo-bitacora-2", [908]], ["2026-06-17", "Entre el idealismo y el valeverguismo", "entre-el-idealismo-y-el-valeverguismo", [4]], ["2026-06-15", "Grandes Infelices podcast", "grandes-infelices", [35]], ["2026-06-08", "Diez años detrás de una barra", "terminal-bar-documental", [15]], ["2026-06-08", "El policía de las ratas", "el-policia-de-las-ratas", [34]], ["2026-05-31", "Palo Miao – Serenatas", "palo-miao", [230, 545]], ["2026-05-13", "Estudios de campo 1", "estudios-de-campo", [908]], ["2026-05-08", "Salem's Lot", "salems-lot", [479]], ["2026-05-04", "Película: Un poeta", "pelicula-un-poeta", [15, 4]], ["2026-05-02", "Streetwise (1984)", "streetwise-1984", [15]], ["2026-04-28", "Emperador Tertuliano", "emperador-tertuliano", [34]], ["2026-04-01", "Crónica prospectiva", "cronica-prospectiva", [4]], ["2026-02-09", "Nueva fuerza", "nueva-fuerza", [4]], ["2026-02-07", "Gatos, ratones & ruido político", "gatos-ratones-ruido-politico", [4]], ["2026-01-26", "El día después de su voto", "el-dia-despues-de-su-voto", [4]], ["2026-01-15", "La tarde en que la alegría se volvió miedo (1966)", "la-tarde-en-que-la-alegria-se-volvio-miedo-1966", [545]], ["2026-01-14", "Preparación para febrero", "preparacion-para-febrero", [4]], ["2026-01-12", "Foforito & Norman", "foforito-norman", [34, 545]], ["2026-01-09", "Del voto a la dictadura", "del-voto-a-la-dictadura", [4, 196]], ["2026-01-06", "El fútbol ha muerto", "el-futbol-ha-muerto", [4, 230, 545]], ["2025-12-10", "Ética tortuguista", "etica-tortuguista", [4]], ["2025-11-30", "El microondas", "el-microondas", [33]], ["2025-11-26", "Misas negras", "misas-negras", [4]], ["2025-11-14", "¿Para dónde va?", "para-donde-va", [4]], ["2025-11-13", "Spaghetti western", "spaguetti-western", [15]], ["2025-11-04", "Entre maullidos", "entre-maullidos-2", [34, 545]], ["2025-10-26", "Cantina Ideal #3", "cantina-ideal-3", [32]], ["2025-10-22", "4 historias de patineta", "4-historias-de-patineta", [15]], ["2025-10-20", "Parte por conducir como animal", "parte-por-conducir-como-animal", [34]], ["2025-10-13", "Abril veinte veinte", "abril-veinte-veinte", [34]], ["2025-10-09", "Armando Manzanero", "armando-manzanero", [35]], ["2025-10-07", "La luna llena del cazador", "la-luna-llena-del-cazador", [34]], ["2025-10-03", "Huesos & palabras", "huesos-palabras", [34]], ["2025-09-29", "Análisis unidimensional-multifactorial de la cerveza perfecta", "analisis-unidimensional-multifactorial-de-la-cerveza-perfecta", [32]], ["2025-09-25", "Miedo a la autoría en tiempos de IA", "miedo-a-la-autoria-en-tiempos-de-ia", [4]], ["2025-09-18", "Guion de un natalicio: una noche en La ardiente Alajuela", "guion-de-un-natalicio-una-noche-en-la-ardiente-alajuela", [15]], ["2025-09-17", "Macho que ladra no llora", "macho-que-ladra-no-llora", [15]], ["2025-09-14", "Nuestros términos", "nuestros-terminos", [4]], ["2025-09-11", "Bar Buenos Aires: la cantina legendaria de San José", "juan-el-bautista-en-el-bar-buenos-aires", [32]], ["2025-09-10", "José María Villalta: el político profesional que vive de la pose", "jose-maria-villalta-el-politico-profesional-que-vide-de-la-pose", [4]], ["2025-09-08", "La hermanastra fea 2025: crítica y análisis de la nueva Cenicienta gore", "cenicienta-gore-para-tiempos-modernos", [15]], ["2025-09-06", "De la corporación a la realidad", "de-la-corporacion-a-la-realidad", [4]], ["2025-09-05", "Rafa Fallas: memoria en imágenes", "rafa-fallas-memoria-en-imagenes-de-un-pais-autentico", [173]], ["2025-09-04", "Interludio: voces urbanas", "interludio-voces-urbanas", [15]], ["2025-09-01", "Cannabis Airlines: crónica entre la pista y el cielo", "cannabis-airlines-entre-la-pista-y-el-cielo", [908]], ["2025-08-31", "IQCPLII: el instituto que Costa Rica merece", "iqcplii-el-instituto-que-costa-rica-merece", [15]], ["2025-08-28", "La cultura del saqueo: Farid Ayales y la pluma de Vladimir", "la-cultura-del-saqueo-farid-ayales-y-la-pluma-de-vladimir", [4]], ["2025-08-26", "De cuclillas, guitarras y una vuelta inesperada", "de-cuclillas-guitarras-y-una-vuelta-inesperada", [4]], ["2025-08-26", "Gerardo César Hurtado, la memoria viva de la literatura costarricense", "gerardo-cesar-hurtado-la-memoria-viva-de-la-literatura-costarricense", [35]], ["2025-08-26", "El secreto dentro de la mandarina", "el-secreto-dentro-de-la-mandarina", [4, 35]], ["2025-08-22", "El peligro de la candidez (y otros aprendizajes ochenteros)", "el-peligro-de-la-candidez-y-otros-aprendizajes-ochenteros", [33]], ["2025-08-22", "Vitamina D, cerveza fría y un secreto en Garza", "vitamina-d-cerveza-fria-y-un-secreto-de-garza", [32]], ["2025-08-20", "El crimen ferpecto", "el-crimen-ferpecto", [15]]]}, pool=D.posts.slice(), tres=[];
+  while(tres.length<3&&pool.length){tres.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}
+  var ul=document.getElementById('tv-tele');
+  tres.forEach(function(p){
+    var li=document.createElement('li'), a=document.createElement('a'), b=document.createElement('b');
+    a.href='https://www.mapradiocr.com/'+p[2]+'/'; b.textContent=(D.cats[p[3][0]]||'Texto')+' ▸ ';
+    a.appendChild(b); a.appendChild(document.createTextNode(p[1])); li.appendChild(a); ul.appendChild(li);
+  });
+  /* buscar desde aquí: en WordPress va a /?s=; en la maqueta, a la página de búsqueda */
+  document.getElementById('tv-buscar').addEventListener('submit',function(e){
+    e.preventDefault(); var v=document.getElementById('tv-q').value.trim(); if(!v)return;
+    location.href='https://unticohostinado.github.io/map-landing-prueba/mesa-2027/buscar/?q='+encodeURIComponent(v);
+  });
+})();
+</script>
+
+</body>
+</html>
