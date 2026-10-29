@@ -94,6 +94,7 @@ a{color:inherit}
 #aviso{left:50%;transform:translate(-50%,8px);max-width:min(560px,calc(100vw - 32px));text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--rotulo);background:rgba(29,31,30,.92);border:1px solid rgba(233,228,212,.25);padding:8px 14px;border-radius:3px;pointer-events:none}
 #aviso.alerta{color:var(--lampara)}
+#aviso.oculto{opacity:0!important;transition:opacity .6s}
 #aviso .cursor{display:inline-block;width:.6em;animation:cursor 1s steps(2) infinite}
 @keyframes cursor{50%{opacity:0}}
 
@@ -385,7 +386,7 @@ const COLLAGE=[ // foto y clip alternados: 9 y 9
 /* Voz del Dr. Arkadi */
 const AV={
  deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
- libre:"Gire el aro del dial para buscar señales. Arrastre la carta para recorrerla",
+ libre:"Gire el aro para buscar señales",
  nube:"Zona sin cartografiar. Las nubes taparon la foto aérea",
  rumbo:"Rumbo aleatorio. El instrumento elige por usted"
 };
@@ -564,20 +565,29 @@ function bucle(){
 const angDif=(a,b)=>Math.abs(((a-b+540)%360)-180);
 function antena(){
   if(S.fase!=="libre"||A.fuente||$("#ficha").classList.contains("abierta")){if(S.alineada){S.alineada.el.classList.remove("detectada");S.alineada=null}leve(null);return 0}
-  let best=null,bk=0;
+  // la antena empieza a oír desde 25° antes de alinearse; al alinear (menos de 7°) da la alerta
+  let best=null,bk=0,bdf=99;
   T.forEach(t=>{
-    const dx=t.x-S.x,dy=t.y-S.y,d=Math.hypot(dx,dy); if(d<60||d>2200) return;
-    const df=angDif(Math.atan2(dx,-dy)*180/Math.PI,S.aguja), tope=(t===S.alineada)?10:7; if(df>tope) return;
-    const kk=(1-df/10)*clamp(1.3-d/1700,.25,1); if(kk>bk){bk=kk;best=t}
+    const dx=t.x-S.x,dy=t.y-S.y,d=Math.hypot(dx,dy); if(d<60||d>2600) return;
+    const df=angDif(Math.atan2(dx,-dy)*180/Math.PI,S.aguja); if(df>25) return;
+    const kk=(1-df/25)*clamp(1.35-d/1900,.3,1); if(kk>bk){bk=kk;best=t;bdf=df}
   });
-  if(best!==S.alineada){
+  const fija=(best&&bdf<(best===S.alineada?10:7))?best:null;
+  if(fija!==S.alineada){
     if(S.alineada) S.alineada.el.classList.remove("detectada");
-    S.alineada=best;
-    if(best){best.el.classList.add("detectada");const g=String(S.marc).padStart(3,"0");aviso(best.tipo==="nubes"?`Eco a ${g}°: ${best.nombre}. Zona de nubes`:`Señal a ${g}°: ${best.nombre}. Toque la marca para sintonizar`,true);}
-    else aviso(AV.libre);
+    S.alineada=fija;
+    if(fija){fija.el.classList.add("detectada");bip(fija.tipo==="nubes");const g=String(S.marc).padStart(3,"0");
+      aviso(fija.tipo==="nubes"?`Eco a ${g}°: ${fija.nombre}. Zona de nubes`:`Señal a ${g}°: ${fija.nombre}. Toque la marca`,true,5000);}
   }
-  leve(best,bk);
+  leve(best,bk*bk);
   return bk;
+}
+function bip(grave){
+  if(!A.ctx||!A.on) return;
+  const o=A.ctx.createOscillator(),g=A.ctx.createGain(),t=A.ctx.currentTime;
+  o.type="sine";o.frequency.value=grave?420:880;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+.01);g.gain.setValueAtTime(.18,t+.07);g.gain.linearRampToValueAtTime(0,t+.09);
+  o.connect(g).connect(A.master);o.start(t);o.stop(t+.12);
+  if(!grave){const o2=A.ctx.createOscillator(),g2=A.ctx.createGain();o2.frequency.value=880;g2.gain.setValueAtTime(0,t+.14);g2.gain.linearRampToValueAtTime(.18,t+.15);g2.gain.setValueAtTime(.18,t+.21);g2.gain.linearRampToValueAtTime(0,t+.23);o2.connect(g2).connect(A.master);o2.start(t+.14);o2.stop(t+.26);}
 }
 async function leve(t,k=0){
   if(!A.ctx) return;
@@ -607,6 +617,7 @@ function aro(){
   hit.addEventListener("pointerdown",e=>{
     if(S.fase!=="libre") return; e.preventDefault(); e.stopPropagation();
     try{hit.setPointerCapture(e.pointerId)}catch(_){}
+    if($("#ficha").classList.contains("abierta")) cerrarFicha();
     if(!S.manual){S.manual=true;$("#rumbo").classList.remove("llamado")}
     st={id:e.pointerId,off:angDe(e)-S.aguja}; ult=Math.round(S.aguja/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
   });
@@ -614,7 +625,7 @@ function aro(){
   const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
   hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
   // teclado: [ y ] giran el aro 5°
-  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){S.manual=true;S.aguja+=e.key==="]"?5:-5;tic()}});
+  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){if($("#ficha").classList.contains("abierta"))cerrarFicha();S.manual=true;S.aguja+=e.key==="]"?5:-5;tic()}});
 }
 const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
 
@@ -660,9 +671,10 @@ function panA(x,y,ms=900){
 }
 
 /* ===== aviso de Arkadi (máquina de escribir) ===== */
-let avisoT=0;
-function aviso(txt,alerta){
-  const el=$("#aviso"); clearInterval(avisoT); el.classList.toggle("alerta",!!alerta);
+let avisoT=0,avisoH=0;
+function aviso(txt,alerta,dur=4500){
+  const el=$("#aviso"); clearInterval(avisoT); clearTimeout(avisoH); el.classList.toggle("alerta",!!alerta); el.classList.remove("oculto");
+  if(dur) avisoH=setTimeout(()=>el.classList.add("oculto"),dur);
   if(reduce){el.textContent=txt;return}
   let i=0; el.innerHTML='<span class="cursor">▌</span>';
   avisoT=setInterval(()=>{i++;el.innerHTML=txt.slice(0,i)+'<span class="cursor">▌</span>';if(i>=txt.length){clearInterval(avisoT)}},22);
@@ -707,7 +719,7 @@ function abrirFicha(t){
 }
 function cerrarFicha(silencioso){
   const f=$("#ficha"); f.classList.remove("abierta");
-  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(.04,.5); aviso(AV.libre);}
+  if(!silencioso){pararSenal(); S.activa=null; nivelEstatica(.04,.5); $("#aviso").classList.add("oculto");}
 }
 
 /* ===== portada y collage ===== */
@@ -786,7 +798,7 @@ function esperar(){
   obj.el.classList.add("detectada");
   // que la señal quede dentro del cristal, fuera del centro, para que la aguja la marque
   const off=S.r*.55/S.s; panA(obj.x+off*.6,obj.y+off*.7,700);
-  aviso(AV.deteccion(obj),true);
+  aviso(AV.deteccion(obj),true,0);
 }
 
 /* ===== mandos ===== */
@@ -798,7 +810,7 @@ function mandos(){
     const p=$("#rumbo .perilla"); S.giro=(S.giro||0)+120+Math.random()*240; p.style.transform=`rotate(${S.giro}deg)`;
     $("#rumbo").classList.remove("llamado"); sonar("perillas",.8);
     const pool=T.filter(t=>t!==S.activa&&(t.tipo==="senal"||Math.random()<.35));
-    const t=pool[Math.floor(Math.random()*pool.length)]; aviso(AV.rumbo); setTimeout(()=>sintonizar(t),350);
+    const t=pool[Math.floor(Math.random()*pool.length)]; aviso(AV.rumbo,false,2500); setTimeout(()=>sintonizar(t),350);
   });
   $("#b-audio").addEventListener("click",e=>{
     A.on=!A.on; const b=e.currentTarget; b.setAttribute("aria-pressed",A.on); b.classList.toggle("encendida",A.on);
