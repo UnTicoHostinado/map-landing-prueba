@@ -402,6 +402,17 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .lb-aviso{margin:4px 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;border:1.5px dashed var(--ar-plano);padding:12px 14px;color:var(--ar-plano);background:rgba(44,88,118,.05)}
 .lb-aviso b{font:700 11px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
 .lb-aviso span{font:300 16px/1.5 var(--ar-txt);color:var(--ar-tinta)}
+
+/* cita centrada en la pantalla, con el mismo texto */
+.lb-cita{max-width:640px;margin-left:auto;margin-right:auto}
+.lb-audio{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.lb-audio__play{flex:0 0 40px;height:40px;border-radius:50%;border:0;background:var(--ar-acento);cursor:pointer;display:grid;place-items:center}
+.lb-audio__play i{width:0;height:0;border-left:12px solid var(--ar-papel);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.lb-audio.sonando .lb-audio__play i{width:11px;height:13px;border:0;margin:0;background:linear-gradient(90deg,var(--ar-papel) 0 4px,transparent 4px 7px,var(--ar-papel) 7px 11px)}
+.lb-audio__play:focus-visible{outline:2px solid var(--ar-tinta);outline-offset:3px}
+.lb-audio__barra{flex:1;height:3px;background:var(--ar-linea);position:relative}
+.lb-audio__barra span{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ar-acento)}
+.lb-audio__t{font:12px var(--ar-rot);color:var(--ar-gris);font-variant-numeric:tabular-nums}
 </style>
 
 <div class="ar-maqueta"><span>Maqueta · Crónicas del Refugio · textos tomados de la página actual</span></div>
@@ -482,6 +493,11 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     <div class="ar-tit"><h2 id="lb-lectura-t">Una lectura</h2><span>crítica</span></div>
     <blockquote class="lb-cita">
       <p>"El mecanismo que 'Chuz' emplea para dar sustancia a su praxis política no tiene su sidero ni en el dogmatismo ni en el proselitismo. Lo que ha comprendido es que el catalizador que le permitirá urdir su plan es la creación de una sensación de sed incesante y presentarse, de primero, con medio vaso de agua."</p>
+      <div class="lb-audio" data-src="audio/ignacio-castillo-etica-tortuguista.mp3">
+        <button type="button" class="lb-audio__play" aria-label="Escuchar el comentario de Ignacio Castillo"><i aria-hidden="true"></i></button>
+        <div class="lb-audio__barra" aria-hidden="true"><span></span></div>
+        <span class="lb-audio__t">0:36</span>
+      </div>
       <footer><b>Ignacio Castillo</b><span>Análisis sobre «Estudios quelonios»</span><a href="https://www.mapradiocr.com/etica-tortuguista/">Leer el análisis completo →</a></footer>
     </blockquote>
   </section></div>
@@ -507,6 +523,17 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   var mb=$('#ar-menu-btn'), menu=$('#ar-menu');
   mb.addEventListener('click',function(){var on=menu.classList.toggle('abierto');mb.setAttribute('aria-expanded',on)});
   var bus=$('#ar-buscador');
+  /* audio del comentario: carga al tocar */
+  [].forEach.call(document.querySelectorAll('.lb-audio'),function(w){
+    var b=w.querySelector('button'), bar=w.querySelector('.lb-audio__barra span'), t=w.querySelector('.lb-audio__t'), au=null;
+    function mm(x){x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')}
+    b.addEventListener('click',function(){
+      if(!au){au=new Audio(w.dataset.src);
+        au.addEventListener('timeupdate',function(){bar.style.width=(au.currentTime/(au.duration||36)*100)+'%';t.textContent=mm((au.duration||36)-au.currentTime)});
+        au.addEventListener('ended',function(){w.classList.remove('sonando');bar.style.width='0%';t.textContent=mm(au.duration)});}
+      if(au.paused){au.play();w.classList.add('sonando')}else{au.pause();w.classList.remove('sonando')}
+    });
+  });
   $('#ar-buscar-btn').addEventListener('click',function(){bus.hidden=false;$('#ar-q').focus()});
   $('#ar-buscar-cerrar').addEventListener('click',function(){bus.hidden=true});
   bus.addEventListener('click',function(e){if(e.target===bus)bus.hidden=true});

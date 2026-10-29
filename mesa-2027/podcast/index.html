@@ -402,6 +402,17 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .lb-aviso b{font:700 11px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
 .lb-aviso span{font:300 16px/1.5 var(--ar-txt);color:var(--ar-tinta)}
 
+/* cita centrada en la pantalla, con el mismo texto */
+.lb-cita{max-width:640px;margin-left:auto;margin-right:auto}
+.lb-audio{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.lb-audio__play{flex:0 0 40px;height:40px;border-radius:50%;border:0;background:var(--ar-acento);cursor:pointer;display:grid;place-items:center}
+.lb-audio__play i{width:0;height:0;border-left:12px solid var(--ar-papel);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.lb-audio.sonando .lb-audio__play i{width:11px;height:13px;border:0;margin:0;background:linear-gradient(90deg,var(--ar-papel) 0 4px,transparent 4px 7px,var(--ar-papel) 7px 11px)}
+.lb-audio__play:focus-visible{outline:2px solid var(--ar-tinta);outline-offset:3px}
+.lb-audio__barra{flex:1;height:3px;background:var(--ar-linea);position:relative}
+.lb-audio__barra span{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ar-acento)}
+.lb-audio__t{font:12px var(--ar-rot);color:var(--ar-gris);font-variant-numeric:tabular-nums}
+
 /* PODCAST · un sintonizador arriba y cuatro series como estaciones. Prefijo .pc- */
 .pc *,.pc *::before,.pc *::after{box-sizing:border-box}
 
@@ -430,8 +441,8 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .pc-dial__escala{height:22px;margin:10px 0 0;border-bottom:2px solid var(--ar-tinta);
   background:repeating-linear-gradient(90deg,var(--ar-tinta) 0 1px,transparent 1px 12px) bottom/100% 8px no-repeat,
              repeating-linear-gradient(90deg,var(--ar-tinta) 0 2px,transparent 2px 60px) bottom/100% 16px no-repeat}
-.pc-dial ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-@media (max-width:820px){.pc-dial ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pc-dial ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:700px){.pc-dial ol{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:460px){.pc-dial ol{grid-template-columns:minmax(0,1fr)}}
 .pc-dial a{display:flex;flex-direction:column;gap:4px;padding:14px 14px 16px 0;color:var(--ar-tinta);text-decoration:none;position:relative}
 .pc-dial a::before{content:"";position:absolute;top:-14px;left:0;width:3px;height:14px;background:var(--ar-acento)}
@@ -483,6 +494,13 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .pc-cierre{gap:24px}
 .pc-cierre__txt{display:flex;flex-wrap:wrap;gap:18px 40px;align-items:flex-end;justify-content:space-between}
 .pc-cierre__txt span{max-width:62ch;font:300 17px/1.65 var(--ar-txt);color:var(--ar-tinta);text-transform:none;letter-spacing:0}
+
+/* cierre a lo ancho, botón a la izquierda */
+.pc-cierre p{max-width:none}
+.pc-cierre__txt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 40px;align-items:start}
+.pc-cierre__txt span{max-width:none;font-size:18px;text-align:justify;hyphens:auto}
+@media (max-width:640px){.pc-cierre__txt{grid-template-columns:minmax(0,1fr)}.pc-cierre__txt span{text-align:left}}
+.pc-lectura{max-width:640px;margin-left:auto;margin-right:auto}
 </style>
 
 <div class="ar-maqueta"><span>Maqueta · Podcast · textos de la página actual; los reproductores de Spotify cargan al tocar</span></div>
@@ -517,7 +535,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
       <p class="pc-intro">Más de 200 episodios. Un podcast de Costa Rica con conversaciones, relatos y poesía de gente que vale la pena escuchar. Desde 2016, haciendo podcast con alma y siempre con una idea clara de lo que queremos decir.</p>
       <dl class="pc-datos">
         <div><dt>Episodios</dt><dd>200+</dd></div>
-        <div><dt>Series</dt><dd>4</dd></div>
+        <div><dt>Series</dt><dd>3</dd></div>
         <div><dt>Al aire desde</dt><dd>2016</dd></div>
       </dl>
       <a class="ap-boton" href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB">Escuchar en Spotify ↗</a>
@@ -536,7 +554,6 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
       <li><a href="#bastardos"><span>01</span><b>Los Bastardos de Poveda</b><i>Escritores y poetas de Alajuela</i></a></li>
       <li><a href="#relatos"><span>02</span><b>Relatos Cortos</b><i>Textos propios y de amigos de MAP</i></a></li>
       <li><a href="#rpgp"><span>03</span><b>RPGP Radio Pachuko</b><i>Grandes personajes sin vitrina</i></a></li>
-      <li><a href="#sopa"><span>04</span><b>Sopa de Letras</b><i>Poetas del Valle Central en cámara</i></a></li>
     </ol>
   </nav></div>
 
@@ -611,33 +628,13 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
       <button type="button" class="ap-boton ap-boton--linea" data-sp="5OX4RYwRW7Y5rFjCcS5h64" data-tipo="playlist">▶ Abrir la lista de episodios</button>
     </div>
   </section></div>
-  <div class="ap-wrap"><section class="pc-serie ap-ancho" id="sopa" aria-labelledby="pc-sopa-t">
-    <header class="pc-serie__cab">
-      <span class="pc-num">04</span>
-      <div><h2 id="pc-sopa-t">Sopa de Letras</h2><p>Poetas del Valle Central en cámara</p></div>
-    </header>
-    <div class="pc-serie__grid">
-      <div class="lb-texto pc-serie__txt"><p>En Sopa de Letras se reúnen poetas de distintas partes del Valle Central para presentar sus versos en vídeo. No puedo decir que tengamos claro qué es exactamente Sopa de Letras, y sospecho que nuestro amigo Bernardo Soto tampoco lo sabe.</p><p>Lo que sí tenemos, es un piloto y más de 20 episodios grabados, todos desde <a href="https://www.instagram.com/casa_parker_project">Casa Parker</a>, custodiada —literalmente— por las nalgas de Juan Santamaría. Cada entrega es una mezcla de palabra, interpretación y contexto, donde la poesía cobra vida de formas poco comunes.</p></div>
-      <aside class="pc-dest" aria-label="Episodio destacado · #13 · 2025">
-        <span class="pc-dest__lab">Episodio destacado · #13 · 2025</span>
-        <b class="pc-dest__nom">Bernardo Corrales</b>
-        <p>Bernardo Corrales nos regaló un poema que permea en el hondo del alma. Más allá de la sensibilidad está la sensatez: la poesía se usa como formato válido para la denuncia. Queda muy claro que no hay ningún motivo para celebrar la realidad de los niños de Gaza y que la violencia más grande es la desatención e indiferencia humana. Por eso, como dice Corrales: no es hora para ningún regocijo.</p>
-        <p class="pc-pend">Enlace del episodio pendiente · está en la serie completa</p>
-      </aside>
-    </div>
-    
-    <div class="pc-completa">
-      <span>Serie completa · Sopa de Letras</span>
-      <button type="button" class="ap-boton ap-boton--linea" data-sp="1vSY87Bb6iRUVMMLfaUgRk" data-tipo="playlist">▶ Abrir la lista de episodios</button>
-    </div>
-  </section></div>
 
   <!-- 8 · cierre -->
   <div class="ap-wrap"><section class="lb-cierre ap-ancho pc-cierre">
     <p>Lo que viste fue nada más una extinta <span>boca de cortesía.</span></p>
     <div class="pc-cierre__txt">
-      <span>Esto es apenas una parte de lo que hemos creado en MAP Radio Radio Pachuko. Cada serie, cada episodio y cada historia forma parte de un archivo vivo que seguimos construyendo desde 2016. Si algo de lo que escuchaste te movió, quedate cerca. Hay mucho más por descubrir, y las mejores conversaciones todavía no han pasado.</span>
       <a class="ap-boton" href="https://open.spotify.com/show/6XGk2uLzxlDTm7Op6mqEBB">Escuchar en Spotify ↗</a>
+      <span>Esto es apenas una parte de lo que hemos creado en MAP Radio Radio Pachuko. Cada serie, cada episodio y cada historia forma parte de un archivo vivo que seguimos construyendo desde 2016. Si algo de lo que escuchaste te movió, quedate cerca. Hay mucho más por descubrir, y las mejores conversaciones todavía no han pasado.</span>
     </div>
   </section></div>
 </main>
