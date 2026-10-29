@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Búsqueda en el archivo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
+<style>/* PLANTILLA DE ENTRADA · Archivo MAP
+   Marco fijo alrededor del cuerpo de cada entrada: barra, cabecera, pista, cierre, radiogramas.
+   Prefijo .ar- para no chocar con Neve, Elementor ni la hoja de rodaje (.hr-). */
+:root{
+  --ar-papel:#F4F3EF; --ar-papel-2:#E9E7E0; --ar-tinta:#14120E; --ar-acento:#E8412C;
+  --ar-gris:#6B6B6B; --ar-linea:rgba(20,18,14,.16); --ar-tiza:#B9B6AC;
+  --ar-plano:#2C5876; --ar-patron:#A86A12;
+  --ar-rot:'B612 Mono','IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --ar-tit:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  --ar-txt:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+body{background:var(--ar-papel);color:var(--ar-tinta);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--ar-tinta)}
+/* los rótulos de toda la entrada pasan a B612 Mono */
+.hr-root{--mono:var(--ar-rot)}
+
+/* aviso de maqueta */
+.ar-maqueta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--ar-papel-2);color:var(--ar-gris);
+  font:11px/1.4 var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;padding-block:8px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-zonas{font:700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--ar-tinta);border:1.5px solid var(--ar-tinta);padding:6px 10px;cursor:pointer}
+.ar-zonas[aria-pressed="true"]{background:var(--ar-tinta);color:var(--ar-papel)}
+
+/* barra del archivo */
+.ar-barra{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ar-tinta);color:var(--ar-papel);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-barra__in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:18px;min-height:56px;position:relative}
+.ar-barra a{color:var(--ar-papel);text-decoration:none}
+.ar-sello{font:400 26px/1 var(--ar-tit);letter-spacing:.05em;border:2px solid var(--ar-papel);padding:3px 8px 1px}
+.ar-sello:hover,.ar-sello:focus-visible{background:var(--ar-papel);color:var(--ar-tinta)!important;outline:none}
+.ar-archivo{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
+.ar-menu{display:flex;gap:18px;flex:1;min-width:0;font:12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase}
+.ar-menu a{color:var(--ar-tiza)!important}
+.ar-menu a:hover,.ar-menu a:focus-visible,.ar-archivo:hover{color:var(--ar-acento)!important;outline:none}
+.ar-btn{font:12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--ar-papel);border:1px solid var(--ar-tiza);padding:7px 10px;cursor:pointer}
+.ar-btn:hover,.ar-btn:focus-visible{border-color:var(--ar-acento);color:var(--ar-acento);outline:none}
+.ar-btn--menu{display:none;margin-left:auto}
+@media (max-width:820px){
+  .ar-btn--menu{display:inline-block}
+  .ar-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--ar-tinta);border-top:1px solid #333;padding-block:6px}
+  .ar-menu.abierto{display:flex}
+  .ar-menu a{padding:12px 0;border-bottom:1px solid #2a2824}
+}
+@media (max-width:420px){.ar-archivo{display:none}}
+
+/* buscador */
+.ar-buscador[hidden]{display:none}
+.ar-buscador{position:fixed;inset:0;z-index:60;background:rgba(20,18,14,.96);display:grid;place-items:start center;
+  padding:calc(12vh + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.ar-buscador__in{width:min(720px,100%);display:flex;flex-direction:column;gap:14px;color:var(--ar-papel)}
+.ar-buscador label{font:12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-tiza)}
+.ar-buscador input{font:400 clamp(30px,6vw,52px)/1.1 var(--ar-tit);letter-spacing:.03em;background:transparent;color:var(--ar-papel);border:0;border-bottom:2px solid var(--ar-papel);padding:6px 0;width:100%}
+.ar-buscador input:focus{outline:none;border-color:var(--ar-acento)}
+.ar-buscador p{margin:0;font:13px var(--ar-rot);color:var(--ar-tiza)}
+.ar-btn--claro{align-self:flex-start}
+
+/* cabecera */
+.ar-head{position:relative}
+.ar-ter{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin:0 0 18px;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-ter a{color:var(--ar-gris);text-decoration:none;border-bottom:1px solid var(--ar-linea)}
+.ar-ter a:hover,.ar-ter a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ar-ter .ar-ter__sello{display:inline-flex;align-items:center;gap:8px;color:var(--ar-acento);font-weight:700;border:0}
+.ar-ter__sello i{width:11px;height:11px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
+.ar-previa{position:absolute;top:-22px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
+  padding:8px 12px;display:flex;flex-direction:column;gap:3px;opacity:.85;pointer-events:none;background:rgba(244,243,239,.6)}
+.ar-previa b{font:700 14px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
+.ar-previa span{font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:1180px){.ar-previa{position:static;align-self:flex-start;display:inline-flex;margin:0 0 18px;transform:rotate(-2deg)}}
+
+/* pista de narración */
+.ar-pista{border:2px solid var(--ar-tinta);background:var(--ar-papel);padding:14px 16px 12px;margin-top:8px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.ar-pista__lab{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris);font-variant-numeric:tabular-nums}
+.ar-pista__lab span:first-child{color:var(--ar-acento);font-weight:700}
+.ar-pista__fila{display:flex;align-items:center;gap:14px}
+.ar-play{flex:0 0 48px;height:48px;border-radius:50%;border:0;background:var(--ar-acento);cursor:pointer;display:grid;place-items:center}
+.ar-play i{width:0;height:0;border-left:15px solid var(--ar-papel);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.ar-play.sonando i{width:14px;height:16px;border:0;margin:0;background:linear-gradient(90deg,var(--ar-papel) 0 5px,transparent 5px 9px,var(--ar-papel) 9px 14px)}
+.ar-play:focus-visible{outline:3px solid var(--ar-tinta);outline-offset:3px}
+.ar-onda{flex:1;min-width:0;height:44px;display:flex;align-items:center;gap:2px;overflow:hidden}
+.ar-onda b{flex:1 1 0;min-width:1px;background:var(--ar-tiza);border-radius:1px}
+.ar-onda b.ya{background:var(--ar-tinta)}
+.ar-pista__cred{margin:0;font:12px/1.5 var(--ar-rot);color:var(--ar-gris)}
+.ar-pista__pie{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.ar-pista__pie span{font:10.5px var(--ar-rot);color:var(--ar-gris);letter-spacing:.04em}
+.ar-spotify{font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento)!important;text-decoration:none}
+
+/* proyección adentro */
+button.hr-proj__screen{width:100%;border:0;border-radius:0;font:inherit;text-align:left;cursor:pointer}
+.hr-proj__video{display:grid;place-items:center}
+.ar-bloqueo{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;padding:20px;color:var(--ar-tiza);font:12px/1.6 var(--ar-rot);letter-spacing:.06em}
+.ar-bloqueo b{font:400 clamp(26px,5vw,44px)/1 var(--ar-tit);color:var(--ar-papel);letter-spacing:.03em}
+.ar-bloqueo a{color:var(--ar-acento)}
+
+/* títulos de los bloques del cierre */
+.ar-cierre,.ar-leer,.ar-radio{margin-top:56px}
+.ar-cierre{margin-top:72px}
+.ar-tit{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ar-tinta);padding-bottom:6px;margin-bottom:6px}
+.ar-tit h2{font:400 clamp(30px,4.4vw,40px)/1 var(--ar-tit)!important;letter-spacing:.02em;margin:0;color:var(--ar-tinta)}
+.ar-tit span{font:11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+
+/* etiquetas */
+.ar-etq{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ar-etq a{display:inline-block;font:12px var(--ar-rot);letter-spacing:.06em;color:var(--ar-tinta);text-decoration:none;border:1px solid var(--ar-tinta);padding:5px 9px}
+.ar-etq a:hover,.ar-etq a:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.ar-volver{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px;font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase}
+.ar-volver a{color:var(--ar-acento);text-decoration:none}
+.ar-volver a:hover,.ar-volver a:focus-visible{text-decoration:underline;outline:none}
+
+/* lo más leído */
+.ar-top{list-style:none;margin:0;padding:0;counter-reset:n}
+.ar-top li{counter-increment:n;display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;align-items:baseline;gap:4px 12px;padding:12px 0;border-bottom:1px dotted var(--ar-linea)}
+.ar-top li::before{content:counter(n);font:400 38px/1 var(--ar-tit);color:var(--ar-acento)}
+.ar-top a{font:500 18px/1.3 var(--ar-txt);color:var(--ar-tinta);text-decoration:none}
+.ar-top a:hover,.ar-top a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-top span{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:520px){.ar-top li{grid-template-columns:2.4rem minmax(0,1fr)}.ar-top span{grid-column:2}}
+
+/* registro de últimos artículos */
+.ar-reg{display:flex;flex-direction:column}
+.ar-fila{display:grid;grid-template-columns:2.6rem 5.6rem 9.5rem minmax(0,1fr) 3.8rem;gap:10px;align-items:baseline;padding:11px 0;border-bottom:1px dotted var(--ar-linea);font-variant-numeric:tabular-nums}
+.ar-fila span{font:11.5px var(--ar-rot);letter-spacing:.06em;color:var(--ar-gris);text-transform:uppercase}
+.ar-fila .ar-c-ter{color:var(--ar-plano)}
+.ar-fila a{font:500 16.5px/1.35 var(--ar-txt);color:var(--ar-tinta);text-decoration:none;min-width:0}
+.ar-fila a:hover,.ar-fila a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-fila--cab{padding:6px 0}
+.ar-fila--cab span{font-size:10px;letter-spacing:.14em}
+@media (max-width:640px){.ar-fila{grid-template-columns:2.4rem minmax(0,1fr) 3.4rem}.ar-c-fecha,.ar-c-ter{display:none}}
+
+/* radiogramas */
+.ar-rg{border:1.5px solid var(--ar-tinta);background:#FBFAF6;margin-top:16px}
+.ar-rg header{display:flex;flex-wrap:wrap;gap:4px 18px;background:var(--ar-tinta);color:var(--ar-papel);padding:7px 12px;font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+.ar-rg header span:first-child{color:var(--ar-acento);font-weight:700}
+.ar-rg p{margin:0;padding:12px 14px 14px;font:300 16.5px/1.65 var(--ar-txt);text-align:left}
+.ar-rg--estacion{margin:0 14px 14px 34px;border-color:var(--ar-acento)}
+.ar-rg--estacion header{background:var(--ar-acento)}
+.ar-rg--estacion header span:first-child{color:var(--ar-papel)}
+@media (max-width:520px){.ar-rg--estacion{margin:0 10px 10px 18px}}
+
+.ar-tx{margin-top:32px;border:2px solid var(--ar-tinta);padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--ar-papel)}
+.ar-tx h3{font:400 28px/1 var(--ar-tit)!important;letter-spacing:.03em;margin:0;color:var(--ar-tinta)}
+.ar-tx__campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.ar-tx__campos{grid-template-columns:minmax(0,1fr)}}
+.ar-tx label{display:flex;flex-direction:column;gap:6px;font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-tx input,.ar-tx textarea{font:16px/1.5 var(--ar-txt);color:var(--ar-tinta);background:#FBFAF6;border:1px solid var(--ar-tinta);border-radius:0;padding:9px 10px;width:100%;resize:vertical}
+.ar-tx input:focus,.ar-tx textarea:focus{outline:2px solid var(--ar-acento);outline-offset:0}
+.ar-tx__pie{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ar-transmitir{font:700 13px var(--ar-rot);letter-spacing:.2em;text-transform:uppercase;background:var(--ar-acento);color:var(--ar-papel);border:0;padding:12px 22px;cursor:pointer}
+.ar-transmitir:hover,.ar-transmitir:focus-visible{background:var(--ar-tinta);outline:none}
+#tx-estado{font:12px var(--ar-rot);color:var(--ar-gris)}
+
+/* pie */
+.ar-pie{background:var(--ar-tinta);color:var(--ar-tiza);margin-top:80px;padding-block:22px calc(22px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-pie__in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase}
+.ar-pie__marca{font:400 26px/1 var(--ar-tit);color:var(--ar-papel);letter-spacing:.05em}
+.ar-pie nav{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.ar-pie a{color:var(--ar-papel);text-decoration:none}
+.ar-pie a:hover,.ar-pie a:focus-visible{color:var(--ar-acento);outline:none}
+.hr-root{padding-bottom:0}
+
+/* ver zonas: plantilla en azul, cuerpo en rojo, patrones en ámbar */
+body.ver-zonas [data-z]{outline:2px dashed var(--z);outline-offset:-2px;position:relative}
+body.ver-zonas [data-z]::after{content:attr(data-z-lab);position:absolute;top:0;left:0;z-index:15;background:var(--z);color:#fff;
+  font:700 10px/1.3 var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;pointer-events:none;max-width:90%}
+[data-z="plantilla"]{--z:var(--ar-plano)}
+[data-z="cuerpo"]{--z:var(--ar-acento)}
+[data-z="patron"]{--z:var(--ar-patron)}
+body.ver-zonas .ar-barra[data-z]{position:sticky}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* lo más leído y últimos artículos, lado a lado */
+.ar-dos{max-width:1100px;margin:72px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 64px;align-items:start}
+.ar-eje{align-self:stretch;background:linear-gradient(var(--ar-tinta),var(--ar-tinta)) top/1px 2px no-repeat,repeating-linear-gradient(var(--ar-linea) 0 4px,transparent 4px 9px)}
+.ar-col{min-width:0}
+.ar-lista{list-style:none;margin:0;padding:0}
+.ar-lista li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:0 14px;align-items:center;min-height:88px;padding:10px 0;border-bottom:1px dotted var(--ar-linea)}
+.ar-marca{font:400 44px/1 var(--ar-tit);color:var(--ar-acento);text-align:center}
+.ar-marca--fecha{display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px solid var(--ar-tinta);padding:5px 0 6px;font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-marca--fecha b{font:400 26px/1 var(--ar-tit);color:var(--ar-tinta);letter-spacing:.02em}
+.ar-lista a{display:block;font:500 17.5px/1.3 var(--ar-txt);color:var(--ar-tinta);text-decoration:none;text-wrap:balance}
+.ar-lista a:hover,.ar-lista a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-meta{display:block;margin-top:5px;font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:860px){.ar-dos{grid-template-columns:minmax(0,1fr);row-gap:56px}.ar-eje{display:none}}
+
+/* respuesta de la estación: caja punteada */
+.ar-rg--estacion{border:2px dotted var(--ar-acento);background:transparent}
+
+/* pie: el actual del sitio, en la papelería nueva */
+.ar-pie__in{justify-content:space-between}
+.ar-pie__marca{font:700 13px var(--ar-rot)!important;letter-spacing:.14em;color:var(--ar-papel)}
+.ar-pie__cred{text-transform:none;letter-spacing:.04em;font-size:11.5px;color:var(--ar-tiza);flex:1 1 320px;min-width:0}
+.ar-pie nav{margin-left:0;gap:10px;align-items:center}
+
+/* visor de fotos: la X va en la esquina superior derecha de la foto, un poco adentro */
+.hr-lb-marco{position:relative;display:inline-block;max-width:100%;line-height:0}
+.hr-lb-marco .hr-lightbox__close{position:absolute;top:10px;right:10px;bottom:auto;left:auto;z-index:2;
+  background:rgba(20,18,14,.72);border:1px solid rgba(244,243,239,.6);color:var(--ar-papel);width:44px;height:44px;font-size:20px;line-height:1}
+.hr-lb-marco .hr-lightbox__close:hover,.hr-lb-marco .hr-lightbox__close:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);color:var(--ar-papel)}
+
+/* pie alineado a la izquierda: marca, crédito y legales en una sola columna */
+.ar-pie__in{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
+.ar-pie__cred{flex:none}
+.ar-pie nav{margin-left:0}
+
+/* PORTADA DE TEXTOS · Archivo MAP
+   Una sola columna ancha de 1100 px; cada bloque es una ficha del archivo. Prefijo .ap- */
+.ap{font-family:var(--ar-txt);font-weight:300;font-size:17px;line-height:1.65;color:var(--ar-tinta);padding-bottom:8px}
+.ap-wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ap-ancho{max-width:1100px;margin-left:auto;margin-right:auto}
+.ap-kicker{margin:0 0 10px;font:700 12px var(--ar-rot);letter-spacing:.18em;text-transform:uppercase;color:var(--ar-acento)}
+
+/* cabecera */
+.ap-cab{padding-block:64px 8px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px 56px;align-items:end;border-bottom:2px solid var(--ar-tinta);padding-bottom:28px}
+.ap-cab .ap-kicker{grid-column:1/-1}
+.ap-cab h1{font:400 clamp(72px,14vw,168px)/.82 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ap-intro{margin:0;font-size:18px;line-height:1.6;max-width:52ch}
+.ap-intro b{font-weight:600}
+@media (max-width:760px){.ap-cab{grid-template-columns:minmax(0,1fr);padding-top:44px}}
+
+/* botones */
+.ap-acciones{display:flex;flex-wrap:wrap;gap:10px}
+.ap-boton{display:inline-block;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  background:var(--ar-tinta);color:var(--ar-papel);border:1.5px solid var(--ar-tinta);padding:11px 16px}
+.ap-boton:hover,.ap-boton:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ap-boton--linea{background:transparent;color:var(--ar-tinta)}
+.ap-boton--linea:hover,.ap-boton--linea:focus-visible{color:var(--ar-papel)}
+
+/* última transmisión */
+.ap-ultima{margin-top:56px}
+.ap-ultima .ar-tit{margin-bottom:18px}
+.ap-ultima{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 40px;align-items:center}
+.ap-ultima .ar-tit{grid-column:1/-1}
+.ap-ultima__foto{display:block;overflow:hidden;aspect-ratio:3/2;max-width:100%}
+.ap-ultima__foto img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.ap-ultima__foto:hover img,.ap-ultima__foto:focus-visible img{transform:scale(1.03)}
+.ap-ultima__foto:focus-visible{outline:3px solid var(--ar-acento);outline-offset:3px}
+.ap-ultima__txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ap-ultima__txt .ap-kicker{margin:0}
+.ap-ultima h3{font:400 clamp(44px,5.6vw,72px)/.92 var(--ar-tit);letter-spacing:.01em;margin:0;text-wrap:balance}
+.ap-ultima h3 a{color:var(--ar-tinta);text-decoration:none}
+.ap-ultima h3 a:hover,.ap-ultima h3 a:focus-visible{color:var(--ar-acento);outline:none}
+.ap-bajada{margin:0;font-style:italic;font-size:20px;line-height:1.4}
+.ap-meta{margin:0;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+@media (max-width:860px){.ap-ultima{grid-template-columns:minmax(0,1fr);row-gap:20px}}
+
+/* registro + lo más leído */
+.ap-dos{margin-top:80px}
+.ap-filtros{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 6px}
+.ap-filtros button{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ar-tinta);border:1px solid var(--ar-tinta);padding:6px 9px;cursor:pointer}
+.ap-filtros button[aria-pressed="true"]{background:var(--ar-tinta);color:var(--ar-papel)}
+.ap-filtros button:focus-visible{outline:2px solid var(--ar-acento);outline-offset:2px}
+.ap-mas{margin-top:18px;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;background:transparent;color:var(--ar-acento);border:0;padding:6px 0;cursor:pointer}
+.ap-mas:hover,.ap-mas:focus-visible{text-decoration:underline;outline:none}
+.ap-vacio,.ap-nota{margin:12px 0 0;font:12px var(--ar-rot);color:var(--ar-gris)}
+
+/* proyecto literario: la portada del libro manda */
+.ap-proyecto{margin-top:88px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:0 48px;align-items:center;border-top:2px solid var(--ar-tinta);border-bottom:2px solid var(--ar-tinta);padding-block:40px}
+.ap-libro{display:block;position:relative;aspect-ratio:2/3;max-width:100%;box-shadow:10px 10px 0 var(--ar-papel-2),10px 10px 0 1.5px var(--ar-tinta);transition:transform .3s ease}
+.ap-libro:hover,.ap-libro:focus-visible{transform:translate(-3px,-3px);outline:none}
+.ap-libro img{display:block;width:100%;height:100%;object-fit:cover}
+.ap-libro__alt{display:none}
+.ap-libro.sin-foto img{display:none}
+.ap-libro.sin-foto .ap-libro__alt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:22px;background:var(--ar-tinta);color:var(--ar-papel)}
+.ap-libro__alt b{font:400 46px/.9 var(--ar-tit);letter-spacing:.02em}
+.ap-libro__alt i{font:italic 300 15px var(--ar-txt);color:var(--ar-tiza)}
+.ap-libro__alt small{font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento)}
+.ap-proyecto__cuerpo{display:flex;flex-direction:column;gap:14px;align-items:flex-start;min-width:0}
+.ap-proyecto__ficha{display:flex;flex-wrap:wrap;gap:6px 18px;font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ap-proyecto__ficha span:first-child{color:var(--ar-acento);font-weight:700}
+.ap-proyecto h2{font:400 clamp(48px,6.4vw,84px)/.9 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ap-proyecto__sub{margin:-6px 0 2px;font-style:italic;font-size:19px}
+.ap-proyecto p{margin:0;max-width:58ch;text-align:justify;hyphens:auto}
+@media (max-width:720px){
+  .ap-proyecto{grid-template-columns:minmax(0,1fr);row-gap:28px}
+  .ap-libro{width:min(240px,70%)}
+  .ap-proyecto p{text-align:left}
+}
+.ap-filtros small{font-size:9.5px;opacity:.7;margin-left:2px}
+.ap-filtros__mas{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ar-acento);border:1px dashed var(--ar-acento);padding:6px 9px;cursor:pointer}
+.ap-filtros__otros{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+
+/* al aire */
+.ap-aire{margin-top:80px}
+.ap-aire__fila{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px dotted var(--ar-linea);flex-wrap:wrap}
+.ap-aire__play{flex:0 0 56px;height:56px;text-decoration:none}
+.ap-aire__txt{flex:1;min-width:200px;display:flex;flex-direction:column}
+.ap-aire__nombre{font:400 clamp(30px,4vw,44px)/1 var(--ar-tit);letter-spacing:.02em;color:var(--ar-tinta);text-decoration:none}
+.ap-aire__nombre:hover,.ap-aire__nombre:focus-visible{color:var(--ar-acento);outline:none}
+.ap-aire__todos{font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento);text-decoration:none}
+
+/* el pañol y el astillero */
+.ap-dos-fichas{margin-top:80px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media (max-width:760px){.ap-dos-fichas{grid-template-columns:minmax(0,1fr)}}
+.ap-ficha{border:1.5px solid var(--ar-tinta);padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;background:#FBFAF6}
+.ap-ficha .ap-kicker{margin:0}
+.ap-ficha h2{font:400 clamp(32px,3.6vw,44px)/1 var(--ar-tit);letter-spacing:.02em;margin:0}
+.ap-ficha p{margin:0}
+.ap-ficha ul{list-style:none;margin:0;padding:0;width:100%}
+.ap-ficha li{font:12.5px var(--ar-rot);letter-spacing:.06em;padding:8px 0;border-bottom:1px dotted var(--ar-linea)}
+.ap-ficha .ap-boton{margin-top:auto}
+.ar-menu a[aria-current="page"]{color:var(--ar-papel)!important;border-bottom:2px solid var(--ar-acento)}
+@media (prefers-reduced-motion:reduce){.ap-ultima__foto img{transition:none}}
+
+/* listas a lo ancho */
+.ap-lista-ancha{margin-top:80px}
+.ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr) auto;gap:0 22px;min-height:76px}
+.ap-lista-ancha .ar-lista li>div{display:contents}
+.ap-lista-ancha .ar-lista a{font-size:19px;max-width:62ch}
+.ap-lista-ancha .ar-meta{margin:0;text-align:right;white-space:nowrap}
+@media (max-width:700px){
+  .ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr)}
+  .ap-lista-ancha .ar-lista li>div{display:block}
+  .ap-lista-ancha .ar-meta{text-align:left;margin-top:5px;white-space:normal}
+}
+.ap-aire__txt{gap:6px}
+.ap-aire__nombre{font-size:clamp(28px,3.4vw,40px)}
+
+/* antología: libro en preparación, sin página propia todavía */
+.ap-anto{margin-top:80px;padding-block:28px;border-top:2px solid var(--ar-tinta);border-bottom:2px solid var(--ar-tinta);display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 32px;align-items:center}
+.ap-anto__tapa{margin:0;position:relative;aspect-ratio:400/536;background:var(--ar-tinta);box-shadow:6px 6px 0 var(--ar-papel-2),6px 6px 0 1.5px var(--ar-tinta)}
+.ap-anto__tapa img{display:block;width:100%;height:100%;object-fit:cover}
+.ap-anto__alt{display:none}
+.ap-anto__tapa.sin-foto img{display:none}
+.ap-anto__tapa.sin-foto .ap-anto__alt{position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px;font:400 22px/1 var(--ar-tit);color:var(--ar-papel)}
+.ap-anto__cuerpo{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ap-anto h2{margin:0;font:400 clamp(28px,3.4vw,40px)/.95 var(--ar-tit);letter-spacing:.02em}
+.ap-anto p{margin:0;max-width:62ch;font-size:16px;line-height:1.6;color:var(--ar-gris)}
+@media (max-width:560px){.ap-anto{grid-template-columns:88px minmax(0,1fr);gap:0 18px;align-items:start}.ap-anto h2{font-size:26px}}
+
+/* BÚSQUEDA EN EL ARCHIVO · resultados e imperdibles. Prefijo .bu- */
+.bu *,.bu *::before,.bu *::after{box-sizing:border-box}
+
+/* cabecera */
+.bu-cab{padding-block:56px 34px;border-bottom:2px solid var(--ar-tinta)}
+.bu-cab .ap-kicker{margin:0 0 12px}
+.bu-cab h1{margin:0;font:400 clamp(52px,8vw,112px)/.9 var(--ar-tit);letter-spacing:.01em;overflow-wrap:anywhere}
+.bu-cab h1 span{color:var(--ar-acento)}
+.bu-cuenta{margin:14px 0 0;font:12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.bu-cuenta b{color:var(--ar-tinta)}
+.bu-form{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0;max-width:640px;border:1.5px solid var(--ar-tinta)}
+.bu-form label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bu-form input{min-width:0;border:0;background:transparent;padding:12px 14px;font:400 20px var(--ar-txt);color:var(--ar-tinta)}
+.bu-form input:focus{outline:none;background:var(--ar-papel-2)}
+.bu-form button{border:0;background:var(--ar-tinta);color:var(--ar-papel);font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;padding:0 18px;cursor:pointer}
+.bu-form button:hover,.bu-form button:focus-visible{background:var(--ar-acento);outline:none}
+
+/* resultados */
+.bu-res{margin-top:40px}
+.bu .ar-lista li{align-items:start;padding:16px 0 18px}
+.bu .ar-lista li>div{min-width:0}
+.bu-extracto{margin:8px 0 0;font-size:15.5px;line-height:1.6;color:#3d3a34;max-width:78ch}
+.bu mark{background:none;color:var(--ar-acento);font-weight:600;box-shadow:inset 0 -2px 0 rgba(232,65,44,.35)}
+.bu .ar-lista a.bu-leer{display:inline-block;margin-top:8px;font:700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-acento);text-decoration:none}
+.bu .ar-lista a.bu-leer:hover,.bu .ar-lista a.bu-leer:focus-visible{text-decoration:underline;outline:none}
+
+/* sin resultados */
+.bu-nada{margin-top:40px}
+.bu-nada h2{margin:0;font:400 clamp(40px,6vw,76px)/.92 var(--ar-tit);letter-spacing:.01em;max-width:18ch}
+.bu-nada h2 span{color:var(--ar-acento)}
+.bu-nada__sub{margin:18px 0 0;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-gris)}
+.bu-imperdibles{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ar-tinta);border-left:1px solid var(--ar-linea)}
+@media (max-width:860px){.bu-imperdibles{grid-template-columns:minmax(0,1fr)}}
+.bu-imperdibles a{display:flex;flex-direction:column;gap:10px;height:100%;padding:18px 18px 22px;border-right:1px solid var(--ar-linea);border-bottom:1px solid var(--ar-linea);color:var(--ar-tinta);text-decoration:none}
+.bu-imperdibles span{font:700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-acento)}
+.bu-imperdibles b{font:400 clamp(28px,2.6vw,34px)/.98 var(--ar-tit);letter-spacing:.02em}
+.bu-imperdibles p{margin:0;font-size:15px;line-height:1.6;color:#3d3a34}
+.bu-imperdibles i{margin-top:auto;font:normal 700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-acento)}
+.bu-imperdibles a:hover,.bu-imperdibles a:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.bu-imperdibles a:hover p,.bu-imperdibles a:focus-visible p{color:var(--ar-tiza)}
+.bu-otra{margin-top:30px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.bu-otra>span{font:12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris);margin-right:4px}
+.bu-otra button{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ar-tinta);border:1px solid var(--ar-tinta);padding:6px 10px;cursor:pointer}
+.bu-otra button:hover,.bu-otra button:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.bu-azar{margin-left:auto;font:700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;background:none;border:0;color:var(--ar-acento);cursor:pointer;padding:6px 0}
+.bu-azar:hover,.bu-azar:focus-visible{text-decoration:underline;outline:none}
+</style>
+
+<div class="ar-maqueta"><span>Maqueta · Búsqueda · busca de verdad en los títulos y el inicio de cada texto; pruebe «cantina», «Alajuela» o una palabra que no exista</span></div>
+
+<header class="ar-barra">
+  <div class="ar-barra__in">
+    <a class="ar-sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/" title="Volver a la carta">MAP</a>
+    <nav class="ar-menu" id="ar-menu" aria-label="Secciones">
+      <a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/serie-map/">Serie MAP</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/">Textos</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/podcast/">Podcast</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/sobre-el-director/">Sobre el director</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/contacto/">Contacto</a>
+    </nav>
+    <button type="button" class="ar-btn ar-btn--menu" id="ar-menu-btn" aria-expanded="false" aria-controls="ar-menu">Menú</button>
+    <button type="button" class="ar-btn" id="ar-buscar-btn">Buscar ⌕</button>
+  </div>
+</header>
+
+<div class="ar-buscador" id="ar-buscador" hidden>
+  <form class="ar-buscador__in" id="ar-buscador-form" role="search">
+    <label for="ar-q">Buscar en el archivo</label>
+    <input id="ar-q" name="q" type="search" placeholder="Bolaño, patinetas, cantina…" autocomplete="off">
+    <p>Busca en títulos, textos y etiquetas de todas las entradas.</p>
+    <button type="button" class="ar-btn ar-btn--claro" id="ar-buscar-cerrar">Cerrar ✕</button>
+  </form>
+</div>
+
+<main class="ap bu">
+
+  <!-- 1 · cabecera de la búsqueda -->
+  <div class="ap-wrap"><header class="bu-cab ap-ancho">
+    <p class="ap-kicker">Búsqueda en el archivo</p>
+    <h1 id="bu-titulo">Resultados para <span>«cantina»</span></h1>
+    <p class="bu-cuenta" id="bu-cuenta"></p>
+    <form class="bu-form" id="bu-form" role="search">
+      <label for="bu-q">Buscar otra palabra</label>
+      <input id="bu-q" name="q" type="search" autocomplete="off" placeholder="Buscar otra palabra…">
+      <button type="submit">Buscar ⌕</button>
+    </form>
+  </header></div>
+
+  <!-- 2 · resultados -->
+  <div class="ap-wrap"><section class="bu-res ap-ancho" id="bu-res" aria-label="Resultados">
+    <div class="ap-filtros" id="bu-filtros" role="group" aria-label="Filtrar por categoría"></div>
+    <ol class="ar-lista" id="bu-lista"></ol>
+    <button type="button" class="ap-mas" id="bu-mas">Cargar más →</button>
+  </section></div>
+
+  <!-- 3 · sin resultados: tres imperdibles al azar -->
+  <div class="ap-wrap"><section class="bu-nada ap-ancho" id="bu-nada" aria-labelledby="bu-nada-t" hidden>
+    <h2 id="bu-nada-t">Aquí no hay nada con esa palabra… <span>todavía.</span></h2>
+    <p class="bu-nada__sub">Por ahora, tres imperdibles del archivo:</p>
+    <ul class="bu-imperdibles" id="bu-imperdibles"></ul>
+    <div class="bu-otra" id="bu-otra"><span>O pruebe con:</span><button type="button" class="bu-azar" id="bu-azar">Otros tres al azar ↻</button></div>
+  </section></div>
+</main>
+
+<footer class="ar-pie">
+  <div class="ar-pie__in">
+    <a class="ar-pie__marca" href="https://www.mapradiocr.com">MAP — 2016 ⚡</a>
+    <span class="ar-pie__cred">Ingeniería web — Dr. Arkady Volkov Lazenko · Instituto Cuántico Costarricense para la Investigación Interdimensional</span>
+    <nav aria-label="Legal"><a href="https://www.mapradiocr.com/politica-de-privacidad/">Privacidad</a><span aria-hidden="true">·</span><a href="https://www.mapradiocr.com/terminos-y-condiciones/">Términos</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var mb=$('#ar-menu-btn'), menu=$('#ar-menu');
+  mb.addEventListener('click',function(){var on=menu.classList.toggle('abierto');mb.setAttribute('aria-expanded',on)});
+  var bus=$('#ar-buscador');
+  $('#ar-buscar-btn').addEventListener('click',function(){bus.hidden=false;$('#ar-q').focus()});
+  $('#ar-buscar-cerrar').addEventListener('click',function(){bus.hidden=true});
+  bus.addEventListener('click',function(e){if(e.target===bus)bus.hidden=true});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')bus.hidden=true});
+
+  /* el archivo: entradas reales (solo entradas, nunca páginas) */
+  var D={"cats": {"15": "Cine", "4": "Editorial", "34": "Literatura", "908": "Crónicas", "32": "Cantinas", "545": "Taller Literatura Alajuela", "35": "Podcast", "173": "Fotografía", "33": "Ciudades", "196": "Opinión crítica", "230": "Taller literario", "479": "Clásicos revisados", "364": "Cannabis", "1": "Sin categoría"}, "posts": [["2026-10-26", "El cine independiente en Costa Rica", "el-cine-independiente-en-costa-rica", [15]], ["2026-10-25", "El terror de los 70 visto desde acá", "el-terror-de-los-70-visto-desde-aca", [15]], ["2026-10-22", "El largo declive de la izquierda europea", "el-largo-declive-de-la-izquierda-europea", [1]], ["2026-10-17", "Bitácora de un cortometraje: Falsi Prophetae", "bitacora-de-un-cortometraje-falsi-prophetae", [15]], ["2026-10-11", "10 misterios de Costa Rica", "10-misterios-de-costa-rica", [1]], ["2026-10-06", "Bitácora de un videoclip", "bitacora-de-un-videoclip", [15]], ["2026-09-15", "Los estudios de campo del Dr. Arkady Volkov Lazenko. Bitácora 6: receptor transdimensional de banda vacante residual VX-996", "bitacora-6", [908]], ["2026-09-06", "La Garita 71, una carta desde Londres", "la-garita-71-una-carta-desde-londres", [34]], ["2026-08-20", "La Ley de Usura", "la-ley-de-usura", [4]], ["2026-08-18", "La ardiente Alajuela – en desarrollo (película)", "la-ardiente-alajuela-pelicula", [15]], ["2026-08-11", "La Copa Cannábica", "la-copa-cannabica", [364]], ["2026-08-10", "Los estudios de campo del Dr. Arkady Volkov Lazenko: Escuela de Brujos", "los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos", [908]], ["2026-07-31", "La crisis planetaria del bicho THX 1138: tributo a Armando Manzanero", "tri", [908]], ["2026-07-27", "Arder por devosión", "arder-por-devosion", [4]], ["2026-07-26", "El narcisismo y la grandiosidad de las celebridades", "el-narcisismo-y-la-grandiosidad-de-las-celebridades", [196]], ["2026-07-25", "México no tiene una industria de cine: ¡tiene varias!", "mexico-no-tiene-una-industria-de-cine-tiene-varias", [15]], ["2026-07-25", "Escuela pal autor noventero: ¡su lista de cintas si no sabe qué videar un fin de semana!", "escuela-pal-autor-noventero-su-lista-de-cintas-si-no-sabe-que-videar", [15]], ["2026-07-24", "¿No sabe qué videar este domingo?", "no-sabe-que-videar-este-domingo", [15]], ["2026-07-20", "La moralización del debate trans", "la-moralizacion-del-debate-trans", [4]], ["2026-07-19", "¿Podría la IA ser consciente?", "podria-la-ia-ser-conscient", [4]], ["2026-07-18", "Todos contra Argentina", "todos-contra-argentina", [4]], ["2026-07-16", "Ícaro: poemario y cancionero", "icaro-poemario-y-cancionero", [34]], ["2026-07-14", "Paralelismos esféricos", "paralelismos-esfericos", [4]], ["2026-07-14", "Lilith", "lilith", [34]], ["2026-07-12", "Estudios de campo 3", "estudios-de-campo-3", [908]], ["2026-07-03", "Giallo", "giallo", [15]], ["2026-06-22", "Estudios de campo 2", "estudios-de-campo-bitacora-2", [908]], ["2026-06-17", "Entre el idealismo y el valeverguismo", "entre-el-idealismo-y-el-valeverguismo", [4]], ["2026-06-15", "Grandes Infelices podcast", "grandes-infelices", [35]], ["2026-06-08", "Diez años detrás de una barra", "terminal-bar-documental", [15]], ["2026-06-08", "El policía de las ratas", "el-policia-de-las-ratas", [34]], ["2026-05-31", "Palo Miao – Serenatas", "palo-miao", [230, 545]], ["2026-05-13", "Estudios de campo 1", "estudios-de-campo", [908]], ["2026-05-08", "Salem's Lot", "salems-lot", [479]], ["2026-05-04", "Película: Un poeta", "pelicula-un-poeta", [15, 4]], ["2026-05-02", "Streetwise (1984)", "streetwise-1984", [15]], ["2026-04-28", "Emperador Tertuliano", "emperador-tertuliano", [34]], ["2026-04-01", "Crónica prospectiva", "cronica-prospectiva", [4]], ["2026-02-09", "Nueva fuerza", "nueva-fuerza", [4]], ["2026-02-07", "Gatos, ratones & ruido político", "gatos-ratones-ruido-politico", [4]], ["2026-01-26", "El día después de su voto", "el-dia-despues-de-su-voto", [4]], ["2026-01-15", "La tarde en que la alegría se volvió miedo (1966)", "la-tarde-en-que-la-alegria-se-volvio-miedo-1966", [545]], ["2026-01-14", "Preparación para febrero", "preparacion-para-febrero", [4]], ["2026-01-12", "Foforito & Norman", "foforito-norman", [34, 545]], ["2026-01-09", "Del voto a la dictadura", "del-voto-a-la-dictadura", [4, 196]], ["2026-01-06", "El fútbol ha muerto", "el-futbol-ha-muerto", [4, 230, 545]], ["2025-12-10", "Ética tortuguista", "etica-tortuguista", [4]], ["2025-11-30", "El microondas", "el-microondas", [33]], ["2025-11-26", "Misas negras", "misas-negras", [4]], ["2025-11-14", "¿Para dónde va?", "para-donde-va", [4]], ["2025-11-13", "Spaghetti western", "spaguetti-western", [15]], ["2025-11-04", "Entre maullidos", "entre-maullidos-2", [34, 545]], ["2025-10-26", "Cantina Ideal #3", "cantina-ideal-3", [32]], ["2025-10-22", "4 historias de patineta", "4-historias-de-patineta", [15]], ["2025-10-20", "Parte por conducir como animal", "parte-por-conducir-como-animal", [34]], ["2025-10-13", "Abril veinte veinte", "abril-veinte-veinte", [34]], ["2025-10-09", "Armando Manzanero", "armando-manzanero", [35]], ["2025-10-07", "La luna llena del cazador", "la-luna-llena-del-cazador", [34]], ["2025-10-03", "Huesos & palabras", "huesos-palabras", [34]], ["2025-09-29", "Análisis unidimensional-multifactorial de la cerveza perfecta", "analisis-unidimensional-multifactorial-de-la-cerveza-perfecta", [32]], ["2025-09-25", "Miedo a la autoría en tiempos de IA", "miedo-a-la-autoria-en-tiempos-de-ia", [4]], ["2025-09-18", "Guion de un natalicio: una noche en La ardiente Alajuela", "guion-de-un-natalicio-una-noche-en-la-ardiente-alajuela", [15]], ["2025-09-17", "Macho que ladra no llora", "macho-que-ladra-no-llora", [15]], ["2025-09-14", "Nuestros términos", "nuestros-terminos", [4]], ["2025-09-11", "Bar Buenos Aires: la cantina legendaria de San José", "juan-el-bautista-en-el-bar-buenos-aires", [32]], ["2025-09-10", "José María Villalta: el político profesional que vive de la pose", "jose-maria-villalta-el-politico-profesional-que-vide-de-la-pose", [4]], ["2025-09-08", "La hermanastra fea 2025: crítica y análisis de la nueva Cenicienta gore", "cenicienta-gore-para-tiempos-modernos", [15]], ["2025-09-06", "De la corporación a la realidad", "de-la-corporacion-a-la-realidad", [4]], ["2025-09-05", "Rafa Fallas: memoria en imágenes", "rafa-fallas-memoria-en-imagenes-de-un-pais-autentico", [173]], ["2025-09-04", "Interludio: voces urbanas", "interludio-voces-urbanas", [15]], ["2025-09-01", "Cannabis Airlines: crónica entre la pista y el cielo", "cannabis-airlines-entre-la-pista-y-el-cielo", [908]], ["2025-08-31", "IQCPLII: el instituto que Costa Rica merece", "iqcplii-el-instituto-que-costa-rica-merece", [15]], ["2025-08-28", "La cultura del saqueo: Farid Ayales y la pluma de Vladimir", "la-cultura-del-saqueo-farid-ayales-y-la-pluma-de-vladimir", [4]], ["2025-08-26", "De cuclillas, guitarras y una vuelta inesperada", "de-cuclillas-guitarras-y-una-vuelta-inesperada", [4]], ["2025-08-26", "Gerardo César Hurtado, la memoria viva de la literatura costarricense", "gerardo-cesar-hurtado-la-memoria-viva-de-la-literatura-costarricense", [35]], ["2025-08-26", "El secreto dentro de la mandarina", "el-secreto-dentro-de-la-mandarina", [4, 35]], ["2025-08-22", "El peligro de la candidez (y otros aprendizajes ochenteros)", "el-peligro-de-la-candidez-y-otros-aprendizajes-ochenteros", [33]], ["2025-08-22", "Vitamina D, cerveza fría y un secreto en Garza", "vitamina-d-cerveza-fria-y-un-secreto-de-garza", [32]], ["2025-08-20", "El crimen ferpecto", "el-crimen-ferpecto", [15]]], "ext": {"el-cine-independiente-en-costa-rica": "Cómo se hace una película independiente en Costa Rica: sin fondos, con amigos, con lo que hay. Narran Nina Dubrovsky y Tomás Oreamuno, con música original.", "el-terror-de-los-70-visto-desde-aca": "El 17 de octubre, Taste of Cinema publicó The 30 Best Horror Movies of The 1970s, de BJ Thoray. Es una buena lista, bien argumentada, que recorre la década en que el terror dejó de ser cine de tarde noche.", "el-largo-declive-de-la-izquierda-europea": "Michael Magoon defiende aquí que la izquierda europea atraviesa un declive electoral e ideológico de largo plazo, habiendo perdido votos, influencia política y capacidad para cumplir sus promesas.", "bitacora-de-un-cortometraje-falsi-prophetae": "FALSI PROPHETAE estaba escrito para durar menos de un minuto. Cuando lo retomé este año lo planifiqué con un tope de 90 segundos, y me apegué a esos tiempos. El primer corte salió de casi siete minutos.", "10-misterios-de-costa-rica": "Hace un tiempo atrás me propuse hacer una lista de 10 misterios de Costa Rica. El primer gran misterio de esa lista son las esferas de piedra de Costa Rica. No son las únicas que existen en el mundo ni las más grandes.", "bitacora-de-un-videoclip": "Una Pentax, el giallo y Corbijn. En 1979 un fotógrafo holandés se fue a Londres a retratar a una banda de Manchester. Anton Corbijn le tomó a Joy Division unas fotos en blanco y negro que hoy son parte de la memoria popular del punk.", "bitacora-6": "El estómago me despertó antes que los perros, y eso ya es decir bastante, porque Rodríguez y Ramírez tienen un reloj interno muy puntual. Lo probé en la cantina que está a la par de la iglesia.", "la-garita-71-una-carta-desde-londres": "Cuando la Luna esté en la Séptima Casa y Júpiter se alinee con Marte, entonces la paz guiará a los planetas y el amor dirigirá las estrellas. Este es el amanecer de la Era de Acuario.", "la-ley-de-usura": "La ley no es un milagro: respuesta a Welmer Ramos sobre el gota a gota. Welmer Ramos salió a defender su Ley Contra la Usura como si fuera la única barrera entre Costa Rica y la barbarie.", "la-ardiente-alajuela-pelicula": "La ardiente Alajuela: una película en desarrollo sobre la ciudad, sus noches y su gente.", "la-copa-cannabica": "En el 2022, cuando aún las fuerzas castrenses andaban locas, alborotadas a la caza de infieles negacionistas, Piro Soto me invitó a la Copa Cannábica, la primera a la que asistía. Evento fino de verdad.", "los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos": "Bitácora 5: Escuela de Brujos. Me desperté antes que el gallo y antes que el mundo tuviera ganas. Abrí la cortina esperando que, al destaparla, el día se acomodara solo.", "tri": "Bitácora 4: La crisis planetaria del bicho THX 1138. Equipo de registro de campo, cuatro canales, cinta detenida. Un tributo a Armando Manzanero.", "arder-por-devosion": "El medio ambiente merece políticas serias. Lo que recibe es liturgia: dogmas que no admiten revisión, pecados que purgan otros, indulgencias para quien las paga y herejes desterrados del debate.", "el-narcisismo-y-la-grandiosidad-de-las-celebridades": "Siempre me ha fascinado el narcisismo y la grandiosidad que exhiben las celebridades. Jenny McCarthy se muestra perpleja de que los Institutos Nacionales de Salud no presten atención a su prueba.", "mexico-no-tiene-una-industria-de-cine-tiene-varias": "México no tiene una industria de cine: tiene varias, superpuestas y peleadas entre sí. La Época de Oro y sus melodramas perfectos. Buñuel exiliado haciendo su obra más libre. El cine de terror y explotación.", "escuela-pal-autor-noventero-su-lista-de-cintas-si-no-sabe-que-videar": "Todo cinéfilo pertenece a una escuela. No la universidad donde estudió, sino el movimiento, el género o la época que lo agarró primero y ya no lo soltó. Puede ser el giallo italiano o el terror asiático.", "no-sabe-que-videar-este-domingo": "Una lista para cuando el domingo se hace largo y el algoritmo no propone nada que valga la pena. Cine mítico, de una época en que las cintas tenían tiempo pa respirar.", "la-moralizacion-del-debate-trans": "Los autores de este artículo, Carole Hooven y Alex Byrne, sostienen que la biología ha mantenido durante más de un siglo una definición clara y binaria del sexo basada en los gametos.", "podria-la-ia-ser-conscient": "En enero, la empresa de inteligencia artificial Anthropic publicó una nueva constitución para Claude, su modelo de lenguaje más avanzado, que incluía el siguiente comentario: «Nos encontramos en una posición difícil».", "todos-contra-argentina": "Todo Mundial de Fútbol deja, además de partidos, una radiografía de la sociología planetaria. El de 2026 va a ser recordado por ser la apoteosis de Messi.", "icaro-poemario-y-cancionero": "Obtuve Ícaro de Rebeca Libertad en una feria de editoriales independientes del Museo de Arte Contemporáneo, en 2024. Fui al puesto de Ingrávida para saber en qué aventura literaria estaría trabajando su editora.", "paralelismos-esfericos": "«No veré el Mundial de Qatar. Ha muerto gente construyendo los estadios.» Corro por la alameda gritando gol, mis amigos también se lanzan afuera desde sus hogares.", "lilith": "Lilith, harta de ser mujer, decidió ser ella. Ella, antes de ser Eva. Ella, primera mujer verdadera. Ella, que se posó sobre el hombre y desafió las jerarquías del ancestro absoluto.", "estudios-de-campo-3": "Bitácora 3: La Playa. El café de las cinco de la tarde no se parece en nada al de la mañana. El Retorno es una cantina de las de antes, de las que no tienen letrero porque no lo necesitan.", "giallo": "El giallo: sangre amarilla, navajas y la banda sonora que lo volvió adictivo. En un canal local, hace muchísimo tiempo, vi Cinema Paradiso sin saber quién era Giuseppe Tornatore ni quién era Ennio Morricone.", "estudios-de-campo-bitacora-2": "Bitácora 2: Flashback. Hay mañanas que uno reconoce desde antes de abrir los ojos. Vísperas del primero de diciembre, y el cuarto ya olía distinto.", "entre-el-idealismo-y-el-valeverguismo": "Entre el idealismo y el valeverguismo, yo elijo lo segundo. Qué tuanis cuando alguien tiene la capacidad de ver las cosas distintas y contar lo que otros no cuentan.", "grandes-infelices": "Grandes Infelices: raros que escriben, para raros que escuchamos. Todo empezó con un mensaje de WhatsApp. Piro Soto compartió en el grupo un cuento de Roberto Bolaño.", "terminal-bar-documental": "Llovía. Eso es lo primero que recuerdo: noche de invierno costarricense, recién instalado el cable en mi casa. Terminal Bar me gusta porque reúne varias de las cosas que más disfruto: visitar cantinas, tomar fotografías.", "el-policia-de-las-ratas": "Me llamo José, aunque la gente que me conoce me llama Pepe, y algunos, generalmente los que no me conocen bien, me llaman Pepe el Tira.", "palo-miao": "La soda El Refugio seguía igual: el televisor colgado en una esquina sin que nadie le prestara atención, el mostrador de madera oscurecido por décadas de cerveza derramada.", "estudios-de-campo": "Soy un cliché. Lo acepto con tranquilidad. Y además, me importa un pito. Aquella mañana de mayo arrancó perfecta, nada más que con menos carros y mejores cantinas.", "salems-lot": "A finales de los años ochenta, en una noche cualquiera de televisión abierta costarricense, apareció una miniserie que me dejó completamente cagado del miedo. No sabía quién era Stephen King.", "pelicula-un-poeta": "Como escribe Luis Martínez en El Mundo, «fracasar no es una de sus opciones, es su destino». A mí Un poeta, de Simón Mesa Soto, me agarró desprevenido.", "streetwise-1984": "A principios de los años noventa, siendo todavía un carajillo, encontré por accidente un documental en el canal 38 del UHF. No sabía cómo se llamaba ni quién lo había hecho.", "emperador-tertuliano": "El Emperador Tertuliano y la legión de los super limpios. Grabando un podcast con Bernabé Berrocal, escritor alajuelense, tuve la oportunidad de conocer a una leyenda del under literario costarricense.", "cronica-prospectiva": "Crónica prospectiva desde un punto de inflexión. Equinoccio de marzo del año dos mil treinta y tres, un septenio después del punto de inflexión.", "nueva-fuerza": "Partido Institucional Quántico para la Investigación Interdimensional. Fase 1: documento de fundamento para una nueva fuerza política en Costa Rica.", "gatos-ratones-ruido-politico": "El episodio con Sebastián Potenzoni nació con una intención clara: conversar con calma sobre su vida, su obra y su recorrido. Ahí el podcast encuentra uno de sus momentos más sólidos.", "el-dia-despues-de-su-voto": "Las erupciones volcánicas hicieron emerger las placas continentales bajo vertidos fértiles de nutrientes, sobre los que pastaban enormes bestias milenarias.", "la-tarde-en-que-la-alegria-se-volvio-miedo-1966": "El niño venía caminando con el corazón encendido. Cinco años. Una edad en la que la vida cabe completa en una tarde de juegos.", "preparacion-para-febrero": "La frase editorial evoca una memoria anterior a nosotros, una forma de pensar heredada de gente que ya no está para explicarla. La Epifanía, el Día de Reyes, ha soportado el paso del tiempo.", "foforito-norman": "1932, relato viejo de una noche que Alajuela aprendió a recordar. Vení, sentate aquí mi querido nieto. Y así, en cantinas, barberías, corredores y cocinas, la historia fue creciendo.", "del-voto-a-la-dictadura": "Venezuela: del voto inicial a la dictadura instalada. Venezuela sí tuvo un origen electoral. Negarlo sería intelectualmente deshonesto.", "el-futbol-ha-muerto": "Diego Maradona medía metro sesenta y cinco. Peter Shilton, arquero inglés, un metro con ochenta y tres centímetros. El partido en que ambos se enfrentaron, en el Mundial de México 86, había adquirido tintes políticos.", "etica-tortuguista": "Acerca de la responsabilidad y convicción en el ejercicio político. Una voz clarividente se disipa. Con el telón de fondo de la efímera revolución de Múnich, Max Weber expuso La política como vocación.", "el-microondas": "El microondas debería ser el octavo pecado capital. El sábado andaba en mil mandados: dejar el carro a punto para la revisión técnica, cambiar llantas.", "misas-negras": "Misas negras, antenas viejas y otros rituales de la república del espectro. En los últimos días, Costa Rica ha sido testigo de un espectáculo digno de un show de vaudeville.", "para-donde-va": "Aún puedo ver su mirada de animal asustado. Subí por la avenida segunda y no eran ni las 11:00 a.m., cuando me dirigía hacia el edificio de AyA donde mi tata bretió hasta pensionarse.", "spaguetti-western": "El bueno, el malo y el feo. Sergio Leone, 1966. Fotografía de Tonino Delli Colli, música de Ennio Morricone. Hay películas que, además de entretener, cambian la forma de mirar.", "entre-maullidos-2": "Entre maullidos de gatos y rugidos de jaguar. Escuela de Estudios Generales, Seminario de Realidad Nacional. Breve caracterización de la clase política costarricense actual.", "cantina-ideal-3": "Cantina ideal, estudio número 3: una hora y resto, con exorcismo. El tercer estudio sobre una cantina ideal. No hablamos de arquitectura ni de permisos sanitarios: hablamos de lo que hace sagrada una cantina.", "4-historias-de-patineta": "Una mirada diferente sobre el skate tico y el origen de un registro que marcó una época en la historia de una marca de patinetas.", "parte-por-conducir-como-animal": "A esta altura, mi trabajo es una liturgia con chaleco reflectivo. La sirena de la moto, libreta, manos a la vista, y a ordenar el país con un gesto cuando se requiere.", "abril-veinte-veinte": "Recordando, con mi amigo Octavio, los tiempos aquellos de la peste. La garganta de la tierra traga seca, está sedienta, su piel se agrieta.", "armando-manzanero": "El día que Armando Manzanero no vino y aun así hubo serenata. Un 28 de diciembre del 2020, todavía en pandemia, sonó el teléfono.", "la-luna-llena-del-cazador": "Esa noche de luna llena me hizo cambiar la idea de todo lo invisible. Al carajo el método científico, que se queda miope ante semejante evento.", "huesos-palabras": "Conocí a Martín Campos el año pasado, y desde entonces hemos tenido una conversación que se abre y se cierra con palabras que parecen arrancadas de la tierra misma.", "analisis-unidimensional-multifactorial-de-la-cerveza-perfecta": "A veces las unidades de una dimensión dejan de ser importantes. Antes de llegar a esta conclusión tuvieron que pasar 40 años de investigación y ensayos clínicos sobre la cerveza perfecta.", "miedo-a-la-autoria-en-tiempos-de-ia": "Vivimos una época extraña. Ahora resulta que si alguien se sienta, piensa, investiga, redacta y entrega un texto largo y bien armado, lo primero que muchos anotan es que lo escribió una inteligencia artificial.", "guion-de-un-natalicio-una-noche-en-la-ardiente-alajuela": "Exterior, calle sin salida, noche. Una corteza amarilla enorme, mojada por la lluvia, está en la entrada. Un haz de luces rompe la penumbra.", "macho-que-ladra-no-llora": "El valor del trabajo en equipo. Macho que ladra no llora me recordó algo que a menudo se olvida: el cine es una criatura colectiva.", "nuestros-terminos": "Ante la constante ola de consultas que han llegado hasta nuestra sala de redacción, no nos queda más que pasarles una serie de conceptos para que no existan brechas en nuestro entendimiento.", "juan-el-bautista-en-el-bar-buenos-aires": "Los miércoles nunca empiezan como miércoles. Lo que no sabía es que esa tarde terminaría en el Bar Buenos Aires, una cantina legendaria de San José.", "jose-maria-villalta-el-politico-profesional-que-vide-de-la-pose": "José María Villalta es el retrato clásico del político profesional. Su vida entera ha girado en torno al Estado: asesor parlamentario desde los 23 años, luego diputado.", "cenicienta-gore-para-tiempos-modernos": "La hermanastra fea: Cenicienta gore para tiempos modernos. Ari me consultó si tenía un enlace para ver La hermanastra fea.", "de-la-corporacion-a-la-realidad": "Esta es la crónica de alguien que, después de pasar años en una corporación, descubrió otra forma de vida. La aparente seguridad del empleo es otra historia.", "rafa-fallas-memoria-en-imagenes-de-un-pais-autentico": "Este texto se construye a partir de la memoria de Rafa Fallas y de la voz de su sobrino, Erick Valdelomar, quien compartió recuerdos, anécdotas y un archivo fotográfico invaluable.", "interludio-voces-urbanas": "«Muchos quieren hablar por la cultura. Pocos están dispuestos a escucharla.» Cuando nadie comparte: crítica a una escena que no escucha, y a nosotros también.", "cannabis-airlines-entre-la-pista-y-el-cielo": "Cannabis Airlines, crónica entre la pista y el cielo. Bitácora perdida: cómo nació un proyecto. Un día cualquiera, un amigo mío, muy marihuano, aunque se esfuerza en esconderlo.", "iqcplii-el-instituto-que-costa-rica-merece": "Manual de fundación para una institución imposible. Fue en un trayecto rumbo a la ardiente Alajuela, con la grabadora de audio en mano, que apareció el nombre.", "la-cultura-del-saqueo-farid-ayales-y-la-pluma-de-vladimir": "En Costa Rica abundan quienes se ufanan de haber estudiado en las mejores universidades, de cargar credenciales que los presentan como guardianes de valores intachables.", "de-cuclillas-guitarras-y-una-vuelta-inesperada": "A veces un texto no termina donde uno lo deja. Uno escribe, cierra el documento y sigue con la vida. De pronto alguien lo lee, lo lleva a otro lugar y lo convierte en música.", "gerardo-cesar-hurtado-la-memoria-viva-de-la-literatura-costarricense": "En Barrio Luján, una casa de 1991 conserva intacto el rumor de medio siglo de palabras. Ahí nos recibió don Gerardo César Hurtado, acompañado de su esposa Sara.", "el-secreto-dentro-de-la-mandarina": "No todas las entrevistas suceden en estudios con aire acondicionado. Algunas se gestan en lugares imposibles, como aquella tarde abrasadora en La Garita, dentro de una mandarina convertida en cápsula.", "el-peligro-de-la-candidez-y-otros-aprendizajes-ochenteros": "Transcurrían los años 80 y a diario olvidaba el consejo de mi madre: la vida semi-rural era un peligro. A las 5 de la tarde gritaba: ¡Bernardooooo!", "vitamina-d-cerveza-fria-y-un-secreto-de-garza": "Año 2020, el camino a Nosara tenía de todo: polvo, lomas, vacas y hasta un barco encallado tierra adentro. Ahí entendí que Playa Garza no iba a mostrarse fácil.", "el-crimen-ferpecto": "El crimen ferpecto no fue una de esas películas que tuve que esperar años para conseguir en DVD o en un festival olvidado. En diciembre de 2004 ya la había visto por acá."}}, MES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var SUGERIDAS=['cantina','Alajuela','cine','Arkady','patineta','podcast'];
+  var lista=$('#bu-lista'), fil=$('#bu-filtros'), mas=$('#bu-mas'), PASO=8, q='', hallados=[], cat='todos', vistos=PASO;
+
+  function sin(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+  function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  var GRUPOS={a:'aáàäâ',e:'eéèëê',i:'iíìïî',o:'oóòöô',u:'uúùüû',n:'nñ'};
+  function patron(term){
+    return new RegExp('('+sin(term).split('').map(function(c){
+      var g=GRUPOS[c]; return g?'['+g+g.toUpperCase()+']':c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    }).join('')+')','gi');
+  }
+  function marcar(txt,re){return esc(txt).replace(re,'<mark>$1</mark>')}
+  function recorte(txt,term){
+    var i=sin(txt).indexOf(sin(term)); if(i<0||i<110) return txt.length>220?txt.slice(0,220).replace(/\s+\S*$/,'')+'…':txt;
+    var ini=txt.lastIndexOf(' ',i-70); var fin=txt.indexOf(' ',i+150);
+    return '…'+txt.slice(ini+1,fin<0?undefined:fin)+(fin<0?'':'…');
+  }
+  function fecha(p){var f=p[0].split('-');return '<span class="ar-marca ar-marca--fecha"><b>'+f[2]+'</b>'+MES[+f[1]-1]+(f[0]!=='2026'?' '+f[0].slice(2):'')+'</span>'}
+  function cats(p){return p[3].map(function(c){return D.cats[c]}).join(' · ')}
+
+  function buscar(term){
+    q=term.trim(); cat='todos'; vistos=PASO;
+    $('#bu-titulo').innerHTML='Resultados para <span>«'+esc(q)+'»</span>';
+    $('#bu-q').value=q; document.title='«'+q+'» · Búsqueda en el archivo';
+    try{history.replaceState(null,'','?q='+encodeURIComponent(q))}catch(e){}
+    var t=sin(q);
+    hallados=D.posts.map(function(p){
+      var enTit=sin(p[1]).indexOf(t)>=0, enTxt=sin(D.ext[p[2]]||'').indexOf(t)>=0, enCat=sin(cats(p)).indexOf(t)>=0;
+      return (enTit||enTxt||enCat)?{p:p,peso:enTit?2:(enTxt?1:0)}:null;
+    }).filter(Boolean).sort(function(a,b){return b.peso-a.peso||(a.p[0]<b.p[0]?1:-1)}).map(function(x){return x.p});
+    var n=hallados.length;
+    $('#bu-cuenta').innerHTML=n?'<b>'+n+'</b> '+(n===1?'texto encontrado':'textos encontrados'):'Ningún texto encontrado';
+    $('#bu-res').hidden=!n; $('#bu-nada').hidden=!!n;
+    if(n){filtros();pintar()}else{imperdibles()}
+  }
+  function filtros(){
+    var cuenta={}; hallados.forEach(function(p){p[3].forEach(function(c){cuenta[c]=(cuenta[c]||0)+1})});
+    fil.innerHTML='';
+    var ids=Object.keys(cuenta).sort(function(a,b){return cuenta[b]-cuenta[a]});
+    if(ids.length<2){fil.hidden=true;return} fil.hidden=false;
+    [['todos','Todos',hallados.length]].concat(ids.map(function(id){return [id,D.cats[id],cuenta[id]]})).forEach(function(x){
+      var b=document.createElement('button');b.type='button';b.dataset.cat=x[0];b.setAttribute('aria-pressed',x[0]===cat);
+      b.innerHTML=esc(x[1])+' <small>'+x[2]+'</small>';
+      b.addEventListener('click',function(){cat=x[0];vistos=PASO;pintar()});fil.appendChild(b);
+    });
+  }
+  function pintar(){
+    $$('#bu-filtros button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.cat===cat)});
+    var re=patron(q), sel=hallados.filter(function(p){return cat==='todos'||p[3].indexOf(+cat)>=0});
+    lista.innerHTML=sel.slice(0,vistos).map(function(p){
+      var url='https://www.mapradiocr.com/'+p[2]+'/', ex=D.ext[p[2]]||'';
+      return '<li>'+fecha(p)+'<div><a href="'+url+'">'+marcar(p[1],re)+'</a><span class="ar-meta">'+esc(cats(p))+'</span>'
+        +(ex?'<p class="bu-extracto">'+marcar(recorte(ex,q),re)+'</p>':'')+'<a class="bu-leer" href="'+url+'">Leer texto →</a></div></li>';
+    }).join('');
+    mas.hidden=sel.length<=vistos;
+  }
+  function imperdibles(){
+    var pool=D.posts.filter(function(p){return D.ext[p[2]]}), tres=[];
+    while(tres.length<3&&pool.length){tres.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0])}
+    $('#bu-imperdibles').innerHTML=tres.map(function(p){
+      var ex=D.ext[p[2]]; ex=ex.length>150?ex.slice(0,150).replace(/\s+\S*$/,'')+'…':ex;
+      var f=p[0].split('-');
+      return '<li><a href="https://www.mapradiocr.com/'+p[2]+'/"><span>'+esc(cats(p))+' · '+f[2]+'/'+f[1]+'/'+f[0]+'</span><b>'+esc(p[1])+'</b><p>'+esc(ex)+'</p><i>Leer texto →</i></a></li>';
+    }).join('');
+  }
+  var otra=$('#bu-otra');
+  SUGERIDAS.forEach(function(w){var b=document.createElement('button');b.type='button';b.textContent=w;
+    b.addEventListener('click',function(){buscar(w);window.scrollTo({top:0,behavior:'smooth'})});otra.insertBefore(b,$('#bu-azar'))});
+  $('#bu-azar').addEventListener('click',imperdibles);
+  mas.addEventListener('click',function(){vistos+=PASO;pintar()});
+  $('#bu-form').addEventListener('submit',function(e){e.preventDefault();var v=$('#bu-q').value;if(v.trim())buscar(v)});
+  $('#ar-buscador-form').addEventListener('submit',function(e){e.preventDefault();var v=$('#ar-q').value;if(v.trim()){bus.hidden=true;buscar(v);window.scrollTo(0,0)}});
+
+  var inicial='cantina'; try{var u=new URLSearchParams(location.search);inicial=u.get('q')||u.get('s')||inicial}catch(e){}
+  buscar(inicial);
+})();
+</script>
+
+</body>
+</html>
