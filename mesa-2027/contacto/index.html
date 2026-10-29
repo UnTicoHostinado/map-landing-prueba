@@ -361,9 +361,9 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .ct-sec__cab h2{font:400 clamp(56px,8vw,104px)/.86 var(--ar-tit);letter-spacing:.01em;margin:0}
 .ct-sec__intro{margin:4px 0 0;font-size:18px;line-height:1.6}
 
-.ct-piezas{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
-@media (max-width:1000px){.ct-piezas{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:620px){.ct-piezas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ct-piezas{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+
+@media (max-width:700px){.ct-piezas{grid-template-columns:minmax(0,1fr)}}
 .ct-piezas li{display:flex;flex-direction:column;gap:6px;min-width:0}
 .ct-mock{aspect-ratio:4/5;max-width:100%;border:1.5px dashed var(--ar-tiza);display:grid;place-items:center;text-align:center;padding:10px;font:10.5px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-gris);
   background:repeating-linear-gradient(135deg,transparent 0 12px,rgba(20,18,14,.035) 12px 24px)}
@@ -401,9 +401,31 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 .ct-apoyo .ap-boton{background:var(--ar-acento);border-color:var(--ar-acento)}
 .ct-apoyo .ap-boton--linea{background:transparent;color:var(--ar-papel);border-color:var(--ar-tiza)}
 .ct-apoyo .ap-boton:hover,.ct-apoyo .ap-boton:focus-visible{background:var(--ar-papel);color:var(--ar-tinta);border-color:var(--ar-papel)}
+
+/* fotos de producto */
+.ct-foto{aspect-ratio:4/5;max-width:100%;overflow:hidden;background:#959492;position:relative}
+.ct-foto img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
+.ct-foto--doble img+img{position:absolute;inset:0;opacity:0}
+.ct-foto--doble:hover img+img,.ct-foto--doble:focus-within img+img{opacity:1}
+.ct-foto--doble::after{content:"Pase el cursor: espalda";position:absolute;left:8px;bottom:8px;font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:rgba(20,18,14,.75);color:var(--ar-papel);padding:4px 7px}
+@media (hover:none){.ct-foto--doble{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:8/5}.ct-foto--doble img+img{position:static;opacity:1}.ct-foto--doble::after{display:none}}
+@media (prefers-reduced-motion:reduce){.ct-foto img{transition:none}}
+.ct-piezas b{font-size:28px}
+
+/* astillero: lo que hacemos y producciones */
+.ct-ast{margin-top:28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px}
+@media (max-width:760px){.ct-ast{grid-template-columns:minmax(0,1fr)}}
+.ct-h3{margin:0 0 4px;font:700 11px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-acento)}
+.ct-ast .ct-servicios{margin-top:6px}
+.ct-ast .ct-servicios li{grid-template-columns:minmax(0,1fr)}
+.ct-prod{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--ar-linea)}
+.ct-prod li{display:grid;grid-template-columns:4rem minmax(0,1fr);gap:2px 14px;align-items:baseline;padding:12px 0;border-bottom:1px dotted var(--ar-linea)}
+.ct-prod span{font:12px var(--ar-rot);letter-spacing:.08em;color:var(--ar-gris);font-variant-numeric:tabular-nums}
+.ct-prod b{font:400 28px/1 var(--ar-tit);letter-spacing:.02em}
+.ct-prod i{grid-column:2;font:normal 11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
 </style>
 
-<div class="ar-maqueta"><span>Maqueta · Contacto · el formulario no envía nada; las prendas esperan sus mockups</span></div>
+<div class="ar-maqueta"><span>Maqueta · Contacto · el formulario no envía nada; faltan el mockup del suéter y la lista completa de producciones</span></div>
 
 <header class="ar-barra">
   <div class="ar-barra__in">
@@ -478,11 +500,21 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
       <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor de este país. Apúntese y le avisamos primero cuando salgan.</p>
     </div>
     <ol class="ct-piezas">
-      <li><div class="ct-mock">Mockup en el taller</div><b>Coach jacket</b><span>La pieza ancla. Cien hechas para Nasional, cien vendidas.</span><i>En el taller</i></li>
-      <li><div class="ct-mock">Mockup en el taller</div><b>Crewneck</b><span>Negro y gris ratón.</span><i>En el taller</i></li>
-      <li><div class="ct-mock">Mockup en el taller</div><b>Camiseta de lino</b><span>Pocas. Fresca para el invierno tico, que también es caliente.</span><i>En el taller</i></li>
-      <li><div class="ct-mock">Mockup en el taller</div><b>Gorra ripstop</b><span>Tela liviana, aire retro.</span><i>En el taller</i></li>
-      <li><div class="ct-mock">Foto en el taller</div><b>Medias</b><span>Calidad mundial, proveedor confirmado.</span><i class="ct-pronto">Próxima tanda</i></li>
+      <li>
+        <div class="ct-foto ct-foto--doble">
+          <img src="img/coach-jacket-nasional-frente.jpg" alt="Coach jacket Nasional azul marino de nailon, vista de frente, con broches y el escudo 15 bordado en rojo sobre el pecho." loading="lazy">
+          <img src="img/coach-jacket-nasional-espalda.jpg" alt="Espalda de la coach jacket Nasional en malla naranja, con el puño de Nasional estampado en blanco." loading="lazy">
+        </div>
+        <b>Coach jacket</b><span>La pieza ancla. Cien hechas para Nasional, cien vendidas.</span><i>En el taller</i>
+      </li>
+      <li>
+        <div class="ct-mock">Mockup en el taller</div>
+        <b>Suéter con capucha</b><span>Unisex. Negro y gris jaspeado, cerrado o con zíper.</span><i>En el taller</i>
+      </li>
+      <li>
+        <div class="ct-foto"><img src="img/gorra-ripstop-map.jpg" alt="Gorra ripstop negra de cinco paneles con el logo MAP y el contorno de Costa Rica estampados en blanco." loading="lazy"></div>
+        <b>Gorra ripstop</b><span>Tela liviana, aire retro. El mapa de Costa Rica al frente.</span><i>En el taller</i>
+      </li>
     </ol>
     <form class="ct-lista" id="ct-lista" novalidate>
       <label for="ct-lista-correo">Correo para la lista</label>
@@ -498,13 +530,25 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
       <h2 id="ct-ast-t">El Astillero</h2>
       <p class="ct-sec__intro">Producción audiovisual, podcast y series con el sello MAP. ¿Le gustaría ser parte de este archivo, colaborando como patrocinador? Escríbanos.</p>
     </div>
-    <ul class="ct-servicios">
-      <li><b>Documentales</b><span>RUIDO · selección oficial FICCR 2018</span></li>
-      <li><b>Series</b><span>Serie MAP · música, arte y patinetas</span></li>
-      <li><b>Podcast</b><span>MAP Radio Pachuko · más de 200 episodios</span></li>
-      <li><b>Bandas en vivo</b><span>Registro y entrevista</span></li>
-      <li><b>Gráfica</b><span>Afiches, portadas, identidad</span></li>
-    </ul>
+    <div class="ct-ast">
+      <div>
+        <h3 class="ct-h3">Lo que hacemos</h3>
+        <ul class="ct-servicios">
+          <li><b>Documentales</b><span>De la idea al festival</span></li>
+          <li><b>Series</b><span>Serie MAP · música, arte y patinetas</span></li>
+          <li><b>Podcast</b><span>MAP Radio Pachuko · más de 200 episodios</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="ct-h3">Producciones</h3>
+        <ol class="ct-prod">
+          <li><span>2014</span><b>4 Historias de Patineta</b></li>
+          <li><span>2018</span><b>RUIDO</b><i>Selección oficial FICCR</i></li>
+          <li><span>2019</span><b>Finca Fest</b></li>
+          <li><span>2024</span><b>Sentido Común</b></li>
+        </ol>
+      </div>
+    </div>
     <div class="ct-patrocinio">
       <span class="ct-patrocinio__sello">Busca patrocinio</span>
       <p><b>Serie MAP · segunda temporada.</b> Las marcas que la acompañen quedan en los créditos de cada episodio y en la carta.</p>
@@ -524,7 +568,6 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
     </div>
     <div class="ap-acciones">
       <a class="ap-boton" href="https://ko-fi.com/mapradiocr">Invitar un café en Ko-fi</a>
-      <a class="ap-boton ap-boton--linea" href="#">PayPal</a>
     </div>
   </section></div>
 </main>
