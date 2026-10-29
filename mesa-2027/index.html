@@ -192,10 +192,13 @@ a{color:inherit}
 .inst{font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;color:rgba(233,228,212,.85);max-width:34ch}
 .inst em{font-style:normal;color:#f08a6c}
 .interruptor{display:grid;justify-items:center;gap:6px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rotulo)}
-.interruptor svg{display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
-.interruptor .palanca{transform-box:view-box;transform-origin:60px 100px;transition:transform .16s cubic-bezier(.5,1.7,.5,1)}
-.interruptor[aria-checked="true"] .palanca{transform:scaleY(-1)}
-.interruptor:hover svg{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(233,162,59,.55))}
+.interruptor .foto{position:relative;display:block;width:clamp(120px,34vw,150px);aspect-ratio:314/360;max-width:100%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.5));transition:transform .08s}
+.interruptor .foto img{position:absolute;inset:0;width:100%;height:100%;-webkit-user-drag:none}
+.interruptor .on{opacity:0}
+.interruptor[aria-checked="true"] .on{opacity:1}
+.interruptor[aria-checked="true"] .off{opacity:0}
+.interruptor:active .foto{transform:scale(.97)}
+.interruptor:hover .foto{filter:drop-shadow(0 8px 12px rgba(0,0,0,.5)) drop-shadow(0 0 8px rgba(233,162,59,.5))}
 
 /* ---------- collage ---------- */
 #collage{position:absolute;inset:0;z-index:20;pointer-events:none}
@@ -342,28 +345,7 @@ a{color:inherit}
       <h1>Estación radiogoniométrica MAP</h1>
       <div class="coord" id="coord-portada" aria-label="09°56' Norte, 84°05' Oeste. San José, Costa Rica"></div>
       <button class="interruptor" id="encender" type="button" role="switch" aria-checked="false" aria-label="Encender">
-        <svg viewBox="0 0 120 200" width="96" height="160" aria-hidden="true">
-          <defs>
-            <linearGradient id="g-placa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f5f4"/><stop offset=".55" stop-color="#cfd3d1"/><stop offset="1" stop-color="#9da3a0"/></linearGradient>
-            <linearGradient id="g-cromo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5e6361"/><stop offset=".3" stop-color="#f7f8f7"/><stop offset=".55" stop-color="#b9bebc"/><stop offset=".8" stop-color="#e9ecea"/><stop offset="1" stop-color="#4e5351"/></linearGradient>
-            <radialGradient id="g-tuerca" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c3c8c6"/><stop offset="1" stop-color="#6c7270"/></radialGradient>
-            <filter id="f-sombra" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
-          </defs>
-          <path d="M38 8h44a6 6 0 0 1 6 6v44a44 44 0 0 1 0 84v44a6 6 0 0 1-6 6H38a6 6 0 0 1-6-6v-44a44 44 0 0 1 0-84V14a6 6 0 0 1 6-6z" fill="url(#g-placa)" stroke="#7d8380" stroke-width="1.2"/>
-          <rect x="40" y="14" width="40" height="30" rx="2" fill="#c8281e"/>
-          <text x="60" y="36" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="19" fill="#fff">ON</text>
-          <rect x="38" y="156" width="44" height="30" rx="2" fill="#1b1d1b"/>
-          <text x="60" y="178" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#fff">OFF</text>
-          <polygon points="60,72 84,86 84,114 60,128 36,114 36,86" fill="url(#g-tuerca)" stroke="#6c7270" stroke-width="1"/>
-          <circle cx="60" cy="100" r="19" fill="#d9dddb" stroke="#7d8380" stroke-width="1"/>
-          <circle cx="60" cy="100" r="12" fill="#4a4f4d"/>
-          <g class="palanca">
-            <ellipse cx="47" cy="136" rx="9" ry="18" fill="rgba(0,0,0,.45)" filter="url(#f-sombra)"/>
-            <path d="M54.5 100 L51 140 Q60 150 69 140 L65.5 100 Z" fill="url(#g-cromo)" stroke="#5e6361" stroke-width=".8"/>
-            <ellipse cx="60" cy="141" rx="9.5" ry="6.5" fill="url(#g-cromo)" stroke="#5e6361" stroke-width=".8"/>
-            <circle cx="60" cy="100" r="7" fill="url(#g-tuerca)"/>
-          </g>
-        </svg>
+        <span class="foto"><img class="off" src="assets/img/interruptor-off.webp" alt="" width="314" height="360"><img class="on" src="assets/img/interruptor-on.webp" alt="" width="314" height="360"></span>
         <span>Encender</span>
       </button>
       <p class="inst">Instituto Cuántico Costarricense para la Investigación Interdimensional. <em>Calibre antes de cada marcación.</em></p>
