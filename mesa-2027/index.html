@@ -242,7 +242,7 @@ a{color:inherit}
 </style>
 
 <div id="app">
-  <div id="mapa" aria-label="Carta aérea de Alajuela y San José sobre el relieve de Costa Rica. Arrastre para volar sobre ella.">
+  <div id="mapa" aria-label="Cartas aéreas de Costa Rica sobre su relieve, con Centroamérica alrededor. Arrastre para volar sobre ella.">
     <div class="vineta"></div>
     <div id="lienzo"></div>
   </div>
@@ -288,7 +288,7 @@ a{color:inherit}
   <!-- CARTA PLEGADA: índice clásico, también para buscadores -->
   <section class="pliego" id="p-carta" hidden role="dialog" aria-modal="true" aria-labelledby="t-carta">
     <div class="hoja">
-      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hojas NC 17-5 y NC 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hojas NC 16-8, 16-12, 17-5 y 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
       <p>Los ocho territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
       <ul class="indice" id="indice"></ul>
       <div class="secciones">
@@ -297,7 +297,7 @@ a{color:inherit}
         <a class="btn vacio" href="https://www.mapradiocr.com/sobre-el-director/" target="_blank" rel="noopener">Sobre el autor</a>
         <a class="btn vacio" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Contacto</a>
       </div>
-      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
+      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 16-8 Liberia, NC 16-12 Puntarenas, NC 17-5 Alajuela y NC 17-9 San José, escala 1:250.000. Relieve: Copernicus DEM GLO-90. Centroamérica: Natural Earth. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
     </div>
   </section>
 
@@ -363,16 +363,17 @@ a{color:inherit}
 /* ===== Datos: la carta y los ocho territorios =====
    Coordenadas en píxeles de la hoja NC 17-9 a 2576 px de ancho.
    Neatline calibrada: x 231 = 84°30'W, x 2526 = 83°00'W, y 61 = 10°00'N, y 1607 = 9°00'N. */
-const CARTA={w:2576,h:3556,x0:231,x1:2526,y0:1619,y1:3165,lon0:-84.5,lon1:-83.0,lat0:10.0,lat1:9.0};
+/* Bloque de cuatro hojas JOG recortadas a sus líneas de marco: 86°W–83°W, 11°N–9°N */
+const CARTA={w:4096,h:2760,lon0:-86,lon1:-83,lat0:11,lat1:9};
 const T=[
- {id:"la-barra",nombre:"La Barra",lugar:"San José",x:867,y:1735,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
- {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",x:1135,y:1850,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
- {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",x:1168,y:2213,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
- {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:1790,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
- {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:2513,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
- {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:2392,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
- {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:2720,tipo:"nubes",sub:"Arquitectura"},
- {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:2746,tipo:"nubes",sub:"Arte"}
+ {id:"la-barra",nombre:"La Barra",lugar:"San José",lo:-84.0843,la:9.925,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
+ {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",lo:-83.9091,la:9.8506,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
+ {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",lo:-83.8876,la:9.6158,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
+ {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",lo:-83.668,la:9.8894,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
+ {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",lo:-84.1935,la:9.4217,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
+ {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",lo:-83.4902,la:9.5,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
+ {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",lo:-83.3373,la:9.2878,tipo:"nubes",sub:"Arquitectura"},
+ {id:"taller",nombre:"Taller",lugar:"Valle de El General",lo:-83.7098,la:9.271,tipo:"nubes",sub:"Arte"}
 ];
 const COLLAGE=[ // foto y clip alternados: 9 y 9
  ["banda-vivo","en-vivo"],["clip-aire","traccion-humana","v"],["tapis","la-barra"],["clip-gente","la-barra","v"],
@@ -395,8 +396,9 @@ const app=$("#app"), mapa=$("#mapa"), lienzo=$("#lienzo");
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const lonDe=x=>CARTA.lon0+(x-CARTA.x0)/(CARTA.x1-CARTA.x0)*(CARTA.lon1-CARTA.lon0);
-const latDe=y=>CARTA.lat0+(y-CARTA.y0)/(CARTA.y1-CARTA.y0)*(CARTA.lat1-CARTA.lat0);
+const lonDe=x=>CARTA.lon0+x/CARTA.w*(CARTA.lon1-CARTA.lon0);
+const latDe=y=>CARTA.lat0+y/CARTA.h*(CARTA.lat1-CARTA.lat0);
+T.forEach(t=>{t.x=(t.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w; t.y=(CARTA.lat0-t.la)/(CARTA.lat0-CARTA.lat1)*CARTA.h;});
 const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a),m=Math.round((a-g)*60);const mm=m===60?0:m,gg=m===60?g+1:g;return String(gg).padStart(2,"0")+"°"+String(mm).padStart(2,"0")+"'"+h};
 const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
 T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
@@ -453,11 +455,11 @@ const movil=Math.min(innerWidth,innerHeight)<700;
 renderer.setPixelRatio(Math.min(devicePixelRatio,movil?1.5:2));
 renderer.outputEncoding=THREE.sRGBEncoding;
 mapa.prepend(renderer.domElement);
-const escena=new THREE.Scene(); escena.background=new THREE.Color(0x1b1d1c); escena.fog=new THREE.Fog(0x1b1d1c,70,190);
-const camara=new THREE.PerspectiveCamera(45,1,.1,500);
+const escena=new THREE.Scene(); escena.background=new THREE.Color(0x1b1d1c); escena.fog=new THREE.Fog(0x1b1d1c,90,320);
+const camara=new THREE.PerspectiveCamera(45,1,.1,900);
 escena.add(new THREE.AmbientLight(0xffffff,.62));
 const sol=new THREE.DirectionalLight(0xfff3e0,.62); sol.position.set(-40,45,-30); escena.add(sol);
-const WD=100, HD=100*CARTA.h/CARTA.w, EXAG=2.6;
+const KX=59.4, KZ=60, WD=3*KX, HD=2*KZ, EXAG=2.6;   // unidades por grado: igual que la escala de las hojas
 const aMundo=(x,y)=>({x:(x/CARTA.w-.5)*WD,z:(y/CARTA.h-.5)*HD});
 const aCarta=(X,Z)=>({x:(X/WD+.5)*CARTA.w,y:(Z/HD+.5)*CARTA.h});
 T.forEach(t=>{t.w=aMundo(t.x,t.y)});
@@ -467,15 +469,25 @@ function alturaEn(X,Z){ if(!alt) return 0; const u=clamp((X/WD+.5)*(aw-1),0,aw-1
   return ((g(x0,y0)*(1-fx)+g(x1,y0)*fx)*(1-fy)+(g(x0,y1)*(1-fx)+g(x1,y1)*fx)*fy)/1640*EXAG; }
 const cargarImg=src=>new Promise((ok,mal)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=mal;i.src=src});
 function cargarCarta(){
-  Promise.all([cargarImg("assets/carta/relieve.png"),cargarImg(innerWidth>=760?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg")]).then(([rel,img])=>{
+  const tam=innerWidth>=760?2048:1280, maxTex=renderer.capabilities.maxTextureSize;
+  const reg=(innerWidth>=760&&maxTex>=4096)?"region-4096":"region-2048";
+  const HOJAS=[["liberia",0,0],["alajuela",1,0],["puntarenas",0,1],["sanjose",1,1]];
+  Promise.all([cargarImg("assets/carta/relieve-4h.png"),cargarImg(`assets/carta/${reg}.jpg`),...HOJAS.map(([n])=>cargarImg(`assets/carta/hoja-${n}-${tam}.jpg`))]).then(([rel,region,...imgs])=>{
     const c=document.createElement("canvas");aw=c.width=rel.width;ah=c.height=rel.height;const g=c.getContext("2d");g.drawImage(rel,0,0);
     const d=g.getImageData(0,0,aw,ah).data; const a=new Float32Array(aw*ah); for(let i=0;i<aw*ah;i++) a[i]=(d[i*4]*256+d[i*4+1])/65535*3800; alt=a;
-    const segX=movil?170:240, segY=Math.round(segX*HD/WD);
-    const geo=new THREE.PlaneGeometry(WD,HD,segX,segY); geo.rotateX(-Math.PI/2);
-    const p=geo.attributes.position; for(let i=0;i<p.count;i++) p.setY(i,alturaEn(p.getX(i),p.getZ(i))); geo.computeVertexNormals();
-    const tex=new THREE.Texture(img); tex.encoding=THREE.sRGBEncoding; tex.anisotropy=renderer.capabilities.getMaxAnisotropy(); tex.needsUpdate=true;
-    escena.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:tex})));
-    const canto=new THREE.Mesh(new THREE.BoxGeometry(WD,.25,HD),new THREE.MeshLambertMaterial({color:0xd9d4c4})); canto.position.y=-.14; escena.add(canto);
+    const tex=img=>{const t=new THREE.Texture(img);t.encoding=THREE.sRGBEncoding;t.anisotropy=renderer.capabilities.getMaxAnisotropy();t.needsUpdate=true;return t};
+    // Centroamérica de fondo (Natural Earth): plana, un poco por debajo de las hojas
+    const rw=11*KX, rh=7*KZ, base=new THREE.Mesh(new THREE.PlaneGeometry(rw,rh),new THREE.MeshLambertMaterial({map:tex(region)}));
+    base.rotation.x=-Math.PI/2; base.position.set((-82.5+84.5)*KX,-.35,-(10-10)*KZ); escena.add(base);
+    // el pliego de papel bajo las cuatro hojas
+    const canto=new THREE.Mesh(new THREE.BoxGeometry(WD+1.2,.3,HD+1.2),new THREE.MeshLambertMaterial({color:0xe6e0cf})); canto.position.y=-.17; escena.add(canto);
+    // las cuatro hojas sobre el relieve real
+    const segX=movil?110:160, segY=Math.round(segX*(HD/2)/(WD/2));
+    HOJAS.forEach(([n,col,fil],k)=>{
+      const geo=new THREE.PlaneGeometry(WD/2,HD/2,segX,segY); geo.rotateX(-Math.PI/2); geo.translate((col-.5)*WD/2,0,(fil-.5)*HD/2);
+      const p=geo.attributes.position; for(let i=0;i<p.count;i++) p.setY(i,alturaEn(p.getX(i),p.getZ(i))); geo.computeVertexNormals();
+      escena.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:tex(imgs[k])})));
+    });
     nubes();
   }).catch(()=>location.replace("plana.html"));
 }
@@ -489,7 +501,7 @@ function nubes(){
 }
 
 /* ===== cámara de vuelo: objetivo sobre la carta, distancia, inclinación y rumbo ===== */
-const V={tx:0,tz:6,d:150,p:78};
+const V={tx:0,tz:0,d:200,p:78};
 function aplicarCam(){
   const p=V.p*Math.PI/180,h=-S.rumbo*Math.PI/180, ty=alturaEn(V.tx,V.tz);
   camara.position.set(V.tx+Math.sin(h)*Math.cos(p)*V.d, ty+Math.sin(p)*V.d, V.tz+Math.cos(h)*Math.cos(p)*V.d);
@@ -920,7 +932,7 @@ function apagar(){
   T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"});
   $("#rumbo").classList.remove("llamado");
   $("#encender").setAttribute("aria-checked","false"); $("#portada").classList.remove("fuera");
-  volarA({tx:0,tz:6,d:150,p:78,rumbo:S.rumbo},reduce?1:2200);
+  volarA({tx:0,tz:0,d:200,p:78,rumbo:S.rumbo},reduce?1:2200);
   setTimeout(()=>$("#encender").focus(),300);
 }
 let ultimoFoco=null;
