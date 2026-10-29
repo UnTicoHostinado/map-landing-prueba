@@ -493,11 +493,6 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     <div class="ar-tit"><h2 id="lb-lectura-t">Una lectura</h2><span>crítica</span></div>
     <blockquote class="lb-cita">
       <p>"El mecanismo que 'Chuz' emplea para dar sustancia a su praxis política no tiene su sidero ni en el dogmatismo ni en el proselitismo. Lo que ha comprendido es que el catalizador que le permitirá urdir su plan es la creación de una sensación de sed incesante y presentarse, de primero, con medio vaso de agua."</p>
-      <div class="lb-audio" data-src="https://www.mapradiocr.com/wp-content/uploads/2026/10/ignacio-castillo-etica-tortuguista.mp3">
-        <button type="button" class="lb-audio__play" aria-label="Escuchar el comentario de Ignacio Castillo"><i aria-hidden="true"></i></button>
-        <div class="lb-audio__barra" aria-hidden="true"><span></span></div>
-        <span class="lb-audio__t">0:36</span>
-      </div>
       <footer><b>Ignacio Castillo</b><span>Análisis sobre «Estudios quelonios»</span><a href="https://www.mapradiocr.com/etica-tortuguista/">Leer el análisis completo →</a></footer>
     </blockquote>
   </section></div>
@@ -523,17 +518,6 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   var mb=$('#ar-menu-btn'), menu=$('#ar-menu');
   mb.addEventListener('click',function(){var on=menu.classList.toggle('abierto');mb.setAttribute('aria-expanded',on)});
   var bus=$('#ar-buscador');
-  /* audio del comentario: carga al tocar */
-  [].forEach.call(document.querySelectorAll('.lb-audio'),function(w){
-    var b=w.querySelector('button'), bar=w.querySelector('.lb-audio__barra span'), t=w.querySelector('.lb-audio__t'), au=null;
-    function mm(x){x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')}
-    b.addEventListener('click',function(){
-      if(!au){au=new Audio(w.dataset.src);
-        au.addEventListener('timeupdate',function(){bar.style.width=(au.currentTime/(au.duration||36)*100)+'%';t.textContent=mm((au.duration||36)-au.currentTime)});
-        au.addEventListener('ended',function(){w.classList.remove('sonando');bar.style.width='0%';t.textContent=mm(au.duration)});}
-      if(au.paused){au.play();w.classList.add('sonando')}else{au.pause();w.classList.remove('sonando')}
-    });
-  });
   $('#ar-buscar-btn').addEventListener('click',function(){bus.hidden=false;$('#ar-q').focus()});
   $('#ar-buscar-cerrar').addEventListener('click',function(){bus.hidden=true});
   bus.addEventListener('click',function(e){if(e.target===bus)bus.hidden=true});
