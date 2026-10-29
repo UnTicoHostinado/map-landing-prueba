@@ -440,7 +440,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 @media (max-width:820px){.sd-foto{max-width:300px}}
 .sd-cab__txt{display:flex;flex-direction:column;gap:18px;min-width:0;padding-bottom:6px}
 .sd-cab__txt .ap-kicker{margin:0}
-.sd-cab h1{margin:0;font:400 clamp(60px,9.5vw,132px)/.84 var(--ar-tit);letter-spacing:.01em}
+.sd-cab h1{margin:0;font:400 clamp(44px,5.6vw,76px)/.88 var(--ar-tit);letter-spacing:.01em}
 .sd-epigrafe{margin:6px 0 0;padding-left:22px;border-left:3px solid var(--ar-acento);font:italic 300 clamp(18px,1.9vw,22px)/1.55 var(--ar-txt);text-align:justify;hyphens:auto}
 @media (max-width:640px){.sd-epigrafe{text-align:left}}
 
@@ -480,6 +480,12 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .sd-proyectar:hover,.sd-proyectar:focus-visible{background:var(--ar-papel);color:var(--ar-tinta);outline:none}
 .sd-proyectar:hover::before,.sd-proyectar:focus-visible::before{border-left-color:var(--ar-tinta)}
 
+.sd-moviola__izq{display:flex;flex-direction:column;gap:22px;min-width:0}
+.sd-extra{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.sd-extra>a{align-self:flex-start}
+.sd-extra[hidden]{display:none}
+.sd-extra a{color:var(--ar-acento);font:700 12px var(--ar-rot);letter-spacing:.08em;text-decoration:none}
+.sd-extra a:hover,.sd-extra a:focus-visible{text-decoration:underline;outline:none}
 .sd-ficha{display:flex;flex-direction:column;gap:12px;min-width:0;padding-top:2px}
 .sd-ficha[hidden]{display:none}
 .sd-ficha__num{font:400 64px/.8 var(--ar-tit);color:var(--ar-acento)}
@@ -490,7 +496,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .sd-ficha p{margin:0;font-size:15.5px;line-height:1.65;text-align:justify;hyphens:auto}
 .sd-ficha a{color:var(--ar-acento);font:700 12px var(--ar-rot);letter-spacing:.08em;text-decoration:none}
 .sd-ficha a:hover,.sd-ficha a:focus-visible{text-decoration:underline;outline:none}
-.sd-anecdota{margin:2px 0 0;padding:10px 12px;border:1px dashed var(--ar-gris);font:12.5px/1.55 var(--ar-rot);color:var(--ar-gris)}
+.sd-anecdota{margin:0;padding:12px 14px;border:1px dashed var(--ar-gris);font:12.5px/1.55 var(--ar-rot);color:var(--ar-gris)}
 .sd-anecdota b{color:var(--ar-tinta)}
 
 .sd-indice{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;border-top:2px solid var(--ar-tinta)}
@@ -592,11 +598,14 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     <div class="ar-tit"><h2 id="sd-av-t">Archivo audiovisual</h2><span>11 piezas · la moviola</span></div>
     <p class="sd-archivo__intro">Este espacio reúne fragmentos y obras completas que han marcado mi recorrido en la dirección y creación de contenido: clips de skate, cortos documentales, videoclips musicales y proyectos que han viajado por publicaciones locales e internacionales. Más que un archivo, es una forma de compartir el proceso, la energía y las circunstancias detrás de cada pieza.</p>
     <div class="sd-moviola" id="sd-moviola">
-      <div class="sd-pantalla" id="sd-pantalla" aria-live="polite">
-        <div class="sd-reposo"><span>Archivo audiovisual · pieza 01</span><b>Capitán Rooster</b><button type="button" class="sd-proyectar" data-proyectar>Proyectar</button></div>
+      <div class="sd-moviola__izq">
+        <div class="sd-pantalla" id="sd-pantalla" aria-live="polite">
+          <div class="sd-reposo"><span>Archivo audiovisual · pieza 01</span><b>Capitán Rooster</b><button type="button" class="sd-proyectar" data-proyectar>Proyectar</button></div>
+        </div>
+        <div class="sd-extra" data-de="av-capitan-rooster"><a href="https://www.vice.com/es/article/escuchen-a-capitan-rooster-la-banda-mas-marginal-de-costa-rica/">↗ Noisey: La banda más marginal de Costa Rica</a><p class="sd-anecdota"><b>Anécdota —</b> En 2018 se robaron el canal de YouTube de Nasional Skateboards (abierto en 2006). Este video terminó en un canal ruso de "criptomonedas". Igual acá queda, en casa.</p></div>
       </div>
       <div class="sd-fichas">
-        <article class="sd-ficha" id="av-capitan-rooster" data-n="01" data-corto="Capitán Rooster" data-tipo="sp" data-id="2PJC801GYe35z66oUobqPT"><span class="sd-ficha__num">01</span><h3>Capitán Rooster — Barrio México</h3><span class="sd-ficha__rot">Corto documental · publicado en Noisey / VICE</span><blockquote>"Hace 11 años, con una cámara, un micrófono y mucha fiebre por hacer, grabé este capítulo sobre Capitán Rooster. Lo publicó Noisey (VICE) así, tal cual."</blockquote><p>Un paseo por Barrio México, un Distrito en San José famoso por sus esquinas, sus iglesias, sus cantinas y sus talleres. Es precisamente en un taller donde se puede ver un ensayo de Capitán Rooster y luego una charla sobre el barrio y la vida de una banda underground entre sus calles.</p><a href="https://www.vice.com/es/article/escuchen-a-capitan-rooster-la-banda-mas-marginal-de-costa-rica/">↗ Noisey: La banda más marginal de Costa Rica</a><p class="sd-anecdota"><b>Anécdota —</b> En 2018 se robaron el canal de YouTube de Nasional Skateboards (abierto en 2006). Este video terminó en un canal ruso de "criptomonedas". Igual acá queda, en casa.</p></article>
+        <article class="sd-ficha" id="av-capitan-rooster" data-n="01" data-corto="Capitán Rooster" data-tipo="sp" data-id="2PJC801GYe35z66oUobqPT"><span class="sd-ficha__num">01</span><h3>Capitán Rooster — Barrio México</h3><span class="sd-ficha__rot">Corto documental · publicado en Noisey / VICE</span><blockquote>"Hace 11 años, con una cámara, un micrófono y mucha fiebre por hacer, grabé este capítulo sobre Capitán Rooster. Lo publicó Noisey (VICE) así, tal cual."</blockquote><p>Un paseo por Barrio México, un Distrito en San José famoso por sus esquinas, sus iglesias, sus cantinas y sus talleres. Es precisamente en un taller donde se puede ver un ensayo de Capitán Rooster y luego una charla sobre el barrio y la vida de una banda underground entre sus calles.</p></article>
         <article class="sd-ficha" id="av-malas-palabras" data-n="02" data-corto="Malas Palabras" data-tipo="yt" data-id="f85UiXEweyk" hidden><span class="sd-ficha__num">02</span><h3>Malas Palabras — Do It Yourself</h3><span class="sd-ficha__rot">Corto documental · Blank TV</span><blockquote>"Hace 11 años filmé este corto documental con la alineación original de Malas Palabras. En ese momento había algo que valía la pena capturar: su energía en estudio y el espíritu DIY que los definía."</blockquote><p>Este trabajo refuerza lo que más disfruto del audiovisual: la narrativa documental. No necesito fingir nada, solo estar ahí y dejar que las historias se cuenten por sí solas. Con Malas Palabras, en una finca en Belén de Heredia, esas 6 horas de rodaje entre cables y anécdotas quedó registrado un momento irrepetible.</p></article>
         <article class="sd-ficha" id="av-agent-orange" data-n="03" data-corto="Agent Orange" data-tipo="sp" data-id="2M3QyvydFx2ViMPzkJgGpS" hidden><span class="sd-ficha__num">03</span><h3>Agent Orange en Costa Rica</h3><span class="sd-ficha__rot">Extracto de MAP: Música, Arte &amp; Patineta — episodio 4</span><blockquote>"Este clip es un extracto del cuarto episodio de MAP, grabado hace 6 años con la asistencia de Randy Parker. Para mí marca un punto clave en la evolución de mi trabajo audiovisual."</blockquote><p>Dos personas enfocadas, con roles claros y respeto por el oficio, pueden lograr piezas que superan en calidad a muchas producciones que se ven en la televisión costarricense. Este clip es una prueba de cómo un equipo reducido y comprometido puede capturar la intensidad de un evento sin artificios.</p></article>
         <article class="sd-ficha" id="av-tenochtitlan" data-n="04" data-corto="Tenochtitlan" data-tipo="sp" data-id="5yg67wrtr0rB70qXH3MiPk" hidden><span class="sd-ficha__num">04</span><h3>Tenochtitlan según Pelukaz</h3><span class="sd-ficha__rot">Música, Arte &amp; Patinetas · México</span><blockquote>"Este clip recoge parte de un viaje a México hace 10 años. Entre León y Guadalajara, presencié escenas que no estaba acostumbrado a ver."</blockquote><p>México me impactó profundamente. Conocí a Eliseo Martínez, uno de los protagonistas de Te Prometo Anarquía. Este trabajo combina tres elementos que siempre he buscado en MAP: el relato de "Pelucas", la cultura del skate y una narrativa que va más allá de los trucos.</p></article>
@@ -677,6 +686,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   function elegir(id,mover){
     var f=document.getElementById(id); if(!f)return; actual=f;
     $$('.sd-ficha').forEach(function(x){x.hidden=(x!==f)});
+    $$('.sd-extra').forEach(function(x){x.hidden=(x.dataset.de!==id)});
     $$('.sd-indice button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.ficha===id)});
     reposo(f);
     if(mover)$('#sd-moviola').scrollIntoView({behavior:quieto?'auto':'smooth',block:'start'});
