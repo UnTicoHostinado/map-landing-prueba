@@ -186,6 +186,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:420px){.ar-archivo{display:none}}
 
 /* buscador */
+.ar-buscador[hidden]{display:none}
 .ar-buscador{position:fixed;inset:0;z-index:60;background:rgba(20,18,14,.96);display:grid;place-items:start center;
   padding:calc(12vh + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
 .ar-buscador__in{width:min(720px,100%);display:flex;flex-direction:column;gap:14px;color:var(--ar-papel)}
@@ -353,7 +354,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   <div class="ar-barra__in">
     <a class="ar-sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/" title="Volver a la carta">MAP</a>
     <nav class="ar-menu" id="ar-menu" aria-label="Secciones">
-      <a href="https://www.mapradiocr.com/antologia">Antología</a><a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://www.mapradiocr.com/textos/">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://www.mapradiocr.com/sobre-el-director">Sobre el autor</a><a href="https://www.mapradiocr.com/contacto">Contacto</a>
+      <a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://www.mapradiocr.com/textos/">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://www.mapradiocr.com/sobre-el-director">Sobre el autor</a><a href="https://www.mapradiocr.com/contacto">Contacto</a>
     </nav>
     <button type="button" class="ar-btn ar-btn--menu" id="ar-menu-btn" aria-expanded="false" aria-controls="ar-menu">Menú</button>
     <button type="button" class="ar-btn" id="ar-buscar-btn">Buscar ⌕</button>
