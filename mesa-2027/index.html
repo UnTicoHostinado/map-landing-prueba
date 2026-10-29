@@ -38,14 +38,14 @@ a{color:inherit}
 
 /* ---------- escenario ---------- */
 #app{position:fixed;inset:0;overflow:hidden;background:var(--fondo);touch-action:none;user-select:none;-webkit-user-select:none}
-#mapa{position:absolute;inset:0;cursor:grab}
-#mapa.arrastrando{cursor:grabbing}
-#lienzo{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
-#lienzo img.carta{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none}
-.vineta{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(20,18,12,.38) 100%)}
+#mapa{position:absolute;inset:0;z-index:0}
+#mapa canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#mapa canvas.arrastrando{cursor:grabbing}
+#lienzo{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.vineta{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(20,18,12,.3) 100%)}
 
 /* marcas de territorio */
-.marca{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:4px;pointer-events:auto;opacity:.5;transition:opacity .5s}
+.marca{position:absolute;left:0;top:0;transform-origin:50% 11px;will-change:transform;display:grid;justify-items:center;gap:4px;pointer-events:auto;opacity:.5;transition:opacity .5s}
 .marca[data-dormida="true"]{pointer-events:none}
 .marca.viva{opacity:1}
 .marca .punto{position:relative;width:22px;height:22px;border-radius:50%;border:3px solid var(--senal);background:rgba(242,239,230,.85);box-shadow:0 0 0 2px rgba(242,239,230,.7)}
@@ -62,12 +62,10 @@ a{color:inherit}
 .marca .rotulo small{display:block;font-weight:400;font-size:9.5px;letter-spacing:.06em;color:var(--metal-osc)}
 .marca.oida .punto::after{background:var(--tinta)}
 /* zonas de nubes: manchas blancas como las de la carta militar */
-.marca.nube .punto{width:86px;height:46px;border:0;border-radius:50%;opacity:.62;background:
-  radial-gradient(circle at 30% 55%,#fff 0 30%,transparent 31%),radial-gradient(circle at 55% 40%,#fff 0 34%,transparent 35%),
-  radial-gradient(circle at 75% 60%,#fff 0 28%,transparent 29%),radial-gradient(ellipse at 50% 70%,#fff 0 45%,transparent 46%);box-shadow:none;filter:blur(1.2px)}
-.marca.nube .rotulo{opacity:.92}
-.marca.nube .punto::after{content:"NUBES";font-weight:600;inset:auto;left:50%;top:52%;transform:translate(-50%,-50%);background:none;border-radius:0;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--tinta)}
-.marca.nube .onda{display:none}
+.marca.nube .punto{border-color:#fff;background:rgba(255,255,255,.55);box-shadow:0 0 0 2px rgba(0,0,0,.15)}
+.marca.nube .punto::after{background:#fff}
+.marca.nube .onda{border-color:#fff}
+
 
 /* ---------- instrumento ---------- */
 #instrumento{position:absolute;pointer-events:none;opacity:0;transform:scale(1.08);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -244,11 +242,9 @@ a{color:inherit}
 </style>
 
 <div id="app">
-  <div id="mapa" aria-label="Carta aérea de San José, Costa Rica. Arrastre para recorrerla.">
-    <div id="lienzo">
-      <img class="carta" id="carta" alt="Joint Operations Graphic (Air), hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000" src="assets/carta/carta-640.jpg" draggable="false">
-    </div>
+  <div id="mapa" aria-label="Carta aérea de Alajuela y San José sobre el relieve de Costa Rica. Arrastre para volar sobre ella.">
     <div class="vineta"></div>
+    <div id="lienzo"></div>
   </div>
 
   <div id="instrumento" aria-hidden="true"><svg id="dial" viewBox="-130 -130 260 260"></svg></div>
@@ -262,6 +258,7 @@ a{color:inherit}
       <dt>Lat</dt><dd id="lat">09°56'N</dd>
       <dt>Lon</dt><dd id="lon">84°05'W</dd>
       <dt>Frec</dt><dd id="frec">312 kHz</dd>
+      <dt>Alt</dt><dd id="alt">—</dd>
       <dt class="solo-ancho">Marc.</dt><dd class="solo-ancho" id="marc">000°</dd>
     </dl>
   </div>
@@ -359,6 +356,7 @@ a{color:inherit}
   <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 "use strict";
@@ -386,14 +384,14 @@ const COLLAGE=[ // foto y clip alternados: 9 y 9
 /* Voz del Dr. Arkadi */
 const AV={
  deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
- libre:"Gire el aro para buscar señales",
+ libre:"Gire el aro para cambiar el rumbo y buscar señales. Arrastre para volar",
  nube:"Zona sin cartografiar. Las nubes taparon la foto aérea",
  rumbo:"Rumbo aleatorio. El instrumento elige por usted"
 };
 
 /* ===== utilidades ===== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const app=$("#app"), mapa=$("#mapa"), lienzo=$("#lienzo"), carta=$("#carta");
+const app=$("#app"), mapa=$("#mapa"), lienzo=$("#lienzo");
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -402,9 +400,6 @@ const latDe=y=>CARTA.lat0+(y-CARTA.y0)/(CARTA.y1-CARTA.y0)*(CARTA.lat1-CARTA.lat
 const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a),m=Math.round((a-g)*60);const mm=m===60?0:m,gg=m===60?g+1:g;return String(gg).padStart(2,"0")+"°"+String(mm).padStart(2,"0")+"'"+h};
 const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
 T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
-
-/* ===== estado ===== */
-const S={s:1,x:1010,y:1898,manual:false,alineada:null,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada",activa:null,oidas:new Set(store.get("map27.oidas",[])),visto:store.get("map27.visto",false),aguja:0,marc:0};
 
 /* ===== audio: Web Audio, todo arranca con el interruptor ===== */
 const A={ctx:null,master:null,estatica:null,estGain:null,bufs:{},on:true,fuente:null,ini:0,dur:0};
@@ -445,6 +440,241 @@ async function tocarSenal(t){
   const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
   s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
   s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(.035,1.2)}};
+}
+
+/* ===== estado ===== */
+const S={rumbo:0,alineada:null,guia:null,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada",activa:null,oidas:new Set(store.get("map27.oidas",[])),visto:store.get("map27.visto",false),aguja:0,marc:0};
+
+/* ===== la escena: carta sobre el relieve real (Copernicus DEM 90 m) ===== */
+if(!window.THREE){location.replace("plana.html");return}
+let renderer;
+try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(e){location.replace("plana.html");return}
+const movil=Math.min(innerWidth,innerHeight)<700;
+renderer.setPixelRatio(Math.min(devicePixelRatio,movil?1.5:2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+mapa.prepend(renderer.domElement);
+const escena=new THREE.Scene(); escena.background=new THREE.Color(0x1b1d1c); escena.fog=new THREE.Fog(0x1b1d1c,70,190);
+const camara=new THREE.PerspectiveCamera(45,1,.1,500);
+escena.add(new THREE.AmbientLight(0xffffff,.62));
+const sol=new THREE.DirectionalLight(0xfff3e0,.62); sol.position.set(-40,45,-30); escena.add(sol);
+const WD=100, HD=100*CARTA.h/CARTA.w, EXAG=2.6;
+const aMundo=(x,y)=>({x:(x/CARTA.w-.5)*WD,z:(y/CARTA.h-.5)*HD});
+const aCarta=(X,Z)=>({x:(X/WD+.5)*CARTA.w,y:(Z/HD+.5)*CARTA.h});
+T.forEach(t=>{t.w=aMundo(t.x,t.y)});
+let alt=null,aw=0,ah=0;
+function alturaEn(X,Z){ if(!alt) return 0; const u=clamp((X/WD+.5)*(aw-1),0,aw-1), v=clamp((Z/HD+.5)*(ah-1),0,ah-1);
+  const x0=Math.floor(u),y0=Math.floor(v),x1=Math.min(aw-1,x0+1),y1=Math.min(ah-1,y0+1),fx=u-x0,fy=v-y0,g=(x,y)=>alt[y*aw+x];
+  return ((g(x0,y0)*(1-fx)+g(x1,y0)*fx)*(1-fy)+(g(x0,y1)*(1-fx)+g(x1,y1)*fx)*fy)/1640*EXAG; }
+const cargarImg=src=>new Promise((ok,mal)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=mal;i.src=src});
+function cargarCarta(){
+  Promise.all([cargarImg("assets/carta/relieve.png"),cargarImg(innerWidth>=760?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg")]).then(([rel,img])=>{
+    const c=document.createElement("canvas");aw=c.width=rel.width;ah=c.height=rel.height;const g=c.getContext("2d");g.drawImage(rel,0,0);
+    const d=g.getImageData(0,0,aw,ah).data; const a=new Float32Array(aw*ah); for(let i=0;i<aw*ah;i++) a[i]=(d[i*4]*256+d[i*4+1])/65535*3800; alt=a;
+    const segX=movil?170:240, segY=Math.round(segX*HD/WD);
+    const geo=new THREE.PlaneGeometry(WD,HD,segX,segY); geo.rotateX(-Math.PI/2);
+    const p=geo.attributes.position; for(let i=0;i<p.count;i++) p.setY(i,alturaEn(p.getX(i),p.getZ(i))); geo.computeVertexNormals();
+    const tex=new THREE.Texture(img); tex.encoding=THREE.sRGBEncoding; tex.anisotropy=renderer.capabilities.getMaxAnisotropy(); tex.needsUpdate=true;
+    escena.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:tex})));
+    const canto=new THREE.Mesh(new THREE.BoxGeometry(WD,.25,HD),new THREE.MeshLambertMaterial({color:0xd9d4c4})); canto.position.y=-.14; escena.add(canto);
+    nubes();
+  }).catch(()=>location.replace("plana.html"));
+}
+// nubes reales sobre las zonas sin cartografiar
+function nubes(){
+  const c=document.createElement("canvas");c.width=c.height=128;const g=c.getContext("2d");const gr=g.createRadialGradient(64,64,4,64,64,62);
+  gr.addColorStop(0,"rgba(255,255,255,.95)");gr.addColorStop(.5,"rgba(255,255,255,.45)");gr.addColorStop(1,"rgba(255,255,255,0)");g.fillStyle=gr;g.fillRect(0,0,128,128);
+  const tx=new THREE.CanvasTexture(c);
+  T.filter(t=>t.tipo==="nubes").forEach(t=>{t.puffs=[];for(let i=0;i<9;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,opacity:.5+Math.random()*.25,depthWrite:false}));
+    const sc=3+Math.random()*4;s.scale.set(sc*1.6,sc,1);s.position.set(t.w.x+(Math.random()-.5)*7,alturaEn(t.w.x,t.w.z)+4.5+Math.random()*2.2,t.w.z+(Math.random()-.5)*5);s.userData.f=Math.random()*6;escena.add(s);t.puffs.push(s)}});
+}
+
+/* ===== cámara de vuelo: objetivo sobre la carta, distancia, inclinación y rumbo ===== */
+const V={tx:0,tz:6,d:150,p:78};
+function aplicarCam(){
+  const p=V.p*Math.PI/180,h=-S.rumbo*Math.PI/180, ty=alturaEn(V.tx,V.tz);
+  camara.position.set(V.tx+Math.sin(h)*Math.cos(p)*V.d, ty+Math.sin(p)*V.d, V.tz+Math.cos(h)*Math.cos(p)*V.d);
+  camara.lookAt(V.tx,ty,V.tz);
+  const c=aCarta(V.tx,V.tz); S.x=c.x; S.y=c.y;
+  $("#lat").textContent=gms(latDe(c.y),"N"); $("#lon").textContent=gms(lonDe(c.x),"W"); $("#frec").textContent=frecDe(c.x)+" kHz";
+  $("#alt").textContent=(Math.round(V.d*1640*3.28/EXAG*Math.sin(p)/100)*100).toLocaleString("es-CR")+" ft";
+}
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let vuelo=null;
+function volarA(dest,ms){
+  if(vuelo) vuelo.fin(false);
+  return new Promise(res=>{
+    const o={tx:V.tx,tz:V.tz,d:V.d,p:V.p,r:S.rumbo}, arco=Math.max(o.d,dest.d)*1.45, t0=performance.now(), dur=reduce?1:ms;
+    const dr=((dest.rumbo-o.r+540)%360)-180;
+    vuelo={paso:now=>{const k=Math.min(1,(now-t0)/dur),q=ease(k);
+      V.tx=o.tx+(dest.tx-o.tx)*q; V.tz=o.tz+(dest.tz-o.tz)*q; S.rumbo=o.r+dr*q; V.p=o.p+(dest.p-o.p)*q;
+      V.d=(o.d+(dest.d-o.d)*q)+Math.sin(Math.PI*q)*(arco-Math.max(o.d,dest.d))*.6;
+      if(k>=1) vuelo.fin(true)},
+      fin:ok=>{vuelo=null;res(ok)}};
+  });
+}
+const rumboHacia=(x0,y0,x1,y1)=>Math.atan2(x1-x0,-(y1-y0))*180/Math.PI;
+
+/* ===== marcas proyectadas sobre el relieve ===== */
+function montarMarcas(){
+  T.forEach(t=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":""); b.dataset.id=t.id; b.dataset.dormida="true";
+    b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
+    b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
+    b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"nubes · sin cartografiar":t.frec+" kHz"}</small></span>`;
+    b.addEventListener("click",()=>sintonizar(t));
+    lienzo.appendChild(b); t.el=b;
+    if(S.oidas.has(t.id)) b.classList.add("oida");
+  });
+}
+const v3=new THREE.Vector3();
+function proyectar(){
+  T.forEach(t=>{
+    v3.set(t.w.x,alturaEn(t.w.x,t.w.z)+.35,t.w.z); const dist=camara.position.distanceTo(v3); v3.project(camara);
+    t.sx=(v3.x*.5+.5)*S.vw; t.sy=(-v3.y*.5+.5)*S.vh;
+    const fuera=v3.z>1||v3.x<-1.15||v3.x>1.15||v3.y<-1.15||v3.y>1.15;
+    if(fuera){t.el.style.visibility="hidden";return}
+    t.el.style.visibility=""; const sc=clamp(30/dist,.55,1.2);
+    t.el.style.transform=`translate(${t.sx.toFixed(1)}px,${t.sy.toFixed(1)}px) translate(-50%,-11px) scale(${sc.toFixed(2)})`;
+    t.el.style.zIndex=String(1000-Math.round(dist));
+  });
+}
+function aPantalla(t){return {x:t.sx??S.vw/2,y:t.sy??S.vh/2}}
+
+/* ===== geometría de la cabina: el radiogoniómetro abajo, el parabrisas libre ===== */
+function medir(){
+  S.vw=app.clientWidth; S.vh=app.clientHeight;
+  renderer.setSize(S.vw,S.vh,false); camara.aspect=S.vw/S.vh; camara.updateProjectionMatrix();
+  const ancho=S.vw>=760, inf=($("#tablero").offsetHeight||150);
+  S.r=ancho?Math.min(S.vw*.15,175):Math.min(S.vw*.4,160);
+  S.cx=S.vw/2; S.cy=S.vh-inf+S.r*.18;
+  const ins=$("#instrumento"), lado=S.r*2*(130/104);
+  ins.style.width=ins.style.height=lado+"px"; ins.style.left=(S.cx-lado/2)+"px"; ins.style.top=(S.cy-lado/2)+"px";
+  $("#aviso").style.top=Math.max(96,S.cy-S.r*1.32-44)+"px";
+}
+
+/* ===== bucle: vuelo, aguja ADF, lámparas y marcas ===== */
+let segs=[];
+function bucle(now){
+  if(vuelo) vuelo.paso(now);
+  if(S.fase==="portada") S.rumbo+=.03;   // la carta gira despacio bajo la portada
+  aplicarCam();
+  T.forEach(t=>{if(t.puffs)t.puffs.forEach(s=>{s.position.x+=Math.sin(now/4000+s.userData.f)*.004})});
+  renderer.render(escena,camara); proyectar();
+  const temblor=S.arrastrandoAro?0:(Math.sin(now/370)+Math.sin(now/113))*.5;
+  let k=0, guia=null;
+  if(S.fase==="espera"&&S.objetivo){ guia=S.objetivo; k=.5; }
+  else if(S.fase==="libre"&&!vuelo){ const r=antena(); k=r.k; guia=r.guia; }
+  // la aguja ADF apunta a la señal relativa al rumbo; la carátula gira con el rumbo
+  let ang=0;
+  if(guia){const dx=guia.x-S.x,dy=guia.y-S.y; if(Math.hypot(dx,dy)>30) ang=rumboHacia(S.x,S.y,guia.x,guia.y)-S.rumbo;}
+  const dif=((ang-S.aguja+540)%360)-180; S.aguja+=dif*.12;
+  const ag=document.getElementById("aguja"), ro=document.getElementById("rotor");
+  if(ag) ag.setAttribute("transform",`rotate(${(S.aguja+temblor).toFixed(2)})`);
+  if(ro) ro.setAttribute("transform",`rotate(${(-S.rumbo).toFixed(2)})`);
+  S.marc=((Math.round(S.rumbo)%360)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
+  const n=Math.round(k*9);
+  segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
+  if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
+  if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
+  requestAnimationFrame(bucle);
+}
+/* ===== antena: lo que queda de frente a la nariz es lo que se sintoniza ===== */
+const angDif=(a,b)=>Math.abs(((a-b+540)%360)-180);
+function antena(){
+  const muda=A.fuente||$("#ficha").classList.contains("abierta");
+  let best=null,bk=0,bdf=99,cerca=null,dc=Infinity;
+  T.forEach(t=>{
+    const dx=t.x-S.x,dy=t.y-S.y,d=Math.hypot(dx,dy); if(d<60||d>2800) return;
+    if(t.tipo==="senal"&&d<dc){dc=d;cerca=t}
+    const df=angDif(rumboHacia(S.x,S.y,t.x,t.y),S.rumbo); if(df>25) return;
+    const kk=(1-df/25)*clamp(1.35-d/2000,.3,1); if(kk>bk){bk=kk;best=t;bdf=df}
+  });
+  const guia=best||cerca;
+  if(muda){ if(S.alineada){S.alineada.el.classList.remove("detectada");S.alineada=null} leve(null); return {k:0,guia}; }
+  const fija=(best&&bdf<(best===S.alineada?10:7))?best:null;
+  if(fija!==S.alineada){
+    if(S.alineada) S.alineada.el.classList.remove("detectada");
+    S.alineada=fija;
+    if(fija){fija.el.classList.add("detectada");bip(fija.tipo==="nubes");const g=String(S.marc).padStart(3,"0");
+      aviso(fija.tipo==="nubes"?`Eco a ${g}°: ${fija.nombre}. Zona de nubes`:`Señal a ${g}°: ${fija.nombre}. Toque la marca`,true,5000);}
+  }
+  leve(best,bk*bk);
+  return {k:bk,guia};
+}
+/* ===== el aro: girarlo es girar la nave ===== */
+function aro(){
+  const hit=document.getElementById("aro-hit"); let st=null, ult=0;
+  const angDe=e=>{const r=$("#instrumento").getBoundingClientRect();return Math.atan2(e.clientX-(r.left+r.width/2),-(e.clientY-(r.top+r.height/2)))*180/Math.PI};
+  hit.addEventListener("pointerdown",e=>{
+    if(S.fase!=="libre"&&S.fase!=="espera") return; e.preventDefault(); e.stopPropagation();
+    try{hit.setPointerCapture(e.pointerId)}catch(_){}
+    if(vuelo) vuelo.fin(false);
+    if($("#ficha").classList.contains("abierta")) cerrarFicha();
+    if(S.fase==="espera"){S.fase="libre";S.objetivo.el.classList.remove("detectada");despertarTodo()}
+    $("#rumbo").classList.remove("llamado");
+    st={id:e.pointerId,a:angDe(e)}; ult=Math.round(S.rumbo/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
+  });
+  // la carátula y el mundo siguen al dedo: girar a la derecha gira la carta a la derecha
+  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;const a=angDe(e);const d=((a-st.a+540)%360)-180;st.a=a;S.rumbo-=d;const m=Math.round(S.rumbo/10);if(m!==ult){ult=m;tic()}});
+  const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
+  hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
+  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){if($("#ficha").classList.contains("abierta"))cerrarFicha();S.rumbo+=e.key==="]"?5:-5;tic()}});
+}
+const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
+
+/* ===== volar con la mano: arrastrar avanza, rueda o pellizco sube y baja ===== */
+function arrastre(){
+  const cv=renderer.domElement, toques=new Map();
+  const activo=()=>S.fase==="libre"||S.fase==="espera";
+  cv.addEventListener("pointerdown",e=>{if(!activo())return;cv.setPointerCapture(e.pointerId);toques.set(e.pointerId,{x:e.clientX,y:e.clientY});cv.classList.add("arrastrando");if(vuelo)vuelo.fin(false)});
+  cv.addEventListener("pointermove",e=>{
+    const p=toques.get(e.pointerId); if(!p) return;
+    if(toques.size===2){const [a,b]=[...toques.values()];const d0=Math.hypot(a.x-b.x,a.y-b.y);p.x=e.clientX;p.y=e.clientY;const [c,d]=[...toques.values()];const d1=Math.hypot(c.x-d.x,c.y-d.y);if(d0>0&&d1>0){V.d=clamp(V.d*d0/d1,7,120);V.p=clamp(22+(V.d-7)*.45,22,78)}return}
+    const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+    const k=V.d*.0016, h=-S.rumbo*Math.PI/180;
+    V.tx=clamp(V.tx+(-Math.cos(h)*dx-Math.sin(h)*dy)*k,-WD/2,WD/2); V.tz=clamp(V.tz+(Math.sin(h)*dx-Math.cos(h)*dy)*k,-HD/2,HD/2);
+  });
+  const soltar=e=>{toques.delete(e.pointerId);if(!toques.size)cv.classList.remove("arrastrando")};
+  cv.addEventListener("pointerup",soltar); cv.addEventListener("pointercancel",soltar);
+  cv.addEventListener("wheel",e=>{if(!activo())return;e.preventDefault();if(vuelo)vuelo.fin(false);V.d=clamp(V.d*Math.exp(e.deltaY*.0012),7,120);V.p=clamp(22+(V.d-7)*.45,22,78)},{passive:false});
+  window.addEventListener("keydown",e=>{
+    if(!activo()||document.querySelector(".pliego:not([hidden])")) return;
+    const m={ArrowUp:[0,1],ArrowDown:[0,-1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key]; if(!m) return; e.preventDefault();
+    const h=-S.rumbo*Math.PI/180, k=V.d*.04; V.tx+=(Math.cos(h)*m[0]-Math.sin(h)*m[1])*k; V.tz+=(-Math.sin(h)*m[0]-Math.cos(h)*m[1])*k;
+  });
+}
+
+/* ===== aviso de Arkadi (máquina de escribir) ===== */
+let avisoT=0,avisoH=0;
+function aviso(txt,alerta,dur=4500){
+  const el=$("#aviso"); clearInterval(avisoT); clearTimeout(avisoH); el.classList.toggle("alerta",!!alerta); el.classList.remove("oculto");
+  if(dur) avisoH=setTimeout(()=>el.classList.add("oculto"),dur);
+  if(reduce){el.textContent=txt;return}
+  let i=0; el.innerHTML='<span class="cursor">▌</span>';
+  avisoT=setInterval(()=>{i++;el.innerHTML=txt.slice(0,i)+'<span class="cursor">▌</span>';if(i>=txt.length){clearInterval(avisoT)}},22);
+}
+
+/* ===== sintonizar: subir, girar y posarse sobre la señal ===== */
+async function sintonizar(t){
+  if(S.fase==="portada"||S.fase==="collage"||S.fase==="reveal") return;
+  if(S.fase==="espera"&&t!==S.objetivo) return;
+  const venia=S.fase;
+  S.activa=t; S.objetivo=null; leve(null); if(S.alineada){S.alineada.el.classList.remove("detectada");S.alineada=null} cerrarFicha(true);
+  T.forEach(o=>o.el.classList.remove("detectada"));
+  pararSenal();
+  if(t.tipo==="nubes"){ sonar("nubes",.9); nivelEstatica(.05,.3); aviso(AV.nube); }
+  else { sonar("sintonia",.7); nivelEstatica(.09,.2); }
+  if(venia==="espera"){ S.fase="libre"; despertarTodo(); }
+  const lejos=Math.hypot(t.x-S.x,t.y-S.y), r=lejos>120?rumboHacia(S.x,S.y,t.x,t.y):S.rumbo;
+  const llego=await volarA({tx:t.w.x,tz:t.w.z,d:t.tipo==="nubes"?26:16,p:t.tipo==="nubes"?40:30,rumbo:r},clamp(1300+lejos*.9,1300,3000));
+  if(!llego||S.activa!==t) return;
+  abrirFicha(t);
+  if(t.tipo==="senal"){ nivelEstatica(.006,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
+}
+function despertarTodo(){
+  T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
+  if(!S.dichoLibre){S.dichoLibre=true;setTimeout(()=>{$("#rumbo").classList.add("llamado");aviso(AV.libre)},reduce?0:1600);}
 }
 
 /* ===== construcción del dial ===== */
@@ -491,97 +721,6 @@ function dibujarDial(){
   hit.style.pointerEvents="stroke"; hit.style.cursor="grab"; hit.style.touchAction="none";
 }
 
-/* ===== marcas sobre la carta ===== */
-function montarMarcas(){
-  T.forEach(t=>{
-    const b=document.createElement("button");
-    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":""); b.dataset.id=t.id; b.dataset.dormida="true";
-    b.style.left=t.x+"px"; b.style.top=t.y+"px"; b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
-    b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
-    b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"sin cartografiar":t.frec+" kHz"}</small></span>`;
-    b.addEventListener("click",e=>{if(S.movido){e.preventDefault();return}sintonizar(t)});
-    lienzo.appendChild(b); t.el=b;
-    if(S.oidas.has(t.id)) b.classList.add("oida");
-  });
-}
-
-/* ===== geometría y vista ===== */
-function medir(){
-  S.vw=app.clientWidth; S.vh=app.clientHeight;
-  const ancho=S.vw>=760;
-  S.s=ancho?1:.75;
-  const sup=ancho?92:84, inf=($("#tablero").offsetHeight||150);
-  S.cx=S.vw/2; S.cy=sup+(S.vh-sup-inf)/2;
-  S.r=Math.max(110,Math.min(S.vw*.5-14,(S.vh-sup-inf)*.5-8,300));
-  const ins=$("#instrumento"), lado=S.r*2*(130/104);
-  ins.style.width=ins.style.height=lado+"px"; ins.style.left=(S.cx-lado/2)+"px"; ins.style.top=(S.cy-lado/2)+"px";
-  lienzo.style.width=CARTA.w*S.s+"px"; lienzo.style.height=CARTA.h*S.s+"px";
-  // las marcas están en px de la carta a escala 1; las escalamos con el lienzo
-  T.forEach(t=>{t.el.style.left=t.x*S.s+"px";t.el.style.top=t.y*S.s+"px"});
-  $("#aviso").style.top=(S.cy+S.r*1.12+6)+"px";
-  if($("#aviso").getBoundingClientRect().bottom>S.vh-inf){$("#aviso").style.top=(sup+4)+"px"}
-  aplicar();
-}
-function limites(){
-  // la carta siempre cubre la pantalla; si es más angosta que la vista, queda centrada
-  let mx=S.cx/S.s, Mx=CARTA.w-(S.vw-S.cx)/S.s, my=S.cy/S.s, My=CARTA.h-(S.vh-S.cy)/S.s;
-  if(mx>Mx){mx=Mx=CARTA.w/2} if(my>My){my=My=CARTA.h/2}
-  return {mx,Mx,my,My};
-}
-function aplicar(){
-  const L=limites(); S.x=clamp(S.x,L.mx,L.Mx); S.y=clamp(S.y,L.my,L.My);
-  lienzo.style.transform=`translate3d(${(S.cx-S.x*S.s).toFixed(1)}px,${(S.cy-S.y*S.s).toFixed(1)}px,0)`;
-  $("#lat").textContent=gms(latDe(S.y),"N"); $("#lon").textContent=gms(lonDe(S.x),"W"); $("#frec").textContent=frecDe(S.x)+" kHz";
-}
-function aPantalla(t){return {x:S.cx+(t.x-S.x)*S.s,y:S.cy+(t.y-S.y)*S.s}}
-
-/* ===== aguja e intensidad (bucle) ===== */
-let segs=[];
-function bucle(){
-  const now=performance.now();
-  const temblor=S.arrastrandoAro?0:(Math.sin(now/370)+Math.sin(now/113))*.6;
-  let k=0;
-  if(!S.manual){
-    // modo automático: el aro busca solo la señal más cercana
-    let obj=S.activa||S.objetivo;
-    if(!obj){let bd=Infinity;T.forEach(t=>{if(S.fase!=="libre"&&t.tipo!=="senal")return;const d=Math.hypot(t.x-S.x,t.y-S.y);if(d<bd){bd=d;obj=t}});}
-    let ang=S.aguja;
-    if(obj){const dx=obj.x-S.x,dy=obj.y-S.y,d=Math.hypot(dx,dy);if(d>4)ang=Math.atan2(dx,-dy)*180/Math.PI;k=clamp(1-d/700,0,1);}
-    const diff=((ang-S.aguja+540)%360)-180; S.aguja+=diff*.12;
-  } else {
-    k=antena();
-  }
-  const rot=`rotate(${(S.aguja+temblor).toFixed(2)})`;
-  const ag=document.getElementById("aguja"), ro=document.getElementById("rotor");
-  if(ag) ag.setAttribute("transform",rot); if(ro) ro.setAttribute("transform",rot);
-  S.marc=((Math.round(S.aguja)%360)+360)%360; $("#marc").textContent=String(S.marc).padStart(3,"0")+"°";
-  const n=Math.round(k*9);
-  segs.forEach((s,i)=>s.setAttribute("fill",i<n?(i>6?"#c6361f":"#e9a23b"):"#3a2a14"));
-  if(A.ctx&&!A.fuente&&S.fase==="libre") nivelEstatica(.015+.05*(1-k),.8);
-  if(A.fuente&&A.dur){const p=clamp((A.ctx.currentTime-A.ini)/A.dur,0,1);const ll=$("#ficha .lleno");if(ll)ll.style.width=(p*100)+"%";const tt=$("#ficha .tiempo");if(tt)tt.textContent=fmt(A.ctx.currentTime-A.ini)+" / "+fmt(A.dur);}
-  requestAnimationFrame(bucle);
-}
-/* ===== antena: girar el aro hasta alinear una señal ===== */
-const angDif=(a,b)=>Math.abs(((a-b+540)%360)-180);
-function antena(){
-  if(S.fase!=="libre"||A.fuente||$("#ficha").classList.contains("abierta")){if(S.alineada){S.alineada.el.classList.remove("detectada");S.alineada=null}leve(null);return 0}
-  // la antena empieza a oír desde 25° antes de alinearse; al alinear (menos de 7°) da la alerta
-  let best=null,bk=0,bdf=99;
-  T.forEach(t=>{
-    const dx=t.x-S.x,dy=t.y-S.y,d=Math.hypot(dx,dy); if(d<60||d>2600) return;
-    const df=angDif(Math.atan2(dx,-dy)*180/Math.PI,S.aguja); if(df>25) return;
-    const kk=(1-df/25)*clamp(1.35-d/1900,.3,1); if(kk>bk){bk=kk;best=t;bdf=df}
-  });
-  const fija=(best&&bdf<(best===S.alineada?10:7))?best:null;
-  if(fija!==S.alineada){
-    if(S.alineada) S.alineada.el.classList.remove("detectada");
-    S.alineada=fija;
-    if(fija){fija.el.classList.add("detectada");bip(fija.tipo==="nubes");const g=String(S.marc).padStart(3,"0");
-      aviso(fija.tipo==="nubes"?`Eco a ${g}°: ${fija.nombre}. Zona de nubes`:`Señal a ${g}°: ${fija.nombre}. Toque la marca`,true,5000);}
-  }
-  leve(best,bk*bk);
-  return bk;
-}
 function bip(grave){
   if(!A.ctx||!A.on) return;
   const o=A.ctx.createOscillator(),g=A.ctx.createGain(),t=A.ctx.currentTime;
@@ -611,95 +750,6 @@ function tic(){
   const s=A.ctx.createBufferSource(),f=A.ctx.createBiquadFilter(),g=A.ctx.createGain();
   f.type="bandpass";f.frequency.value=3000;f.Q.value=2;g.gain.value=.55;s.buffer=ticBuf;s.connect(f).connect(g).connect(A.master);s.start();
 }
-function aro(){
-  const hit=document.getElementById("aro-hit"); let st=null, ult=0;
-  const angDe=e=>{const r=$("#instrumento").getBoundingClientRect();return Math.atan2(e.clientX-(r.left+r.width/2),-(e.clientY-(r.top+r.height/2)))*180/Math.PI};
-  hit.addEventListener("pointerdown",e=>{
-    if(S.fase!=="libre") return; e.preventDefault(); e.stopPropagation();
-    try{hit.setPointerCapture(e.pointerId)}catch(_){}
-    if($("#ficha").classList.contains("abierta")) cerrarFicha();
-    if(!S.manual){S.manual=true;$("#rumbo").classList.remove("llamado")}
-    st={id:e.pointerId,off:angDe(e)-S.aguja}; ult=Math.round(S.aguja/10); S.arrastrandoAro=true; hit.style.cursor="grabbing";
-  });
-  hit.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;let a=angDe(e)-st.off;const d=((a-S.aguja+540)%360)-180;S.aguja+=d;const m=Math.round(S.aguja/10);if(m!==ult){ult=m;tic()}});
-  const fin=e=>{if(!st||e.pointerId!==st.id)return;st=null;S.arrastrandoAro=false;hit.style.cursor="grab"};
-  hit.addEventListener("pointerup",fin); hit.addEventListener("pointercancel",fin);
-  // teclado: [ y ] giran el aro 5°
-  window.addEventListener("keydown",e=>{if(S.fase!=="libre"||document.querySelector(".pliego:not([hidden])"))return;if(e.key==="["||e.key==="]"){if($("#ficha").classList.contains("abierta"))cerrarFicha();S.manual=true;S.aguja+=e.key==="]"?5:-5;tic()}});
-}
-const fmt=s=>{s=Math.max(0,s);return "0:"+String(Math.floor(s)).padStart(2,"0")};
-
-/* ===== arrastre de la carta ===== */
-function arrastre(){
-  let p=null,vx=0,vy=0,last=0,inercia=0;
-  mapa.addEventListener("pointerdown",e=>{
-    if(S.fase==="portada"||S.fase==="collage") return;
-    cancelAnimationFrame(inercia); cancelAnimationFrame(S.pan||0);
-    p={x:e.clientX,y:e.clientY,ox:S.x,oy:S.y,id:e.pointerId}; S.movido=false; last=performance.now(); vx=vy=0;
-  });
-  window.addEventListener("pointermove",e=>{
-    if(!p||e.pointerId!==p.id) return;
-    const dx=e.clientX-p.x, dy=e.clientY-p.y;
-    if(!S.movido&&Math.hypot(dx,dy)>7){S.movido=true;mapa.classList.add("arrastrando");try{mapa.setPointerCapture(p.id)}catch(_){}}
-    if(!S.movido) return;
-    const nx=p.ox-dx/S.s, ny=p.oy-dy/S.s, now=performance.now(), dt=Math.max(1,now-last);
-    vx=(nx-S.x)/dt; vy=(ny-S.y)/dt; last=now; S.x=nx; S.y=ny; aplicar();
-  });
-  const fin=e=>{
-    if(!p||e.pointerId!==p.id) return; p=null; mapa.classList.remove("arrastrando");
-    if(S.movido){setTimeout(()=>S.movido=false,30); let t0=performance.now();
-      const paso=()=>{const now=performance.now(),dt=now-t0;t0=now;vx*=.92;vy*=.92;S.x+=vx*dt;S.y+=vy*dt;aplicar();if(Math.hypot(vx,vy)>.01)inercia=requestAnimationFrame(paso)};
-      inercia=requestAnimationFrame(paso);}
-  };
-  window.addEventListener("pointerup",fin); window.addEventListener("pointercancel",fin);
-  // teclado: flechas mueven la carta
-  window.addEventListener("keydown",e=>{
-    if(S.fase!=="libre"&&S.fase!=="espera") return; if(document.querySelector(".pliego:not([hidden])")) return;
-    const k={ArrowLeft:[-60,0],ArrowRight:[60,0],ArrowUp:[0,-60],ArrowDown:[0,60]}[e.key]; if(!k) return;
-    e.preventDefault(); S.x+=k[0]; S.y+=k[1]; aplicar();
-  });
-}
-function panA(x,y,ms=900){
-  return new Promise(res=>{
-    cancelAnimationFrame(S.pan||0);
-    const L=limites(); x=clamp(x,L.mx,L.Mx); y=clamp(y,L.my,L.My);
-    const x0=S.x,y0=S.y,t0=performance.now(), d=reduce?1:ms;
-    const e=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-    const paso=now=>{const k=clamp((now-t0)/d,0,1),q=e(k);S.x=x0+(x-x0)*q;S.y=y0+(y-y0)*q;aplicar();if(k<1)S.pan=requestAnimationFrame(paso);else res()};
-    S.pan=requestAnimationFrame(paso);
-  });
-}
-
-/* ===== aviso de Arkadi (máquina de escribir) ===== */
-let avisoT=0,avisoH=0;
-function aviso(txt,alerta,dur=4500){
-  const el=$("#aviso"); clearInterval(avisoT); clearTimeout(avisoH); el.classList.toggle("alerta",!!alerta); el.classList.remove("oculto");
-  if(dur) avisoH=setTimeout(()=>el.classList.add("oculto"),dur);
-  if(reduce){el.textContent=txt;return}
-  let i=0; el.innerHTML='<span class="cursor">▌</span>';
-  avisoT=setInterval(()=>{i++;el.innerHTML=txt.slice(0,i)+'<span class="cursor">▌</span>';if(i>=txt.length){clearInterval(avisoT)}},22);
-}
-
-/* ===== sintonizar ===== */
-async function sintonizar(t){
-  if(S.fase==="portada"||S.fase==="collage") return;
-  if(S.fase==="espera"&&t!==S.objetivo) return;
-  S.activa=t; S.objetivo=null; leve(null); if(S.alineada){S.alineada=null} cerrarFicha(true);
-  T.forEach(o=>o.el.classList.remove("detectada"));
-  pararSenal();
-  if(t.tipo==="nubes"){ sonar("nubes",.9); nivelEstatica(.05,.3); aviso(AV.nube); }
-  else { sonar("sintonia",.7); nivelEstatica(.09,.2); }
-  // pequeño giro de la perilla de rumbo como si el aparato buscara
-  await panA(t.x,t.y,850);
-  abrirFicha(t);
-  if(t.tipo==="senal"){ nivelEstatica(.006,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
-  if(S.fase==="espera"){ S.fase="libre"; despertarTodo(); }
-}
-function despertarTodo(){
-  T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
-  setTimeout(()=>{$("#rumbo").classList.add("llamado");aviso(AV.libre)},reduce?0:1400);
-}
-
 /* ===== ficha ===== */
 function abrirFicha(t){
   const f=$("#ficha");
@@ -789,36 +839,41 @@ function collage(){
 }
 function revelar(els){
   S.fase="reveal"; const tr=$("#trazos");
-  // líneas de la carta que se trazan sobre el desorden
   if(!reduce){
-    tr.innerHTML=""; const NS="http://www.w3.org/2000/svg";
+    tr.innerHTML=""; const NS="http://www.w3.org/2000/svg", cx=S.vw/2, cy=S.vh*.45;
     const L=(x1,y1,x2,y2,dl)=>{const l=document.createElementNS(NS,"line");l.setAttribute("x1",x1);l.setAttribute("y1",y1);l.setAttribute("x2",x2);l.setAttribute("y2",y2);const len=Math.hypot(x2-x1,y2-y1);l.style.strokeDasharray=len;l.style.strokeDashoffset=len;l.style.transition=`stroke-dashoffset .7s ease ${dl}s, opacity .5s ease 1.4s`;tr.appendChild(l);requestAnimationFrame(()=>requestAnimationFrame(()=>{l.style.strokeDashoffset=0;l.style.opacity=0}))};
-    for(let i=0;i<12;i++){const a=i*Math.PI/6;L(S.cx,S.cy,S.cx+Math.cos(a)*Math.max(S.vw,S.vh),S.cy+Math.sin(a)*Math.max(S.vw,S.vh),i*.03)}
+    for(let i=0;i<12;i++){const a=i*Math.PI/6;L(cx,cy,cx+Math.cos(a)*Math.max(S.vw,S.vh),cy+Math.sin(a)*Math.max(S.vw,S.vh),i*.03)}
   }
-  // cada pieza vuela a su territorio y se vuelve un punto
+  // cada pieza vuela a su territorio sobre el relieve y se vuelve un punto
   els.forEach((d,i)=>{
-    const t=T.find(o=>o.id===d.dataset.ter); const p=t?aPantalla(t):{x:S.cx,y:S.cy};
+    const t=T.find(o=>o.id===d.dataset.ter); const p=t?aPantalla(t):{x:S.vw/2,y:S.vh/2};
     d.style.transition=`transform .75s cubic-bezier(.6,0,.3,1) ${i*.025}s, opacity .35s ease ${.5+i*.025}s`;
     d.style.transform=`translate(${p.x-d._w/2}px,${p.y-d._w/2}px) rotate(0deg) scale(.06)`; d.style.opacity="0";
   });
   setTimeout(()=>{$("#collage").innerHTML="";tr.innerHTML=""},reduce?0:1500);
   setTimeout(()=>{
-    $("#instrumento").classList.add("listo"); $$(".hud").forEach(h=>h.classList.add("listo"));
     T.forEach(t=>t.el.classList.add("viva"));
     if(A.ctx) nivelEstatica(.05,.6);
-    setTimeout(esperar,reduce?0:700);
+    esperar();
   },reduce?0:650);
   S.visto=true; store.set("map27.visto",true);
 }
-function esperar(){
+async function esperar(){
   // la señal apunta a lo nuevo: la primera que el visitante no ha oído
   const sen=T.filter(t=>t.tipo==="senal");
   const obj=sen.find(t=>!S.oidas.has(t.id))||sen[Math.floor(Math.random()*sen.length)];
-  S.objetivo=obj; S.fase="espera";
+  S.objetivo=obj;
   T.forEach(t=>{t.el.classList.toggle("viva",t===obj);t.el.dataset.dormida=t===obj?"false":"true"});
-  obj.el.classList.add("detectada");
-  // que la señal quede dentro del cristal, fuera del centro, para que la aguja la marque
-  const off=S.r*.55/S.s; panA(obj.x+off*.6,obj.y+off*.7,700);
+  // descenso desde lo alto: la nave queda al sur de la señal, con la señal a unos 30° de la nariz
+  const r=((S.rumbo%360)+360)%360, apr=-25;
+  const ang=(apr+150)*Math.PI/180, dist=7;
+  const tx=obj.w.x+Math.sin(ang)*dist, tz=obj.w.z-Math.cos(ang)*dist;
+  const c=aCarta(tx,tz), haciaSenal=rumboHacia(c.x,c.y,obj.x,obj.y);
+  S.rumbo=r;
+  setTimeout(()=>{$("#instrumento").classList.add("listo"); $$(".hud").forEach(h=>h.classList.add("listo"))},reduce?0:1600);
+  await volarA({tx,tz,d:34,p:34,rumbo:haciaSenal-28},reduce?1:4200);
+  if(S.objetivo!==obj) return;
+  S.fase="espera"; obj.el.classList.add("detectada");
   aviso(AV.deteccion(obj),true,0);
 }
 
@@ -856,25 +911,22 @@ function mandos(){
   $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
 }
 function apagar(){
-  pararSenal(); nivelEstatica(0,.1); clack();
+  pararSenal(); nivelEstatica(0,.1); clack(); leve(null);
   $$(".pliego").forEach(p=>p.hidden=true); $("#ficha").classList.remove("abierta");
-  cancelAnimationFrame(S.pan||0); clearInterval(avisoT); $("#aviso").textContent="";
-  S.activa=null; S.objetivo=null; S.fase="portada";
+  if(vuelo) vuelo.fin(false); clearInterval(avisoT); $("#aviso").textContent="";
+  S.activa=null; S.objetivo=null; S.alineada=null; S.fase="portada";
   $("#instrumento").classList.remove("listo"); $$(".hud").forEach(h=>h.classList.remove("listo"));
   T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"});
   $("#rumbo").classList.remove("llamado");
   $("#encender").setAttribute("aria-checked","false"); $("#portada").classList.remove("fuera");
-  S.x=1010; S.y=1898; S.manual=false; S.alineada=null; leve(null); aplicar(); setTimeout(()=>$("#encender").focus(),300);
+  volarA({tx:0,tz:6,d:150,p:78,rumbo:S.rumbo},reduce?1:2200);
+  setTimeout(()=>$("#encender").focus(),300);
 }
 let ultimoFoco=null;
 function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimoFoco=document.activeElement;const p=$("#"+id);p.hidden=false;sonar("perillas",.5);p.querySelector(".cerrar").focus()}
 function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catch(e){}}
 
 /* ===== arranque ===== */
-function cargarCarta(){
-  const grande=(window.innerWidth>=760)?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg";
-  const im=new Image(); im.onload=()=>{carta.src=grande}; im.src=grande;
-}
 dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
