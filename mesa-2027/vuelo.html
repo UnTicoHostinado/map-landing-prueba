@@ -49,7 +49,7 @@ canvas.arrastre{cursor:grabbing}
 .sinwebgl{position:fixed;inset:0;z-index:9;display:grid;place-items:center;text-align:center;padding:24px;font-size:12px;letter-spacing:.08em;background:var(--fondo)}
 </style>
 
-<div class="placa" id="p-izq"><b>Vuelo sobre la carta</b><span>Prueba three.js · relieve aproximado desde los colores de elevación de la carta</span></div>
+<div class="placa" id="p-izq"><b>Vuelo sobre la carta</b><span>Prueba three.js · relieve real Copernicus DEM 90 m</span></div>
 <dl class="placa" id="p-der"><dt>Lat</dt><dd id="lat">—</dd><dt>Lon</dt><dd id="lon">—</dd><dt>Alt</dt><dd id="alt">—</dd><dt>Rumbo</dt><dd id="rum">—</dd></dl>
 <div id="marcas"></div>
 <aside id="ficha" aria-live="polite"></aside>
@@ -73,7 +73,7 @@ const T=[
  {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:2720,nube:true},
  {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:2746,nube:true}
 ];
-const WD=100, HD=100*CARTA.h/CARTA.w, EXAG=3.2;
+const WD=100, HD=100*CARTA.h/CARTA.w, EXAG=2.6;
 const aMundo=(x,y)=>({x:(x/CARTA.w-.5)*WD,z:(y/CARTA.h-.5)*HD});
 const aCarta=(X,Z)=>({x:(X/WD+.5)*CARTA.w,y:(Z/HD+.5)*CARTA.h});
 const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a);let m=Math.round((a-g)*60);return String(m===60?g+1:g).padStart(2,"0")+"°"+String(m===60?0:m).padStart(2,"0")+"'"+h};
@@ -94,12 +94,12 @@ let alt=null, aw=0, ah=0;
 function alturaEn(X,Z){ if(!alt) return 0; const u=Math.min(aw-1,Math.max(0,(X/WD+.5)*(aw-1))), v=Math.min(ah-1,Math.max(0,(Z/HD+.5)*(ah-1)));
   const x0=Math.floor(u),y0=Math.floor(v),x1=Math.min(aw-1,x0+1),y1=Math.min(ah-1,y0+1),fx=u-x0,fy=v-y0;
   const g=(x,y)=>alt[y*aw+x]; const m=(g(x0,y0)*(1-fx)+g(x1,y0)*fx)*(1-fy)+(g(x0,y1)*(1-fx)+g(x1,y1)*fx)*fy;
-  return m/255*3800/1640*EXAG; }
+  return m/1640*EXAG; }
 const cargarImg=src=>new Promise((ok,mal)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=mal;i.src=src});
 let terreno;
 Promise.all([cargarImg("assets/carta/relieve.png"),cargarImg(innerWidth>=760?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg")]).then(([rel,img])=>{
   const c=document.createElement("canvas");aw=c.width=rel.width;ah=c.height=rel.height;const g=c.getContext("2d");g.drawImage(rel,0,0);
-  const d=g.getImageData(0,0,aw,ah).data; alt=new Uint8Array(aw*ah); for(let i=0;i<aw*ah;i++) alt[i]=d[i*4];
+  const d=g.getImageData(0,0,aw,ah).data; alt=new Float32Array(aw*ah); for(let i=0;i<aw*ah;i++) alt[i]=(d[i*4]*256+d[i*4+1])/65535*3800; // metros, 16 bits en rojo+verde
   const segX=movil?180:255, segY=Math.round(segX*HD/WD);
   const geo=new THREE.PlaneGeometry(WD,HD,segX,segY); geo.rotateX(-Math.PI/2);
   const p=geo.attributes.position; for(let i=0;i<p.count;i++){p.setY(i,alturaEn(p.getX(i),p.getZ(i)))} geo.computeVertexNormals();
