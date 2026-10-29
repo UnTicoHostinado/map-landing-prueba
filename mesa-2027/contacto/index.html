@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Contacto MAP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
+<style>/* PLANTILLA DE ENTRADA · Archivo MAP
+   Marco fijo alrededor del cuerpo de cada entrada: barra, cabecera, pista, cierre, radiogramas.
+   Prefijo .ar- para no chocar con Neve, Elementor ni la hoja de rodaje (.hr-). */
+:root{
+  --ar-papel:#F4F3EF; --ar-papel-2:#E9E7E0; --ar-tinta:#14120E; --ar-acento:#E8412C;
+  --ar-gris:#6B6B6B; --ar-linea:rgba(20,18,14,.16); --ar-tiza:#B9B6AC;
+  --ar-plano:#2C5876; --ar-patron:#A86A12;
+  --ar-rot:'B612 Mono','IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --ar-tit:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  --ar-txt:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+body{background:var(--ar-papel);color:var(--ar-tinta);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--ar-tinta)}
+/* los rótulos de toda la entrada pasan a B612 Mono */
+.hr-root{--mono:var(--ar-rot)}
+
+/* aviso de maqueta */
+.ar-maqueta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--ar-papel-2);color:var(--ar-gris);
+  font:11px/1.4 var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;padding-block:8px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-zonas{font:700 11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--ar-tinta);border:1.5px solid var(--ar-tinta);padding:6px 10px;cursor:pointer}
+.ar-zonas[aria-pressed="true"]{background:var(--ar-tinta);color:var(--ar-papel)}
+
+/* barra del archivo */
+.ar-barra{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ar-tinta);color:var(--ar-papel);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-barra__in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:18px;min-height:56px;position:relative}
+.ar-barra a{color:var(--ar-papel);text-decoration:none}
+.ar-sello{font:400 26px/1 var(--ar-tit);letter-spacing:.05em;border:2px solid var(--ar-papel);padding:3px 8px 1px}
+.ar-sello:hover,.ar-sello:focus-visible{background:var(--ar-papel);color:var(--ar-tinta)!important;outline:none}
+.ar-archivo{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
+.ar-menu{display:flex;gap:18px;flex:1;min-width:0;font:12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase}
+.ar-menu a{color:var(--ar-tiza)!important}
+.ar-menu a:hover,.ar-menu a:focus-visible,.ar-archivo:hover{color:var(--ar-acento)!important;outline:none}
+.ar-btn{font:12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--ar-papel);border:1px solid var(--ar-tiza);padding:7px 10px;cursor:pointer}
+.ar-btn:hover,.ar-btn:focus-visible{border-color:var(--ar-acento);color:var(--ar-acento);outline:none}
+.ar-btn--menu{display:none;margin-left:auto}
+@media (max-width:820px){
+  .ar-btn--menu{display:inline-block}
+  .ar-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--ar-tinta);border-top:1px solid #333;padding-block:6px}
+  .ar-menu.abierto{display:flex}
+  .ar-menu a{padding:12px 0;border-bottom:1px solid #2a2824}
+}
+@media (max-width:420px){.ar-archivo{display:none}}
+
+/* buscador */
+.ar-buscador{position:fixed;inset:0;z-index:60;background:rgba(20,18,14,.96);display:grid;place-items:start center;
+  padding:calc(12vh + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+.ar-buscador__in{width:min(720px,100%);display:flex;flex-direction:column;gap:14px;color:var(--ar-papel)}
+.ar-buscador label{font:12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-tiza)}
+.ar-buscador input{font:400 clamp(30px,6vw,52px)/1.1 var(--ar-tit);letter-spacing:.03em;background:transparent;color:var(--ar-papel);border:0;border-bottom:2px solid var(--ar-papel);padding:6px 0;width:100%}
+.ar-buscador input:focus{outline:none;border-color:var(--ar-acento)}
+.ar-buscador p{margin:0;font:13px var(--ar-rot);color:var(--ar-tiza)}
+.ar-btn--claro{align-self:flex-start}
+
+/* cabecera */
+.ar-head{position:relative}
+.ar-ter{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin:0 0 18px;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-ter a{color:var(--ar-gris);text-decoration:none;border-bottom:1px solid var(--ar-linea)}
+.ar-ter a:hover,.ar-ter a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ar-ter .ar-ter__sello{display:inline-flex;align-items:center;gap:8px;color:var(--ar-acento);font-weight:700;border:0}
+.ar-ter__sello i{width:11px;height:11px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
+.ar-previa{position:absolute;top:-22px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
+  padding:8px 12px;display:flex;flex-direction:column;gap:3px;opacity:.85;pointer-events:none;background:rgba(244,243,239,.6)}
+.ar-previa b{font:700 14px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
+.ar-previa span{font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:1180px){.ar-previa{position:static;align-self:flex-start;display:inline-flex;margin:0 0 18px;transform:rotate(-2deg)}}
+
+/* pista de narración */
+.ar-pista{border:2px solid var(--ar-tinta);background:var(--ar-papel);padding:14px 16px 12px;margin-top:8px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.ar-pista__lab{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris);font-variant-numeric:tabular-nums}
+.ar-pista__lab span:first-child{color:var(--ar-acento);font-weight:700}
+.ar-pista__fila{display:flex;align-items:center;gap:14px}
+.ar-play{flex:0 0 48px;height:48px;border-radius:50%;border:0;background:var(--ar-acento);cursor:pointer;display:grid;place-items:center}
+.ar-play i{width:0;height:0;border-left:15px solid var(--ar-papel);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.ar-play.sonando i{width:14px;height:16px;border:0;margin:0;background:linear-gradient(90deg,var(--ar-papel) 0 5px,transparent 5px 9px,var(--ar-papel) 9px 14px)}
+.ar-play:focus-visible{outline:3px solid var(--ar-tinta);outline-offset:3px}
+.ar-onda{flex:1;min-width:0;height:44px;display:flex;align-items:center;gap:2px;overflow:hidden}
+.ar-onda b{flex:1 1 0;min-width:1px;background:var(--ar-tiza);border-radius:1px}
+.ar-onda b.ya{background:var(--ar-tinta)}
+.ar-pista__cred{margin:0;font:12px/1.5 var(--ar-rot);color:var(--ar-gris)}
+.ar-pista__pie{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.ar-pista__pie span{font:10.5px var(--ar-rot);color:var(--ar-gris);letter-spacing:.04em}
+.ar-spotify{font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento)!important;text-decoration:none}
+
+/* proyección adentro */
+button.hr-proj__screen{width:100%;border:0;border-radius:0;font:inherit;text-align:left;cursor:pointer}
+.hr-proj__video{display:grid;place-items:center}
+.ar-bloqueo{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;padding:20px;color:var(--ar-tiza);font:12px/1.6 var(--ar-rot);letter-spacing:.06em}
+.ar-bloqueo b{font:400 clamp(26px,5vw,44px)/1 var(--ar-tit);color:var(--ar-papel);letter-spacing:.03em}
+.ar-bloqueo a{color:var(--ar-acento)}
+
+/* títulos de los bloques del cierre */
+.ar-cierre,.ar-leer,.ar-radio{margin-top:56px}
+.ar-cierre{margin-top:72px}
+.ar-tit{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ar-tinta);padding-bottom:6px;margin-bottom:6px}
+.ar-tit h2{font:400 clamp(30px,4.4vw,40px)/1 var(--ar-tit)!important;letter-spacing:.02em;margin:0;color:var(--ar-tinta)}
+.ar-tit span{font:11px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+
+/* etiquetas */
+.ar-etq{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ar-etq a{display:inline-block;font:12px var(--ar-rot);letter-spacing:.06em;color:var(--ar-tinta);text-decoration:none;border:1px solid var(--ar-tinta);padding:5px 9px}
+.ar-etq a:hover,.ar-etq a:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.ar-volver{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px;font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase}
+.ar-volver a{color:var(--ar-acento);text-decoration:none}
+.ar-volver a:hover,.ar-volver a:focus-visible{text-decoration:underline;outline:none}
+
+/* lo más leído */
+.ar-top{list-style:none;margin:0;padding:0;counter-reset:n}
+.ar-top li{counter-increment:n;display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;align-items:baseline;gap:4px 12px;padding:12px 0;border-bottom:1px dotted var(--ar-linea)}
+.ar-top li::before{content:counter(n);font:400 38px/1 var(--ar-tit);color:var(--ar-acento)}
+.ar-top a{font:500 18px/1.3 var(--ar-txt);color:var(--ar-tinta);text-decoration:none}
+.ar-top a:hover,.ar-top a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-top span{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:520px){.ar-top li{grid-template-columns:2.4rem minmax(0,1fr)}.ar-top span{grid-column:2}}
+
+/* registro de últimos artículos */
+.ar-reg{display:flex;flex-direction:column}
+.ar-fila{display:grid;grid-template-columns:2.6rem 5.6rem 9.5rem minmax(0,1fr) 3.8rem;gap:10px;align-items:baseline;padding:11px 0;border-bottom:1px dotted var(--ar-linea);font-variant-numeric:tabular-nums}
+.ar-fila span{font:11.5px var(--ar-rot);letter-spacing:.06em;color:var(--ar-gris);text-transform:uppercase}
+.ar-fila .ar-c-ter{color:var(--ar-plano)}
+.ar-fila a{font:500 16.5px/1.35 var(--ar-txt);color:var(--ar-tinta);text-decoration:none;min-width:0}
+.ar-fila a:hover,.ar-fila a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-fila--cab{padding:6px 0}
+.ar-fila--cab span{font-size:10px;letter-spacing:.14em}
+@media (max-width:640px){.ar-fila{grid-template-columns:2.4rem minmax(0,1fr) 3.4rem}.ar-c-fecha,.ar-c-ter{display:none}}
+
+/* radiogramas */
+.ar-rg{border:1.5px solid var(--ar-tinta);background:#FBFAF6;margin-top:16px}
+.ar-rg header{display:flex;flex-wrap:wrap;gap:4px 18px;background:var(--ar-tinta);color:var(--ar-papel);padding:7px 12px;font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+.ar-rg header span:first-child{color:var(--ar-acento);font-weight:700}
+.ar-rg p{margin:0;padding:12px 14px 14px;font:300 16.5px/1.65 var(--ar-txt);text-align:left}
+.ar-rg--estacion{margin:0 14px 14px 34px;border-color:var(--ar-acento)}
+.ar-rg--estacion header{background:var(--ar-acento)}
+.ar-rg--estacion header span:first-child{color:var(--ar-papel)}
+@media (max-width:520px){.ar-rg--estacion{margin:0 10px 10px 18px}}
+
+.ar-tx{margin-top:32px;border:2px solid var(--ar-tinta);padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--ar-papel)}
+.ar-tx h3{font:400 28px/1 var(--ar-tit)!important;letter-spacing:.03em;margin:0;color:var(--ar-tinta)}
+.ar-tx__campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.ar-tx__campos{grid-template-columns:minmax(0,1fr)}}
+.ar-tx label{display:flex;flex-direction:column;gap:6px;font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-tx input,.ar-tx textarea{font:16px/1.5 var(--ar-txt);color:var(--ar-tinta);background:#FBFAF6;border:1px solid var(--ar-tinta);border-radius:0;padding:9px 10px;width:100%;resize:vertical}
+.ar-tx input:focus,.ar-tx textarea:focus{outline:2px solid var(--ar-acento);outline-offset:0}
+.ar-tx__pie{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ar-transmitir{font:700 13px var(--ar-rot);letter-spacing:.2em;text-transform:uppercase;background:var(--ar-acento);color:var(--ar-papel);border:0;padding:12px 22px;cursor:pointer}
+.ar-transmitir:hover,.ar-transmitir:focus-visible{background:var(--ar-tinta);outline:none}
+#tx-estado{font:12px var(--ar-rot);color:var(--ar-gris)}
+
+/* pie */
+.ar-pie{background:var(--ar-tinta);color:var(--ar-tiza);margin-top:80px;padding-block:22px calc(22px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ar-pie__in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase}
+.ar-pie__marca{font:400 26px/1 var(--ar-tit);color:var(--ar-papel);letter-spacing:.05em}
+.ar-pie nav{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.ar-pie a{color:var(--ar-papel);text-decoration:none}
+.ar-pie a:hover,.ar-pie a:focus-visible{color:var(--ar-acento);outline:none}
+.hr-root{padding-bottom:0}
+
+/* ver zonas: plantilla en azul, cuerpo en rojo, patrones en ámbar */
+body.ver-zonas [data-z]{outline:2px dashed var(--z);outline-offset:-2px;position:relative}
+body.ver-zonas [data-z]::after{content:attr(data-z-lab);position:absolute;top:0;left:0;z-index:15;background:var(--z);color:#fff;
+  font:700 10px/1.3 var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;pointer-events:none;max-width:90%}
+[data-z="plantilla"]{--z:var(--ar-plano)}
+[data-z="cuerpo"]{--z:var(--ar-acento)}
+[data-z="patron"]{--z:var(--ar-patron)}
+body.ver-zonas .ar-barra[data-z]{position:sticky}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* lo más leído y últimos artículos, lado a lado */
+.ar-dos{max-width:1100px;margin:72px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 64px;align-items:start}
+.ar-eje{align-self:stretch;background:linear-gradient(var(--ar-tinta),var(--ar-tinta)) top/1px 2px no-repeat,repeating-linear-gradient(var(--ar-linea) 0 4px,transparent 4px 9px)}
+.ar-col{min-width:0}
+.ar-lista{list-style:none;margin:0;padding:0}
+.ar-lista li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:0 14px;align-items:center;min-height:88px;padding:10px 0;border-bottom:1px dotted var(--ar-linea)}
+.ar-marca{font:400 44px/1 var(--ar-tit);color:var(--ar-acento);text-align:center}
+.ar-marca--fecha{display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px solid var(--ar-tinta);padding:5px 0 6px;font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-marca--fecha b{font:400 26px/1 var(--ar-tit);color:var(--ar-tinta);letter-spacing:.02em}
+.ar-lista a{display:block;font:500 17.5px/1.3 var(--ar-txt);color:var(--ar-tinta);text-decoration:none;text-wrap:balance}
+.ar-lista a:hover,.ar-lista a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-meta{display:block;margin-top:5px;font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:860px){.ar-dos{grid-template-columns:minmax(0,1fr);row-gap:56px}.ar-eje{display:none}}
+
+/* respuesta de la estación: caja punteada */
+.ar-rg--estacion{border:2px dotted var(--ar-acento);background:transparent}
+
+/* pie: el actual del sitio, en la papelería nueva */
+.ar-pie__in{justify-content:space-between}
+.ar-pie__marca{font:700 13px var(--ar-rot)!important;letter-spacing:.14em;color:var(--ar-papel)}
+.ar-pie__cred{text-transform:none;letter-spacing:.04em;font-size:11.5px;color:var(--ar-tiza);flex:1 1 320px;min-width:0}
+.ar-pie nav{margin-left:0;gap:10px;align-items:center}
+
+/* visor de fotos: la X va en la esquina superior derecha de la foto, un poco adentro */
+.hr-lb-marco{position:relative;display:inline-block;max-width:100%;line-height:0}
+.hr-lb-marco .hr-lightbox__close{position:absolute;top:10px;right:10px;bottom:auto;left:auto;z-index:2;
+  background:rgba(20,18,14,.72);border:1px solid rgba(244,243,239,.6);color:var(--ar-papel);width:44px;height:44px;font-size:20px;line-height:1}
+.hr-lb-marco .hr-lightbox__close:hover,.hr-lb-marco .hr-lightbox__close:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);color:var(--ar-papel)}
+
+/* pie alineado a la izquierda: marca, crédito y legales en una sola columna */
+.ar-pie__in{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
+.ar-pie__cred{flex:none}
+.ar-pie nav{margin-left:0}
+
+/* PORTADA DE TEXTOS · Archivo MAP
+   Una sola columna ancha de 1100 px; cada bloque es una ficha del archivo. Prefijo .ap- */
+.ap{font-family:var(--ar-txt);font-weight:300;font-size:17px;line-height:1.65;color:var(--ar-tinta);padding-bottom:8px}
+.ap-wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ap-ancho{max-width:1100px;margin-left:auto;margin-right:auto}
+.ap-kicker{margin:0 0 10px;font:700 12px var(--ar-rot);letter-spacing:.18em;text-transform:uppercase;color:var(--ar-acento)}
+
+/* cabecera */
+.ap-cab{padding-block:64px 8px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:8px 56px;align-items:end;border-bottom:2px solid var(--ar-tinta);padding-bottom:28px}
+.ap-cab .ap-kicker{grid-column:1/-1}
+.ap-cab h1{font:400 clamp(72px,14vw,168px)/.82 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ap-intro{margin:0;font-size:18px;line-height:1.6;max-width:52ch}
+.ap-intro b{font-weight:600}
+@media (max-width:760px){.ap-cab{grid-template-columns:minmax(0,1fr);padding-top:44px}}
+
+/* botones */
+.ap-acciones{display:flex;flex-wrap:wrap;gap:10px}
+.ap-boton{display:inline-block;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  background:var(--ar-tinta);color:var(--ar-papel);border:1.5px solid var(--ar-tinta);padding:11px 16px}
+.ap-boton:hover,.ap-boton:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ap-boton--linea{background:transparent;color:var(--ar-tinta)}
+.ap-boton--linea:hover,.ap-boton--linea:focus-visible{color:var(--ar-papel)}
+
+/* última transmisión */
+.ap-ultima{margin-top:56px}
+.ap-ultima .ar-tit{margin-bottom:18px}
+.ap-ultima{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 40px;align-items:center}
+.ap-ultima .ar-tit{grid-column:1/-1}
+.ap-ultima__foto{display:block;overflow:hidden;aspect-ratio:3/2;max-width:100%}
+.ap-ultima__foto img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.ap-ultima__foto:hover img,.ap-ultima__foto:focus-visible img{transform:scale(1.03)}
+.ap-ultima__foto:focus-visible{outline:3px solid var(--ar-acento);outline-offset:3px}
+.ap-ultima__txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ap-ultima__txt .ap-kicker{margin:0}
+.ap-ultima h3{font:400 clamp(44px,5.6vw,72px)/.92 var(--ar-tit);letter-spacing:.01em;margin:0;text-wrap:balance}
+.ap-ultima h3 a{color:var(--ar-tinta);text-decoration:none}
+.ap-ultima h3 a:hover,.ap-ultima h3 a:focus-visible{color:var(--ar-acento);outline:none}
+.ap-bajada{margin:0;font-style:italic;font-size:20px;line-height:1.4}
+.ap-meta{margin:0;font:11.5px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+@media (max-width:860px){.ap-ultima{grid-template-columns:minmax(0,1fr);row-gap:20px}}
+
+/* registro + lo más leído */
+.ap-dos{margin-top:80px}
+.ap-filtros{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 6px}
+.ap-filtros button{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ar-tinta);border:1px solid var(--ar-tinta);padding:6px 9px;cursor:pointer}
+.ap-filtros button[aria-pressed="true"]{background:var(--ar-tinta);color:var(--ar-papel)}
+.ap-filtros button:focus-visible{outline:2px solid var(--ar-acento);outline-offset:2px}
+.ap-mas{margin-top:18px;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;background:transparent;color:var(--ar-acento);border:0;padding:6px 0;cursor:pointer}
+.ap-mas:hover,.ap-mas:focus-visible{text-decoration:underline;outline:none}
+.ap-vacio,.ap-nota{margin:12px 0 0;font:12px var(--ar-rot);color:var(--ar-gris)}
+
+/* proyecto literario: la portada del libro manda */
+.ap-proyecto{margin-top:88px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:0 48px;align-items:center;border-top:2px solid var(--ar-tinta);border-bottom:2px solid var(--ar-tinta);padding-block:40px}
+.ap-libro{display:block;position:relative;aspect-ratio:2/3;max-width:100%;box-shadow:10px 10px 0 var(--ar-papel-2),10px 10px 0 1.5px var(--ar-tinta);transition:transform .3s ease}
+.ap-libro:hover,.ap-libro:focus-visible{transform:translate(-3px,-3px);outline:none}
+.ap-libro img{display:block;width:100%;height:100%;object-fit:cover}
+.ap-libro__alt{display:none}
+.ap-libro.sin-foto img{display:none}
+.ap-libro.sin-foto .ap-libro__alt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:22px;background:var(--ar-tinta);color:var(--ar-papel)}
+.ap-libro__alt b{font:400 46px/.9 var(--ar-tit);letter-spacing:.02em}
+.ap-libro__alt i{font:italic 300 15px var(--ar-txt);color:var(--ar-tiza)}
+.ap-libro__alt small{font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento)}
+.ap-proyecto__cuerpo{display:flex;flex-direction:column;gap:14px;align-items:flex-start;min-width:0}
+.ap-proyecto__ficha{display:flex;flex-wrap:wrap;gap:6px 18px;font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ap-proyecto__ficha span:first-child{color:var(--ar-acento);font-weight:700}
+.ap-proyecto h2{font:400 clamp(48px,6.4vw,84px)/.9 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ap-proyecto__sub{margin:-6px 0 2px;font-style:italic;font-size:19px}
+.ap-proyecto p{margin:0;max-width:58ch;text-align:justify;hyphens:auto}
+@media (max-width:720px){
+  .ap-proyecto{grid-template-columns:minmax(0,1fr);row-gap:28px}
+  .ap-libro{width:min(240px,70%)}
+  .ap-proyecto p{text-align:left}
+}
+.ap-filtros small{font-size:9.5px;opacity:.7;margin-left:2px}
+.ap-filtros__mas{font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--ar-acento);border:1px dashed var(--ar-acento);padding:6px 9px;cursor:pointer}
+.ap-filtros__otros{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+
+/* al aire */
+.ap-aire{margin-top:80px}
+.ap-aire__fila{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px dotted var(--ar-linea);flex-wrap:wrap}
+.ap-aire__play{flex:0 0 56px;height:56px;text-decoration:none}
+.ap-aire__txt{flex:1;min-width:200px;display:flex;flex-direction:column}
+.ap-aire__nombre{font:400 clamp(30px,4vw,44px)/1 var(--ar-tit);letter-spacing:.02em;color:var(--ar-tinta);text-decoration:none}
+.ap-aire__nombre:hover,.ap-aire__nombre:focus-visible{color:var(--ar-acento);outline:none}
+.ap-aire__todos{font:700 12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento);text-decoration:none}
+
+/* el pañol y el astillero */
+.ap-dos-fichas{margin-top:80px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media (max-width:760px){.ap-dos-fichas{grid-template-columns:minmax(0,1fr)}}
+.ap-ficha{border:1.5px solid var(--ar-tinta);padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;background:#FBFAF6}
+.ap-ficha .ap-kicker{margin:0}
+.ap-ficha h2{font:400 clamp(32px,3.6vw,44px)/1 var(--ar-tit);letter-spacing:.02em;margin:0}
+.ap-ficha p{margin:0}
+.ap-ficha ul{list-style:none;margin:0;padding:0;width:100%}
+.ap-ficha li{font:12.5px var(--ar-rot);letter-spacing:.06em;padding:8px 0;border-bottom:1px dotted var(--ar-linea)}
+.ap-ficha .ap-boton{margin-top:auto}
+.ar-menu a[aria-current="page"]{color:var(--ar-papel)!important;border-bottom:2px solid var(--ar-acento)}
+@media (prefers-reduced-motion:reduce){.ap-ultima__foto img{transition:none}}
+
+/* listas a lo ancho */
+.ap-lista-ancha{margin-top:80px}
+.ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr) auto;gap:0 22px;min-height:76px}
+.ap-lista-ancha .ar-lista li>div{display:contents}
+.ap-lista-ancha .ar-lista a{font-size:19px;max-width:62ch}
+.ap-lista-ancha .ar-meta{margin:0;text-align:right;white-space:nowrap}
+@media (max-width:700px){
+  .ap-lista-ancha .ar-lista li{grid-template-columns:3.4rem minmax(0,1fr)}
+  .ap-lista-ancha .ar-lista li>div{display:block}
+  .ap-lista-ancha .ar-meta{text-align:left;margin-top:5px;white-space:normal}
+}
+.ap-aire__txt{gap:6px}
+.ap-aire__nombre{font-size:clamp(28px,3.4vw,40px)}
+
+/* CONTACTO · tres ventanillas que desembocan en un solo formulario; abajo, el depósito y el astillero. Prefijo .ct- */
+.ct *,.ct *::before,.ct *::after{box-sizing:border-box}
+.ct-cab{padding-block:64px 36px;border-bottom:2px solid var(--ar-tinta)}
+.ct-cab h1{font:400 clamp(48px,13vw,156px)/.84 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ct-cab h1 span{color:var(--ar-acento)}
+.ct-cab__sub{margin:18px 0 0;font:12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-gris)}
+
+/* ventanillas */
+.ct-ventanillas{margin-top:56px}
+.ct-v-fila{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+@media (max-width:820px){.ct-v-fila{grid-template-columns:minmax(0,1fr)}}
+.ct-v{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;font:inherit;color:var(--ar-tinta);background:#FBFAF6;border:1.5px solid var(--ar-tinta);padding:18px 18px 20px;cursor:pointer;transition:background .15s,color .15s}
+.ct-v__n{font:400 34px/1 var(--ar-tit);color:var(--ar-acento)}
+.ct-v b{font:400 30px/1 var(--ar-tit);letter-spacing:.02em}
+.ct-v__txt{font:300 15.5px/1.5 var(--ar-txt);color:var(--ar-gris)}
+.ct-v:hover{background:var(--ar-papel-2)}
+.ct-v[aria-pressed="true"]{background:var(--ar-tinta);color:var(--ar-papel)}
+.ct-v[aria-pressed="true"] .ct-v__txt{color:var(--ar-tiza)}
+.ct-v:focus-visible{outline:3px solid var(--ar-acento);outline-offset:3px}
+
+/* formulario */
+.ct-form-sec{margin-top:28px;scroll-margin-top:72px}
+.ct-form{margin-top:0}
+.ct-form__t{font:400 34px/1 var(--ar-tit)!important;letter-spacing:.02em;margin:0;color:var(--ar-tinta)}
+.ct-asunto{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ct-asunto b{color:var(--ar-acento);font-weight:700;letter-spacing:.1em}
+
+/* secciones del pañol y el astillero */
+.ct-sec{margin-top:96px;border-top:2px solid var(--ar-tinta);padding-top:28px;scroll-margin-top:72px}
+.ct-sec__cab{display:flex;flex-direction:column;gap:10px;max-width:62ch}
+.ct-sec__cab .ap-kicker{margin:0}
+.ct-sec__cab h2{font:400 clamp(56px,8vw,104px)/.86 var(--ar-tit);letter-spacing:.01em;margin:0}
+.ct-sec__intro{margin:4px 0 0;font-size:18px;line-height:1.6}
+
+.ct-piezas{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.ct-piezas{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.ct-piezas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ct-piezas li{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ct-mock{aspect-ratio:4/5;max-width:100%;border:1.5px dashed var(--ar-tiza);display:grid;place-items:center;text-align:center;padding:10px;font:10.5px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-gris);
+  background:repeating-linear-gradient(135deg,transparent 0 12px,rgba(20,18,14,.035) 12px 24px)}
+.ct-piezas b{font:400 24px/1 var(--ar-tit);letter-spacing:.02em;margin-top:6px}
+.ct-piezas span{font:300 14.5px/1.45 var(--ar-txt);color:var(--ar-gris)}
+.ct-piezas i{font:normal 700 10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-acento)}
+.ct-piezas i.ct-pronto{color:var(--ar-plano)}
+
+.ct-lista{margin-top:28px;display:flex;flex-direction:column;gap:8px;max-width:520px}
+.ct-lista label{font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ct-lista__fila{display:flex;gap:8px;flex-wrap:wrap}
+.ct-lista input{flex:1 1 220px;min-width:0;font:16px var(--ar-txt);padding:10px;border:1px solid var(--ar-tinta);background:#FBFAF6;border-radius:0}
+.ct-lista input:focus{outline:2px solid var(--ar-acento);outline-offset:0}
+.ct-lista button{border:1.5px solid var(--ar-tinta);cursor:pointer}
+#ct-lista-estado,#ct-estado{font:12px var(--ar-rot);color:var(--ar-gris)}
+
+.ct-servicios{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--ar-linea)}
+.ct-servicios li{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:4px 24px;align-items:baseline;padding:14px 0;border-bottom:1px dotted var(--ar-linea)}
+.ct-servicios b{font:400 28px/1 var(--ar-tit);letter-spacing:.02em}
+.ct-servicios span{font:12px var(--ar-rot);letter-spacing:.08em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:560px){.ct-servicios li{grid-template-columns:minmax(0,1fr)}}
+
+.ct-patrocinio{margin-top:28px;border:2px solid var(--ar-tinta);padding:24px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;position:relative;background:#FBFAF6}
+.ct-patrocinio__sello{font:700 12px var(--ar-rot);letter-spacing:.18em;text-transform:uppercase;color:var(--ar-acento);border:3px double var(--ar-acento);padding:6px 10px;transform:rotate(-2deg)}
+.ct-patrocinio p{margin:0;font-size:18px;line-height:1.6;max-width:60ch}
+.ct-patrocinio p b{font-weight:600}
+button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+
+/* apoyo directo */
+.ct-apoyo{margin-top:96px;background:var(--ar-tinta);color:var(--ar-papel);padding:32px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px 40px;flex-wrap:wrap}
+.ct-apoyo > div:first-child{max-width:56ch;display:flex;flex-direction:column;gap:10px}
+.ct-apoyo .ap-kicker{margin:0}
+.ct-apoyo h2{font:400 clamp(40px,5vw,60px)/.9 var(--ar-tit);letter-spacing:.02em;margin:0}
+.ct-apoyo p{margin:0;color:var(--ar-tiza)}
+.ct-apoyo .ap-boton{background:var(--ar-acento);border-color:var(--ar-acento)}
+.ct-apoyo .ap-boton--linea{background:transparent;color:var(--ar-papel);border-color:var(--ar-tiza)}
+.ct-apoyo .ap-boton:hover,.ct-apoyo .ap-boton:focus-visible{background:var(--ar-papel);color:var(--ar-tinta);border-color:var(--ar-papel)}
+</style>
+
+<div class="ar-maqueta"><span>Maqueta · Contacto · el formulario no envía nada; las prendas esperan sus mockups</span></div>
+
+<header class="ar-barra">
+  <div class="ar-barra__in">
+    <a class="ar-sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/" title="Volver a la carta">MAP</a>
+    <nav class="ar-menu" id="ar-menu" aria-label="Secciones">
+      <a href="https://www.mapradiocr.com/antologia">Antología</a><a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://www.mapradiocr.com/sobre-el-director">Sobre el autor</a><a href="#" aria-current="page">Contacto</a>
+    </nav>
+    <button type="button" class="ar-btn ar-btn--menu" id="ar-menu-btn" aria-expanded="false" aria-controls="ar-menu">Menú</button>
+    <button type="button" class="ar-btn" id="ar-buscar-btn">Buscar ⌕</button>
+  </div>
+</header>
+
+<div class="ar-buscador" id="ar-buscador" hidden>
+  <div class="ar-buscador__in">
+    <label for="ar-q">Buscar en el archivo</label>
+    <input id="ar-q" type="search" placeholder="Bolaño, patinetas, cantina…" autocomplete="off">
+    <p>Busca en títulos, textos y etiquetas de todas las entradas.</p>
+    <button type="button" class="ar-btn ar-btn--claro" id="ar-buscar-cerrar">Cerrar ✕</button>
+  </div>
+</div>
+
+<main class="ap ct">
+
+  <!-- 1 · cabecera -->
+  <div class="ap-wrap"><header class="ct-cab ap-ancho">
+    <p class="ap-kicker">Contacto · MAP Radio CR</p>
+    <h1>Escribinos.<br><span>Escuchamos.</span></h1>
+    <p class="ct-cab__sub">Colaboraciones · prensa · convocatorias · lo que sea</p>
+  </header></div>
+
+  <!-- 2 · tres ventanillas -->
+  <div class="ap-wrap"><section class="ct-ventanillas ap-ancho" aria-labelledby="ct-v-t">
+    <div class="ar-tit"><h2 id="ct-v-t">¿Por cuál ventanilla?</h2><span>elija una y el mensaje sale con su asunto</span></div>
+    <div class="ct-v-fila" role="group" aria-label="Asunto del mensaje">
+      <button type="button" class="ct-v" data-asunto="Frecuencia abierta" aria-pressed="true">
+        <span class="ct-v__n">01</span>
+        <b>Frecuencia abierta</b>
+        <span class="ct-v__txt">Una historia de cantina, una banda que hay que grabar, un patinador que nadie ha documentado.</span>
+      </button>
+      <button type="button" class="ct-v" data-asunto="El Pañol · merch" aria-pressed="false">
+        <span class="ct-v__n">02</span>
+        <b>El Pañol</b>
+        <span class="ct-v__txt">Preguntas por la merch: tallas, colores, cuándo sale y cómo apartar.</span>
+      </button>
+      <button type="button" class="ct-v" data-asunto="El Astillero · patrocinio y producción" aria-pressed="false">
+        <span class="ct-v__n">03</span>
+        <b>El Astillero</b>
+        <span class="ct-v__txt">Patrocinio, producción audiovisual, podcast y series con el sello MAP.</span>
+      </button>
+    </div>
+  </section></div>
+
+  <!-- 3 · formulario -->
+  <div class="ap-wrap"><section class="ct-form-sec ap-ancho" id="ct-form" aria-labelledby="ct-f-t">
+    <form class="ar-tx ct-form" id="ct-tx" novalidate>
+      <h2 id="ct-f-t" class="ct-form__t">Transmitir mensaje</h2>
+      <div class="ct-asunto" aria-live="polite"><span>Asunto</span><b id="ct-asunto">Frecuencia abierta</b></div>
+      <div class="ar-tx__campos">
+        <label for="ct-nombre">Nombre<input id="ct-nombre" name="nombre" type="text" autocomplete="name" required></label>
+        <label for="ct-correo">Correo electrónico<input id="ct-correo" name="correo" type="email" autocomplete="email" required></label>
+      </div>
+      <label for="ct-msg">Comentario o mensaje<textarea id="ct-msg" name="mensaje" rows="6" required></textarea></label>
+      <div class="ar-tx__pie"><button type="submit" class="ar-transmitir">Transmitir</button><span id="ct-estado" role="status"></span></div>
+    </form>
+  </section></div>
+
+  <!-- 4 · el pañol -->
+  <div class="ap-wrap"><section class="ct-sec ap-ancho" id="panol" aria-labelledby="ct-panol-t">
+    <div class="ct-sec__cab">
+      <p class="ap-kicker">Depósito de a bordo · MAP × Nasional 20 años</p>
+      <h2 id="ct-panol-t">El Pañol</h2>
+      <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor de este país. Apúntese y le avisamos primero cuando salgan.</p>
+    </div>
+    <ol class="ct-piezas">
+      <li><div class="ct-mock">Mockup en el taller</div><b>Coach jacket</b><span>La pieza ancla. Cien hechas para Nasional, cien vendidas.</span><i>En el taller</i></li>
+      <li><div class="ct-mock">Mockup en el taller</div><b>Crewneck</b><span>Negro y gris ratón.</span><i>En el taller</i></li>
+      <li><div class="ct-mock">Mockup en el taller</div><b>Camiseta de lino</b><span>Pocas. Fresca para el invierno tico, que también es caliente.</span><i>En el taller</i></li>
+      <li><div class="ct-mock">Mockup en el taller</div><b>Gorra ripstop</b><span>Tela liviana, aire retro.</span><i>En el taller</i></li>
+      <li><div class="ct-mock">Foto en el taller</div><b>Medias</b><span>Calidad mundial, proveedor confirmado.</span><i class="ct-pronto">Próxima tanda</i></li>
+    </ol>
+    <form class="ct-lista" id="ct-lista" novalidate>
+      <label for="ct-lista-correo">Correo para la lista</label>
+      <div class="ct-lista__fila"><input id="ct-lista-correo" type="email" autocomplete="email" placeholder="su@correo.com" required><button type="submit" class="ap-boton">Apuntarme</button></div>
+      <span id="ct-lista-estado" role="status"></span>
+    </form>
+  </section></div>
+
+  <!-- 5 · el astillero -->
+  <div class="ap-wrap"><section class="ct-sec ap-ancho" id="astillero" aria-labelledby="ct-ast-t">
+    <div class="ct-sec__cab">
+      <p class="ap-kicker">Donde se construye para otros</p>
+      <h2 id="ct-ast-t">El Astillero</h2>
+      <p class="ct-sec__intro">Producción audiovisual, podcast y series con el sello MAP. ¿Le gustaría ser parte de este archivo, colaborando como patrocinador? Escríbanos.</p>
+    </div>
+    <ul class="ct-servicios">
+      <li><b>Documentales</b><span>RUIDO · selección oficial FICCR 2018</span></li>
+      <li><b>Series</b><span>Serie MAP · música, arte y patinetas</span></li>
+      <li><b>Podcast</b><span>MAP Radio Pachuko · más de 200 episodios</span></li>
+      <li><b>Bandas en vivo</b><span>Registro y entrevista</span></li>
+      <li><b>Gráfica</b><span>Afiches, portadas, identidad</span></li>
+    </ul>
+    <div class="ct-patrocinio">
+      <span class="ct-patrocinio__sello">Busca patrocinio</span>
+      <p><b>Serie MAP · segunda temporada.</b> Las marcas que la acompañen quedan en los créditos de cada episodio y en la carta.</p>
+      <div class="ap-acciones">
+        <button type="button" class="ap-boton" data-ir-asunto="El Astillero · patrocinio y producción">Proponer un proyecto</button>
+        <a class="ap-boton ap-boton--linea" href="https://www.mapradiocr.com/serie-map/">Ver la Serie MAP →</a>
+      </div>
+    </div>
+  </section></div>
+
+  <!-- 6 · apoyo directo -->
+  <div class="ap-wrap"><section class="ct-apoyo ap-ancho" aria-labelledby="ct-apoyo-t">
+    <div>
+      <p class="ap-kicker">Apoyo directo</p>
+      <h2 id="ct-apoyo-t">Mantener la señal al aire</h2>
+      <p>MAP se sostiene sin pauta. Un café en Ko-fi paga horas de edición, discos duros y cervezas de entrevista.</p>
+    </div>
+    <div class="ap-acciones">
+      <a class="ap-boton" href="https://ko-fi.com/mapradiocr">Invitar un café en Ko-fi</a>
+      <a class="ap-boton ap-boton--linea" href="#">PayPal</a>
+    </div>
+  </section></div>
+</main>
+
+<footer class="ar-pie">
+  <div class="ar-pie__in">
+    <a class="ar-pie__marca" href="https://www.mapradiocr.com">MAP — 2016 ⚡</a>
+    <span class="ar-pie__cred">Ingeniería web — Dr. Arkady Volkov Lazenko · Instituto Cuántico Costarricense para la Investigación Interdimensional</span>
+    <nav aria-label="Legal"><a href="https://www.mapradiocr.com/politica-de-privacidad/">Privacidad</a><span aria-hidden="true">·</span><a href="https://www.mapradiocr.com/terminos-y-condiciones/">Términos</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var mb=$('#ar-menu-btn'), menu=$('#ar-menu');
+  mb.addEventListener('click',function(){var on=menu.classList.toggle('abierto');mb.setAttribute('aria-expanded',on)});
+  var bus=$('#ar-buscador');
+  $('#ar-buscar-btn').addEventListener('click',function(){bus.hidden=false;$('#ar-q').focus()});
+  $('#ar-buscar-cerrar').addEventListener('click',function(){bus.hidden=true});
+  bus.addEventListener('click',function(e){if(e.target===bus)bus.hidden=true});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')bus.hidden=true});
+
+  /* ventanillas: el asunto viaja al formulario */
+  var vs=$$('.ct-v'), asunto=$('#ct-asunto');
+  function elegir(a,mover){
+    vs.forEach(function(v){v.setAttribute('aria-pressed',v.dataset.asunto===a)});
+    asunto.textContent=a;
+    if(mover){$('#ct-form').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});setTimeout(function(){$('#ct-nombre').focus({preventScroll:true})},400)}
+  }
+  vs.forEach(function(v){v.addEventListener('click',function(){elegir(v.dataset.asunto,true)})});
+  $$('[data-ir-asunto]').forEach(function(b){b.addEventListener('click',function(){elegir(b.dataset.irAsunto,true)})});
+  if(location.hash==='#panol-pregunta')elegir('El Pañol · merch',false);
+
+  $('#ct-tx').addEventListener('submit',function(e){
+    e.preventDefault(); var f=e.target, est=$('#ct-estado');
+    if(!f.nombre.value.trim()||!f.correo.value.trim()||!f.mensaje.value.trim()){est.textContent='Faltan su nombre, su correo o el mensaje.';return}
+    est.textContent='Mensaje en cola: '+asunto.textContent+'. En la maqueta no se envía nada.'; f.reset();
+  });
+  $('#ct-lista').addEventListener('submit',function(e){
+    e.preventDefault(); var i=$('#ct-lista-correo'), est=$('#ct-lista-estado');
+    if(!i.value.trim()||i.validity.typeMismatch){est.textContent='Revise el correo.';return}
+    est.textContent='Apuntado. En la maqueta no se guarda nada.'; i.value='';
+  });
+})();
+</script>
+
+</body>
+</html>
