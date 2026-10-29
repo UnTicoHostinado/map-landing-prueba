@@ -374,11 +374,12 @@ const T=[
  {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:1162,tipo:"nubes",sub:"Arquitectura"},
  {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:1188,tipo:"nubes",sub:"Arte"}
 ];
-const COLLAGE=[
- ["banda-vivo","en-vivo"],["clip-aire","traccion-humana","v"],["tapis","la-barra"],["ruido","sala-oscura","bn"],["deck","taller"],
- ["clip-microfono","en-vivo","v"],["esteban-cartago","traccion-humana"],["mascaradas","letra"],["clip-silla","zona-restringida","v"],
- ["punk-bnw","en-vivo"],["calavera","taller"],["clip-fosforo","la-barra","v"],["revista","traccion-humana"],["bote","sala-oscura"],
- ["clip-cartones","obra-gris","v"],["retrato","letra"],["luchadores","taller"],["podcast-mural","en-vivo"],["gradas","traccion-humana"],["manos","la-barra"]
+const COLLAGE=[ // foto y clip alternados: 9 y 9
+ ["banda-vivo","en-vivo"],["clip-aire","traccion-humana","v"],["tapis","la-barra"],["clip-gente","la-barra","v"],
+ ["ruido","sala-oscura","bn"],["clip-microfono","en-vivo","v"],["deck","taller"],["clip-silla","zona-restringida","v"],
+ ["esteban-cartago","traccion-humana"],["clip-fosforo","la-barra","v"],["mascaradas","letra"],["clip-cantante","en-vivo","v"],
+ ["calavera","taller"],["clip-calle","traccion-humana","v"],["revista","traccion-humana"],["clip-cartones","obra-gris","v"],
+ ["punk-bnw","en-vivo"],["clip-banda","en-vivo","v"]
 ];
 /* Voz del Dr. Arkadi */
 const AV={
@@ -660,8 +661,10 @@ function collage(){
   const lay=$("#collage"), saltar=$("#saltar");
   const largo=!S.visto&&!reduce;
   const piezas=largo?COLLAGE:COLLAGE.slice(0,6);
-  const paso=largo?150:110;
-  if(A.ctx){sonar("larga",.8); nivelEstatica(.12,.2); [300,1100,1900].forEach(ms=>setTimeout(()=>sonar("perillas",.7),ms));}
+  // ritmo de montaje: arranca pausado y acelera (primera visita ~5,5 s; las siguientes ~1 s)
+  const tiempos=[]; let acum=0;
+  piezas.forEach((_,i)=>{tiempos.push(acum); const k=piezas.length>1?i/(piezas.length-1):0; acum+=largo?Math.round(440-270*k):130;});
+  if(A.ctx){sonar("larga",.8); nivelEstatica(.12,.2); (largo?[250,1300,2400,3400,4300]:[200]).forEach(ms=>setTimeout(()=>sonar("perillas",.7),ms));}
   if(reduce){revelar([]);return}
   saltar.hidden=false;
   const els=[]; let fuera=false;
@@ -670,7 +673,7 @@ function collage(){
   piezas.forEach(([n,ter,tipo],i)=>setTimeout(()=>{
     if(fuera) return;
     const d=document.createElement("div"); d.className="pieza-c"+(tipo==="bn"?" bn":"");
-    const w=Math.round(clamp(S.vw*(.32+Math.random()*.16),130,340));
+    const w=Math.round(clamp(S.vw*((tipo==="v"?.38:.30)+Math.random()*.16),130,tipo==="v"?400:330));
     d.style.width=w+"px";
     if(tipo==="v"){d.innerHTML=`<video src="assets/collage/${n}.mp4" muted playsinline autoplay loop preload="auto"></video>`}
     else d.innerHTML=`<img src="assets/collage/${n}.jpg" alt="">`;
@@ -679,8 +682,8 @@ function collage(){
     d.dataset.ter=ter; d.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(1.25)`; d.style.opacity="0";
     lay.appendChild(d); els.push(d);
     requestAnimationFrame(()=>{d.style.transition="transform .22s cubic-bezier(.2,1.4,.4,1),opacity .12s";d.style.opacity="1";d.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(1)`;d._x=x;d._y=y;d._w=w;d._r=r});
-  },i*paso));
-  setTimeout(terminar,piezas.length*paso+(largo?650:300));
+  },tiempos[i]));
+  setTimeout(terminar,acum+(largo?800:300));
 }
 function revelar(els){
   S.fase="reveal"; const tr=$("#trazos");
@@ -775,7 +778,7 @@ window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
 // precarga liviana del collage: la portada espera el toque
-COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}});
+COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
 })();
 </script>
 </body></html>
