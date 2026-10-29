@@ -361,9 +361,10 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 .ct-sec__cab h2{font:400 clamp(56px,8vw,104px)/.86 var(--ar-tit);letter-spacing:.01em;margin:0}
 .ct-sec__intro{margin:4px 0 0;font-size:18px;line-height:1.6}
 
-.ct-piezas{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ct-piezas{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.ct-piezas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-@media (max-width:700px){.ct-piezas{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.ct-piezas{grid-template-columns:minmax(0,1fr)}}
 .ct-piezas li{display:flex;flex-direction:column;gap:6px;min-width:0}
 .ct-mock{aspect-ratio:4/5;max-width:100%;border:1.5px dashed var(--ar-tiza);display:grid;place-items:center;text-align:center;padding:10px;font:10.5px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-gris);
   background:repeating-linear-gradient(135deg,transparent 0 12px,rgba(20,18,14,.035) 12px 24px)}
@@ -407,7 +408,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 .ct-foto img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
 .ct-foto--doble img+img{position:absolute;inset:0;opacity:0}
 .ct-foto--doble:hover img+img,.ct-foto--doble:focus-within img+img{opacity:1}
-.ct-foto--doble::after{content:"Pase el cursor: espalda";position:absolute;left:8px;bottom:8px;font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:rgba(20,18,14,.75);color:var(--ar-papel);padding:4px 7px}
+.ct-foto--doble::after{content:"Pase el cursor: " attr(data-otra);position:absolute;left:8px;bottom:8px;font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;background:rgba(20,18,14,.75);color:var(--ar-papel);padding:4px 7px}
 @media (hover:none){.ct-foto--doble{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:8/5}.ct-foto--doble img+img{position:static;opacity:1}.ct-foto--doble::after{display:none}}
 @media (prefers-reduced-motion:reduce){.ct-foto img{transition:none}}
 .ct-piezas b{font-size:28px}
@@ -423,6 +424,38 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 .ct-prod span{font:12px var(--ar-rot);letter-spacing:.08em;color:var(--ar-gris);font-variant-numeric:tabular-nums}
 .ct-prod b{font:400 28px/1 var(--ar-tit);letter-spacing:.02em}
 .ct-prod i{grid-column:2;font:normal 11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+
+.ct-piezas small{font:10px var(--ar-rot);letter-spacing:.08em;color:var(--ar-gris)}
+
+/* lo que hacemos */
+.ct-hacemos{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:820px){.ct-hacemos{grid-template-columns:minmax(0,1fr)}}
+.ct-hace{display:flex;flex-direction:column;gap:6px;align-items:flex-start;border-top:2px solid var(--ar-tinta);padding-top:12px}
+.ct-hace b{font:400 32px/1 var(--ar-tit);letter-spacing:.02em}
+.ct-hace span{font:12px var(--ar-rot);letter-spacing:.06em;text-transform:uppercase;color:var(--ar-plano)}
+.ct-link{margin-top:6px;font:700 12px var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-acento);background:none;border:0;padding:0;cursor:pointer;text-decoration:none;text-align:left}
+.ct-link:hover,.ct-link:focus-visible{text-decoration:underline;outline:none}
+
+/* sala de proyección */
+.ct-sala{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px 32px;align-items:start;scroll-margin-top:72px}
+@media (max-width:900px){.ct-sala{grid-template-columns:minmax(0,1fr)}}
+.ct-pantalla{position:relative;aspect-ratio:16/9;max-width:100%;background:var(--ar-tinta);color:var(--ar-papel);overflow:hidden}
+.ct-pantalla::before,.ct-pantalla::after{content:"";position:absolute;left:10px;right:10px;height:8px;background:repeating-linear-gradient(90deg,var(--ar-papel) 0 8px,transparent 8px 20px);opacity:.25;z-index:1;pointer-events:none}
+.ct-pantalla::before{top:6px}.ct-pantalla::after{bottom:6px}
+.ct-pantalla iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+.ct-pantalla__reposo{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;text-align:center;padding:24px}
+.ct-pantalla__reposo span{font:11px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-tiza)}
+.ct-pantalla__reposo b{font:400 clamp(32px,5vw,56px)/1 var(--ar-tit);letter-spacing:.02em}
+.ct-pantalla__reposo a{font:12px var(--ar-rot);color:var(--ar-acento)}
+.ct-sala .ct-prod li{grid-template-columns:3.4rem minmax(0,1fr) auto;align-items:center}
+.ct-prod li>div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ct-prod li>div b{font:400 24px/1.05 var(--ar-tit);letter-spacing:.02em}
+.ct-prod li>div i{grid-column:auto}
+.ct-prod__a{font:12px var(--ar-rot);letter-spacing:.08em;color:var(--ar-gris);font-variant-numeric:tabular-nums}
+.ct-proy{width:38px;height:38px;border-radius:50%;border:0;background:var(--ar-acento);color:var(--ar-papel);font-size:15px;cursor:pointer;display:grid;place-items:center;padding-left:3px}
+.ct-proy:hover,.ct-proy:focus-visible{background:var(--ar-tinta);outline:none}
+.ct-prod li.activa{background:var(--ar-papel-2)}
+.ct-prod li.activa .ct-proy{background:var(--ar-tinta)}
 </style>
 
 <div class="ar-maqueta"><span>Maqueta · Contacto · el formulario no envía nada; faltan el mockup del suéter y la lista completa de producciones</span></div>
@@ -497,19 +530,26 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
     <div class="ct-sec__cab">
       <p class="ap-kicker">Depósito de a bordo · MAP × Nasional 20 años</p>
       <h2 id="ct-panol-t">El Pañol</h2>
-      <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor de este país. Apúntese y le avisamos primero cuando salgan.</p>
+      <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor y la lluvia de este país. Apúntese y le avisamos primero cuando salgan.</p>
     </div>
     <ol class="ct-piezas">
       <li>
-        <div class="ct-foto ct-foto--doble">
+        <div class="ct-foto ct-foto--doble" data-otra="Espalda">
           <img src="img/coach-jacket-nasional-frente.jpg" alt="Coach jacket Nasional azul marino de nailon, vista de frente, con broches y el escudo 15 bordado en rojo sobre el pecho." loading="lazy">
           <img src="img/coach-jacket-nasional-espalda.jpg" alt="Espalda de la coach jacket Nasional en malla naranja, con el puño de Nasional estampado en blanco." loading="lazy">
         </div>
         <b>Coach jacket</b><span>La pieza ancla. Cien hechas para Nasional, cien vendidas.</span><i>En el taller</i>
       </li>
       <li>
-        <div class="ct-mock">Mockup en el taller</div>
-        <b>Suéter con capucha</b><span>Unisex. Negro y gris jaspeado, cerrado o con zíper.</span><i>En el taller</i>
+        <div class="ct-foto ct-foto--doble" data-otra="Negro">
+          <img src="img/sueter-capucha-gris.jpg" alt="Suéter con capucha gris jaspeado, holgado, con bolsillo canguro." loading="lazy">
+          <img src="img/sueter-capucha-negro.jpg" alt="Suéter con capucha negro, holgado, con bolsillo canguro." loading="lazy">
+        </div>
+        <b>Suéter con capucha</b><span>Unisex. Gris jaspeado y negro.</span><i>En el taller</i><small>Foto: Los Angeles Apparel</small>
+      </li>
+      <li>
+        <div class="ct-foto"><img src="img/sueter-ziper-gris.jpg" alt="Suéter con capucha y zíper, gris jaspeado, con cordones blancos." loading="lazy"></div>
+        <b>Suéter con zíper</b><span>Unisex. Gris jaspeado.</span><i>En el taller</i><small>Foto: Los Angeles Apparel</small>
       </li>
       <li>
         <div class="ct-foto"><img src="img/gorra-ripstop-map.jpg" alt="Gorra ripstop negra de cinco paneles con el logo MAP y el contorno de Costa Rica estampados en blanco." loading="lazy"></div>
@@ -530,25 +570,30 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
       <h2 id="ct-ast-t">El Astillero</h2>
       <p class="ct-sec__intro">Producción audiovisual, podcast y series con el sello MAP. ¿Le gustaría ser parte de este archivo, colaborando como patrocinador? Escríbanos.</p>
     </div>
-    <div class="ct-ast">
-      <div>
-        <h3 class="ct-h3">Lo que hacemos</h3>
-        <ul class="ct-servicios">
-          <li><b>Documentales</b><span>De la idea al festival</span></li>
-          <li><b>Series</b><span>Serie MAP · música, arte y patinetas</span></li>
-          <li><b>Podcast</b><span>MAP Radio Pachuko · más de 200 episodios</span></li>
-        </ul>
+    <div class="ct-hacemos">
+      <div class="ct-hace"><b>Documentales</b><span>Del rodaje al festival</span><button type="button" class="ct-link" data-yt="_g5LaE4DjVA" data-titulo="RUIDO">Proyectar RUIDO ▸</button></div>
+      <div class="ct-hace"><b>Series</b><span>Serie MAP · música, arte y patinetas</span><button type="button" class="ct-link" data-yt="xSK0iZdmSog" data-titulo="Serie MAP · capítulo 7">Proyectar el capítulo 7 ▸</button></div>
+      <div class="ct-hace"><b>Podcast</b><span>MAP Radio Pachuko · más de 200 episodios</span><a class="ct-link" href="https://open.spotify.com/episode/4WgYe3dCdDqhNTlQtE84zX">Escuchar «Del palco al infierno» ↗</a></div>
+    </div>
+
+    <div class="ct-sala" id="ct-sala">
+      <div class="ct-pantalla" id="ct-pantalla" aria-live="polite">
+        <div class="ct-pantalla__reposo"><span>Sala de proyección</span><b>Elija un rollo</b></div>
       </div>
-      <div>
+      <div class="ct-sala__lista">
         <h3 class="ct-h3">Producciones</h3>
         <ol class="ct-prod">
-          <li><span>2014</span><b>4 Historias de Patineta</b></li>
-          <li><span>2018</span><b>RUIDO</b><i>Selección oficial FICCR</i></li>
-          <li><span>2019</span><b>Finca Fest</b></li>
-          <li><span>2024</span><b>Sentido Común</b></li>
+          <li><span class="ct-prod__a">2014</span><div><b>4 Historias de Patineta</b><i>Corto documental</i></div><button type="button" class="ct-proy" data-yt="i5xr9GPTt6c" data-titulo="4 Historias de Patineta" aria-label="Proyectar 4 Historias de Patineta">▸</button></li>
+          <li><span class="ct-prod__a">2018</span><div><b>RUIDO</b><i>Documental · selección oficial FICCR</i></div><button type="button" class="ct-proy" data-yt="_g5LaE4DjVA" data-titulo="RUIDO" aria-label="Proyectar RUIDO">▸</button></li>
+          <li><span class="ct-prod__a">2019</span><div><b>Finca Fest</b><i>Corto documental</i></div><button type="button" class="ct-proy" data-yt="lVAREwuqz_A" data-titulo="Finca Fest" aria-label="Proyectar Finca Fest">▸</button></li>
+          <li><span class="ct-prod__a">2024</span><div><b>Sentido Común</b><i>Corto documental</i></div><button type="button" class="ct-proy" data-yt="8dDkYGbBD5o" data-titulo="Sentido Común" aria-label="Proyectar Sentido Común">▸</button></li>
+          <li><span class="ct-prod__a">—</span><div><b>Continental y la versión extendida de las cosas</b><i>Corto documental</i></div><button type="button" class="ct-proy" data-yt="22LSFONUBcc" data-titulo="Continental y la versión extendida de las cosas" aria-label="Proyectar Continental y la versión extendida de las cosas">▸</button></li>
+          <li><span class="ct-prod__a">2026</span><div><b>YSM · Palo Miao</b><i>Videoclip</i></div><button type="button" class="ct-proy" data-yt="pHEW-0JTXRI" data-titulo="YSM · Palo Miao" aria-label="Proyectar YSM · Palo Miao">▸</button></li>
+          <li><span class="ct-prod__a">2026</span><div><b>Falsi Prophetae</b><i>Cortometraje</i></div><button type="button" class="ct-proy" data-yt="bqpJXJAWjPA" data-titulo="Falsi Prophetae" aria-label="Proyectar Falsi Prophetae">▸</button></li>
         </ol>
       </div>
     </div>
+
     <div class="ct-patrocinio">
       <span class="ct-patrocinio__sello">Busca patrocinio</span>
       <p><b>Serie MAP · segunda temporada.</b> Las marcas que la acompañen quedan en los créditos de cada episodio y en la carta.</p>
@@ -601,6 +646,19 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
   vs.forEach(function(v){v.addEventListener('click',function(){elegir(v.dataset.asunto,true)})});
   $$('[data-ir-asunto]').forEach(function(b){b.addEventListener('click',function(){elegir(b.dataset.irAsunto,true)})});
   if(location.hash==='#panol-pregunta')elegir('El Pañol · merch',false);
+  /* sala de proyección: un solo reproductor, carga al tocar */
+  var puede=/github\.io$|localhost|127\.0\.0\.1|mapradiocr\.com$/.test(location.hostname)||location.protocol==='file:';
+  var pant=$('#ct-pantalla');
+  function proyectar(id,titulo,desde){
+    $$('.ct-prod li').forEach(function(li){li.classList.toggle('activa',!!li.querySelector('[data-yt="'+id+'"]'))});
+    if(puede){
+      pant.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" title="'+titulo.replace(/"/g,'')+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    }else{
+      pant.innerHTML='<div class="ct-pantalla__reposo"><span>'+titulo+'</span><b>Aquí se proyecta</b><a href="https://youtu.be/'+id+'">Esta vista previa no carga YouTube · abrir en YouTube ↗</a></div>';
+    }
+    if(desde)$('#ct-sala').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  }
+  $$('[data-yt]').forEach(function(b){b.addEventListener('click',function(){proyectar(b.dataset.yt,b.dataset.titulo,b.classList.contains('ct-link'))})});
 
   $('#ct-tx').addEventListener('submit',function(e){
     e.preventDefault(); var f=e.target, est=$('#ct-estado');
