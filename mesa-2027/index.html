@@ -806,18 +806,17 @@ async function encender(){
   S.fase="collage";
   const sw=$("#encender"); sw.setAttribute("aria-checked","true");
   iniciarAudio(); if(A.ctx&&A.ctx.state==="suspended"){try{await A.ctx.resume()}catch(e){}}
-  if(!reduce) await transmitir();
+  await transmitir();   // la Morse y el texto telegrafiado no son movimiento: suenan siempre
   $("#portada").classList.add("fuera"); collage();
 }
 function collage(){
   const lay=$("#collage"), saltar=$("#saltar");
-  const largo=!S.visto&&!reduce;
+  const largo=!S.visto;
   const piezas=largo?COLLAGE:COLLAGE.slice(0,6);
   // ritmo de montaje: arranca pausado y acelera (primera visita ~5,5 s; las siguientes ~1 s)
   const tiempos=[]; let acum=0;
   piezas.forEach((_,i)=>{tiempos.push(acum); const k=piezas.length>1?i/(piezas.length-1):0; acum+=largo?Math.round(440-270*k):130;});
   if(A.ctx){sonar("larga",.8); nivelEstatica(.12,.2); (largo?[250,1300,2400,3400,4300]:[200]).forEach(ms=>setTimeout(()=>sonar("perillas",.7),ms));}
-  if(reduce){revelar([]);return}
   saltar.hidden=false;
   const els=[]; let fuera=false;
   const terminar=()=>{if(fuera)return;fuera=true;saltar.hidden=true;revelar(els)};
