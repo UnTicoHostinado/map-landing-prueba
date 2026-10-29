@@ -308,6 +308,35 @@ body.ver-zonas [data-z]::after{content:attr(data-z-lab);position:absolute;top:0;
 [data-z="patron"]{--z:var(--ar-patron)}
 body.ver-zonas .ar-barra[data-z]{position:sticky}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* lo más leído y últimos artículos, lado a lado */
+.ar-dos{max-width:1100px;margin:72px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 64px;align-items:start}
+.ar-eje{align-self:stretch;background:linear-gradient(var(--ar-tinta),var(--ar-tinta)) top/1px 2px no-repeat,repeating-linear-gradient(var(--ar-linea) 0 4px,transparent 4px 9px)}
+.ar-col{min-width:0}
+.ar-lista{list-style:none;margin:0;padding:0}
+.ar-lista li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:0 14px;align-items:center;min-height:88px;padding:10px 0;border-bottom:1px dotted var(--ar-linea)}
+.ar-marca{font:400 44px/1 var(--ar-tit);color:var(--ar-acento);text-align:center}
+.ar-marca--fecha{display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px solid var(--ar-tinta);padding:5px 0 6px;font:10.5px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-marca--fecha b{font:400 26px/1 var(--ar-tit);color:var(--ar-tinta);letter-spacing:.02em}
+.ar-lista a{display:block;font:500 17.5px/1.3 var(--ar-txt);color:var(--ar-tinta);text-decoration:none;text-wrap:balance}
+.ar-lista a:hover,.ar-lista a:focus-visible{color:var(--ar-acento);outline:none}
+.ar-meta{display:block;margin-top:5px;font:11px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase;color:var(--ar-plano)}
+@media (max-width:860px){.ar-dos{grid-template-columns:minmax(0,1fr);row-gap:56px}.ar-eje{display:none}}
+
+/* respuesta de la estación: caja punteada */
+.ar-rg--estacion{border:2px dotted var(--ar-acento);background:transparent}
+
+/* pie: el actual del sitio, en la papelería nueva */
+.ar-pie__in{justify-content:space-between}
+.ar-pie__marca{font:700 13px var(--ar-rot)!important;letter-spacing:.14em;color:var(--ar-papel)}
+.ar-pie__cred{text-transform:none;letter-spacing:.04em;font-size:11.5px;color:var(--ar-tiza);flex:1 1 320px;min-width:0}
+.ar-pie nav{margin-left:0;gap:10px;align-items:center}
+
+/* visor de fotos: la X va en la esquina superior derecha de la foto, un poco adentro */
+.hr-lb-marco{position:relative;display:inline-block;max-width:100%;line-height:0}
+.hr-lb-marco .hr-lightbox__close{position:absolute;top:10px;right:10px;bottom:auto;left:auto;z-index:2;
+  background:rgba(20,18,14,.72);border:1px solid rgba(244,243,239,.6);color:var(--ar-papel);width:44px;height:44px;font-size:20px;line-height:1}
+.hr-lb-marco .hr-lightbox__close:hover,.hr-lb-marco .hr-lightbox__close:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);color:var(--ar-papel)}
 </style>
 
 <div class="ar-maqueta">
@@ -318,9 +347,8 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 <header class="ar-barra" data-z="plantilla" data-z-lab="Plantilla · barra del archivo">
   <div class="ar-barra__in">
     <a class="ar-sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/" title="Volver a la carta">MAP</a>
-    <a class="ar-archivo" href="#" title="Portada del archivo">Archivo</a>
     <nav class="ar-menu" id="ar-menu" aria-label="Secciones">
-      <a href="#">Territorios ▾</a><a href="#">Podcast</a><a href="#">Serie MAP</a><a href="#">El Pañol</a><a href="#">Contacto</a>
+      <a href="https://www.mapradiocr.com/antologia">Antología</a><a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><a href="https://www.mapradiocr.com/textos/">Textos</a><a href="https://www.mapradiocr.com/podcast">Podcast</a><a href="https://www.mapradiocr.com/sobre-el-director">Sobre el autor</a><a href="https://www.mapradiocr.com/contacto">Contacto</a>
     </nav>
     <button type="button" class="ar-btn ar-btn--menu" id="ar-menu-btn" aria-expanded="false" aria-controls="ar-menu">Menú</button>
     <button type="button" class="ar-btn" id="ar-buscar-btn">Buscar ⌕</button>
@@ -338,11 +366,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 
 <main class="hr-root">
   <div class="hr-wrap"><header class="hr-head hr-col ar-head" data-z="plantilla" data-z-lab="Plantilla · cabecera">
-    <div class="ar-ter">
-      <a class="ar-ter__sello" href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/"><i aria-hidden="true"></i>Sala Oscura</a>
-      <span>9°25′N · 84°12′W</span>
-      <a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/">Ver en la carta ↗</a>
-    </div>
+    <p class="hr-kicker">Cine</p>
     <div class="ar-previa" role="note"><b>Señal previa</b><span>Captada antes de instalar el instrumento</span></div>
     <h1 class="hr-title">El cine independiente en Costa Rica</h1>
     <p class="hr-sub">Cómo hacer de tripas corazón sin hablar tanta papaya</p>
@@ -552,41 +576,10 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 <div class="hr-wrap"><section class="hr-body hr-col"><p>Esa también era Costa Rica. Esa fue la Costa Rica en la que crecí.</p><p>El barrio no era un paraíso, y la pobreza existía. Lo que había era un mundo donde las diferencias económicas no impedían compartir el mismo espacio, las mismas aventuras y buena parte de la vida cotidiana.</p><p>Cuando pienso en las historias que me gustaría ver en el cine costarricense, pienso también en ese mundo: en sus personajes, sus lugares, sus códigos, sus amistades, sus pequeñas ambiciones y sus aventuras. Es una forma de vivir que, al menos desde mi experiencia, desapareció de la pantalla, y que en muchos sentidos también ha ido desapareciendo de la ciudad. La vida cotidiana también merece una película. La amistad, la alegría, la curiosidad y la aventura también son memoria colectiva.</p><p>No quiero que todas las películas hablen de mi barrio. Quiero que existan las condiciones para que alguien pueda contar esa historia, y para que otros cuenten las suyas. Para eso hace falta más que plata: hacen falta oportunidades, conocimiento, redes de colaboración y espacios donde esas películas se encuentren con su público.</p><p>No todas van a ser buenas ni todas van a encontrar audiencia. Algunas van a fracasar, otras van a pasar inadvertidas y a unas cuantas quizá las descubra alguien muchos años después. Ese es el riesgo de hacer cine. Lo que no tiene sentido es cerrarles la puerta antes de que existan.</p><p>Hace falta que haya suficientes películas, hechas por gente distinta, para que ninguna mirada tenga que cargar sola con la representación del país.</p></section></div>
 <div class="hr-wrap"><div class="hr-punch"><p>Porque si el cine es una ventana hacia Costa Rica, deberíamos procurar que <span>esa ventana no muestre siempre el mismo paisaje</span></p></div></div>
 
-  <div class="hr-wrap"><section class="ar-cierre hr-col" data-z="plantilla" data-z-lab="Plantilla · etiquetas">
-    <div class="ar-tit"><h2>Etiquetas</h2><span>ejemplo</span></div>
-    <ul class="ar-etq">
-      <li><a href="#">cine independiente</a></li><li><a href="#">cine costarricense</a></li><li><a href="#">Robert Rodriguez</a></li>
-      <li><a href="#">El Mariachi</a></li><li><a href="#">RUIDO</a></li><li><a href="#">Agarrando pueblo</a></li>
-      <li><a href="#">Palo Miao</a></li><li><a href="#">inteligencia artificial</a></li><li><a href="#">producción audiovisual</a></li>
-      <li><a href="#">ensayo</a></li><li><a href="#">en español</a></li><li><a href="#">mapradiocr</a></li>
-    </ul>
-    <div class="ar-volver">
-      <a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/">← Volver a la carta</a>
-      <a href="#">Ir al archivo →</a>
-    </div>
-  </section></div>
-
-  <div class="hr-wrap"><section class="ar-leer hr-col" data-z="plantilla" data-z-lab="Plantilla · lo más leído">
-    <div class="ar-tit"><h2>Lo más leído</h2><span>últimos 30 días · ejemplo</span></div>
-    <ol class="ar-top">
-      <li><a href="https://www.mapradiocr.com/cantina-ideal-3/">La Cantina Ideal</a><span>La Barra</span></li>
-      <li><a href="https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/">Carlos Alvarado y el morbo literario del poder</a><span>Zona Restringida</span></li>
-      <li><a href="https://www.mapradiocr.com/4-historias-de-patineta/">4 historias de patineta</a><span>Tracción Humana</span></li>
-      <li><a href="https://www.mapradiocr.com/?s=tertuliano">El Emperador Tertuliano</a><span>Letra</span></li>
-      <li><a href="https://www.mapradiocr.com/podcast/#bastardos">Bastardos de Poveda</a><span>Letra</span></li>
-    </ol>
-  </section></div>
-
-  <div class="hr-wrap"><section class="ar-leer hr-col" data-z="plantilla" data-z-lab="Plantilla · últimos artículos">
-    <div class="ar-tit"><h2>Últimos artículos</h2><span>registro · fechas de ejemplo</span></div>
-    <div class="ar-reg" role="table" aria-label="Últimos artículos">
-      <div class="ar-fila ar-fila--cab" role="row"><span role="columnheader">Nº</span><span class="ar-c-fecha" role="columnheader">Fecha</span><span class="ar-c-ter" role="columnheader">Territorio</span><span role="columnheader">Título</span><span role="columnheader">Lectura</span></div>
-      <div class="ar-fila" role="row"><span role="cell">213</span><span class="ar-c-fecha" role="cell">19·10·26</span><span class="ar-c-ter" role="cell">Zona Restringida</span><a role="cell" href="https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/">Carlos Alvarado y el morbo literario del poder</a><span role="cell">9 min</span></div>
-      <div class="ar-fila" role="row"><span role="cell">212</span><span class="ar-c-fecha" role="cell">08·10·26</span><span class="ar-c-ter" role="cell">Letra</span><a role="cell" href="https://www.mapradiocr.com/?s=tertuliano">El Emperador Tertuliano</a><span role="cell">12 min</span></div>
-      <div class="ar-fila" role="row"><span role="cell">211</span><span class="ar-c-fecha" role="cell">30·09·26</span><span class="ar-c-ter" role="cell">Tracción Humana</span><a role="cell" href="https://www.mapradiocr.com/4-historias-de-patineta/">4 historias de patineta</a><span role="cell">15 min</span></div>
-      <div class="ar-fila" role="row"><span role="cell">210</span><span class="ar-c-fecha" role="cell">21·09·26</span><span class="ar-c-ter" role="cell">La Barra</span><a role="cell" href="https://www.mapradiocr.com/cantina-ideal-3/">La Cantina Ideal</a><span role="cell">11 min</span></div>
-      <div class="ar-fila" role="row"><span role="cell">209</span><span class="ar-c-fecha" role="cell">12·09·26</span><span class="ar-c-ter" role="cell">Serie MAP</span><a role="cell" href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><span role="cell">6 min</span></div>
-    </div>
+  <div class="hr-wrap"><section class="ar-dos" data-z="plantilla" data-z-lab="Plantilla · lo más leído y últimos artículos">
+    <div class="ar-col"><div class="ar-tit"><h2>Lo más leído</h2><span>30 días · ejemplo</span></div><ol class="ar-lista"><li><span class="ar-marca">1</span><div><a href="https://www.mapradiocr.com/cantina-ideal-3/">La Cantina Ideal</a><span class="ar-meta">La Barra · 11 min</span></div></li><li><span class="ar-marca">2</span><div><a href="https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/">Carlos Alvarado y el morbo literario del poder</a><span class="ar-meta">Zona Restringida · 9 min</span></div></li><li><span class="ar-marca">3</span><div><a href="https://www.mapradiocr.com/4-historias-de-patineta/">4 historias de patineta</a><span class="ar-meta">Tracción Humana · 15 min</span></div></li><li><span class="ar-marca">4</span><div><a href="https://www.mapradiocr.com/?s=tertuliano">El Emperador Tertuliano</a><span class="ar-meta">Letra · 12 min</span></div></li><li><span class="ar-marca">5</span><div><a href="https://www.mapradiocr.com/podcast/#bastardos">Bastardos de Poveda</a><span class="ar-meta">Letra · Podcast</span></div></li></ol></div>
+    <div class="ar-eje" aria-hidden="true"></div>
+    <div class="ar-col"><div class="ar-tit"><h2>Últimos artículos</h2><span>fechas de ejemplo</span></div><ol class="ar-lista"><li><span class="ar-marca ar-marca--fecha"><b>19</b>Oct</span><div><a href="https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/">Carlos Alvarado y el morbo literario del poder</a><span class="ar-meta">Zona Restringida · 9 min</span></div></li><li><span class="ar-marca ar-marca--fecha"><b>08</b>Oct</span><div><a href="https://www.mapradiocr.com/?s=tertuliano">El Emperador Tertuliano</a><span class="ar-meta">Letra · 12 min</span></div></li><li><span class="ar-marca ar-marca--fecha"><b>30</b>Sep</span><div><a href="https://www.mapradiocr.com/4-historias-de-patineta/">4 historias de patineta</a><span class="ar-meta">Tracción Humana · 15 min</span></div></li><li><span class="ar-marca ar-marca--fecha"><b>21</b>Sep</span><div><a href="https://www.mapradiocr.com/cantina-ideal-3/">La Cantina Ideal</a><span class="ar-meta">La Barra · 11 min</span></div></li><li><span class="ar-marca ar-marca--fecha"><b>12</b>Sep</span><div><a href="https://www.mapradiocr.com/serie-map/">Serie MAP</a><span class="ar-meta">Serie MAP · 6 min</span></div></li></ol></div>
   </section></div>
 
   <div class="hr-wrap"><section class="ar-radio hr-col" data-z="plantilla" data-z-lab="Plantilla · radiogramas (wpDiscuz vestido)">
@@ -605,7 +598,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
     </article>
 
     <form class="ar-tx" id="ar-tx" novalidate>
-      <h3>Transmitir mensaje</h3>
+      <h3>Comente</h3>
       <div class="ar-tx__campos">
         <label for="tx-nombre">Nombre o indicativo<input id="tx-nombre" name="nombre" type="text" autocomplete="name" required></label>
         <label for="tx-correo">Correo · no se publica<input id="tx-correo" name="correo" type="email" autocomplete="email" required></label>
@@ -616,18 +609,17 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   </section></div>
 </main>
 
-<footer class="ar-pie" data-z="plantilla" data-z-lab="Plantilla · pie">
+<footer class="ar-pie" data-z="plantilla" data-z-lab="Plantilla · pie (el actual del sitio)">
   <div class="ar-pie__in">
-    <span class="ar-pie__marca">MAP</span>
-    <span>Música, Arte &amp; Patinetas · Costa Rica</span>
-    <nav aria-label="Pie"><a href="#">Contacto</a><a href="https://ko-fi.com/mapradiocr">Ko-fi</a><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/">La carta</a></nav>
+    <a class="ar-pie__marca" href="https://www.mapradiocr.com">MAP — 2016 ⚡</a>
+    <span class="ar-pie__cred">Ingeniería web — Dr. Arkady Volkov Lazenko · Instituto Cuántico Costarricense para la Investigación Interdimensional</span>
+    <nav aria-label="Legal"><a href="https://www.mapradiocr.com/politica-de-privacidad/">Privacidad</a><span aria-hidden="true">·</span><a href="https://www.mapradiocr.com/terminos-y-condiciones/">Términos</a></nav>
   </div>
 </footer>
 
 <div class="hr-lightbox" id="hr-lightbox" hidden>
-  <button type="button" class="hr-lightbox__btn hr-lightbox__close" id="hr-lb-close" aria-label="Cerrar">✕</button>
   <button type="button" class="hr-lightbox__btn hr-lightbox__prev" id="hr-lb-prev" aria-label="Anterior">‹</button>
-  <figure><img id="hr-lb-img" alt=""><figcaption id="hr-lb-cap"></figcaption></figure>
+  <figure><div class="hr-lb-marco"><img id="hr-lb-img" alt=""><button type="button" class="hr-lightbox__btn hr-lightbox__close" id="hr-lb-close" aria-label="Cerrar">✕</button></div><figcaption id="hr-lb-cap"></figcaption></figure>
   <button type="button" class="hr-lightbox__btn hr-lightbox__next" id="hr-lb-next" aria-label="Siguiente">›</button>
 </div>
 
