@@ -175,6 +175,19 @@ a{color:inherit}
 .btn.vacio:hover{background:rgba(27,29,27,.08)}
 .nube-arte{width:84px;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fff;border:1px dashed var(--tinta);font-family:var(--mono);font-size:10px;letter-spacing:.15em}
 
+/* ---------- estación del Dr. Arkadi: selector de bitácoras ---------- */
+.bitacoras{margin-top:10px}
+.bitacoras .fila{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.bitacoras .rot{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--metal-osc);margin-right:6px}
+.bitacoras button{min-width:34px;height:30px;padding:0 6px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  background:transparent;color:var(--tinta);border:1.5px solid var(--tinta);border-radius:2px;cursor:pointer;position:relative}
+.bitacoras button:hover{background:rgba(27,29,27,.08)}
+.bitacoras button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.bitacoras button.oida::after{content:"";position:absolute;top:2px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--senal)}
+.bitacoras button:focus-visible{outline:2px solid var(--senal);outline-offset:2px}
+.bitacoras .bit-titulo{margin:6px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-wrap:balance}
+@media (max-width:640px){.bitacoras .rot{display:none}.bitacoras .fila{gap:5px;flex-wrap:nowrap}.bitacoras button{min-width:0;flex:1;height:36px;padding:0}}
+
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
   padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -491,6 +504,7 @@ const T=[
  {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",lo:-83.668,la:9.8894,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
  {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",lo:-84.1935,la:9.4217,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
  {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",lo:-83.4902,la:9.5,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
+ {id:"estacion-arkadi",nombre:"Estación del Dr. Arkadi",lugar:"Cerros de Puriscal",lo:-84.33,la:9.83,tipo:"senal",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",sub:"Los Estudios de Campo",b:1,bit:[{t:"Camino a la montaña",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",alt:"Una camioneta Ford antigua estacionada sobre el zacate, en blanco y negro"},{t:"Flashback",frase:"…escuchando cómo las láminas del techo crujían con la ventolera.",link:"https://www.mapradiocr.com/estudios-de-campo-bitacora-2/",alt:"Un pelotero de los Giants abrazado con dos aficionadas en la gramilla de un estadio, en sepia"},{t:"La playa",frase:"…un pacto que uno firma con el cansancio del día.",link:"https://www.mapradiocr.com/estudios-de-campo-3/",alt:"Un grupo de personas conversa en la acera, frente a la pared de una casa, en blanco y negro"},{t:"La crisis planetaria del bicho THX 1138",frase:"…no estaba pendiente abrirle las entrañas a nadie.",link:"https://www.mapradiocr.com/tri/",alt:"Una mujer en uniforme militar sonríe sentada frente a una máquina de escribir"},{t:"Escuela de brujos",frase:"…hurgando entre trastos que no recordaba haber guardado.",link:"https://www.mapradiocr.com/los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos/",alt:"Retrato de familia frente a una casa de adobe, en blanco y negro"},{t:"Receptor transdimensional de banda vacante residual VX-996",frase:"—Héctor, esa frase no es de Sun Tzu —le dije.",link:"https://www.mapradiocr.com/bitacora-6/",alt:"Un operador con audífonos frente a una consola de radio; detrás, dos hombres sostienen un disco"}]},
  {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",lo:-83.3373,la:9.2878,tipo:"nubes",sub:"Arquitectura"},
  {id:"taller",nombre:"Taller",lugar:"Valle de El General",lo:-83.7098,la:9.271,tipo:"nubes",sub:"Arte"}
 ];
@@ -566,7 +580,7 @@ function pararSenal(){if(A.fuente){try{A.fuente.stop()}catch(e){}A.fuente=null}}
 async function tocarSenal(t){
   pararSenal();
   if(!A.ctx) return;
-  const b=await buf("s-"+t.id,`assets/senales/${t.id}-01.mp3`);
+  const b=await buf("s-"+pista(t),`assets/senales/${pista(t)}.mp3`);
   if(!b||S.activa!==t) return;
   const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
   s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
@@ -840,7 +854,7 @@ async function sintonizar(t){
   const llego=await volarA({tx:t.w.x,tz:t.w.z,d:t.tipo==="nubes"?26:16,p:t.tipo==="nubes"?40:30,rumbo:r},clamp(1300+lejos*.9,1300,3000));
   if(!llego||S.activa!==t) return;
   abrirFicha(t);
-  if(t.tipo==="senal"){ nivelEstatica(0,.4); tocarSenal(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
+  if(t.tipo==="senal"){ nivelEstatica(0,.4); tocarSenal(t); marcarBitacora(t); S.oidas.add(t.id); store.set("map27.oidas",[...S.oidas]); t.el.classList.add("oida"); }
 }
 function despertarTodo(){
   T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
@@ -906,7 +920,7 @@ async function leve(t,k=0){
     if(L.src){const g=L.g,s=L.src;g.gain.setTargetAtTime(0,A.ctx.currentTime,.08);setTimeout(()=>{try{s.stop()}catch(e){}},500)}
     L.t=t;L.src=null;L.g=null;
     if(!t) return;
-    const key=t.tipo==="nubes"?"nubes":"s-"+t.id, url=t.tipo==="nubes"?SON.nubes:`assets/senales/${t.id}-01.mp3`;
+    const key=t.tipo==="nubes"?"nubes":"s-"+pista(t), url=t.tipo==="nubes"?SON.nubes:`assets/senales/${pista(t)}.mp3`;
     const b=await buf(key,url); if(!b||L.t!==t) return;
     const s=A.ctx.createBufferSource(),lp=A.ctx.createBiquadFilter(),g=A.ctx.createGain();
     lp.type="lowpass";lp.frequency.value=1300;g.gain.value=0;s.buffer=b;s.loop=true;
@@ -921,6 +935,22 @@ function tic(){
   const s=A.ctx.createBufferSource(),f=A.ctx.createBiquadFilter(),g=A.ctx.createGain();
   f.type="bandpass";f.frequency.value=3000;f.Q.value=2;g.gain.value=.55;s.buffer=ticBuf;s.connect(f).connect(g).connect(A.master);s.start();
 }
+/* ===== estación del Dr. Arkadi: cambiar de bitácora sin salir de la ficha ===== */
+const pista=t=>t.id+"-"+String(t.bit?(t.b||1):1).padStart(2,"0");
+function marcarBitacora(t){ if(!t.bit) return; S.oidas.add(pista(t)); store.set("map27.oidas",[...S.oidas]);
+  const bt=document.querySelector(`#ficha [data-bit="${t.b||1}"]`); if(bt) bt.classList.add("oida"); }
+function cambiarBitacora(t,n){
+  if(!t.bit||n===(t.b||1)&&A.fuente) return;
+  t.b=n; const B=t.bit[n-1], f=$("#ficha"), num=String(n).padStart(2,"0");
+  const img=f.querySelector(".ficha-foto img"); if(img){img.src=`assets/senales/${pista(t)}.jpg`;img.alt=B.alt;}
+  const fr=f.querySelector(".frase"); if(fr) fr.textContent=B.frase;
+  const ti=f.querySelector(".bit-titulo"); if(ti) ti.textContent=num+" · "+B.t;
+  const ab=f.querySelector(".ficha-acciones a"); if(ab) ab.href=B.link;
+  f.querySelectorAll("[data-bit]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.bit===n)));
+  const ll=f.querySelector(".lleno"); if(ll) ll.style.width="0%"; const tt=f.querySelector(".tiempo"); if(tt) tt.textContent="0:00";
+  pararSenal(); sonar("sintonia",.5); nivelEstatica(.09,.15);
+  setTimeout(()=>{ if(S.activa!==t||t.b!==n) return; nivelEstatica(0,.4); tocarSenal(t); marcarBitacora(t); },380);
+}
 /* ===== ficha ===== */
 function abrirFicha(t){
   const f=$("#ficha");
@@ -930,10 +960,13 @@ function abrirFicha(t){
       <p class="frase">Las nubes taparon la foto aérea. El territorio existe; todavía nadie lo registró.</p>
       <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span><button class="btn lleno" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
   } else {
-    f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${t.id}-01.jpg" alt="${t.nombre}: imagen de la señal">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
-      <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${t.frase}</p>
+    const B=t.bit?t.bit[(t.b||1)-1]:null, num=n=>String(n).padStart(2,"0");
+    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir bitácora"><span class="rot">Bitácora</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
+    f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${pista(t)}.jpg" alt="${B?B.alt:t.nombre+": imagen de la señal"}">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
+      <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${B?B.frase:t.frase}</p>${selector}
       <div class="medidor"><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
-      <div class="ficha-acciones"><a class="btn lleno" href="${t.link}" target="_blank" rel="noopener">Abrir</a><button class="btn vacio" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+      <div class="ficha-acciones"><a class="btn lleno" href="${B?B.link:t.link}" target="_blank" rel="noopener">${B?"Abrir bitácora":"Abrir"}</a><button class="btn vacio" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+    if(B) f.querySelectorAll("[data-bit]").forEach(b=>b.addEventListener("click",()=>cambiarBitacora(t,+b.dataset.bit)));
   }
   f.querySelector("[data-cerrar]").addEventListener("click",()=>{cerrarFicha();});
   requestAnimationFrame(()=>f.classList.add("abierta"));
