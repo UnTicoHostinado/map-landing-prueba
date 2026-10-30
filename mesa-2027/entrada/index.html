@@ -321,6 +321,26 @@ body.ver-zonas [data-z]::after{content:attr(data-z-lab);position:absolute;top:0;
 body.ver-zonas .ar-barra[data-z]{position:sticky}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
+/* anterior / siguiente: solo en entradas de una serie */
+.ar-serie{margin-top:72px}
+.ar-serie__tira{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ar-serie__n{display:grid;place-items:center;min-width:40px;height:36px;padding:0 6px;font:700 12px var(--ar-rot);letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  color:var(--ar-tinta);text-decoration:none;border:1.5px solid var(--ar-tinta)}
+a.ar-serie__n:hover,a.ar-serie__n:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);color:var(--ar-papel);outline:none}
+.ar-serie__n--aqui{background:var(--ar-tinta);color:var(--ar-papel);position:relative}
+.ar-serie__n--aqui::after{content:"";position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--ar-acento)}
+.ar-serie__n--prep{border-style:dashed;color:var(--ar-tiza);border-color:var(--ar-tiza)}
+.ar-serie__nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+.ar-serie__paso{display:flex;flex-direction:column;gap:6px;padding:14px 16px 16px;border:2px solid var(--ar-tinta);text-decoration:none;color:var(--ar-tinta);min-width:0}
+.ar-serie__paso span{font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-serie__paso b{font:400 clamp(24px,3vw,30px)/1 var(--ar-tit);letter-spacing:.02em;text-wrap:balance}
+.ar-serie__paso--sig{text-align:right;align-items:flex-end}
+.ar-serie__paso:hover,.ar-serie__paso:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.ar-serie__paso:hover span,.ar-serie__paso:focus-visible span{color:var(--ar-acento)}
+.ar-serie__paso--vacio{border-style:dashed;border-color:var(--ar-tiza);color:var(--ar-tiza);pointer-events:none}
+.ar-serie__nota{margin:14px 0 0;font:11px/1.5 var(--ar-rot);letter-spacing:.04em;color:var(--ar-gris)}
+@media (max-width:560px){.ar-serie__nav{grid-template-columns:minmax(0,1fr)}.ar-serie__paso--sig{text-align:left;align-items:flex-start}.ar-serie__tira{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.ar-serie__n{min-width:0}}
+
 /* lo más leído y últimos artículos, lado a lado */
 .ar-dos{max-width:1100px;margin:72px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 64px;align-items:start}
 .ar-eje{align-self:stretch;background:linear-gradient(var(--ar-tinta),var(--ar-tinta)) top/1px 2px no-repeat,repeating-linear-gradient(var(--ar-linea) 0 4px,transparent 4px 9px)}
@@ -592,6 +612,16 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
   <figcaption class="hr-cap"><b>FIG. 04 · BAR LA UNIÓN · 1961</b><span>La esquina de La Unión en Desamparados. <b>Foto: Archivo Nacional de Costa Rica</b></span></figcaption></figure></div>
 <div class="hr-wrap"><section class="hr-body hr-col"><p>Esa también era Costa Rica. Esa fue la Costa Rica en la que crecí.</p><p>El barrio no era un paraíso, y la pobreza existía. Lo que había era un mundo donde las diferencias económicas no impedían compartir el mismo espacio, las mismas aventuras y buena parte de la vida cotidiana.</p><p>Cuando pienso en las historias que me gustaría ver en el cine costarricense, pienso también en ese mundo: en sus personajes, sus lugares, sus códigos, sus amistades, sus pequeñas ambiciones y sus aventuras. Es una forma de vivir que, al menos desde mi experiencia, desapareció de la pantalla, y que en muchos sentidos también ha ido desapareciendo de la ciudad. La vida cotidiana también merece una película. La amistad, la alegría, la curiosidad y la aventura también son memoria colectiva.</p><p>No quiero que todas las películas hablen de mi barrio. Quiero que existan las condiciones para que alguien pueda contar esa historia, y para que otros cuenten las suyas. Para eso hace falta más que plata: hacen falta oportunidades, conocimiento, redes de colaboración y espacios donde esas películas se encuentren con su público.</p><p>No todas van a ser buenas ni todas van a encontrar audiencia. Algunas van a fracasar, otras van a pasar inadvertidas y a unas cuantas quizá las descubra alguien muchos años después. Ese es el riesgo de hacer cine. Lo que no tiene sentido es cerrarles la puerta antes de que existan.</p><p>Hace falta que haya suficientes películas, hechas por gente distinta, para que ninguna mirada tenga que cargar sola con la representación del país.</p></section></div>
 <div class="hr-wrap"><div class="hr-punch"><p>Porque si el cine es una ventana hacia Costa Rica, deberíamos procurar que <span>esa ventana no muestre siempre el mismo paisaje</span></p></div></div>
+
+  <div class="hr-wrap"><nav class="ar-serie hr-col" aria-label="Serie Los Estudios de Campo" data-z="plantilla" data-z-lab="Plantilla · anterior / siguiente (solo en series)">
+    <div class="ar-tit"><h2>Los Estudios de Campo</h2><span>Bitácora 02 de 10</span></div>
+    <ol class="ar-serie__tira"><li><a class="ar-serie__n" href="https://www.mapradiocr.com/estudios-de-campo/" title="Bitácora 01: Camino a la montaña">01</a></li><li><span class="ar-serie__n ar-serie__n--aqui" aria-current="page" title="Bitácora 02: Flashback (está leyendo esta)">02</span></li><li><a class="ar-serie__n" href="https://www.mapradiocr.com/estudios-de-campo-3/" title="Bitácora 03: La playa">03</a></li><li><a class="ar-serie__n" href="https://www.mapradiocr.com/tri/" title="Bitácora 04: La crisis planetaria del bicho THX 1138">04</a></li><li><a class="ar-serie__n" href="https://www.mapradiocr.com/los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos/" title="Bitácora 05: Escuela de brujos">05</a></li><li><a class="ar-serie__n" href="https://www.mapradiocr.com/bitacora-6/" title="Bitácora 06: Receptor transdimensional de banda vacante residual VX-996">06</a></li><li><span class="ar-serie__n ar-serie__n--prep" title="Bitácora 07: en preparación">07</span></li><li><span class="ar-serie__n ar-serie__n--prep" title="Bitácora 08: en preparación">08</span></li><li><span class="ar-serie__n ar-serie__n--prep" title="Bitácora 09: en preparación">09</span></li><li><span class="ar-serie__n ar-serie__n--prep" title="Bitácora 10: en preparación">10</span></li></ol>
+    <div class="ar-serie__nav">
+      <a class="ar-serie__paso ar-serie__paso--ant" href="https://www.mapradiocr.com/estudios-de-campo/" rel="prev"><span>← Anterior · Bitácora 01</span><b>Camino a la montaña</b></a>
+      <a class="ar-serie__paso ar-serie__paso--sig" href="https://www.mapradiocr.com/estudios-de-campo-3/" rel="next"><span>Siguiente · Bitácora 03 →</span><b>La playa</b></a>
+    </div>
+    <p class="ar-serie__nota">En la maqueta se ve con datos de Los Estudios de Campo. En el sitio aparece solo en las entradas de una serie: Los Estudios de Campo, Crónicas del Refugio y La Cantina Ideal.</p>
+  </nav></div>
 
   <div class="hr-wrap"><section class="ar-dos" data-z="plantilla" data-z-lab="Plantilla · lo más leído y últimos artículos">
     <div class="ar-col"><div class="ar-tit"><h2>Lo más leído</h2><span>30 días · ejemplo</span></div><ol class="ar-lista"><li><span class="ar-marca">1</span><div><a href="https://www.mapradiocr.com/cantina-ideal-3/">La Cantina Ideal</a><span class="ar-meta">La Barra · 11 min</span></div></li><li><span class="ar-marca">2</span><div><a href="https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/">Carlos Alvarado y el morbo literario del poder</a><span class="ar-meta">Zona Restringida · 9 min</span></div></li><li><span class="ar-marca">3</span><div><a href="https://www.mapradiocr.com/4-historias-de-patineta/">4 historias de patineta</a><span class="ar-meta">Tracción Humana · 15 min</span></div></li><li><span class="ar-marca">4</span><div><a href="https://www.mapradiocr.com/?s=tertuliano">El Emperador Tertuliano</a><span class="ar-meta">Letra · 12 min</span></div></li><li><span class="ar-marca">5</span><div><a href="https://www.mapradiocr.com/podcast/#bastardos">Bastardos de Poveda</a><span class="ar-meta">Letra · Podcast</span></div></li></ol></div>
