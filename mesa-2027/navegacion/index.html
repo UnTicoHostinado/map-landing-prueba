@@ -1,0 +1,220 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}</style></head><body>
+<title>Mapa de navegación MAP</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Una carta de rutas: tres capas del sitio unidas por caminos rotulados; abajo, recorridos, reglas y pendientes. Papelería MAP 2027, una sola apariencia clara. */
+:root{
+  --papel:#F4F3EF; --papel-2:#E9E7E0; --tinta:#14120E; --gris:#5f5d57; --linea:rgba(20,18,14,.16);
+  --acento:#E8412C; --plano:#2C5876; --aero:#1f4f78; --ambar:#c98612;
+  --tit:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  --txt:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --rot:'B612 Mono','IBM Plex Mono',ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--papel);color:var(--tinta);font:16px/1.6 var(--txt);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.ancho{max-width:1160px;margin:0 auto}
+a{color:var(--acento)}
+
+/* cabecera */
+.cab{padding-block:44px 28px;border-bottom:2px solid var(--tinta);display:grid;gap:10px}
+.rot{font:700 11.5px var(--rot);letter-spacing:.16em;text-transform:uppercase;color:var(--acento);margin:0}
+h1{margin:0;font:400 clamp(52px,8vw,104px)/.88 var(--tit);letter-spacing:.01em;text-wrap:balance}
+.cab p.lede{margin:6px 0 0;max-width:64ch;font-size:18px}
+.preguntas{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.preguntas li{font:12px var(--rot);letter-spacing:.06em;border:1.5px solid var(--tinta);padding:6px 10px;background:var(--papel)}
+.preguntas b{color:var(--acento)}
+
+h2{margin:0;font:400 clamp(34px,4.6vw,48px)/1 var(--tit);letter-spacing:.02em}
+.sec{margin-top:64px}
+.sec-cab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--tinta);padding-bottom:6px;margin-bottom:22px}
+.sec-cab span{font:11px var(--rot);letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+
+/* ===== el mapa ===== */
+.mapa{display:grid;gap:0}
+.banda{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:10px 14px;font:12px/1.45 var(--rot);letter-spacing:.04em}
+.banda b{font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-right:10px}
+.banda .flecha{font:400 30px/1 var(--tit)}
+.banda.atajo{border:1.5px dashed var(--ambar);color:#5a3c07;background:#fbf2df}
+.banda.atajo .flecha{color:var(--ambar)}
+.banda.regreso{border:1.5px solid var(--acento);color:#6a1b10;background:#fde9e4}
+.banda.regreso .flecha{color:var(--acento)}
+.capas{display:grid;grid-template-columns:minmax(0,1fr) 128px minmax(0,1fr) 128px minmax(0,1fr);align-items:stretch;margin-block:14px}
+@media (max-width:980px){.capas{grid-template-columns:minmax(0,1fr)}}
+.capa{border:2px solid var(--tinta);background:var(--papel);display:flex;flex-direction:column;min-width:0}
+.capa-cab{padding:12px 14px 10px;border-bottom:2px solid var(--tinta);background:var(--tinta);color:var(--papel)}
+.capa-cab small{display:block;font:11px var(--rot);letter-spacing:.14em;text-transform:uppercase;color:#d7d3c8}
+.capa-cab b{display:block;font:400 34px/1 var(--tit);letter-spacing:.03em}
+.capa-cab i{display:block;margin-top:2px;font:italic 14px var(--txt);color:#e9e5da}
+.nodos{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column}
+.nodos li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:2px 10px;align-items:start;padding:8px 14px;border-bottom:1px dotted var(--linea)}
+.nodos li:last-child{border-bottom:0}
+.nodos li b{font-weight:600;font-size:15px;line-height:1.3}
+.nodos li>span{grid-column:2;font-size:13.5px;line-height:1.45;color:var(--gris)}
+.ico{width:22px;height:22px;margin-top:1px}
+.pend{display:inline-block;margin-left:6px;font:700 9.5px var(--rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ambar);border:1px solid var(--ambar);padding:1px 5px;vertical-align:2px}
+.oaci{display:inline-block;margin-left:6px;font:700 10px var(--rot);letter-spacing:.08em;color:#fff;background:var(--aero);padding:1px 5px;vertical-align:2px}
+.conector{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:10px 8px;text-align:center}
+.conector .flecha{font:400 44px/1 var(--tit);color:var(--tinta)}
+.conector p{margin:0;font:11.5px/1.45 var(--rot);letter-spacing:.03em;color:var(--tinta)}
+.conector p b{display:block;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acento);margin-bottom:2px}
+.conector .vuelta{font-size:30px;color:var(--gris)}
+@media (max-width:980px){.conector{flex-direction:row;justify-content:flex-start;gap:12px;padding:10px 4px;text-align:left}.conector .flecha{transform:rotate(90deg);width:40px;flex:none}}
+.redes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+@media (max-width:760px){.redes{grid-template-columns:minmax(0,1fr)}}
+.red{border:1.5px solid var(--linea);background:var(--papel-2);padding:12px 14px;display:grid;gap:4px;align-content:start}
+.red b{font:700 11px var(--rot);letter-spacing:.14em;text-transform:uppercase}
+.red p{margin:0;font-size:14px;line-height:1.5;color:var(--tinta)}
+
+/* ===== recorridos ===== */
+.recorridos{display:grid;gap:18px}
+.rec{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px 24px;align-items:start;padding-bottom:18px;border-bottom:1px solid var(--linea)}
+@media (max-width:760px){.rec{grid-template-columns:minmax(0,1fr)}}
+.rec h3{margin:0;font:400 26px/1 var(--tit);letter-spacing:.03em}
+.rec h3 small{display:block;margin-top:6px;font:12px/1.5 var(--rot);letter-spacing:.04em;color:var(--gris);text-transform:none}
+.pasos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pasos li{display:flex;align-items:center;gap:8px;font-size:14.5px}
+.pasos li span{border:1.5px solid var(--tinta);background:var(--papel);padding:6px 10px;line-height:1.35}
+.pasos li span.clave{background:var(--tinta);color:var(--papel)}
+.pasos li:not(:last-child)::after{content:"→";font:400 22px/1 var(--tit);color:var(--acento)}
+
+/* ===== reglas y pendientes ===== */
+.dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:860px){.dos{grid-template-columns:minmax(0,1fr)}}
+.reglas{list-style:none;margin:0;padding:0;counter-reset:r}
+.reglas li{counter-increment:r;display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--linea)}
+.reglas li::before{content:counter(r,decimal-leading-zero);grid-row:span 2;font:400 30px/1 var(--tit);color:var(--acento)}
+.reglas b{font-weight:600}
+.reglas span{color:var(--gris);font-size:14.5px;line-height:1.5}
+.falta{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.falta li{border:1.5px solid var(--tinta);padding:12px 14px;display:grid;gap:4px}
+.falta li b{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font:400 24px/1 var(--tit);letter-spacing:.03em}
+.falta li b em{font:700 10px var(--rot);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--ambar);border:1px solid var(--ambar);padding:2px 6px;white-space:nowrap}
+.falta li b em.hecho{color:var(--plano);border-color:var(--plano)}
+.falta li span{font-size:14.5px;line-height:1.5;color:var(--gris)}
+.pie{margin-top:48px;padding-top:12px;border-top:1px solid var(--linea);font:11px var(--rot);letter-spacing:.08em;color:var(--gris)}
+a:focus-visible{outline:2px solid var(--acento);outline-offset:2px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-senal" viewBox="-12 -12 24 24"><circle r="9" fill="none" stroke="#E8412C" stroke-width="2.4"/><circle r="4" fill="#E8412C"/></symbol>
+  <symbol id="i-aero" viewBox="-12 -18 24 30"><path d="M0-6V-17" stroke="#14120E" stroke-width="1.5"/><path d="M0-17L8-14.5L0-12Z" fill="#E8412C"/><circle r="6.5" fill="#F4F3EF" stroke="#1f4f78" stroke-width="2"/><rect x="-1.2" y="-5.2" width="2.4" height="10.4" fill="#1f4f78" transform="rotate(35)"/></symbol>
+  <symbol id="i-hoja" viewBox="0 0 24 24"><path d="M5 2h10l4 4v16H5z" fill="#F4F3EF" stroke="#14120E" stroke-width="1.6"/><path d="M8 10h8M8 14h8M8 18h5" stroke="#14120E" stroke-width="1.4"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="#14120E"/><path d="M5 9h6M5 12h9M5 15h5" stroke="#c98612" stroke-width="1.6"/></symbol>
+  <symbol id="i-lupa" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="none" stroke="#14120E" stroke-width="2"/><path d="M14.5 14.5L20 20" stroke="#14120E" stroke-width="2.4"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" fill="none" stroke="#14120E" stroke-width="1.8"/></symbol>
+</svg>
+
+<header class="cab ancho">
+  <p class="rot">mapradiocr.com 2027 · arquitectura de navegación</p>
+  <h1>Mapa de navegación</h1>
+  <p class="lede">Tres capas y una sola metáfora: quien entra es un piloto que recorre un territorio. Cada página responde siempre estas tres preguntas:</p>
+  <ul class="preguntas"><li><b>¿Dónde estoy?</b> migas de pan, menú marcado</li><li><b>¿A dónde puedo ir?</b> aeropuertos, menú, listas</li><li><b>¿Cómo vuelvo?</b> el sello MAP, siempre arriba a la izquierda</li></ul>
+</header>
+
+<main class="ancho">
+
+  <section class="sec" aria-labelledby="t-mapa">
+    <div class="sec-cab"><h2 id="t-mapa">Las tres capas</h2><span>y los caminos entre ellas</span></div>
+    <div class="mapa">
+      <div class="banda atajo"><span class="flecha" aria-hidden="true">⤳</span><span><b>Atajo · carta → entrada</b> Las señales y el tablero de vuelos llevan directo a un texto, sin pasar por el archivo.</span></div>
+
+      <div class="capas">
+        <article class="capa" aria-labelledby="c1">
+          <div class="capa-cab"><small>Capa 1 · www.mapradiocr.com</small><b id="c1">La carta</b><i>Explorar y descubrir</i></div>
+          <ul class="nodos">
+            <li><svg class="ico"><use href="#i-panel"/></svg><b>Interruptor y collage</b><span>Solo la primera vez en la visita. Después, la cabina abre encendida.</span></li>
+            <li><svg class="ico"><use href="#i-senal"/></svg><b>Señales</b><span>Contenido escondido en el territorio. Se encuentran con el aro o con Rumbo aleatorio.</span></li>
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Aeropuertos</b><span>Las cinco secciones. Al tocar uno, la cámara aterriza y entra.</span></li>
+            <li><svg class="ico"><use href="#i-panel"/></svg><b>Tablero de vuelos</b><span>Salidas (lo nuevo) y Más solicitados (lo más leído). Tecla «Vuelos».</span></li>
+            <li><svg class="ico"><use href="#i-ext"/></svg><b>Cinta de NOTAM <em class="pend">pendiente</em></b><span>Logos de Cannabis Airlines, Nasional Skateboards, MAP e IQCPLII.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Carta plegada</b><span>El índice completo: aeropuertos arriba, señales debajo. La versión para quien no quiere jugar.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Pliegos</b><span>Frecuencia abierta · El Pañol · Astillero, desde el panel.</span></li>
+          </ul>
+        </article>
+
+        <div class="conector"><span class="flecha" aria-hidden="true">→</span><p><b>Aterrizar</b>aeropuertos · carta plegada · pliegos</p></div>
+
+        <article class="capa" aria-labelledby="c2">
+          <div class="capa-cab"><small>Capa 2 · las secciones</small><b id="c2">El archivo</b><i>Ubicarse y elegir</i></div>
+          <ul class="nodos">
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Textos <span class="oaci">MROC</span></b><span>La portada del archivo: última transmisión, Crónicas, Al aire, Antología, Últimos y Lo más leído.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Crónicas del Refugio</b><span>El libro con su índice de territorios, desde Textos.</span></li>
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Serie MAP <span class="oaci">MRGP</span></b><span>Sala de proyección, escaleta y manifiesto.</span></li>
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Podcast <span class="oaci">MRLB</span></b><span>Tres series y el receptor VX-996.</span></li>
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Sobre el director <span class="oaci">MRTM</span></b><span>Biografía, la moviola y el credo.</span></li>
+            <li><svg class="ico"><use href="#i-aero"/></svg><b>Contacto <span class="oaci">MRCH</span></b><span>Frecuencia abierta, El Pañol y El Astillero.</span></li>
+            <li><svg class="ico"><use href="#i-lupa"/></svg><b>Buscador</b><span>Desde el botón «Buscar» de cualquier página.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Categorías <em class="pend">pendiente</em></b><span>Una sola plantilla para todas (Cine, Editorial, Literatura…).</span></li>
+          </ul>
+        </article>
+
+        <div class="conector"><span class="flecha" aria-hidden="true">→</span><p><b>Leer</b>listas · filtros · buscador · índices</p></div>
+
+        <article class="capa" aria-labelledby="c3">
+          <div class="capa-cab"><small>Capa 3 · cada texto</small><b id="c3">La entrada</b><i>Leer y seguir leyendo</i></div>
+          <ul class="nodos">
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Migas de pan <em class="pend">pendiente</em></b><span>MAP › Textos › Crónicas › Los Cangrejos Salados.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>El texto</b><span>La hoja de rodaje: galerías, proyecciones adentro, citas.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Anterior · siguiente <em class="pend">pendiente</em></b><span>Solo en series: Bitácoras del Dr. Arkadi, Crónicas del Refugio, La Cantina Ideal.</span></li>
+            <li><svg class="ico"><use href="#i-panel"/></svg><b>Radiogramas</b><span>Los comentarios de los lectores.</span></li>
+            <li><svg class="ico"><use href="#i-hoja"/></svg><b>Lo más leído · Últimos</b><span>Al pie de cada entrada, para no terminar en un callejón.</span></li>
+          </ul>
+          <div class="conector" style="margin-top:auto;border-top:1px dotted var(--linea)"><span class="flecha vuelta" aria-hidden="true">↻</span><p><b>Seguir</b>de un texto a otro, sin volver atrás</p></div>
+        </article>
+      </div>
+
+      <div class="banda regreso"><span class="flecha" aria-hidden="true">←</span><span><b>Regreso · cualquier página → la carta</b> El sello MAP vuelve a la cabina ya encendida, despegando del aeropuerto de la sección (desde Textos sale de Juan Santamaría, desde Podcast de Liberia).</span></div>
+
+      <div class="redes">
+        <div class="red"><b>Red 1 · Canal 404</b><p>Una dirección que no existe muestra el televisor sin señal, tres textos al azar, el buscador y «Volver a la programación».</p></div>
+        <div class="red"><b>Red 2 · Buscador sin resultados</b><p>«Aquí no hay nada con esa palabra… todavía.» Tres imperdibles al azar y palabras para probar.</p></div>
+        <div class="red"><b>Red 3 · Landing clásico <span class="pend">pendiente</span></b><p>Si el aparato no aguanta el 3D, la persona llega a una portada sencilla con todo lo mismo, sin Three.js.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="t-rec">
+    <div class="sec-cab"><h2 id="t-rec">Recorridos típicos</h2><span>cómo se mueve la gente</span></div>
+    <div class="recorridos">
+      <div class="rec"><h3>Primera visita<small>Alguien escribe mapradiocr.com</small></h3>
+        <ol class="pasos"><li><span>Interruptor</span></li><li><span>Collage</span></li><li><span class="clave">Señal objetivo</span></li><li><span>Escucha el extracto</span></li><li><span>Abre el texto</span></li><li><span>Lo más leído</span></li></ol></div>
+      <div class="rec"><h3>Llega desde Google<small>Cae directo en un texto</small></h3>
+        <ol class="pasos"><li><span class="clave">Entrada</span></li><li><span>Migas: «Textos › Cine»</span></li><li><span>Categoría Cine</span></li><li><span>Otro texto</span></li><li><span>Sello MAP</span></li><li><span>La carta, despegando de MROC</span></li></ol></div>
+      <div class="rec"><h3>Viene a leer la serie<small>Sigue las Bitácoras del Dr. Arkadi</small></h3>
+        <ol class="pasos"><li><span>Podcast o Textos</span></li><li><span class="clave">Bitácora 1</span></li><li><span>Siguiente</span></li><li><span>Bitácora 2</span></li><li><span>…</span></li><li><span>Receptor VX-996</span></li></ol></div>
+      <div class="rec"><h3>Busca algo que no hay<small>O escribe mal una dirección</small></h3>
+        <ol class="pasos"><li><span>Buscador o 404</span></li><li><span class="clave">Tres imperdibles al azar</span></li><li><span>Un texto</span></li><li><span>Sigue leyendo</span></li></ol></div>
+    </div>
+  </section>
+
+  <section class="sec dos" aria-label="Reglas y pendientes">
+    <div>
+      <div class="sec-cab"><h2>Reglas</h2><span>las que ya cumplimos</span></div>
+      <ol class="reglas">
+        <li><b>La metáfora nunca esconde una función.</b><span>Cada cosa lúdica tiene su versión sencilla: aeropuertos y menú, tablero y listas, señales y Carta plegada.</span></li>
+        <li><b>Ningún callejón sin salida.</b><span>Toda página termina ofreciendo otro camino: Lo más leído, imperdibles, siguiente.</span></li>
+        <li><b>Cualquier texto a tres toques.</b><span>Carta → sección → texto. Con el tablero o una señal, a uno.</span></li>
+        <li><b>El regreso no castiga.</b><span>Volver a la carta no repite la entrada. El botón Apagar sí, para quien la quiera ver de nuevo.</span></li>
+        <li><b>Todo existe también como enlace normal.</b><span>Google no lee la cabina 3D: lo que vive en ella está repetido en enlaces dentro del código.</span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="sec-cab"><h2>Lo que falta</h2><span>para cerrar la lógica</span></div>
+      <ul class="falta">
+        <li><b>Migas de pan <em>por hacer</em></b><span>Una línea arriba del título de cada entrada. Rank Math ya las trae, sin plugin nuevo, y le avisa a Google la ruta del texto.</span></li>
+        <li><b>Plantilla de categoría <em>por hacer</em></b><span>Una sola para todas, con la lista de Textos. Crónicas y Podcast mandan a sus páginas propias.</span></li>
+        <li><b>Anterior · siguiente <em>por hacer</em></b><span>Solo en las series con orden.</span></li>
+        <li><b>Cinta de NOTAM <em>por hacer</em></b><span>Falta recibir los cuatro logos.</span></li>
+        <li><b>Landing clásico <em>por hacer</em></b><span>El respaldo sin 3D, con el sistema que manda ahí cuando el aparato no aguanta.</span></li>
+        <li><b>Aeropuertos, tablero y regreso <em class="hecho">hecho</em></b><span>29 de octubre de 2026.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="pie">MAP — 2016 ⚡ · Mapa de navegación del sitio 2027 · borrador del 30 de octubre de 2026</p>
+</main>
+</body></html>
