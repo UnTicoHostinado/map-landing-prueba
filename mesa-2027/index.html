@@ -228,6 +228,11 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 #ficha.estacion .ficha-play{background:var(--estacion);border-color:var(--estacion)}
 #ficha.estacion .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
+/* ---------- estación de Los Bastardos de Poveda: el retrato se ve completo ---------- */
+@media (min-width:760px){#ficha.retrato .ficha-foto{aspect-ratio:1}}
+#ficha.retrato .ficha-foto img{object-fit:contain;filter:none;background:#f1ece2}
+#ficha.retrato .ficha-foto{background:#f1ece2}
+
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
   padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -540,7 +545,7 @@ const CARTA={w:4096,h:2760,lon0:-86,lon1:-83,lat0:11,lat1:9};
 const T=[
  {id:"la-barra",nombre:"La Barra",lugar:"San José",lo:-84.0843,la:9.925,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
  {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",lo:-83.9091,la:9.8506,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
- {id:"letra",nombre:"Letra",lugar:"Santa María de Dota",lo:-83.8876,la:9.6158,tipo:"senal",frase:"Entre cervezas y estados muy alterados de consciencia.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Bastardos de Poveda"},
+ {id:"letra",archivo:"bastardos-poveda",nombre:"Los Bastardos de Poveda",lugar:"Santa María de Dota",lo:-83.8876,la:9.6158,tipo:"senal",frase:"…las cantinas definitivamente son un templo.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Podcast",retrato:true,rot:"Episodio",b:1,bit:[{t:"Episodio 01",frase:"…las cantinas definitivamente son un templo.",link:"https://www.mapradiocr.com/podcast/#bastardos",alt:"Retrato en plumilla de un hombre con gorro de lana, anteojos de pasta y barba, firmado Los Bastardos de Poveda"}]},
  {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",lo:-83.668,la:9.8894,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
  {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",lo:-84.1935,la:9.4217,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
  {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",lo:-83.4902,la:9.5,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
@@ -987,7 +992,7 @@ function tic(){
   f.type="bandpass";f.frequency.value=3000;f.Q.value=2;g.gain.value=.55;s.buffer=ticBuf;s.connect(f).connect(g).connect(A.master);s.start();
 }
 /* ===== estación del Dr. Arkady: cambiar de bitácora sin salir de la ficha ===== */
-const pista=t=>t.id+"-"+String(t.bit?(t.b||1):1).padStart(2,"0");
+const pista=t=>(t.archivo||t.id)+"-"+String(t.bit?(t.b||1):1).padStart(2,"0");
 function marcarBitacora(t){ if(!t.bit) return; S.oidas.add(pista(t)); store.set("map27.oidas",[...S.oidas]);
   const bt=document.querySelector(`#ficha [data-bit="${t.b||1}"]`); if(bt) bt.classList.add("oida"); }
 function cambiarBitacora(t,n){
@@ -1040,7 +1045,7 @@ function abrirFicha(t){
       <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span></div></div></div>`;
   } else {
     const B=t.bit?t.bit[(t.b||1)-1]:null, num=n=>String(n).padStart(2,"0");
-    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir bitácora"><span class="rot">Bitácora</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}${Array.from({length:Math.max(0,(t.total||0)-t.bit.length)},(_,j)=>`<button type="button" class="futura" disabled title="Bitácora en preparación">${num(t.bit.length+j+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
+    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir ${(t.rot||"Bitácora").toLowerCase()}"><span class="rot">${t.rot||"Bitácora"}</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}${Array.from({length:Math.max(0,(t.total||0)-t.bit.length)},(_,j)=>`<button type="button" class="futura" disabled title="Bitácora en preparación">${num(t.bit.length+j+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
     f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${pista(t)}.jpg" alt="${B?B.alt:t.nombre+": imagen de la señal"}">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
       <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${B?B.frase:t.frase}</p>${selector}
       <div class="medidor"><button class="ficha-play" type="button" data-estado="quieta" aria-label="Escuchar"><svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2L11 6L2.5 10.8Z"/></svg><svg class="i-pausa" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg></button><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
@@ -1049,7 +1054,7 @@ function abrirFicha(t){
     if(B) f.querySelectorAll("[data-bit]").forEach(b=>b.addEventListener("click",()=>cambiarBitacora(t,+b.dataset.bit)));
   }
   f.querySelector("[data-cerrar]").addEventListener("click",()=>{cerrarFicha();});
-  f.classList.toggle("estacion",!!t.estacion); A.pos=0; estadoPlay(); arrastreFicha(f);
+  f.classList.toggle("estacion",!!t.estacion); f.classList.toggle("retrato",!!t.retrato); A.pos=0; estadoPlay(); arrastreFicha(f);
   if(!matchMedia("(min-width:760px)").matches){F.dy=0;f.classList.remove("plegada")} ponerF(f);
   requestAnimationFrame(()=>f.classList.add("abierta"));
 }
