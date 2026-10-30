@@ -193,7 +193,10 @@ a{color:inherit}
 
 /* ---------- ficha v2: movible, play circular, cierre en la esquina ---------- */
 .ficha-cab{justify-content:flex-start;align-items:center;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
-.ficha-cab .coord{margin-left:auto}
+.ficha-cab{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:8px;row-gap:3px}
+.ficha-cab b{min-width:0}
+.ficha-cab .coord{grid-column:1/-1;grid-row:2;text-align:left;white-space:normal}
+.ficha-cab .ficha-x{margin-left:0}
 .ficha-cab .asa{flex:none;width:8px;height:14px;opacity:.55;background:radial-gradient(circle,var(--tinta) 1.1px,transparent 1.3px) 0 0/4px 4px}
 #ficha.arrastrando{transition:none}
 #ficha.arrastrando .ficha-cab{cursor:grabbing}
