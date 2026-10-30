@@ -272,6 +272,59 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+/* ===== tablero de vuelos ===== */
+.vuelos{left:max(10px,env(safe-area-inset-left,0px));top:calc(142px + env(safe-area-inset-top,0px));width:min(540px,calc(100vw - 20px));transform:translateX(-12px);
+  background:#111312;border:1px solid #2c302e;border-radius:6px;box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);color:var(--rotulo);font-family:var(--mono);overflow:hidden;z-index:30}
+.vuelos.listo{transform:none}
+.vuelos[data-plegado="true"]{opacity:0!important;pointer-events:none;transform:translateX(-12px)}
+.vuelos-cab{display:flex;align-items:center;gap:10px;padding:8px 10px 6px;border-bottom:1px solid #2c302e;background:linear-gradient(#1b1e1c,#131514)}
+.vuelos-cab svg{width:18px;height:18px;flex:none;fill:var(--lampara)}
+.vuelos-cab b{font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.08em;line-height:1;color:#f4efe0}
+.vuelos-cab span{margin-left:auto;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,228,212,.6)}
+.vuelos-cab time{color:var(--lampara);font-weight:700;letter-spacing:.08em}
+.vuelos-x{display:none;background:none;border:1px solid rgba(233,228,212,.3);color:var(--rotulo);width:28px;height:28px;border-radius:3px;cursor:pointer}
+.vuelos-tabs{display:flex;gap:0;border-bottom:1px solid #2c302e}
+.vuelos-tabs button{flex:1;background:none;border:0;border-right:1px solid #2c302e;color:rgba(233,228,212,.55);font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:7px 4px;cursor:pointer}
+.vuelos-tabs button:last-child{border-right:0}
+.vuelos-tabs button[aria-selected="true"]{color:#111312;background:var(--lampara)}
+.vuelos-cols,.vuelos-lista a{display:grid;grid-template-columns:5.6em 5.4em minmax(0,1fr) 7.6em;gap:0 10px;align-items:center}
+.vuelos[data-vista="sol"] .vuelos-cols,.vuelos[data-vista="sol"] .vuelos-lista a{grid-template-columns:2.6em minmax(0,1fr) 6.8em}
+.vuelos-cols{padding:5px 10px 3px;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,228,212,.45)}
+.vuelos-cols span:last-child{text-align:right}
+.vuelos-lista{list-style:none;margin:0;padding:0 6px 8px}
+.vuelos-lista li{border-top:1px solid #1d201e}
+.vuelos-lista a{padding:5px 4px;color:#f4efe0;text-decoration:none;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.vuelos-lista a:hover,.vuelos-lista a:focus-visible{background:#1f2321;outline:none}
+.vuelos-lista a:hover .dst,.vuelos-lista a:focus-visible .dst{color:var(--lampara)}
+.vuelos-lista .dst,.vuelos-lista .fch,.vuelos-lista .cod{overflow:hidden;white-space:nowrap}
+.vuelos-lista .est{text-align:right;color:var(--sintonia)}
+.vuelos-lista .est.abordando{color:var(--lampara);animation:abordando 1.1s steps(2,end) infinite}
+.vuelos-lista .est.demorado{color:var(--senal)}
+.vuelos-lista .est.salio{color:rgba(233,228,212,.4)}
+.vuelos-lista .cod{color:rgba(233,228,212,.7)}
+.vuelos-lista .ca .cod{color:#86b06f}
+@keyframes abordando{50%{opacity:.25}}
+/* paleta: cada letra cae como en un tablero de terminal */
+.flap{display:inline-block;min-width:.62em;text-align:center;background:linear-gradient(#1c1f1d 0 49%,#0c0d0c 49% 51%,#1c1f1d 51%);border-radius:1.5px;margin-right:1px;padding:0 .5px}
+.flap.cae{animation:cae .09s linear}
+@keyframes cae{0%{transform:scaleY(1)}50%{transform:scaleY(.1)}100%{transform:scaleY(1)}}
+#b-vuelos .luz{background:#3a2a14}
+#b-vuelos[aria-pressed="true"] .luz{background:var(--lampara);box-shadow:0 0 8px var(--lampara)}
+@media (max-width:1099px),(max-height:700px){
+  .vuelos{left:50%;top:50%;transform:translate(-50%,-46%);width:min(460px,calc(100vw - 20px));z-index:60}
+  .vuelos.listo{transform:translate(-50%,-50%)}
+  .vuelos[data-plegado="true"]{transform:translate(-50%,-46%)}
+  .vuelos-x{display:block}
+}
+@media (max-width:520px){
+  .vuelos-cols,.vuelos-lista a{grid-template-columns:5.2em minmax(0,1fr) 7.2em;gap:0 8px}
+  .vuelos[data-vista="sol"] .vuelos-cols,.vuelos[data-vista="sol"] .vuelos-lista a{grid-template-columns:2.4em minmax(0,1fr) 6.4em}
+  .vuelos[data-vista="sal"] .vuelos-cols span:first-child,.vuelos-lista .fch{display:none}
+  .vuelos-lista a{font-size:11px}
+  .flap{min-width:.58em}
+}
+@media (prefers-reduced-motion:reduce){.flap.cae,.vuelos-lista .est.abordando{animation:none}}
+/* ===== fin tablero de vuelos ===== */
 </style>
 
 <div id="app">
@@ -300,7 +353,7 @@ a{color:inherit}
 
   <div class="hud" id="tablero">
     <div class="mandos">
-      <div class="izq"><button class="tecla" id="b-carta" type="button"><span class="cuerpo"><span class="luz"></span></span>Carta plegada</button></div>
+      <div class="izq"><button class="tecla" id="b-carta" type="button"><span class="cuerpo"><span class="luz"></span></span>Carta plegada</button><button class="tecla" id="b-vuelos" type="button" aria-pressed="false" aria-controls="vuelos"><span class="cuerpo"><span class="luz"></span></span>Vuelos</button></div>
       <button id="rumbo" type="button" aria-label="Rumbo aleatorio: sintonizar una señal al azar"><span class="perilla"></span>Rumbo aleatorio</button>
       <div class="der"><button class="tecla encendida" id="b-audio" type="button" aria-pressed="true"><span class="cuerpo"><span class="luz"></span></span>Audio</button><button class="tecla" id="b-apagar" type="button" aria-label="Apagar el instrumento y volver al inicio"><span class="cuerpo"><span class="luz" style="background:#6a1b10"></span></span>Apagar</button></div>
       <div class="fila">
@@ -312,6 +365,16 @@ a{color:inherit}
     <p class="pie-panel">Perturbaciones magnéticas locales afectan la confiabilidad de este instrumento</p>
   </div>
 
+  <!-- TABLERO DE VUELOS: Salidas = textos recientes · Más solicitados = lo más leído -->
+  <section class="hud vuelos" id="vuelos" aria-labelledby="vuelos-t" data-plegado="true" data-vista="sal">
+    <div class="vuelos-cab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg><b id="vuelos-t">Terminal MAP</b><span>Hora local <time id="vuelos-hora">--:--</time></span><button type="button" class="vuelos-x" id="vuelos-x" aria-label="Cerrar el tablero">✕</button></div>
+    <div class="vuelos-tabs" role="tablist" aria-label="Tablero">
+      <button type="button" role="tab" id="tab-sal" aria-selected="true" aria-controls="v-lista" data-v="sal">Salidas</button>
+      <button type="button" role="tab" id="tab-sol" aria-selected="false" aria-controls="v-lista" data-v="sol">Más solicitados</button>
+    </div>
+    <div class="vuelos-cols" id="v-cols" aria-hidden="true"></div>
+    <ol class="vuelos-lista" id="v-lista" role="tabpanel" aria-live="off"></ol>
+  </section>
   <aside id="ficha" aria-live="polite" aria-label="Señal sintonizada"></aside>
 
   <div id="collage" aria-hidden="true"></div>
@@ -1049,6 +1112,82 @@ if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
 // precarga liviana del collage: la portada espera el toque
 COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
+})();
+</script>
+<script>
+/* ===== tablero de vuelos: independiente de la cabina ===== */
+(function(){
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const tab=$("#vuelos"), lista=$("#v-lista"), cols=$("#v-cols"), tecla=$("#b-vuelos");
+if(!tab) return;
+const SITIO="https://www.mapradiocr.com/";
+const CATN={"15": "Cine", "4": "Editorial", "34": "Literatura", "908": "Crónicas", "32": "Cantinas", "545": "Taller Literatura Alajuela", "35": "Podcast", "173": "Fotografía", "33": "Ciudades", "196": "Opinión crítica", "230": "Taller literario", "479": "Clásicos revisados", "364": "Cannabis", "1": "Sin categoría"};
+let REC=[["2026-10-26", "El cine independiente en Costa Rica", "el-cine-independiente-en-costa-rica", "Cine"], ["2026-10-25", "El terror de los 70 visto desde acá", "el-terror-de-los-70-visto-desde-aca", "Cine"], ["2026-10-22", "El largo declive de la izquierda europea", "el-largo-declive-de-la-izquierda-europea", "Sin categoría"], ["2026-10-17", "Bitácora de un cortometraje: Falsi Prophetae", "bitacora-de-un-cortometraje-falsi-prophetae", "Cine"], ["2026-10-11", "10 misterios de Costa Rica", "10-misterios-de-costa-rica", "Sin categoría"], ["2026-10-06", "Bitácora de un videoclip", "bitacora-de-un-videoclip", "Cine"]], SOL=[["José María Villalta: el político profesional que vive de la pose", "jose-maria-villalta-el-politico-profesional-que-vide-de-la-pose", 14782], ["Carlos Alvarado y el morbo literario del poder", "carlos-alvarado-y-el-morbo-literario-del-poder", 2095], ["El peligro de la candidez (y otros aprendizajes ochenteros)", "el-peligro-de-la-candidez-y-otros-aprendizajes-ochenteros", 2038], ["De cuclillas con estilo / La mañana más alegre", "de-cuclillas-con-estilo-la-manana-mas-alegre", 1453], ["Vitamina D, cerveza fría y un secreto en Garza", "vitamina-d-cerveza-fria-y-un-secreto-de-garza", 1387]];
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ancho=()=>innerWidth>=1100&&innerHeight>700;
+const MES=["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+const sinT=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[«»"“”]/g,"").toUpperCase();
+const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h};
+const LARGO=()=>innerWidth<520?16:27;
+const recorta=s=>{s=sinT(s).replace(/\s+/g," ");const n=LARGO();return s.length>n?s.slice(0,n-1).trimEnd()+"…":s};
+const ALF="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+function paleta(el,txt,retraso){
+  if(reduce){el.textContent=txt;return}
+  el.textContent=""; [...txt].forEach((c,i)=>{const s=document.createElement("span");s.className="flap";s.textContent=c===" "?"\u00a0":ALF[Math.floor(Math.random()*ALF.length)];el.appendChild(s);
+    if(c===" ") return; let n=3+Math.floor(Math.random()*5);
+    const giro=()=>{s.classList.remove("cae");void s.offsetWidth;s.classList.add("cae");if(--n<=0){s.textContent=c;return}s.textContent=ALF[Math.floor(Math.random()*ALF.length)];setTimeout(giro,70)};
+    setTimeout(giro,retraso+i*18);});
+}
+let vista="sal";
+function pintar(){
+  tab.dataset.vista=vista;
+  $$(".vuelos-tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===vista));
+  lista.innerHTML="";
+  if(vista==="sal"){
+    cols.innerHTML="<span>Fecha</span><span>Vuelo</span><span>Destino</span><span>Estado</span>";
+    const filas=REC.slice(0,5).map((p,i)=>{const f=p[0].split("-");return {fecha:f[2]+" "+MES[+f[1]-1],cod:"MP "+(100+hash(p[2])%900),dst:p[1],url:SITIO+p[2]+"/",est:i===0?"Abordando":(i<3?"A tiempo":"Salió"),cls:i===0?"abordando":(i<3?"":"salio")}});
+    filas.push({fecha:"13 MAY",cod:"CA 420",dst:"Cannabis Airlines",url:SITIO+"cannabis-airlines-entre-la-pista-y-el-cielo/",est:"Demorado",cls:"demorado",ca:true});
+    filas.forEach((r,i)=>{const li=document.createElement("li");li.innerHTML=`<a href="${r.url}"${r.ca?' class="ca"':""} title="${r.dst.replace(/"/g,"")}"><span class="fch"></span><span class="cod"></span><span class="dst"></span><span class="est ${r.cls}"></span></a>`;lista.appendChild(li);
+      const a=li.firstChild; paleta(a.querySelector(".fch"),r.fecha,i*120); paleta(a.querySelector(".cod"),r.cod,i*120+60); paleta(a.querySelector(".dst"),recorta(r.dst),i*120+120); paleta(a.querySelector(".est"),sinT(r.est),i*120+300);});
+  }else{
+    cols.innerHTML="<span>#</span><span>Destino</span><span>Pasajeros</span>";
+    SOL.slice(0,5).forEach((p,i)=>{const li=document.createElement("li");li.innerHTML=`<a href="${SITIO+p[1]}/" title="${p[0].replace(/"/g,"")}"><span class="cod"></span><span class="dst"></span><span class="est"></span></a>`;lista.appendChild(li);
+      const a=li.firstChild; paleta(a.querySelector(".cod"),String(i+1).padStart(2,"0"),i*120); paleta(a.querySelector(".dst"),recorta(p[0]),i*120+60); paleta(a.querySelector(".est"),Number(p[2]).toLocaleString("es-CR"),i*120+260);});
+  }
+}
+/* datos en vivo desde el sitio; si la red falla, queda el respaldo */
+function vivos(){
+  fetch(SITIO+"wp-json/wp/v2/posts?per_page=6&_fields=date,slug,title,categories").then(r=>r.ok?r.json():Promise.reject()).then(js=>{
+    if(!Array.isArray(js)||!js.length) return;
+    const d=document.createElement("div");
+    REC=js.map(p=>{d.innerHTML=p.title.rendered;return [p.date.slice(0,10),d.textContent,p.slug,CATN[p.categories&&p.categories[0]]||"Texto"]});
+    if(vista==="sal"&&!tab.matches("[data-plegado=true]")) pintar();
+  }).catch(()=>{});
+  fetch(SITIO+"wp-json/map/v1/populares").then(r=>r.ok?r.json():Promise.reject()).then(js=>{
+    if(!Array.isArray(js)||!js.length) return;
+    SOL=js.map(p=>[p.title,(p.link||"").replace(SITIO,"").replace(/\/$/,""),p.views||0]);
+  }).catch(()=>{});
+}
+function reloj(){try{$("#vuelos-hora").textContent=new Intl.DateTimeFormat("es-CR",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"America/Costa_Rica"}).format(new Date())}catch(e){}}
+let auto=null, quieto=false;
+function rotar(){clearInterval(auto);if(reduce)return;auto=setInterval(()=>{if(quieto||tab.dataset.plegado==="true")return;vista=vista==="sal"?"sol":"sal";pintar()},14000)}
+function mostrar(v){
+  tab.dataset.plegado=v?"false":"true"; if(tecla){tecla.setAttribute("aria-pressed",v);tecla.classList.toggle("encendida",v)}
+  try{localStorage.setItem("map27.vuelos",v?"1":"0")}catch(e){}
+  if(v) pintar();
+}
+$$(".vuelos-tabs button").forEach(b=>b.addEventListener("click",()=>{vista=b.dataset.v;pintar();rotar()}));
+tab.addEventListener("pointerenter",()=>quieto=true); tab.addEventListener("pointerleave",()=>quieto=false);
+tab.addEventListener("focusin",()=>quieto=true); tab.addEventListener("focusout",()=>quieto=false);
+$("#vuelos-x").addEventListener("click",()=>mostrar(false));
+if(tecla) tecla.addEventListener("click",()=>mostrar(tab.dataset.plegado==="true"));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!ancho()&&tab.dataset.plegado==="false")mostrar(false)});
+/* abierto por defecto en pantalla grande (salvo que la persona lo haya cerrado); en celular, con la tecla */
+let pref=null; try{pref=localStorage.getItem("map27.vuelos")}catch(e){}
+function revisar(){if(tab.classList.contains("listo")&&!tab._ya){tab._ya=true;if(ancho()&&pref!=="0")mostrar(true)}else if(!tab.classList.contains("listo")&&tab._ya){tab._ya=false;tab.dataset.plegado="true";if(tecla){tecla.setAttribute("aria-pressed","false");tecla.classList.remove("encendida")}}}
+new MutationObserver(revisar).observe(tab,{attributes:true,attributeFilter:["class"]}); revisar();
+reloj(); setInterval(reloj,30000); vivos(); rotar();
 })();
 </script>
 </body></html>
