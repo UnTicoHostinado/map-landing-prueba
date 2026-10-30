@@ -866,7 +866,7 @@ function revelar(els){
     if(A.ctx) nivelEstatica(0,3);
     setTimeout(esperar,reduce?0:700);
   },reduce?0:650);
-  S.visto=true; store.set("map27.visto",true);
+  S.visto=true; store.set("map27.visto",true); marcarEncendida(true);
 }
 function esperar(){
   // la señal apunta a lo nuevo: la primera que el visitante no ha oído
@@ -915,6 +915,7 @@ function mandos(){
   $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
 }
 function apagar(){
+  marcarEncendida(false);
   pararSenal(); nivelEstatica(0,.1); clack(); if(A.ctx) setTimeout(()=>{if(S.fase==="portada")A.ctx.suspend()},400);
   $$(".pliego").forEach(p=>p.hidden=true); $("#ficha").classList.remove("abierta");
   cancelAnimationFrame(S.pan||0); clearInterval(avisoT); $("#aviso").textContent="";
@@ -929,12 +930,33 @@ let ultimoFoco=null;
 function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimoFoco=document.activeElement;const p=$("#"+id);p.hidden=false;sonar("perillas",.5);p.querySelector(".cerrar").focus()}
 function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catch(e){}}
 
+/* ===== regreso: quien vuelve con el sello MAP no repite el encendido =====
+   ?desde=textos|serie|podcast|director|contacto (o ya encendió en esta visita) */
+const REGRESO=(()=>{let d=null,ses=false;try{d=new URLSearchParams(location.search).get("desde")}catch(e){}
+  try{ses=sessionStorage.getItem("map27.encendida")==="1"}catch(e){} return (d||ses)?{desde:d}:null})();
+const marcarEncendida=v=>{try{v?sessionStorage.setItem("map27.encendida","1"):sessionStorage.removeItem("map27.encendida")}catch(e){}};
+function audioAlPrimerToque(){
+  const arrancar=()=>{removeEventListener("pointerdown",arrancar,true);removeEventListener("keydown",arrancar,true);
+    iniciarAudio(); if(A.ctx&&A.ctx.state==="suspended") A.ctx.resume().catch(()=>{});};
+  addEventListener("pointerdown",arrancar,true); addEventListener("keydown",arrancar,true);
+}
+function regreso(){
+  S.fase="libre"; S.dichoLibre=true; marcarEncendida(true);
+  $("#encender").setAttribute("aria-checked","true"); $("#portada").classList.add("fuera");
+  $("#instrumento").classList.add("listo"); $$(".hud").forEach(h=>h.classList.add("listo"));
+  T.forEach(t=>{t.el.dataset.dormida="false";t.el.classList.add("viva")}); despertarAeros();
+  audioAlPrimerToque();
+  const a=AEROS.find(x=>x.id==="a-"+REGRESO.desde);
+  if(a&&a.dentro){ S.x=a.x; S.y=a.y; aplicar(); aviso(`Despegue desde ${a.oaci} · ${a.aero}. Cabina en línea`,true,5500); }
+  else aviso("Cabina en línea. Gire el aro para buscar señales",false,4500);
+}
 /* ===== arranque ===== */
 function cargarCarta(){
   const grande=(window.innerWidth>=760)?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg";
   const im=new Image(); im.onload=()=>{carta.src=grande}; im.src=grande;
 }
 dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); montarAeros(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
+if(REGRESO) regreso();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
