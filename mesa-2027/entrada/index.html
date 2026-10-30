@@ -203,10 +203,21 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .ar-ter a:hover,.ar-ter a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
 .ar-ter .ar-ter__sello{display:inline-flex;align-items:center;gap:8px;color:var(--ar-acento);font-weight:700;border:0}
 .ar-ter__sello i{width:11px;height:11px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
-.ar-previa{position:absolute;top:-22px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
+/* migas de pan: marcado de Rank Math (nav.rank-math-breadcrumb > p > a · span.separator · span.last) */
+.ar-migas{margin:0 0 22px;font:11.5px/1.6 var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-migas p{margin:0;display:flex;flex-wrap:wrap;align-items:center;min-width:0}
+.ar-migas a{color:var(--ar-gris);text-decoration:none;border-bottom:1px solid var(--ar-linea)}
+.ar-migas a:hover,.ar-migas a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ar-migas .separator{color:var(--ar-tiza);padding:0 8px;white-space:pre}
+.ar-migas p>a:first-child{display:inline-flex;align-items:center;gap:7px;color:var(--ar-acento);font-weight:700;border:0}
+.ar-migas p>a:first-child::before{content:"";width:9px;height:9px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
+.ar-migas .last{color:var(--ar-tinta);max-width:42ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:600px){.ar-migas .last,.ar-migas p>.separator:nth-last-child(2){display:none}}
+.ar-previa{position:absolute;top:8px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
   padding:8px 12px;display:flex;flex-direction:column;gap:3px;opacity:.85;pointer-events:none;background:rgba(244,243,239,.6)}
 .ar-previa b{font:700 14px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
 .ar-previa span{font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+@media (min-width:1181px){.hr-head.ar-head{padding-top:92px}}
 @media (max-width:1180px){.ar-previa{position:static;align-self:flex-start;display:inline-flex;margin:0 0 18px;transform:rotate(-2deg)}}
 
 /* pista de narración */
@@ -372,7 +383,7 @@ body.ver-zonas .ar-barra[data-z]{position:sticky}
 
 <main class="hr-root">
   <div class="hr-wrap"><header class="hr-head hr-col ar-head" data-z="plantilla" data-z-lab="Plantilla · cabecera">
-    <p class="hr-kicker">Cine</p>
+    <nav class="rank-math-breadcrumb ar-migas" aria-label="Migas de pan"><p><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/?desde=textos" class="ar-migas__map" title="Volver a la carta">MAP</a><span class="separator"> › </span><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/">Textos</a><span class="separator"> › </span><a href="https://www.mapradiocr.com/category/cine/">Cine</a><span class="separator"> › </span><span class="last">El cine independiente en Costa Rica</span></p></nav>
     <div class="ar-previa" role="note"><b>Señal previa</b><span>Captada antes de instalar el instrumento</span></div>
     <h1 class="hr-title">El cine independiente en Costa Rica</h1>
     <p class="hr-sub">Cómo hacer de tripas corazón sin hablar tanta papaya</p>
