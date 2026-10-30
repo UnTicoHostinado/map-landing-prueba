@@ -112,7 +112,7 @@ a{color:inherit}
 #placa-sup.listo,#tablero.listo{transform:none}
 #aviso.listo{transform:translate(-50%,0)}
 
-/* aviso de Arkadi */
+/* aviso de Arkady */
 #aviso{left:50%;transform:translate(-50%,8px);max-width:min(560px,calc(100vw - 32px));text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--rotulo);background:rgba(29,31,30,.92);border:1px solid rgba(233,228,212,.25);padding:8px 14px;border-radius:3px;pointer-events:none}
 #aviso.alerta{color:var(--lampara)}
@@ -174,9 +174,12 @@ a{color:inherit}
 .btn.vacio:hover{background:rgba(27,29,27,.08)}
 .nube-arte{width:84px;aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fff;border:1px dashed var(--tinta);font-family:var(--mono);font-size:10px;letter-spacing:.15em}
 
-/* ---------- estación del Dr. Arkadi: selector de bitácoras ---------- */
+/* ---------- estación del Dr. Arkady: selector de bitácoras ---------- */
 .bitacoras{margin-top:10px}
-.bitacoras .fila{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+/* bitacoras rejilla */.bitacoras .fila{display:grid;grid-template-columns:auto repeat(5,34px);gap:4px;align-items:center;justify-content:start}
+.bitacoras .fila button:nth-of-type(5n+1){grid-column:2}
+.bitacoras button.futura{border-style:dashed;opacity:.45;cursor:default}
+.bitacoras button.futura:hover{background:transparent}
 .bitacoras .rot{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--metal-osc);margin-right:6px}
 .bitacoras button{min-width:34px;height:30px;padding:0 6px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums;
   background:transparent;color:var(--tinta);border:1.5px solid var(--tinta);border-radius:2px;cursor:pointer;position:relative}
@@ -185,7 +188,41 @@ a{color:inherit}
 .bitacoras button.oida::after{content:"";position:absolute;top:2px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--senal)}
 .bitacoras button:focus-visible{outline:2px solid var(--senal);outline-offset:2px}
 .bitacoras .bit-titulo{margin:6px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-wrap:balance}
-@media (max-width:640px){.bitacoras .rot{display:none}.bitacoras .fila{gap:5px;flex-wrap:nowrap}.bitacoras button{min-width:0;flex:1;height:36px;padding:0}}
+@media (max-width:640px){.bitacoras .rot{display:none}.bitacoras .fila{grid-template-columns:repeat(5,1fr);gap:5px}.bitacoras .fila button:nth-of-type(5n+1){grid-column:auto}.bitacoras button{min-width:0;height:36px;padding:0}}
+
+/* ---------- ficha v2: movible, play circular, cierre en la esquina ---------- */
+.ficha-cab{justify-content:flex-start;align-items:center;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.ficha-cab .coord{margin-left:auto}
+.ficha-cab .asa{flex:none;width:8px;height:14px;opacity:.55;background:radial-gradient(circle,var(--tinta) 1.1px,transparent 1.3px) 0 0/4px 4px}
+#ficha.arrastrando{transition:none}
+#ficha.arrastrando .ficha-cab{cursor:grabbing}
+.ficha-x{flex:none;width:28px;height:28px;display:grid;place-items:center;padding:0;margin-left:4px;background:transparent;color:var(--tinta);border:1.5px solid var(--tinta);border-radius:2px;cursor:pointer}
+.ficha-x svg{width:11px;height:11px;stroke:currentColor;stroke-width:1.8}
+.ficha-x:hover{background:var(--tinta);color:var(--papel)}
+.ficha-play{flex:none;width:34px;height:34px;display:grid;place-items:center;padding:0;border-radius:50%;background:var(--tinta);color:var(--papel);border:1.5px solid var(--tinta);cursor:pointer}
+.ficha-play svg{width:12px;height:12px;fill:currentColor}
+.ficha-play .i-pausa,.ficha-play[data-estado="suena"] .i-play{display:none}
+.ficha-play[data-estado="suena"] .i-pausa{display:block}
+.ficha-play:hover{background:var(--senal);border-color:var(--senal)}
+.ficha-x:focus-visible,.ficha-play:focus-visible{outline:2px solid var(--senal);outline-offset:2px}
+html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
+@media (min-width:760px){html #ficha.abierta{transform:translate(var(--dx,0px),calc(-50% + var(--dy,0px)))}}
+
+/* ---------- estación del Dr. Arkady: señal verde, punto azul, ficha en papel verde ---------- */
+:root{--estacion:#2f8a4a;--estacion-papel:#e1e9d5;--estacion-azul:#2C5876}
+.marca.estacion .punto{border-color:var(--estacion)}
+.marca.estacion .punto::after,.marca.estacion.oida .punto::after{background:var(--estacion-azul)}
+.marca.estacion .onda{border-color:var(--estacion)}
+.marca.estacion.detectada .punto{animation-name:parpadeo-est}
+@keyframes parpadeo-est{50%{background:var(--estacion)}}
+.marca.estacion .rotulo{background:var(--estacion-papel);border-color:var(--estacion)}
+#ficha.estacion{background:var(--estacion-papel);border-top-color:var(--estacion)}
+@media (min-width:760px){#ficha.estacion{border-color:var(--estacion)}}
+#ficha.estacion .ficha-cab{border-bottom-color:var(--estacion)}
+#ficha.estacion .medidor-wrap .lleno{background:repeating-linear-gradient(90deg,var(--estacion) 0 2px,transparent 2px 6px)}
+#ficha.estacion .bitacoras button.oida::after{background:var(--estacion)}
+#ficha.estacion .ficha-play{background:var(--estacion);border-color:var(--estacion)}
+#ficha.estacion .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
@@ -430,7 +467,7 @@ a{color:inherit}
       </ul>
       <h3 class="sub-aero">Señales · los territorios de MAP</h3>
       <ul class="indice" id="indice"></ul>
-      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
+      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkady Volkóv Lasenko.</p>
     </div>
   </section>
 
@@ -502,7 +539,7 @@ const T=[
  {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:1790,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
  {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:2513,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
  {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:2392,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
- {id:"estacion-arkadi",nombre:"Estación del Dr. Arkadi",lugar:"Cerros de Puriscal",x:491,y:1882,tipo:"senal",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",sub:"Los Estudios de Campo",b:1,bit:[{t:"Camino a la montaña",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",alt:"Una camioneta Ford antigua estacionada sobre el zacate, en blanco y negro"},{t:"Flashback",frase:"…escuchando cómo las láminas del techo crujían con la ventolera.",link:"https://www.mapradiocr.com/estudios-de-campo-bitacora-2/",alt:"Un pelotero de los Giants abrazado con dos aficionadas en la gramilla de un estadio, en sepia"},{t:"La playa",frase:"…un pacto que uno firma con el cansancio del día.",link:"https://www.mapradiocr.com/estudios-de-campo-3/",alt:"Un grupo de personas conversa en la acera, frente a la pared de una casa, en blanco y negro"},{t:"La crisis planetaria del bicho THX 1138",frase:"…no estaba pendiente abrirle las entrañas a nadie.",link:"https://www.mapradiocr.com/tri/",alt:"Una mujer en uniforme militar sonríe sentada frente a una máquina de escribir"},{t:"Escuela de brujos",frase:"…hurgando entre trastos que no recordaba haber guardado.",link:"https://www.mapradiocr.com/los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos/",alt:"Retrato de familia frente a una casa de adobe, en blanco y negro"},{t:"Receptor transdimensional de banda vacante residual VX-996",frase:"—Héctor, esa frase no es de Sun Tzu —le dije.",link:"https://www.mapradiocr.com/bitacora-6/",alt:"Un operador con audífonos frente a una consola de radio; detrás, dos hombres sostienen un disco"}]},
+ {id:"estacion-arkadi",nombre:"Estación del Dr. Arkady",lugar:"Cerros de Puriscal",x:491,y:1882,tipo:"senal",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",sub:"Los Estudios de Campo",estacion:true,total:10,b:1,bit:[{t:"Camino a la montaña",frase:"…nada más que con menos carros y mejores cantinas.",link:"https://www.mapradiocr.com/estudios-de-campo/",alt:"Una camioneta Ford antigua estacionada sobre el zacate, en blanco y negro"},{t:"Flashback",frase:"…escuchando cómo las láminas del techo crujían con la ventolera.",link:"https://www.mapradiocr.com/estudios-de-campo-bitacora-2/",alt:"Un pelotero de los Giants abrazado con dos aficionadas en la gramilla de un estadio, en sepia"},{t:"La playa",frase:"…un pacto que uno firma con el cansancio del día.",link:"https://www.mapradiocr.com/estudios-de-campo-3/",alt:"Un grupo de personas conversa en la acera, frente a la pared de una casa, en blanco y negro"},{t:"La crisis planetaria del bicho THX 1138",frase:"…no estaba pendiente abrirle las entrañas a nadie.",link:"https://www.mapradiocr.com/tri/",alt:"Una mujer en uniforme militar sonríe sentada frente a una máquina de escribir"},{t:"Escuela de brujos",frase:"…hurgando entre trastos que no recordaba haber guardado.",link:"https://www.mapradiocr.com/los-estudios-de-campo-del-dr-arkady-volkov-lazenkoescuela-de-brujos/",alt:"Retrato de familia frente a una casa de adobe, en blanco y negro"},{t:"Receptor transdimensional de banda vacante residual VX-996",frase:"—Héctor, esa frase no es de Sun Tzu —le dije.",link:"https://www.mapradiocr.com/bitacora-6/",alt:"Un operador con audífonos frente a una consola de radio; detrás, dos hombres sostienen un disco"}]},
  {id:"obra-gris",nombre:"Obra Gris",lugar:"Cordillera de Talamanca",x:2010,y:2720,tipo:"nubes",sub:"Arquitectura"},
  {id:"taller",nombre:"Taller",lugar:"Valle de El General",x:1440,y:2746,tipo:"nubes",sub:"Arte"}
 ];
@@ -522,7 +559,7 @@ const AEROS=[
  {id:"a-contacto",nombre:"Contacto",oaci:"MRCH",aero:"Chacarita",lugar:"Puntarenas",lo:-84.7728,la:9.9814,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/contacto/"}
 ];
 const AERO_SVG='<svg viewBox="-15 -27 30 42" width="30" height="42" aria-hidden="true"><path class="mastil" d="M0 -9V-26"/><path class="bandera" d="M0 -26L12 -22.2L0 -18.4Z"/><circle class="anillo" r="9"/><rect class="pista" x="-1.7" y="-7.2" width="3.4" height="14.4" transform="rotate(35)"/></svg>';
-/* Voz del Dr. Arkadi */
+/* Voz del Dr. Arkady */
 const AV={
  deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
  libre:"Gire el aro para buscar señales",
@@ -577,14 +614,25 @@ function sonar(k,vol=1,u){
 }
 function nivelEstatica(v,t=.3){if(!A.ctx)return;const g=A.estGain.gain;g.cancelScheduledValues(A.ctx.currentTime);g.setTargetAtTime(A.on?v:0,A.ctx.currentTime,t/3)}
 function pararSenal(){if(A.fuente){try{A.fuente.stop()}catch(e){}A.fuente=null}}
-async function tocarSenal(t){
-  pararSenal();
-  if(!A.ctx) return;
+async function tocarSenal(t,desde=0){
+  pararSenal(); A.pausa=false; A.cargando=true; estadoPlay();
+  if(!A.ctx){A.cargando=false;estadoPlay();return;}
   const b=await buf("s-"+pista(t),`assets/senales/${pista(t)}.mp3`);
-  if(!b||S.activa!==t) return;
+  A.cargando=false;
+  if(!b||S.activa!==t||A.pausa){estadoPlay();return;}
+  desde=desde>0&&desde<b.duration-.2?desde:0;
   const s=A.ctx.createBufferSource(), g=A.ctx.createGain(); g.gain.value=A.on?1:0;
-  s.buffer=b; s.connect(g).connect(A.master); s.start(); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime; A.dur=b.duration;
-  s.onended=()=>{if(A.fuente===s){A.fuente=null;nivelEstatica(0,1)}};
+  s.buffer=b; s.connect(g).connect(A.master); s.start(0,desde); A.fuente=s; A.fuenteGain=g; A.ini=A.ctx.currentTime-desde; A.dur=b.duration;
+  s.onended=()=>{if(A.fuente===s){A.fuente=null;A.pos=0;nivelEstatica(0,1);estadoPlay()}};
+  estadoPlay();
+}
+/* play / pausa de la ficha */
+function estadoPlay(){const b=document.querySelector("#ficha .ficha-play");if(!b)return;const suena=!A.pausa&&(!!A.fuente||!!A.cargando);
+  b.dataset.estado=suena?"suena":"quieta";b.setAttribute("aria-label",suena?"Pausar":"Escuchar");}
+function alternarPlay(t){
+  if(!A.ctx&&typeof iniciarAudio==="function") iniciarAudio();
+  if(A.fuente||A.cargando){ A.pos=A.fuente?A.ctx.currentTime-A.ini:0; pararSenal(); A.pausa=true; A.cargando=false; nivelEstatica(0,.3); estadoPlay(); }
+  else { nivelEstatica(0,.3); tocarSenal(t,A.pos||0); }
 }
 
 /* ===== construcción del dial ===== */
@@ -635,7 +683,7 @@ function dibujarDial(){
 function montarMarcas(){
   T.forEach(t=>{
     const b=document.createElement("button");
-    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":""); b.dataset.id=t.id; b.dataset.dormida="true";
+    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":"")+(t.estacion?" estacion":""); b.dataset.id=t.id; b.dataset.dormida="true";
     b.style.left=t.x+"px"; b.style.top=t.y+"px"; b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
     b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
     b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"sin cartografiar":t.frec+" kHz"}</small></span>`;
@@ -826,7 +874,7 @@ function panA(x,y,ms=900){
   });
 }
 
-/* ===== aviso de Arkadi (máquina de escribir) ===== */
+/* ===== aviso de Arkady (máquina de escribir) ===== */
 let avisoT=0,avisoH=0;
 function aviso(txt,alerta,dur=4500){
   const el=$("#aviso"); clearInterval(avisoT); clearTimeout(avisoH); el.classList.toggle("alerta",!!alerta); el.classList.remove("oculto");
@@ -857,7 +905,7 @@ function despertarTodo(){
   setTimeout(()=>{$("#rumbo").classList.add("llamado");aviso(AV.libre)},reduce?0:1400);
 }
 
-/* ===== estación del Dr. Arkadi: cambiar de bitácora sin salir de la ficha ===== */
+/* ===== estación del Dr. Arkady: cambiar de bitácora sin salir de la ficha ===== */
 const pista=t=>t.id+"-"+String(t.bit?(t.b||1):1).padStart(2,"0");
 function marcarBitacora(t){ if(!t.bit) return; S.oidas.add(pista(t)); store.set("map27.oidas",[...S.oidas]);
   const bt=document.querySelector(`#ficha [data-bit="${t.b||1}"]`); if(bt) bt.classList.add("oida"); }
@@ -873,24 +921,55 @@ function cambiarBitacora(t,n){
   pararSenal(); sonar("sintonia",.5); nivelEstatica(.09,.15);
   setTimeout(()=>{ if(S.activa!==t||t.b!==n) return; nivelEstatica(0,.4); tocarSenal(t); marcarBitacora(t); },380);
 }
+/* ===== ficha movible: se arrastra desde la cabecera ===== */
+const F={dx:0,dy:0};
+function ponerF(f){f.style.setProperty("--dx",F.dx+"px");f.style.setProperty("--dy",F.dy+"px");}
+function arrastreFicha(f){
+  const cab=f.querySelector(".ficha-cab"); if(!cab) return;
+  cab.addEventListener("pointerdown",e=>{
+    if(e.button>0||e.target.closest("button,a")) return;
+    e.preventDefault(); e.stopPropagation();
+    const ancho=matchMedia("(min-width:760px)").matches, r=f.getBoundingClientRect(), R=(f.offsetParent||document.body).getBoundingClientRect();
+    const hc=cab.getBoundingClientRect().bottom-r.top+10, x0=e.clientX, y0=e.clientY, dx0=F.dx, dy0=F.dy, top0=r.top-dy0;
+    let movio=false; f.classList.add("arrastrando"); try{cab.setPointerCapture(e.pointerId)}catch(_){}
+    const mover=ev=>{
+      const dx=ev.clientX-x0, dy=ev.clientY-y0; if(Math.abs(dx)+Math.abs(dy)>5) movio=true; if(!movio) return;
+      if(ancho){
+        const L=clamp(r.left+dx,R.left-r.width+120,R.right-120), Tp=clamp(r.top+dy,R.top+6,R.bottom-hc);
+        F.dx=dx0+(L-r.left); F.dy=dy0+(Tp-r.top);
+      } else { F.dx=0; F.dy=clamp(dy0+dy,0,r.height-hc); }
+      ponerF(f);
+    };
+    const soltar=()=>{
+      cab.removeEventListener("pointermove",mover); cab.removeEventListener("pointerup",soltar); cab.removeEventListener("pointercancel",soltar);
+      f.classList.remove("arrastrando");
+      if(!ancho){ const max=r.height-hc; F.dy=movio?(F.dy>max/2?max:0):(F.dy>0?0:F.dy); ponerF(f); f.classList.toggle("plegada",F.dy>0); }
+    };
+    cab.addEventListener("pointermove",mover); cab.addEventListener("pointerup",soltar); cab.addEventListener("pointercancel",soltar);
+  });
+}
+addEventListener("resize",()=>{F.dx=0;F.dy=0;const f=$("#ficha");if(f){ponerF(f);f.classList.remove("plegada")}});
 /* ===== ficha ===== */
 function abrirFicha(t){
   const f=$("#ficha");
-  const cab=`<div class="ficha-cab"><b>${t.nombre}</b><span>${t.lat} ${t.lon}${t.tipo==="senal"?" · "+t.frec+" kHz":""}</span></div>`;
+  const cab=`<div class="ficha-cab" title="Arrastre para mover la ficha"><span class="asa" aria-hidden="true"></span><b>${t.nombre}</b><span class="coord">${t.lat} ${t.lon}${t.tipo==="senal"?" · "+t.frec+" kHz":""}</span><button class="ficha-x" type="button" data-cerrar aria-label="Cerrar la ficha"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1L11 11M11 1L1 11"/></svg></button></div>`;
   if(t.tipo==="nubes"){
     f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="nube-arte">NUBES</div><div class="ficha-texto"><h2>Zona sin cartografiar</h2><p class="sub">${t.sub} · ${t.lugar}</p>
       <p class="frase">Las nubes taparon la foto aérea. El territorio existe; todavía nadie lo registró.</p>
-      <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span><button class="btn lleno" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+      <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span></div></div></div>`;
   } else {
     const B=t.bit?t.bit[(t.b||1)-1]:null, num=n=>String(n).padStart(2,"0");
-    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir bitácora"><span class="rot">Bitácora</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
+    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir bitácora"><span class="rot">Bitácora</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}${Array.from({length:Math.max(0,(t.total||0)-t.bit.length)},(_,j)=>`<button type="button" class="futura" disabled title="Bitácora en preparación">${num(t.bit.length+j+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
     f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${pista(t)}.jpg" alt="${B?B.alt:t.nombre+": imagen de la señal"}">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
       <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${B?B.frase:t.frase}</p>${selector}
-      <div class="medidor"><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
-      <div class="ficha-acciones"><a class="btn lleno" href="${B?B.link:t.link}" target="_blank" rel="noopener">${B?"Abrir bitácora":"Abrir"}</a><button class="btn vacio" type="button" data-cerrar>Seguir explorando</button></div></div></div>`;
+      <div class="medidor"><button class="ficha-play" type="button" data-estado="quieta" aria-label="Escuchar"><svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2L11 6L2.5 10.8Z"/></svg><svg class="i-pausa" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg></button><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
+      <div class="ficha-acciones"><a class="btn lleno" href="${B?B.link:t.link}" target="_blank" rel="noopener">Abrir</a></div></div></div>`;
+    f.querySelector(".ficha-play").addEventListener("click",()=>alternarPlay(t));
     if(B) f.querySelectorAll("[data-bit]").forEach(b=>b.addEventListener("click",()=>cambiarBitacora(t,+b.dataset.bit)));
   }
   f.querySelector("[data-cerrar]").addEventListener("click",()=>{cerrarFicha();});
+  f.classList.toggle("estacion",!!t.estacion); A.pos=0; estadoPlay(); arrastreFicha(f);
+  if(!matchMedia("(min-width:760px)").matches){F.dy=0;f.classList.remove("plegada")} ponerF(f);
   requestAnimationFrame(()=>f.classList.add("abierta"));
 }
 function cerrarFicha(silencioso){
