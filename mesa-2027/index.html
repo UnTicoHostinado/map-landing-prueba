@@ -58,6 +58,30 @@ a{color:inherit}
 @keyframes onda{0%{transform:scale(1);opacity:.95;filter:blur(0)}70%{opacity:.25}100%{transform:scale(4.6);opacity:0;filter:blur(1.5px)}}
 .marca.detectada .punto{animation:parpadeo .8s steps(2,end) infinite}
 @keyframes parpadeo{50%{background:var(--senal)}}
+/* aeropuertos: el menú sobre la carta */
+.aero{position:absolute;left:0;top:0;transform-origin:50% 26px;will-change:transform;display:grid;justify-items:center;gap:2px;pointer-events:auto;opacity:.5;transition:opacity .5s;background:none;border:0;padding:0;margin:0;cursor:pointer;font:inherit;color:inherit;text-decoration:none}
+.aero[data-dormida="true"]{pointer-events:none}
+.aero.viva{opacity:1}
+.aero svg{display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.45))}
+.aero .anillo{fill:rgba(242,239,230,.92);stroke:#1f4f78;stroke-width:2.6}
+.aero .pista{fill:#1f4f78}
+.aero .mastil{stroke:#1b1d1b;stroke-width:1.6}
+.aero .bandera{fill:var(--senal);transform-origin:0 -22px}
+.aero.viva .bandera{animation:flamea 2.4s ease-in-out infinite}
+@keyframes flamea{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-6deg) scaleX(.86)}}
+.aero .placa{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#1f4f78;color:#f2efe6;padding:2px 7px;white-space:nowrap;line-height:1.3;border:1px solid #0f2a40}
+.aero .placa small{display:block;font-weight:400;font-size:9px;letter-spacing:.06em;color:#c9d6e2}
+.aero:hover .placa,.aero:focus-visible .placa{background:var(--senal);border-color:#6a1b10}
+.aero:hover .placa small,.aero:focus-visible .placa small{color:#fbe3dc}
+.aero:focus-visible{outline:2px solid var(--lampara);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.aero.viva .bandera{animation:none}}
+.aeropuertos{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.aeropuertos a{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;padding:10px 12px;border:1px solid var(--tinta);color:var(--tinta);text-decoration:none}
+.aeropuertos a b{grid-row:span 2;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#f2efe6;background:#1f4f78;padding:4px 6px}
+.aeropuertos a span{font-family:var(--display);font-size:20px;letter-spacing:.04em;line-height:1}
+.aeropuertos a i{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--metal-osc)}
+.aeropuertos a:hover,.aeropuertos a:focus-visible{background:var(--tinta);color:#f2efe6;outline:none}
+.hoja h3.sub-aero{margin:18px 0 0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--metal-osc)}
 .marca .rotulo{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--papel);color:var(--tinta);padding:2px 6px;border:1px solid var(--tinta);white-space:nowrap;line-height:1.3}
 .marca .rotulo small{display:block;font-weight:400;font-size:9.5px;letter-spacing:.06em;color:var(--metal-osc)}
 .marca.oida .punto::after{background:var(--tinta)}
@@ -298,14 +322,17 @@ a{color:inherit}
   <section class="pliego" id="p-carta" hidden role="dialog" aria-modal="true" aria-labelledby="t-carta">
     <div class="hoja">
       <div class="hoja-cab"><div><div class="eti">Índice de la carta · hojas NC 16-8, 16-12, 17-5 y 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
-      <p>Los ocho territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
+      <p>Las secciones del sitio y los territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
+      <h3 class="sub-aero">Aeropuertos · las secciones del sitio</h3>
+      <ul class="aeropuertos">
+        <li><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/"><b>MROC</b><span>Textos</span><i>Juan Santamaría · Alajuela</i></a></li>
+        <li><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/serie-map/"><b>MRGP</b><span>Serie MAP</span><i>Guápiles · Pococí</i></a></li>
+        <li><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/podcast/"><b>MRLB</b><span>Podcast</span><i>Daniel Oduber · Liberia</i></a></li>
+        <li><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/sobre-el-director/"><b>MRTM</b><span>Sobre el director</span><i>Tambor · Península de Nicoya</i></a></li>
+        <li><a href="https://unticohostinado.github.io/map-landing-prueba/mesa-2027/contacto/"><b>MRCH</b><span>Contacto</span><i>Chacarita · Puntarenas</i></a></li>
+      </ul>
+      <h3 class="sub-aero">Señales · los territorios de MAP</h3>
       <ul class="indice" id="indice"></ul>
-      <div class="secciones">
-        <a class="btn vacio" href="https://www.mapradiocr.com/podcast/" target="_blank" rel="noopener">Podcast</a>
-        <a class="btn vacio" href="https://www.mapradiocr.com/serie-map/" target="_blank" rel="noopener">Serie MAP</a>
-        <a class="btn vacio" href="https://www.mapradiocr.com/sobre-el-director/" target="_blank" rel="noopener">Sobre el autor</a>
-        <a class="btn vacio" href="https://www.mapradiocr.com/contacto/" target="_blank" rel="noopener">Contacto</a>
-      </div>
       <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 16-8 Liberia, NC 16-12 Puntarenas, NC 17-5 Alajuela y NC 17-9 San José, escala 1:250.000. Relieve: Copernicus DEM GLO-90. Centroamérica: Natural Earth. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkadi Volkóv Lasenko.</p>
     </div>
   </section>
@@ -390,6 +417,15 @@ const COLLAGE=[ // foto y clip alternados: 9 y 9
  ["calavera","taller"],["clip-calle","traccion-humana","v"],["revista","traccion-humana"],["clip-cartones","obra-gris","v"],
  ["punk-bnw","en-vivo"],["clip-banda","en-vivo","v"]
 ];
+/* ===== Aeropuertos: el menú del sitio, sobre aeródromos reales de las hojas JOG ===== */
+const AEROS=[
+ {id:"a-textos",nombre:"Textos",oaci:"MROC",aero:"Juan Santamaría",lugar:"Alajuela",lo:-84.2088,la:9.9939,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/textos/"},
+ {id:"a-serie",nombre:"Serie MAP",oaci:"MRGP",aero:"Guápiles",lugar:"Pococí",lo:-83.797,la:10.2172,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/serie-map/"},
+ {id:"a-podcast",nombre:"Podcast",oaci:"MRLB",aero:"Daniel Oduber",lugar:"Liberia",lo:-85.5444,la:10.5933,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/podcast/"},
+ {id:"a-director",nombre:"Sobre el director",oaci:"MRTM",aero:"Tambor",lugar:"Península de Nicoya",lo:-85.0159,la:9.7389,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/sobre-el-director/"},
+ {id:"a-contacto",nombre:"Contacto",oaci:"MRCH",aero:"Chacarita",lugar:"Puntarenas",lo:-84.7728,la:9.9814,link:"https://unticohostinado.github.io/map-landing-prueba/mesa-2027/contacto/"}
+];
+const AERO_SVG='<svg viewBox="-15 -27 30 42" width="30" height="42" aria-hidden="true"><path class="mastil" d="M0 -9V-26"/><path class="bandera" d="M0 -26L12 -22.2L0 -18.4Z"/><circle class="anillo" r="9"/><rect class="pista" x="-1.7" y="-7.2" width="3.4" height="14.4" transform="rotate(35)"/></svg>';
 /* Voz del Dr. Arkadi */
 const AV={
  deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
@@ -410,6 +446,7 @@ T.forEach(t=>{t.x=(t.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w; t.y=(CARTA.
 const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a),m=Math.round((a-g)*60);const mm=m===60?0:m,gg=m===60?g+1:g;return String(gg).padStart(2,"0")+"°"+String(mm).padStart(2,"0")+"'"+h};
 const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
 T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
+AEROS.forEach(a=>{a.x=(a.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w; a.y=(CARTA.lat0-a.la)/(CARTA.lat0-CARTA.lat1)*CARTA.h;});
 
 /* ===== audio: Web Audio, todo arranca con el interruptor ===== */
 const A={ctx:null,master:null,estatica:null,estGain:null,bufs:{},on:true,fuente:null,ini:0,dur:0};
@@ -470,7 +507,7 @@ const sol=new THREE.DirectionalLight(0xfff3e0,.62); sol.position.set(-40,45,-30)
 const KX=59.4, KZ=60, WD=3*KX, HD=2*KZ, EXAG=2.6;   // unidades por grado: igual que la escala de las hojas
 const aMundo=(x,y)=>({x:(x/CARTA.w-.5)*WD,z:(y/CARTA.h-.5)*HD});
 const aCarta=(X,Z)=>({x:(X/WD+.5)*CARTA.w,y:(Z/HD+.5)*CARTA.h});
-T.forEach(t=>{t.w=aMundo(t.x,t.y)});
+T.forEach(t=>{t.w=aMundo(t.x,t.y)}); AEROS.forEach(a=>{a.w=aMundo(a.x,a.y)});
 let alt=null,aw=0,ah=0;
 function alturaEn(X,Z){ if(!alt) return 0; const u=clamp((X/WD+.5)*(aw-1),0,aw-1), v=clamp((Z/HD+.5)*(ah-1),0,ah-1);
   const x0=Math.floor(u),y0=Math.floor(v),x1=Math.min(aw-1,x0+1),y1=Math.min(ah-1,y0+1),fx=u-x0,fy=v-y0,g=(x,y)=>alt[y*aw+x];
@@ -547,8 +584,37 @@ function montarMarcas(){
     if(S.oidas.has(t.id)) b.classList.add("oida");
   });
 }
+function montarAeros(){
+  AEROS.forEach(a=>{
+    const b=document.createElement("a");
+    b.className="aero"; b.href=a.link; b.dataset.id=a.id; b.dataset.dormida="true";
+    b.setAttribute("aria-label",`Aeropuerto ${a.aero}, ${a.lugar}: ir a ${a.nombre}`);
+    b.innerHTML=AERO_SVG+`<span class="placa">${a.nombre}<small>${a.oaci} · ${a.aero}</small></span>`;
+    b.addEventListener("click",e=>{e.preventDefault();aterrizar(a)});
+    lienzo.appendChild(b); a.el=b;
+  });
+}
+function despertarAeros(){AEROS.forEach((a,i)=>setTimeout(()=>{a.el.dataset.dormida="false";a.el.classList.add("viva")},reduce?0:300+i*120))}
+function dormirAeros(){AEROS.forEach(a=>{a.el.classList.remove("viva");a.el.dataset.dormida="true"})}
+async function aterrizar(a){
+  if(S.fase==="portada"||S.fase==="collage"||S.fase==="reveal") return;
+  if($("#ficha").classList.contains("abierta")) cerrarFicha();
+  pararSenal(); nivelEstatica(0,.2); sonar("perillas",.5);
+  aviso(`Aproximación a ${a.oaci} · ${a.aero}. Aterrizando en ${a.nombre}`,true,6000);
+  if(vuelo) vuelo.fin(false);
+  await Promise.race([volarA({tx:a.w.x,tz:a.w.z,d:9,p:32,rumbo:S.rumbo},reduce?1:1700),new Promise(r=>setTimeout(r,reduce?0:2100))]);
+  location.href=a.link;
+}
 const v3=new THREE.Vector3();
 function proyectar(){
+  AEROS.forEach(a=>{
+    v3.set(a.w.x,alturaEn(a.w.x,a.w.z)+.35,a.w.z); const dist=camara.position.distanceTo(v3); v3.project(camara);
+    const x=(v3.x*.5+.5)*S.vw, y=(-v3.y*.5+.5)*S.vh;
+    if(v3.z>1||v3.x<-1.15||v3.x>1.15||v3.y<-1.15||v3.y>1.15){a.el.style.visibility="hidden";return}
+    a.el.style.visibility=""; const sc=clamp(34/dist,.8,1.2);
+    a.el.style.transform=`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-26px) scale(${sc.toFixed(2)})`;
+    a.el.style.zIndex=String(1000-Math.round(dist));
+  });
   T.forEach(t=>{
     v3.set(t.w.x,alturaEn(t.w.x,t.w.z)+.35,t.w.z); const dist=camara.position.distanceTo(v3); v3.project(camara);
     t.sx=(v3.x*.5+.5)*S.vw; t.sy=(-v3.y*.5+.5)*S.vh;
@@ -694,6 +760,7 @@ async function sintonizar(t){
 }
 function despertarTodo(){
   T.forEach((o,i)=>setTimeout(()=>{o.el.dataset.dormida="false";o.el.classList.add("viva")},reduce?0:i*90));
+  despertarAeros();
   if(!S.dichoLibre){S.dichoLibre=true;setTimeout(()=>{$("#rumbo").classList.add("llamado");aviso(AV.libre)},reduce?0:1600);}
 }
 
@@ -882,7 +949,7 @@ async function esperar(){
   const sen=T.filter(t=>t.tipo==="senal");
   const obj=sen.find(t=>!S.oidas.has(t.id))||sen[Math.floor(Math.random()*sen.length)];
   S.objetivo=obj;
-  T.forEach(t=>{t.el.classList.toggle("viva",t===obj);t.el.dataset.dormida=t===obj?"false":"true"});
+  T.forEach(t=>{t.el.classList.toggle("viva",t===obj);t.el.dataset.dormida=t===obj?"false":"true"}); despertarAeros();
   // descenso desde lo alto: la nave queda al sur de la señal, con la señal a unos 30° de la nariz
   const r=((S.rumbo%360)+360)%360, apr=-25;
   const ang=(apr+150)*Math.PI/180, dist=7;
@@ -936,7 +1003,7 @@ function apagar(){
   if(vuelo) vuelo.fin(false); clearInterval(avisoT); $("#aviso").textContent="";
   S.activa=null; S.objetivo=null; S.alineada=null; S.fase="portada";
   $("#instrumento").classList.remove("listo"); $$(".hud").forEach(h=>h.classList.remove("listo"));
-  T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"});
+  T.forEach(t=>{t.el.classList.remove("viva","detectada");t.el.dataset.dormida="true"}); dormirAeros();
   $("#rumbo").classList.remove("llamado");
   $("#encender").setAttribute("aria-checked","false"); $("#portada").classList.remove("fuera");
   volarA({tx:0,tz:0,d:200,p:78,rumbo:S.rumbo},reduce?1:2200);
@@ -947,7 +1014,7 @@ function abrirPliego(id){if(S.fase==="portada"||S.fase==="collage")return;ultimo
 function cerrarPliego(p){p.hidden=true;if(ultimoFoco)try{ultimoFoco.focus()}catch(e){}}
 
 /* ===== arranque ===== */
-dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
+dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); montarAeros(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
