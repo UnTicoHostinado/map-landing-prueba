@@ -228,9 +228,25 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 #ficha.estacion .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
 /* ---------- estación de Los Bastardos de Poveda: el retrato se ve completo ---------- */
-@media (min-width:760px){#ficha.retrato .ficha-foto{aspect-ratio:1}}
+@media (min-width:760px){#ficha.retrato .ficha-foto{aspect-ratio:1;width:min(100%,36vh);margin:0 auto}#ficha{max-height:calc(100% - 24px);overflow-y:auto}}
 #ficha.retrato .ficha-foto img{object-fit:contain;filter:none;background:#f1ece2}
 #ficha.retrato .ficha-foto{background:#f1ece2}
+
+/* ---------- Los Bastardos de Poveda: ficha naranja, señal mostaza, punto rosa ---------- */
+:root{--bp-naranja:#d9621f;--bp-papel:#f6d6b3;--bp-mostaza:#c99a1c;--bp-rosa:#e8709a}
+.marca.bastardos .punto{border-color:var(--bp-mostaza)}
+.marca.bastardos .punto::after,.marca.bastardos.oida .punto::after{background:var(--bp-rosa)}
+.marca.bastardos .onda{border-color:var(--bp-mostaza)}
+.marca.bastardos.detectada .punto{animation-name:parpadeo-bp}
+@keyframes parpadeo-bp{50%{background:var(--bp-mostaza)}}
+.marca.bastardos .rotulo{background:var(--bp-papel);border-color:var(--bp-naranja)}
+#ficha.bastardos{background:var(--bp-papel);border-top-color:var(--bp-naranja)}
+@media (min-width:760px){#ficha.bastardos{border-color:var(--bp-naranja)}}
+#ficha.bastardos .ficha-cab{border-bottom-color:var(--bp-naranja)}
+#ficha.bastardos .medidor-wrap .lleno{background:repeating-linear-gradient(90deg,var(--bp-naranja) 0 2px,transparent 2px 6px)}
+#ficha.bastardos .bitacoras button.oida::after{background:var(--bp-rosa)}
+#ficha.bastardos .ficha-play{background:var(--bp-naranja);border-color:var(--bp-naranja)}
+#ficha.bastardos .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
@@ -543,7 +559,7 @@ const CARTA={w:2576,h:3556,x0:231,x1:2526,y0:1619,y1:3165,lon0:-84.5,lon1:-83.0,
 const T=[
  {id:"la-barra",nombre:"La Barra",lugar:"San José",x:867,y:1735,tipo:"senal",frase:"La cantina es un templo.",link:"https://www.mapradiocr.com/cantina-ideal-3/",sub:"La Cantina Ideal"},
  {id:"traccion-humana",nombre:"Tracción Humana",lugar:"Cartago",x:1135,y:1850,tipo:"senal",frase:"No podían creer que yo lo hubiera hecho.",link:"https://www.mapradiocr.com/4-historias-de-patineta/",sub:"4 Historias de Patineta"},
- {id:"letra",archivo:"bastardos-poveda",nombre:"Los Bastardos de Poveda",lugar:"Santa María de Dota",x:1168,y:2213,tipo:"senal",frase:"…las cantinas definitivamente son un templo.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Podcast",retrato:true,rot:"Episodio",b:1,bit:[{t:"Episodio 01",frase:"…las cantinas definitivamente son un templo.",link:"https://www.mapradiocr.com/podcast/#bastardos",alt:"Retrato en plumilla de un hombre con gorro de lana, anteojos de pasta y barba, firmado Los Bastardos de Poveda"}]},
+ {id:"letra",archivo:"bastardos-poveda",nombre:"Los Bastardos de Poveda",lugar:"Transmitiendo desde distintas ermitas",x:1168,y:2213,tipo:"senal",frase:"…poco a poco nos íbamos dando cuenta hacia dónde apuntaba la serie.",link:"https://www.mapradiocr.com/podcast/#bastardos",sub:"Podcast",retrato:true,bastardos:true,rot:"Retrato",b:1,bit:[{t:"Valdo",frase:"…poco a poco nos íbamos dando cuenta hacia dónde apuntaba la serie.",link:"https://www.mapradiocr.com/podcast/#bastardos",alt:"Retrato en plumilla de Valdo, con gorro de lana, anteojos de pasta y barba, firmado Los Bastardos de Poveda"}]},
  {id:"en-vivo",nombre:"En Vivo",lugar:"Turrialba",x:1504,y:1790,tipo:"senal",frase:"Enciendo la televisión y nada me habla a mí.",link:"https://www.mapradiocr.com/serie-map/",sub:"Serie MAP"},
  {id:"sala-oscura",nombre:"Sala Oscura",lugar:"Quepos",x:700,y:2513,tipo:"senal",frase:"El negocio de los medios en Costa Rica es otro.",link:"https://www.mapradiocr.com/sobre-el-director/",sub:"Cine"},
  {id:"zona-restringida",nombre:"Zona Restringida",lugar:"Cerro Chirripó",x:1776,y:2392,tipo:"senal",frase:"Escritor, rockero, patriota y ciudadano del mundo.",link:"https://www.mapradiocr.com/carlos-alvarado-y-el-morbo-literario-del-poder/",sub:"Editorial",fotomontaje:true},
@@ -691,7 +707,7 @@ function dibujarDial(){
 function montarMarcas(){
   T.forEach(t=>{
     const b=document.createElement("button");
-    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":"")+(t.estacion?" estacion":""); b.dataset.id=t.id; b.dataset.dormida="true";
+    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":"")+(t.estacion?" estacion":"")+(t.bastardos?" bastardos":""); b.dataset.id=t.id; b.dataset.dormida="true";
     b.style.left=t.x+"px"; b.style.top=t.y+"px"; b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
     b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
     b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"sin cartografiar":t.frec+" kHz"}</small></span>`;
@@ -976,7 +992,7 @@ function abrirFicha(t){
     if(B) f.querySelectorAll("[data-bit]").forEach(b=>b.addEventListener("click",()=>cambiarBitacora(t,+b.dataset.bit)));
   }
   f.querySelector("[data-cerrar]").addEventListener("click",()=>{cerrarFicha();});
-  f.classList.toggle("estacion",!!t.estacion); f.classList.toggle("retrato",!!t.retrato); A.pos=0; estadoPlay(); arrastreFicha(f);
+  f.classList.toggle("estacion",!!t.estacion); f.classList.toggle("retrato",!!t.retrato); f.classList.toggle("bastardos",!!t.bastardos); A.pos=0; estadoPlay(); arrastreFicha(f);
   if(!matchMedia("(min-width:760px)").matches){F.dy=0;f.classList.remove("plegada")} ponerF(f);
   requestAnimationFrame(()=>f.classList.add("abierta"));
 }
