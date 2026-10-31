@@ -1,0 +1,135 @@
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="/wp-content/uploads/2026/carta/carta.css?v=20261031">
+<div id="app">
+  <div id="mapa" aria-label="Cartas aéreas de Costa Rica sobre su relieve, con Centroamérica alrededor. Arrastre para volar sobre ella.">
+    <div class="vineta"></div>
+    <div id="lienzo"></div>
+  </div>
+
+  <div id="instrumento" aria-hidden="true"><svg id="dial" viewBox="-130 -130 260 260"></svg></div>
+
+  <div class="hud" id="placa-sup">
+    <div class="placa marca-map">
+      <img src="/wp-content/uploads/2026/carta/assets/img/map-sello-claro.png" alt="">
+      <div><b>MAP · RG-27</b><span>Radiogoniómetro</span><span title="Instituto Cuántico Costarricense para la Investigación Interdimensional">IQCPLII</span></div>
+    </div>
+    <dl class="placa lecturas" aria-live="off">
+      <dt>Lat</dt><dd id="lat">09°56'N</dd>
+      <dt>Lon</dt><dd id="lon">84°05'W</dd>
+      <dt>Frec</dt><dd id="frec">312 kHz</dd>
+      <dt>Alt</dt><dd id="alt">—</dd>
+      <dt class="solo-ancho">Marc.</dt><dd class="solo-ancho" id="marc">000°</dd>
+    </dl>
+  </div>
+
+  <div class="hud" id="aviso" role="status"></div>
+
+  <div class="hud" id="tablero">
+      <!-- CINTA DE NOTAM: los proyectos nacidos en este hub -->
+      <nav class="notam" aria-label="Proyectos del hub MAP"><span class="notam-lab">NOTAM</span><div class="notam-via"><div class="notam-rollo"><div class="notam-grupo"><a href="/cannabis-airlines-entre-la-pista-y-el-cielo/"><img src="/wp-content/uploads/2026/07/ca-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0420/26</i><span>Cannabis Airlines</span><em>Vuelos entre la pista y el cielo</em></a><a href="https://www.nasionalsb.com/"><img src="/wp-content/uploads/2026/07/nasional-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0007/26</i><span>Nasional Skateboards</span><em>Primera marca de patinetas de Costa Rica · desde 2007</em></a><a href="/serie-map/"><img src="/wp-content/uploads/2026/carta/assets/img/map-sello-claro.png" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0016/26</i><span>MAP</span><em>Música, Arte & Patinetas · desde 2016</em></a><a href="/iqcplii-el-instituto-que-costa-rica-merece/"><img src="/wp-content/uploads/2026/07/iqcplii-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A1138/26</i><span>IQCPLII</span><em>Instituto Cuántico Costarricense para la Investigación Interdimensional</em></a></div><div class="notam-grupo" aria-hidden="true"><a href="/cannabis-airlines-entre-la-pista-y-el-cielo/" tabindex="-1"><img src="/wp-content/uploads/2026/07/ca-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0420/26</i><span>Cannabis Airlines</span><em>Vuelos entre la pista y el cielo</em></a><a href="https://www.nasionalsb.com/" tabindex="-1"><img src="/wp-content/uploads/2026/07/nasional-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0007/26</i><span>Nasional Skateboards</span><em>Primera marca de patinetas de Costa Rica · desde 2007</em></a><a href="/serie-map/" tabindex="-1"><img src="/wp-content/uploads/2026/carta/assets/img/map-sello-claro.png" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A0016/26</i><span>MAP</span><em>Música, Arte & Patinetas · desde 2016</em></a><a href="/iqcplii-el-instituto-que-costa-rica-merece/" tabindex="-1"><img src="/wp-content/uploads/2026/07/iqcplii-logo-ticker.webp" alt="" loading="lazy" onerror="this.hidden=true"><i>NOTAM A1138/26</i><span>IQCPLII</span><em>Instituto Cuántico Costarricense para la Investigación Interdimensional</em></a></div></div></div></nav>
+    <div class="mandos">
+      <div class="izq"><button class="tecla" id="b-carta" type="button"><span class="cuerpo"><span class="luz"></span></span>Carta plegada</button><button class="tecla" id="b-vuelos" type="button" aria-pressed="false" aria-controls="vuelos"><span class="cuerpo"><span class="luz"></span></span>Vuelos</button></div>
+      <button id="rumbo" type="button" aria-label="Rumbo aleatorio: sintonizar una señal al azar"><span class="perilla"></span>Rumbo aleatorio</button>
+      <div class="der"><button class="tecla encendida" id="b-audio" type="button" aria-pressed="true"><span class="cuerpo"><span class="luz"></span></span>Audio</button><button class="tecla" id="b-apagar" type="button" aria-label="Apagar el instrumento y volver al inicio"><span class="cuerpo"><span class="luz" style="background:#6a1b10"></span></span>Apagar</button></div>
+      <div class="fila">
+        <button class="borde" type="button" data-pliego="p-frecuencia"><i>●</i>Frecuencia abierta</button>
+        <button class="borde" type="button" data-pliego="p-panol"><i>●</i>El Pañol</button>
+        <button class="borde" type="button" data-pliego="p-astillero"><i>●</i>Astillero</button>
+      </div>
+    </div>
+    <p class="pie-panel">Perturbaciones magnéticas locales afectan la confiabilidad de este instrumento</p>
+  </div>
+
+  <!-- TABLERO DE VUELOS: Salidas = textos recientes · Más solicitados = lo más leído -->
+  <section class="hud vuelos" id="vuelos" aria-labelledby="vuelos-t" data-plegado="true" data-vista="sal">
+    <div class="vuelos-cab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg><b id="vuelos-t">Terminal MAP</b><span>Hora local <time id="vuelos-hora">--:--</time></span><button type="button" class="vuelos-x" id="vuelos-x" aria-label="Cerrar el tablero">✕</button></div>
+    <div class="vuelos-tabs" role="tablist" aria-label="Tablero">
+      <button type="button" role="tab" id="tab-sal" aria-selected="true" aria-controls="v-lista" data-v="sal">Salidas</button>
+      <button type="button" role="tab" id="tab-sol" aria-selected="false" aria-controls="v-lista" data-v="sol">Más solicitados</button>
+    </div>
+    <div class="vuelos-cols" id="v-cols" aria-hidden="true"></div>
+    <ol class="vuelos-lista" id="v-lista" role="tabpanel" aria-live="off"></ol>
+  </section>
+  <aside id="ficha" aria-live="polite" aria-label="Señal sintonizada"></aside>
+
+  <div id="collage" aria-hidden="true"></div>
+  <svg id="trazos" aria-hidden="true"></svg>
+  <button id="saltar" type="button" hidden>Saltar ›</button>
+
+  <!-- CARTA PLEGADA: índice clásico, también para buscadores -->
+  <section class="pliego" id="p-carta" hidden role="dialog" aria-modal="true" aria-labelledby="t-carta">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Índice de la carta · hojas NC 16-8, 16-12, 17-5 y 17-9</div><h2 id="t-carta">Carta plegada</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Las secciones del sitio y los territorios de MAP, para quien prefiere leer la carta antes que mover perillas.</p>
+      <h3 class="sub-aero">Aeropuertos · las secciones del sitio</h3>
+      <ul class="aeropuertos">
+        <li><a href="/textos/"><b>MROC</b><span>Textos</span><i>Juan Santamaría · Alajuela</i></a></li>
+        <li><a href="/serie-map/"><b>MRGP</b><span>Serie MAP</span><i>Guápiles · Pococí</i></a></li>
+        <li><a href="/podcast/"><b>MRLB</b><span>Podcast</span><i>Daniel Oduber · Liberia</i></a></li>
+        <li><a href="/sobre-el-director/"><b>MRTM</b><span>Sobre el director</span><i>Tambor · Península de Nicoya</i></a></li>
+        <li><a href="/contacto/"><b>MRCH</b><span>Contacto</span><i>Chacarita · Puntarenas</i></a></li>
+      </ul>
+      <h3 class="sub-aero">Señales · los territorios de MAP</h3>
+      <ul class="indice" id="indice"></ul>
+      <p class="p-clasica">¿Prefiere una portada sencilla, sin instrumento? <a href="/wp-content/uploads/2026/carta/clasica/?elegida=1">Versión clásica →</a></p>
+      <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 16-8 Liberia, NC 16-12 Puntarenas, NC 17-5 Alajuela y NC 17-9 San José, escala 1:250.000. Relieve: Copernicus DEM GLO-90. Centroamérica: Natural Earth. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkady Volkóv Lasenko.</p>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-frecuencia" hidden role="dialog" aria-modal="true" aria-labelledby="t-frec">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Canal de contacto · siempre en escucha</div><h2 id="t-frec">Frecuencia abierta</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Una historia de cantina, una banda que hay que grabar, un patinador que nadie ha documentado, una pregunta por la merch que todavía no existe. Esta frecuencia recibe todo.</p>
+      <div class="secciones"><a class="btn lleno" href="/contacto/" target="_blank" rel="noopener">Escribirle a MAP</a></div>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-panol" hidden role="dialog" aria-modal="true" aria-labelledby="t-panol">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Depósito de a bordo · MAP × Nasional 20 años</div><h2 id="t-panol">El Pañol</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Piezas en el taller. Pocas, bien hechas y pensadas para el calor y la lluvia de este país. Apúntese y le avisamos primero cuando salgan.</p>
+      <div class="piezas">
+        <article class="pieza"><div class="foto doble" data-otra="Espalda"><img src="/wp-content/uploads/2026/carta/assets/panol/coach-jacket-nasional-frente.jpg" alt="Coach jacket Nasional azul marino de nailon, vista de frente, con broches y el escudo 15 bordado en rojo sobre el pecho." loading="lazy"><img src="/wp-content/uploads/2026/carta/assets/panol/coach-jacket-nasional-espalda.jpg" alt="Espalda de la coach jacket Nasional en malla naranja, con el puño de Nasional estampado en blanco." loading="lazy"></div><h3>Coach jacket</h3><p>La pieza ancla. Cien hechas para Nasional, cien vendidas.</p><span class="estado">En el taller</span></article>
+        <article class="pieza"><div class="foto doble" data-otra="Negro"><img src="/wp-content/uploads/2026/carta/assets/panol/sueter-capucha-gris.jpg" alt="Suéter con capucha gris jaspeado, holgado, con bolsillo canguro." loading="lazy"><img src="/wp-content/uploads/2026/carta/assets/panol/sueter-capucha-negro.jpg" alt="Suéter con capucha negro, holgado, con bolsillo canguro." loading="lazy"></div><h3>Suéter con capucha</h3><p>Unisex. Gris jaspeado y negro.</p><span class="estado">En el taller</span><small class="credito">Foto: Los Angeles Apparel</small></article>
+        <article class="pieza"><div class="foto doble" data-otra="Negro"><img src="/wp-content/uploads/2026/carta/assets/panol/sueter-ziper-gris.jpg" alt="Suéter con capucha y zíper, gris jaspeado, con cordones blancos." loading="lazy"><img src="/wp-content/uploads/2026/carta/assets/panol/sueter-ziper-negro.jpg" alt="Suéter con capucha y zíper, negro, con cordones blancos." loading="lazy"></div><h3>Suéter con zíper</h3><p>Unisex. Gris jaspeado y negro.</p><span class="estado">En el taller</span><small class="credito">Foto: Los Angeles Apparel</small></article>
+        <article class="pieza"><div class="foto"><img src="/wp-content/uploads/2026/carta/assets/panol/gorra-ripstop-map.jpg" alt="Gorra ripstop negra de cinco paneles con el logo MAP y el contorno de Costa Rica estampados en blanco." loading="lazy"></div><h3>Gorra ripstop</h3><p>Tela liviana, aire retro. El mapa de Costa Rica al frente.</p><span class="estado">En el taller</span></article>
+      </div>
+      <form class="apuntarse" id="f-panol" novalidate>
+        <label for="correo-panol">Correo para la lista
+          <input id="correo-panol" type="email" autocomplete="email" placeholder="nombre@correo.com" required>
+        </label>
+        <button class="btn lleno" type="submit">Apuntarme</button>
+      </form>
+      <p class="respuesta" id="r-panol" role="status"></p>
+    </div>
+  </section>
+
+  <section class="pliego" id="p-astillero" hidden role="dialog" aria-modal="true" aria-labelledby="t-ast">
+    <div class="hoja">
+      <div class="hoja-cab"><div><div class="eti">Donde se construye para otros</div><h2 id="t-ast">Astillero</h2></div><button class="cerrar" type="button" aria-label="Cerrar">✕</button></div>
+      <p>Documentales, series, podcasts, registro de bandas en vivo y gráfica. Todo lo que suena en esta carta salió de aquí; el sitio entero es el portafolio.</p>
+      <p>La segunda temporada de la Serie MAP busca patrocinio. Las marcas que la acompañen quedan en los créditos y en la carta.</p>
+      <div class="secciones"><a class="btn lleno" href="/contacto/" target="_blank" rel="noopener">Proponer un proyecto</a><a class="btn vacio" href="/serie-map/" target="_blank" rel="noopener">Ver la Serie MAP</a></div>
+    </div>
+  </section>
+
+  <!-- PORTADA -->
+  <div id="portada">
+    <div class="portada-placa placa">
+      <img class="sello" src="/wp-content/uploads/2026/carta/assets/img/map-sello-claro.png" alt="Sello de MAP: Música, Arte &amp; Patinetas">
+      <h1 class="sr">MAP Radio CR: Música, Arte &amp; Patinetas</h1>
+      <div class="coord" id="coord-portada" aria-label="09°56' Norte, 84°05' Oeste. San José, Costa Rica"></div>
+      <button class="interruptor" id="encender" type="button" role="switch" aria-checked="false" aria-label="Encender">
+        <span class="foto"><img class="off" src="/wp-content/uploads/2026/carta/assets/img/interruptor-off.webp" alt="" width="314" height="360"><img class="on" src="/wp-content/uploads/2026/carta/assets/img/interruptor-on.webp" alt="" width="314" height="360"></span>
+        <span>Encender</span>
+      </button>
+      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em><a class="a-clasica" href="/wp-content/uploads/2026/carta/clasica/?elegida=1">Versión clásica</a></p>
+    </div>
+  </div>
+
+  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Pase a la <a href="/wp-content/uploads/2026/carta/clasica/">versión clásica</a> o visite <a href="/podcast/">el podcast</a>, <a href="/serie-map/">la Serie MAP</a> o <a href="/contacto/">contacto</a>.</p></noscript>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="/wp-content/uploads/2026/carta/carta.js?v=20261031" defer></script>
+<script src="/wp-content/uploads/2026/carta/vuelos.js?v=20261031" defer></script>
