@@ -588,7 +588,8 @@ a.pc-play{text-decoration:none}
 .pc-origen__lab{margin:0 0 10px;font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase;color:var(--ar-acento);max-width:calc(100% - 200px)}
 .pc-origen h2{font:400 clamp(52px,8vw,104px)/.88 var(--ar-tit)!important;letter-spacing:.01em;margin:0;color:var(--ar-papel)}
 .pc-origen__meta{margin:10px 0 0;font:12px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-tiza)}
-.pc-origen__txt{margin-top:22px;max-width:68ch;columns:2 320px;column-gap:40px}
+.pc-origen__txt{margin-top:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px}
+@media (max-width:900px){.pc-origen__txt{grid-template-columns:minmax(0,1fr)}}
 .pc-origen__txt p{margin:0 0 1em;font:300 16.5px/1.65 var(--ar-txt);color:#e4e0d4;break-inside:avoid}
 .pc-origen__sello{position:absolute;top:22px;right:24px;transform:rotate(-5deg);border:3px double var(--ar-acento);color:var(--ar-acento);padding:7px 12px;display:flex;flex-direction:column;gap:2px;pointer-events:none}
 .pc-origen__sello b{font:700 15px var(--ar-rot);letter-spacing:.2em;text-transform:uppercase}
@@ -671,12 +672,11 @@ a.pc-play{text-decoration:none}
     <h2 id="pc-origen-t">Bernabé Berrocal</h2>
     <p class="pc-origen__meta">Veterinario · 28 de agosto de 2020 · 1 h 21 min</p>
     <div class="pc-origen__txt">
-      <p>El primer episodio de la serie. Lo grabamos en agosto de 2020, en plena pandemia. Teníamos mucha ilusión, porque casi nunca uno ve este tipo de conversaciones con escritores: tan distendidas, con muchos deseos de aprender de un autor, de su proceso creativo, de su oficio, y eso sin elevarlo a un ser de luz que no puede codificar su mensaje para que un mortal cualquiera lo pueda entender.</p>
-      <p>Una serie que, si bien tiene más de diez episodios, siento yo que evolucionó a RPGP: Radio Pachuko Grandes Personajes, donde también nos hemos sentado a hablar con escritores y con personas que sentimos tienen una gran historia que compartir, incluso cuando las dos existían en paralelo. En ocasiones me pregunto si deberían fusionarse, ser una sola, o dejar que sigan existiendo.</p>
-      <p>Estaba en Spotify, y la plataforma lo eliminó por derechos de autor; también lo habían eliminado en iVoox. La copia que guardábamos en YouTube quedó en el antiguo canal de Nasional, que unos ladrones de cripto rusos se robaron justo después de publicar este episodio.</p>
-      <p>Increíble que hayan pasado seis años.</p>
+      <div><p>El primer episodio de la serie. Lo grabamos en agosto de 2020, en plena pandemia. Teníamos mucha ilusión, porque casi nunca uno ve este tipo de conversaciones con escritores: tan distendidas, con muchos deseos de aprender de un autor, de su proceso creativo, de su oficio, y eso sin elevarlo a un ser de luz que no puede codificar su mensaje para que un mortal cualquiera lo pueda entender.</p></div>
+      <div><p>Una serie que, si bien tiene más de diez episodios, siento yo que evolucionó a RPGP: Radio Pachuko Grandes Personajes, donde también nos hemos sentado a hablar con escritores y con personas que sentimos tienen una gran historia que compartir, incluso cuando las dos existían en paralelo. En ocasiones me pregunto si deberían fusionarse, ser una sola, o dejar que sigan existiendo.</p></div>
+      <div><p>Estaba en Spotify, y la plataforma lo eliminó por derechos de autor; también lo habían eliminado en iVoox. La copia que guardábamos en YouTube quedó en el antiguo canal de Nasional, que unos ladrones de cripto rusos se robaron justo después de publicar este episodio.</p><p>Increíble que hayan pasado seis años.</p></div>
     </div>
-    <div class="pc-cinta" data-src="audio/bastardos-de-poveda-ep01-2020.mp3" data-dur="4902">
+    <div class="pc-cinta" data-src="https://www.mapradiocr.com/wp-content/uploads/2026/10/bastardos-de-poveda-ep01-2020.mp3" data-dur="4902">
       <button type="button" class="pc-cinta__play" aria-label="Escuchar el episodio 1 completo"><i aria-hidden="true"></i></button>
       <div class="pc-cinta__cuerpo">
         <div class="pc-cinta__barra" role="slider" tabindex="0" aria-label="Posición del episodio" aria-valuemin="0" aria-valuemax="4902" aria-valuenow="0"><span></span></div>
