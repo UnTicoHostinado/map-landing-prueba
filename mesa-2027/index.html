@@ -701,6 +701,7 @@ function alturaEn(X,Z){ if(!alt) return 0; const u=clamp((X/WD+.5)*(aw-1),0,aw-1
   const x0=Math.floor(u),y0=Math.floor(v),x1=Math.min(aw-1,x0+1),y1=Math.min(ah-1,y0+1),fx=u-x0,fy=v-y0,g=(x,y)=>alt[y*aw+x];
   return ((g(x0,y0)*(1-fx)+g(x1,y0)*fx)*(1-fy)+(g(x0,y1)*(1-fx)+g(x1,y1)*fx)*fy)/1640*EXAG; }
 const cargarImg=src=>new Promise((ok,mal)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=mal;i.src=src});
+let avisarCarta=()=>{}; const cartaLista=new Promise(r=>{avisarCarta=r});
 function cargarCarta(){
   const tam=innerWidth>=760?2048:1280, maxTex=renderer.capabilities.maxTextureSize;
   const reg=(innerWidth>=760&&maxTex>=4096)?"region-4096":"region-2048";
@@ -721,7 +722,7 @@ function cargarCarta(){
       const p=geo.attributes.position; for(let i=0;i<p.count;i++) p.setY(i,alturaEn(p.getX(i),p.getZ(i))); geo.computeVertexNormals();
       escena.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:tex(imgs[k])})));
     });
-    nubes();
+    nubes(); avisarCarta();
   }).catch(()=>location.replace("plana.html"+location.search));
 }
 // nubes reales sobre las zonas sin cartografiar
@@ -1285,8 +1286,14 @@ if(REGRESO) regreso();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
-// precarga liviana del collage: la portada espera el toque
-COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
+// precarga del collage: solo si la portada lo va a mostrar, después de la carta y nunca con ahorro de datos
+(function(){
+  if(REGRESO) return;
+  const c=navigator.connection; if(c&&(c.saveData||/(^|-)2g$/.test(c.effectiveType||""))) return;
+  Promise.race([cartaLista,new Promise(r=>setTimeout(r,6000))]).then(()=>{
+    COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
+  });
+})();
 })();
 </script>
 <script>

@@ -1189,17 +1189,24 @@ function regreso(){
   else aviso("Cabina en línea. Gire el aro para buscar señales",false,4500);
 }
 /* ===== arranque ===== */
+let avisarCarta=()=>{}; const cartaLista=new Promise(r=>{avisarCarta=r});
 function cargarCarta(){
   const grande=(window.innerWidth>=760)?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg";
-  const im=new Image(); im.onload=()=>{carta.src=grande}; im.src=grande;
+  const im=new Image(); im.onload=()=>{carta.src=grande;avisarCarta()}; im.src=grande;
 }
 dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); montarAeros(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 if(REGRESO) regreso();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
-// precarga liviana del collage: la portada espera el toque
-COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
+// precarga del collage: solo si la portada lo va a mostrar, después de la carta y nunca con ahorro de datos
+(function(){
+  if(REGRESO) return;
+  const c=navigator.connection; if(c&&(c.saveData||/(^|-)2g$/.test(c.effectiveType||""))) return;
+  Promise.race([cartaLista,new Promise(r=>setTimeout(r,6000))]).then(()=>{
+    COLLAGE.forEach(([n,,tipo])=>{if(tipo!=="v"){const i=new Image();i.src=`assets/collage/${n}.jpg`}else{fetch(`assets/collage/${n}.mp4`).catch(()=>{})}});
+  });
+})();
 })();
 </script>
 <script>
