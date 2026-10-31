@@ -249,6 +249,13 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 #ficha.bastardos .ficha-play{background:var(--bp-naranja);border-color:var(--bp-naranja)}
 #ficha.bastardos .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
+/* ---------- señales nuevas (últimos 30 días) ---------- */
+.chip-nueva{display:inline-block;margin-left:6px;padding:0 5px;font:700 8.5px/1.7 var(--mono);font-style:normal;letter-spacing:.14em;text-transform:uppercase;background:var(--lampara);color:var(--tinta);vertical-align:2px;border-radius:1px}
+.marca.nueva .punto{box-shadow:0 0 0 2px rgba(242,239,230,.7),0 0 0 5px rgba(233,162,59,.6)}
+.marca.nueva.viva .onda{animation-duration:1.7s}
+.marca.nueva.viva .onda.b{animation-delay:calc(var(--d,0s) + .85s)}
+.bitacoras button.nueva::before{content:"";position:absolute;left:4px;right:4px;bottom:3px;height:2px;background:var(--lampara)}
+
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
   padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -587,7 +594,7 @@ const AEROS=[
 const AERO_SVG='<svg viewBox="-15 -27 30 42" width="30" height="42" aria-hidden="true"><path class="mastil" d="M0 -9V-26"/><path class="bandera" d="M0 -26L12 -22.2L0 -18.4Z"/><circle class="anillo" r="9"/><rect class="pista" x="-1.7" y="-7.2" width="3.4" height="14.4" transform="rotate(35)"/></svg>';
 /* Voz del Dr. Arkady */
 const AV={
- deteccion:t=>`Señal detectada en ${t.nombre}. Toque para sintonizar`,
+ deteccion:t=>`${t.nueva?"Señal nueva":"Señal"} detectada en ${t.nombre}. Toque para sintonizar`,
  libre:"Gire el aro para cambiar el rumbo y buscar señales. Arrastre para volar",
  nube:"Zona sin cartografiar. Las nubes taparon la foto aérea",
  rumbo:"Rumbo aleatorio. El instrumento elige por usted"
@@ -605,6 +612,17 @@ T.forEach(t=>{t.x=(t.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w; t.y=(CARTA.
 const gms=(v,h)=>{const a=Math.abs(v),g=Math.floor(a),m=Math.round((a-g)*60);const mm=m===60?0:m,gg=m===60?g+1:g;return String(gg).padStart(2,"0")+"°"+String(mm).padStart(2,"0")+"'"+h};
 const frecDe=x=>Math.round(240+clamp(x/CARTA.w,0,1)*(535-240));
 T.forEach(t=>{t.frec=frecDe(t.x);t.lat=gms(latDe(t.y),"N");t.lon=gms(lonDe(t.x),"W")});
+/* ===== señales nuevas: fecha de publicación del texto o de llegada a la carta; 30 días con chip «Nueva» ===== */
+const NUEVA_DIAS=30, FECHAS={
+ "la-barra":"2025-10-26", "traccion-humana":"2025-10-22",
+ "estacion-arkadi":["2026-05-13","2026-06-22","2026-07-12","2026-07-31","2026-08-10","2026-09-15"],
+ "letra":["2026-10-30","2026-10-31"]
+};
+const esNueva=f=>!!f&&(Date.now()-Date.parse(f+"T12:00:00-06:00"))/864e5<=NUEVA_DIAS;
+T.forEach(t=>{const F=FECHAS[t.id];
+  if(t.bit){t.bit.forEach((b,i)=>{b.fecha=F&&F[i];b.nueva=esNueva(b.fecha)});t.nueva=t.bit.some(b=>b.nueva);const u=t.bit.map(b=>b.nueva).lastIndexOf(true);if(u>=0)t.b=u+1;}
+  else{t.fecha=F;t.nueva=esNueva(F);}});
+
 AEROS.forEach(a=>{a.x=(a.lo-CARTA.lon0)/(CARTA.lon1-CARTA.lon0)*CARTA.w; a.y=(CARTA.lat0-a.la)/(CARTA.lat0-CARTA.lat1)*CARTA.h;});
 
 /* ===== audio: Web Audio, todo arranca con el interruptor ===== */
@@ -745,10 +763,10 @@ const rumboHacia=(x0,y0,x1,y1)=>Math.atan2(x1-x0,-(y1-y0))*180/Math.PI;
 function montarMarcas(){
   T.forEach(t=>{
     const b=document.createElement("button");
-    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":"")+(t.estacion?" estacion":"")+(t.bastardos?" bastardos":""); b.dataset.id=t.id; b.dataset.dormida="true";
+    b.type="button"; b.className="marca"+(t.tipo==="nubes"?" nube":"")+(t.estacion?" estacion":"")+(t.bastardos?" bastardos":"")+(t.nueva?" nueva":""); b.dataset.id=t.id; b.dataset.dormida="true";
     b.style.setProperty("--d",(-Math.random()*2.8).toFixed(2)+"s");
     b.setAttribute("aria-label",`${t.nombre}, ${t.lugar}. ${t.tipo==="nubes"?"Zona de nubes":"Sintonizar señal"}`);
-    b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}<small>${t.tipo==="nubes"?"nubes · sin cartografiar":t.frec+" kHz"}</small></span>`;
+    b.innerHTML=`<span class="onda"></span><span class="onda b"></span><span class="punto"></span><span class="rotulo">${t.nombre}${t.nueva?'<em class="chip-nueva">Nueva</em>':""}<small>${t.tipo==="nubes"?"nubes · sin cartografiar":t.frec+" kHz"}</small></span>`;
     b.addEventListener("click",()=>sintonizar(t));
     lienzo.appendChild(b); t.el=b;
     if(S.oidas.has(t.id)) b.classList.add("oida");
@@ -1016,7 +1034,7 @@ function cambiarBitacora(t,n){
   t.b=n; const B=t.bit[n-1], f=$("#ficha"), num=String(n).padStart(2,"0");
   const img=f.querySelector(".ficha-foto img"); if(img){img.src=`assets/senales/${pista(t)}.jpg`;img.alt=B.alt;}
   const fr=f.querySelector(".frase"); if(fr) fr.textContent=B.frase;
-  const ti=f.querySelector(".bit-titulo"); if(ti) ti.textContent=num+" · "+B.t;
+  const ti=f.querySelector(".bit-titulo"); if(ti) ti.innerHTML=num+" · "+B.t+(B.nueva?'<em class="chip-nueva">Nueva</em>':"");
   const ab=f.querySelector(".ficha-acciones a"); if(ab) ab.href=B.link;
   f.querySelectorAll("[data-bit]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.bit===n)));
   const ll=f.querySelector(".lleno"); if(ll) ll.style.width="0%"; const tt=f.querySelector(".tiempo"); if(tt) tt.textContent="0:00";
@@ -1054,14 +1072,14 @@ addEventListener("resize",()=>{F.dx=0;F.dy=0;const f=$("#ficha");if(f){ponerF(f)
 /* ===== ficha ===== */
 function abrirFicha(t){
   const f=$("#ficha");
-  const cab=`<div class="ficha-cab" title="Arrastre para mover la ficha"><span class="asa" aria-hidden="true"></span><b>${t.nombre}</b><span class="coord">${t.lat} ${t.lon}${t.tipo==="senal"?" · "+t.frec+" kHz":""}</span><button class="ficha-x" type="button" data-cerrar aria-label="Cerrar la ficha"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1L11 11M11 1L1 11"/></svg></button></div>`;
+  const cab=`<div class="ficha-cab" title="Arrastre para mover la ficha"><span class="asa" aria-hidden="true"></span><b>${t.nombre}${t.nueva&&!t.bit?'<em class="chip-nueva">Nueva</em>':""}</b><span class="coord">${t.lat} ${t.lon}${t.tipo==="senal"?" · "+t.frec+" kHz":""}</span><button class="ficha-x" type="button" data-cerrar aria-label="Cerrar la ficha"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1L11 11M11 1L1 11"/></svg></button></div>`;
   if(t.tipo==="nubes"){
     f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="nube-arte">NUBES</div><div class="ficha-texto"><h2>Zona sin cartografiar</h2><p class="sub">${t.sub} · ${t.lugar}</p>
       <p class="frase">Las nubes taparon la foto aérea. El territorio existe; todavía nadie lo registró.</p>
       <div class="ficha-acciones"><span class="btn vacio" style="border-style:dashed">Señal en preparación</span></div></div></div>`;
   } else {
     const B=t.bit?t.bit[(t.b||1)-1]:null, num=n=>String(n).padStart(2,"0");
-    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir ${(t.rot||"Bitácora").toLowerCase()}"><span class="rot">${t.rot||"Bitácora"}</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}">${num(i+1)}</button>`).join("")}${Array.from({length:Math.max(0,(t.total||0)-t.bit.length)},(_,j)=>`<button type="button" class="futura" disabled title="Bitácora en preparación">${num(t.bit.length+j+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}</p></div>`:"";
+    const selector=B?`<div class="bitacoras"><div class="fila" role="group" aria-label="Elegir ${(t.rot||"Bitácora").toLowerCase()}"><span class="rot">${t.rot||"Bitácora"}</span>${t.bit.map((b,i)=>`<button type="button" data-bit="${i+1}" aria-pressed="${i+1===(t.b||1)}" title="${b.t}" class="${S.oidas.has(t.id+"-"+num(i+1))?"oida":""}${b.nueva?" nueva":""}">${num(i+1)}</button>`).join("")}${Array.from({length:Math.max(0,(t.total||0)-t.bit.length)},(_,j)=>`<button type="button" class="futura" disabled title="Bitácora en preparación">${num(t.bit.length+j+1)}</button>`).join("")}</div><p class="bit-titulo">${num(t.b||1)} · ${B.t}${B.nueva?'<em class="chip-nueva">Nueva</em>':""}</p></div>`:"";
     f.innerHTML=cab+`<div class="ficha-cuerpo"><div class="ficha-foto"><img src="assets/senales/${pista(t)}.jpg" alt="${B?B.alt:t.nombre+": imagen de la señal"}">${t.fotomontaje?'<span class="sello-foto">FOTOMONTAJE</span>':''}</div>
       <div class="ficha-texto"><h2>${t.nombre}</h2><p class="sub">${t.sub} · ${t.lugar}</p><p class="frase">${B?B.frase:t.frase}</p>${selector}
       <div class="medidor"><button class="ficha-play" type="button" data-estado="quieta" aria-label="Escuchar"><svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2L11 6L2.5 10.8Z"/></svg><svg class="i-pausa" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg></button><div class="medidor-wrap"><span class="fondo"></span><span class="lleno"></span></div><span class="tiempo">0:00</span></div>
@@ -1213,7 +1231,7 @@ function mandos(){
     r.textContent="Anotado en la bitácora. (Borrador: este formulario todavía no envía nada.)"; i.value="";
   });
   // índice de la carta plegada
-  $("#indice").innerHTML=T.map(t=>`<li><span class="frec">${t.tipo==="senal"?t.frec+"<br>kHz":"—"}</span><div><h3>${t.nombre}</h3><div class="lugar">${t.sub} · ${t.lugar} · ${t.lat} ${t.lon}</div>${t.tipo==="senal"?`<p class="fr">${t.frase}</p>`:`<p class="fr">Zona de nubes. Señal en preparación.</p>`}</div>
+  $("#indice").innerHTML=T.map(t=>`<li><span class="frec">${t.tipo==="senal"?t.frec+"<br>kHz":"—"}</span><div><h3>${t.nombre}${t.nueva?'<em class="chip-nueva">Nueva</em>':""}</h3><div class="lugar">${t.sub} · ${t.lugar} · ${t.lat} ${t.lon}</div>${t.tipo==="senal"?`<p class="fr">${t.frase}</p>`:`<p class="fr">Zona de nubes. Señal en preparación.</p>`}</div>
     <div class="acc"><button class="btn vacio" type="button" data-sint="${t.id}">Sintonizar</button>${t.link?`<a class="btn lleno" href="${t.link}" target="_blank" rel="noopener">Abrir</a>`:""}</div></li>`).join("");
   $$("[data-sint]").forEach(b=>b.addEventListener("click",()=>{cerrarPliego($("#p-carta"));const t=T.find(o=>o.id===b.dataset.sint);if(S.fase==="espera"){S.fase="libre";despertarTodo()}setTimeout(()=>sintonizar(t),150)}));
 }
