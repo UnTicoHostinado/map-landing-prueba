@@ -74,10 +74,21 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .ar-ter a:hover,.ar-ter a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
 .ar-ter .ar-ter__sello{display:inline-flex;align-items:center;gap:8px;color:var(--ar-acento);font-weight:700;border:0}
 .ar-ter__sello i{width:11px;height:11px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
-.ar-previa{position:absolute;top:-22px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
+/* migas de pan: marcado de Rank Math (nav.rank-math-breadcrumb > p > a · span.separator · span.last) */
+.ar-migas{margin:0 0 22px;font:11.5px/1.6 var(--ar-rot);letter-spacing:.12em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-migas p{margin:0;display:flex;flex-wrap:wrap;align-items:center;min-width:0}
+.ar-migas a{color:var(--ar-gris);text-decoration:none;border-bottom:1px solid var(--ar-linea)}
+.ar-migas a:hover,.ar-migas a:focus-visible{color:var(--ar-acento);border-color:var(--ar-acento);outline:none}
+.ar-migas .separator{color:var(--ar-tiza);padding:0 8px;white-space:pre}
+.ar-migas p>a:first-child{display:inline-flex;align-items:center;gap:7px;color:var(--ar-acento);font-weight:700;border:0}
+.ar-migas p>a:first-child::before{content:"";width:9px;height:9px;border:2px solid var(--ar-acento);border-radius:50%;box-shadow:0 0 0 3px rgba(232,65,44,.15)}
+.ar-migas .last{color:var(--ar-tinta);max-width:42ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:600px){.ar-migas .last,.ar-migas p>.separator:nth-last-child(2){display:none}}
+.ar-previa{position:absolute;top:8px;right:-90px;transform:rotate(-4deg);border:3px double var(--ar-acento);color:var(--ar-acento);
   padding:8px 12px;display:flex;flex-direction:column;gap:3px;opacity:.85;pointer-events:none;background:rgba(244,243,239,.6)}
 .ar-previa b{font:700 14px var(--ar-rot);letter-spacing:.16em;text-transform:uppercase}
 .ar-previa span{font:10px var(--ar-rot);letter-spacing:.1em;text-transform:uppercase}
+@media (min-width:1181px){.hr-head.ar-head{padding-top:92px}}
 @media (max-width:1180px){.ar-previa{position:static;align-self:flex-start;display:inline-flex;margin:0 0 18px;transform:rotate(-2deg)}}
 
 /* pista de narración */
@@ -180,6 +191,26 @@ body.ver-zonas [data-z]::after{content:attr(data-z-lab);position:absolute;top:0;
 [data-z="patron"]{--z:var(--ar-patron)}
 body.ver-zonas .ar-barra[data-z]{position:sticky}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* anterior / siguiente: solo en entradas de una serie */
+.ar-serie{margin-top:72px}
+.ar-serie__tira{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ar-serie__n{display:grid;place-items:center;min-width:40px;height:36px;padding:0 6px;font:700 12px var(--ar-rot);letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  color:var(--ar-tinta);text-decoration:none;border:1.5px solid var(--ar-tinta)}
+a.ar-serie__n:hover,a.ar-serie__n:focus-visible{background:var(--ar-acento);border-color:var(--ar-acento);color:var(--ar-papel);outline:none}
+.ar-serie__n--aqui{background:var(--ar-tinta);color:var(--ar-papel);position:relative}
+.ar-serie__n--aqui::after{content:"";position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--ar-acento)}
+.ar-serie__n--prep{border-style:dashed;color:var(--ar-tiza);border-color:var(--ar-tiza)}
+.ar-serie__nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+.ar-serie__paso{display:flex;flex-direction:column;gap:6px;padding:14px 16px 16px;border:2px solid var(--ar-tinta);text-decoration:none;color:var(--ar-tinta);min-width:0}
+.ar-serie__paso span{font:11px var(--ar-rot);letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gris)}
+.ar-serie__paso b{font:400 clamp(24px,3vw,30px)/1 var(--ar-tit);letter-spacing:.02em;text-wrap:balance}
+.ar-serie__paso--sig{text-align:right;align-items:flex-end}
+.ar-serie__paso:hover,.ar-serie__paso:focus-visible{background:var(--ar-tinta);color:var(--ar-papel);outline:none}
+.ar-serie__paso:hover span,.ar-serie__paso:focus-visible span{color:var(--ar-acento)}
+.ar-serie__paso--vacio{border-style:dashed;border-color:var(--ar-tiza);color:var(--ar-tiza);pointer-events:none}
+.ar-serie__nota{margin:14px 0 0;font:11px/1.5 var(--ar-rot);letter-spacing:.04em;color:var(--ar-gris)}
+@media (max-width:560px){.ar-serie__nav{grid-template-columns:minmax(0,1fr)}.ar-serie__paso--sig{text-align:left;align-items:flex-start}.ar-serie__tira{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.ar-serie__n{min-width:0}}
 
 /* lo más leído y últimos artículos, lado a lado */
 .ar-dos{max-width:1100px;margin:72px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);gap:0 64px;align-items:start}
@@ -504,7 +535,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 
   <!-- 2 · tres ventanillas -->
   <div class="ap-wrap"><section class="ct-ventanillas ap-ancho" aria-labelledby="ct-v-t">
-    <div class="ar-tit"><h2 id="ct-v-t">¿Por cuál ventanilla?</h2><span>elija una y el mensaje sale con su asunto</span></div>
+    <div class="ar-tit"><h2 id="ct-v-t">¿Por cuál ventanilla?</h2><span>elegí una y el mensaje sale con su asunto</span></div>
     <div class="ct-v-fila" role="group" aria-label="Asunto del mensaje">
       <button type="button" class="ct-v" data-asunto="Frecuencia abierta" aria-pressed="true">
         <span class="ct-v__n">01</span>
@@ -543,7 +574,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
     <div class="ct-sec__cab">
       <p class="ap-kicker">Depósito de a bordo · MAP × Nasional 20 años</p>
       <h2 id="ct-panol-t">El Pañol</h2>
-      <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor y la lluvia de este país. Apúntese y le avisamos primero cuando salgan.</p>
+      <p class="ct-sec__intro">Piezas en el taller. Pocas, bien hechas y pensadas para el calor y la lluvia de este país. Apuntate y te avisamos primero cuando salgan.</p>
     </div>
     <ol class="ct-piezas">
       <li>
@@ -574,7 +605,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
     </ol>
     <form class="ct-lista" id="ct-lista" novalidate>
       <label for="ct-lista-correo">Correo para la lista</label>
-      <div class="ct-lista__fila"><input id="ct-lista-correo" type="email" autocomplete="email" placeholder="su@correo.com" required><button type="submit" class="ap-boton">Apuntarme</button></div>
+      <div class="ct-lista__fila"><input id="ct-lista-correo" type="email" autocomplete="email" placeholder="tu@correo.com" required><button type="submit" class="ap-boton">Apuntarme</button></div>
       <span id="ct-lista-estado" role="status"></span>
     </form>
   </section></div>
@@ -584,7 +615,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
     <div class="ct-sec__cab">
       <p class="ap-kicker">Donde se construye para otros</p>
       <h2 id="ct-ast-t">El Astillero</h2>
-      <p class="ct-sec__intro">Producción audiovisual, podcast y series con el sello MAP. ¿Le gustaría ser parte de este archivo, colaborando como patrocinador? Escríbanos.</p>
+      <p class="ct-sec__intro">Producción audiovisual, podcast y series con el sello MAP. ¿Te gustaría ser parte de este archivo, colaborando como patrocinador? Escribinos.</p>
     </div>
     <div class="ct-hacemos">
       <div class="ct-hace"><b>Documentales</b><span>Del rodaje al festival</span><button type="button" class="ct-link" data-yt="_g5LaE4DjVA" data-titulo="RUIDO">Proyectar RUIDO ▸</button></div>
@@ -594,7 +625,7 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 
     <div class="ct-sala" id="ct-sala">
       <div class="ct-pantalla" id="ct-pantalla" aria-live="polite">
-        <div class="ct-pantalla__reposo"><span>Sala de proyección</span><b>Elija un rollo</b></div>
+        <div class="ct-pantalla__reposo"><span>Sala de proyección</span><b>Elegí un rollo</b></div>
       </div>
       <div class="ct-sala__lista">
         <h3 class="ct-h3">Producciones</h3>
@@ -678,12 +709,12 @@ button.ap-boton{font:700 12px var(--ar-rot);letter-spacing:.16em;text-transform:
 
   $('#ct-tx').addEventListener('submit',function(e){
     e.preventDefault(); var f=e.target, est=$('#ct-estado');
-    if(!f.nombre.value.trim()||!f.correo.value.trim()||!f.mensaje.value.trim()){est.textContent='Faltan su nombre, su correo o el mensaje.';return}
+    if(!f.nombre.value.trim()||!f.correo.value.trim()||!f.mensaje.value.trim()){est.textContent='Faltan tu nombre, tu correo o el mensaje.';return}
     est.textContent='Mensaje en cola: '+asunto.textContent+'. En la maqueta no se envía nada.'; f.reset();
   });
   $('#ct-lista').addEventListener('submit',function(e){
     e.preventDefault(); var i=$('#ct-lista-correo'), est=$('#ct-lista-estado');
-    if(!i.value.trim()||i.validity.typeMismatch){est.textContent='Revise el correo.';return}
+    if(!i.value.trim()||i.validity.typeMismatch){est.textContent='Revisá el correo.';return}
     est.textContent='Apuntado. En la maqueta no se guarda nada.'; i.value='';
   });
 })();
