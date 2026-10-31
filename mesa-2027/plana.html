@@ -255,6 +255,12 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 .marca.nueva.viva .onda.b{animation-delay:calc(var(--d,0s) + .85s)}
 .bitacoras button.nueva::before{content:"";position:absolute;left:4px;right:4px;bottom:3px;height:2px;background:var(--lampara)}
 
+/* ---------- enlace a la versión clásica ---------- */
+.inst .a-clasica{margin-top:8px;justify-self:center;color:rgba(233,228,212,.7);text-decoration:underline;text-underline-offset:3px;letter-spacing:.12em}
+.inst .a-clasica:hover,.inst .a-clasica:focus-visible{color:#fff;outline:none}
+.p-clasica{margin:18px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.p-clasica a{color:var(--senal);font-weight:700}
+
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
   padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -498,6 +504,7 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
       </ul>
       <h3 class="sub-aero">Señales · los territorios de MAP</h3>
       <ul class="indice" id="indice"></ul>
+      <p class="p-clasica">¿Prefiere una portada sencilla, sin instrumento? <a href="clasica/?elegida=1">Versión clásica →</a></p>
       <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 17-5 Alajuela y NC 17-9 San José, Costa Rica, escala 1:250.000. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkady Volkóv Lasenko.</p>
     </div>
   </section>
@@ -549,16 +556,30 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
         <span class="foto"><img class="off" src="assets/img/interruptor-off.webp" alt="" width="314" height="360"><img class="on" src="assets/img/interruptor-on.webp" alt="" width="314" height="360"></span>
         <span>Encender</span>
       </button>
-      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em></p>
+      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em><a class="a-clasica" href="clasica/?elegida=1">Versión clásica</a></p>
     </div>
   </div>
 
-  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
+  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Pase a la <a href="clasica/">versión clásica</a> o visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
 </div>
 
 <script>
 (function(){
 "use strict";
+/* ===== ruta: carta 3D → carta plana → versión clásica =====
+   Va a la clásica si la persona la eligió (y no ha vuelto a abrir la carta), si tiene ahorro de datos o conexión 2G,
+   o si el equipo tiene menos de 1 GB de memoria. ?carta=1 fuerza la carta y borra la elección. */
+const CLASICA="clasica/";
+const RUTA=(()=>{let q="",pref=null;try{q=location.search}catch(e){}
+  const forzar=/[?&]carta=1/.test(q);
+  try{if(forzar)localStorage.setItem("map27.portada","carta");pref=localStorage.getItem("map27.portada")}catch(e){}
+  if(forzar) return "carta";
+  if(pref==="carta") return "carta";        // la persona abrió la carta a propósito: se respeta
+  if(pref==="clasica") return "clasica";
+  const c=navigator.connection; if(c&&(c.saveData||/(^|-)2g$/.test(c.effectiveType||""))) return "clasica";
+  if(navigator.deviceMemory&&navigator.deviceMemory<1) return "clasica";
+  return "carta";})();
+if(RUTA==="clasica"){location.replace(CLASICA);return}
 /* ===== Datos: la carta y los ocho territorios =====
    Coordenadas en píxeles de la hoja NC 17-9 a 2576 px de ancho.
    Neatline calibrada: x 231 = 84°30'W, x 2526 = 83°00'W, y 61 = 10°00'N, y 1607 = 9°00'N. */
@@ -1192,7 +1213,7 @@ function regreso(){
 let avisarCarta=()=>{}; const cartaLista=new Promise(r=>{avisarCarta=r});
 function cargarCarta(){
   const grande=(window.innerWidth>=760)?"assets/carta/carta-2576.jpg":"assets/carta/carta-1932.jpg";
-  const im=new Image(); im.onload=()=>{carta.src=grande;avisarCarta()}; im.src=grande;
+  const im=new Image(); im.onload=()=>{carta.src=grande;avisarCarta()}; im.onerror=()=>location.replace(CLASICA); im.src=grande;
 }
 dibujarDial(); aro(); segs=$$("#vu .seg"); montarMarcas(); montarAeros(); medir(); arrastre(); mandos(); escribirCoord(); cargarCarta();
 if(REGRESO) regreso();

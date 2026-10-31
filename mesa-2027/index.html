@@ -256,6 +256,12 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 .marca.nueva.viva .onda.b{animation-delay:calc(var(--d,0s) + .85s)}
 .bitacoras button.nueva::before{content:"";position:absolute;left:4px;right:4px;bottom:3px;height:2px;background:var(--lampara)}
 
+/* ---------- enlace a la versión clásica ---------- */
+.inst .a-clasica{margin-top:8px;justify-self:center;color:rgba(233,228,212,.7);text-decoration:underline;text-underline-offset:3px;letter-spacing:.12em}
+.inst .a-clasica:hover,.inst .a-clasica:focus-visible{color:#fff;outline:none}
+.p-clasica{margin:18px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.p-clasica a{color:var(--senal);font-weight:700}
+
 /* ---------- pliegos (carta plegada, pañol, astillero, frecuencia) ---------- */
 .pliego{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,21,20,.6);
   padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -498,6 +504,7 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
       </ul>
       <h3 class="sub-aero">Señales · los territorios de MAP</h3>
       <ul class="indice" id="indice"></ul>
+      <p class="p-clasica">¿Prefiere una portada sencilla, sin instrumento? <a href="clasica/?elegida=1">Versión clásica →</a></p>
       <p class="creditos">Carta: Joint Operations Graphic (Air), serie 1501 Air, hojas NC 16-8 Liberia, NC 16-12 Puntarenas, NC 17-5 Alajuela y NC 17-9 San José, escala 1:250.000. Relieve: Copernicus DEM GLO-90. Centroamérica: Natural Earth. Perry-Castañeda Library Map Collection, University of Texas at Austin. Instrumento al cuidado del Dr. Arkady Volkóv Lasenko.</p>
     </div>
   </section>
@@ -549,17 +556,31 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
         <span class="foto"><img class="off" src="assets/img/interruptor-off.webp" alt="" width="314" height="360"><img class="on" src="assets/img/interruptor-on.webp" alt="" width="314" height="360"></span>
         <span>Encender</span>
       </button>
-      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em></p>
+      <p class="inst"><span>Instituto Cuántico Costarricense</span><span>para la Investigación Interdimensional</span><em>Calibre antes de cada marcación</em><a class="a-clasica" href="clasica/?elegida=1">Versión clásica</a></p>
     </div>
   </div>
 
-  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
+  <noscript><p style="position:absolute;inset:auto 0 0;background:#f2efe6;padding:16px">Este instrumento necesita JavaScript. Pase a la <a href="clasica/">versión clásica</a> o visite <a href="https://www.mapradiocr.com/podcast/">el podcast</a>, <a href="https://www.mapradiocr.com/serie-map/">la Serie MAP</a> o <a href="https://www.mapradiocr.com/contacto/">contacto</a>.</p></noscript>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 "use strict";
+/* ===== ruta: carta 3D → carta plana → versión clásica =====
+   Va a la clásica si la persona la eligió (y no ha vuelto a abrir la carta), si tiene ahorro de datos o conexión 2G,
+   o si el equipo tiene menos de 1 GB de memoria. ?carta=1 fuerza la carta y borra la elección. */
+const CLASICA="clasica/";
+const RUTA=(()=>{let q="",pref=null;try{q=location.search}catch(e){}
+  const forzar=/[?&]carta=1/.test(q);
+  try{if(forzar)localStorage.setItem("map27.portada","carta");pref=localStorage.getItem("map27.portada")}catch(e){}
+  if(forzar) return "carta";
+  if(pref==="carta") return "carta";        // la persona abrió la carta a propósito: se respeta
+  if(pref==="clasica") return "clasica";
+  const c=navigator.connection; if(c&&(c.saveData||/(^|-)2g$/.test(c.effectiveType||""))) return "clasica";
+  if(navigator.deviceMemory&&navigator.deviceMemory<1) return "clasica";
+  return "carta";})();
+if(RUTA==="clasica"){location.replace(CLASICA);return}
 /* ===== Datos: la carta y los ocho territorios =====
    Coordenadas en píxeles de la hoja NC 17-9 a 2576 px de ancho.
    Neatline calibrada: x 231 = 84°30'W, x 2526 = 83°00'W, y 61 = 10°00'N, y 1607 = 9°00'N. */
@@ -683,7 +704,13 @@ const S={rumbo:0,alineada:null,guia:null,cx:0,cy:0,r:150,vw:0,vh:0,fase:"portada
 /* ===== la escena: carta sobre el relieve real (Copernicus DEM 90 m) ===== */
 if(!window.THREE){location.replace("plana.html"+location.search);return}
 let renderer;
+/* marca contra cierres (iPhone): si la carga anterior del 3D se cayó sin cerrar la página, esta vez va la plana */
+{let caida=false;try{caida=sessionStorage.getItem("map27.3d")==="cargando"}catch(e){}
+ if(caida){try{sessionStorage.removeItem("map27.3d")}catch(e){}location.replace("plana.html"+location.search);return}
+ try{sessionStorage.setItem("map27.3d","cargando")}catch(e){}
+ addEventListener("pagehide",()=>{try{sessionStorage.removeItem("map27.3d")}catch(e){}});}
 try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(e){location.replace("plana.html"+location.search);return}
+renderer.domElement.addEventListener("webglcontextlost",e=>{e.preventDefault();location.replace("plana.html"+location.search)});
 const movil=Math.min(innerWidth,innerHeight)<700;
 renderer.setPixelRatio(Math.min(devicePixelRatio,movil?1.5:2));
 renderer.outputEncoding=THREE.sRGBEncoding;
@@ -722,7 +749,7 @@ function cargarCarta(){
       const p=geo.attributes.position; for(let i=0;i<p.count;i++) p.setY(i,alturaEn(p.getX(i),p.getZ(i))); geo.computeVertexNormals();
       escena.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({map:tex(imgs[k])})));
     });
-    nubes(); avisarCarta();
+    nubes(); avisarCarta(); try{sessionStorage.removeItem("map27.3d")}catch(e){}
   }).catch(()=>location.replace("plana.html"+location.search));
 }
 // nubes reales sobre las zonas sin cartografiar
@@ -1286,6 +1313,8 @@ if(REGRESO) regreso();
 window.addEventListener("resize",medir);
 if(window.visualViewport) visualViewport.addEventListener("resize",medir);
 requestAnimationFrame(bucle);
+// si la carta no termina de cargar en 20 s, va la versión plana
+Promise.race([cartaLista,new Promise(r=>setTimeout(()=>r("tarde"),20000))]).then(v=>{if(v==="tarde")location.replace("plana.html"+location.search)});
 // precarga del collage: solo si la portada lo va a mostrar, después de la carta y nunca con ahorro de datos
 (function(){
   if(REGRESO) return;
