@@ -53,3 +53,9 @@ if ( did_action( 'acf/init' ) ) {
 } else {
 	add_action( 'acf/init', $map_campos_acf );
 }
+
+// Las páginas con campos se editan en la pantalla clásica: título y, debajo, las cajas de texto (sin el editor de bloques ni el contenido viejo de Elementor).
+add_filter( 'use_block_editor_for_post', function ( $usar, $post ) {
+	$con_campos = array( 498 ); // Sobre el director.
+	return ( $post && in_array( (int) $post->ID, $con_campos, true ) ) ? false : $usar;
+}, 20, 2 );
