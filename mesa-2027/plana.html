@@ -248,6 +248,19 @@ html #ficha.abierta{transform:translate3d(0,var(--dy,0px),0)}
 #ficha.bastardos .ficha-play{background:var(--bp-naranja);border-color:var(--bp-naranja)}
 #ficha.bastardos .ficha-play:hover{background:var(--tinta);border-color:var(--tinta)}
 
+/* ---------- fichas horizontales (Arkady y Bastardos): imagen a la izquierda, sin scroll ---------- */
+@media (min-width:760px){
+  #ficha.estacion,#ficha.retrato{width:min(590px,calc(100vw - 36px));padding:12px 16px 14px}
+  #ficha.estacion .ficha-cuerpo,#ficha.retrato .ficha-cuerpo{grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start}
+  #ficha.retrato .ficha-foto{width:220px;aspect-ratio:1;margin:0}
+  #ficha.estacion .ficha-foto{width:220px;aspect-ratio:auto;background:transparent;border:0}
+  #ficha.estacion .ficha-foto img{height:auto;border:1px solid var(--estacion)}
+  #ficha.estacion .ficha-texto h2,#ficha.retrato .ficha-texto h2{font-size:25px}
+  #ficha.estacion .frase,#ficha.retrato .frase{font-size:16px;margin-top:6px}
+  #ficha.estacion .bitacoras,#ficha.retrato .bitacoras{margin-top:8px}
+  #ficha.estacion .medidor,#ficha.retrato .medidor,#ficha.estacion .ficha-acciones,#ficha.retrato .ficha-acciones{margin-top:8px}
+}
+
 /* ---------- señales nuevas (últimos 30 días) ---------- */
 .chip-nueva{display:inline-block;margin-left:6px;padding:0 5px;font:700 8.5px/1.7 var(--mono);font-style:normal;letter-spacing:.14em;text-transform:uppercase;background:var(--lampara);color:var(--tinta);vertical-align:2px;border-radius:1px}
 .marca.nueva .punto{box-shadow:0 0 0 2px rgba(242,239,230,.7),0 0 0 5px rgba(233,162,59,.6)}
