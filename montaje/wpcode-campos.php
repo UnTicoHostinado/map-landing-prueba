@@ -2,7 +2,7 @@
 // Las plantillas del tema leen estos campos con map_ar_campo(); si un campo queda vacío, sale el texto de siempre.
 // WPCode → PHP Snippet → Run Everywhere.
 
-add_action( 'acf/init', function () {
+$map_campos_acf = function () {
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
 	}
@@ -46,4 +46,10 @@ add_action( 'acf/init', function () {
 		'hide_on_screen' => array( 'the_content' ),
 		'show_in_rest'   => 1,
 	) );
-} );
+};
+// WPCode puede correr el snippet después de acf/init: en ese caso se registran de una vez.
+if ( did_action( 'acf/init' ) ) {
+	$map_campos_acf();
+} else {
+	add_action( 'acf/init', $map_campos_acf );
+}
