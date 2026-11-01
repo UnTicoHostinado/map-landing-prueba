@@ -59,3 +59,12 @@ add_filter( 'use_block_editor_for_post', function ( $usar, $post ) {
 	$con_campos = array( 498 ); // Sobre el director.
 	return ( $post && in_array( (int) $post->ID, $con_campos, true ) ) ? false : $usar;
 }, 20, 2 );
+
+// En esas páginas se esconden los botones de Elementor: la página la arma la plantilla del tema y Elementor no cambia nada de lo que se ve.
+add_action( 'admin_head-post.php', function () {
+	global $post;
+	if ( $post && in_array( (int) $post->ID, array( 498 ), true ) ) {
+		echo '<style>#elementor-switch-mode,#elementor-editor,#elementor-switch-mode-button{display:none!important}</style>';
+		echo '<script>document.addEventListener("DOMContentLoaded",function(){var a=document.querySelector(".wrap h1, .wrap .wp-heading-inline");if(a){var p=document.createElement("p");p.style.cssText="margin:8px 0 0;padding:10px 12px;background:#fff8e5;border-left:4px solid #dba617;max-width:760px";p.textContent="Los textos de esta página se cambian en las cajas «MAP 2027 · Textos», más abajo. Cambiá lo que necesités y dale Actualizar.";a.parentNode.insertBefore(p,a.nextSibling.nextSibling||null);}});</script>';
+	}
+} );
