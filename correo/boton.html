@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:B612M;src:url(node_modules/@fontsource/b612-mono/files/b612-mono-latin-700-normal.woff2)}
+@font-face{font-family:Bebas;src:url(node_modules/@fontsource/bebas-neue/files/bebas-neue-latin-400-normal.woff2)}
+html,body{margin:0;background:transparent}
+svg{display:block}
+</style></head><body>
+<svg id="b" width="520" height="520" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <radialGradient id="bisel" cx="50%" cy="38%" r="65%"><stop offset="0" stop-color="#4a4a42"/><stop offset=".7" stop-color="#2a2a25"/><stop offset="1" stop-color="#16160f"/></radialGradient>
+ <linearGradient id="aro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d8c82"/><stop offset=".5" stop-color="#3a3933"/><stop offset="1" stop-color="#121210"/></linearGradient>
+ <linearGradient id="collar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0d0b"/><stop offset="1" stop-color="#55544c"/></linearGradient>
+ <radialGradient id="domo" cx="42%" cy="34%" r="70%"><stop offset="0" stop-color="#ff8a6e"/><stop offset=".35" stop-color="#ee4a33"/><stop offset=".8" stop-color="#c22d18"/><stop offset="1" stop-color="#7d1a0c"/></radialGradient>
+ <radialGradient id="brillo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <filter id="sombra" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".35"/></filter>
+ <path id="arriba" d="M64,260 A196,196 0 0,1 456,260"/><path id="abajo" d="M64,260 A196,196 0 0,0 456,260"/>
+</defs>
+<g filter="url(#sombra)">
+ <circle cx="260" cy="260" r="236" fill="url(#aro)"/>
+ <circle cx="260" cy="260" r="228" fill="url(#bisel)"/>
+</g>
+<circle cx="260" cy="260" r="222" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="2"/>
+<!-- tornillos -->
+<g fill="#6d6c63" stroke="#111" stroke-width="1.5">
+ <circle cx="64" cy="260" r="9"/><circle cx="456" cy="260" r="9"/>
+</g>
+<g stroke="#1b1b17" stroke-width="2.2"><path d="M58,254l12,12M450,254l12,12"/></g>
+<g font-family="B612M" font-size="26" fill="#F4F3EF" letter-spacing="4" dominant-baseline="central"><text><textPath href="#arriba" startOffset="50%" text-anchor="middle">SINTONIZAR FRECUENCIA MAP</textPath></text><text font-size="17" letter-spacing="5" fill="#b9b7ab"><textPath href="#abajo" startOffset="50%" text-anchor="middle">MAP RADIO · RADIO PACHUKO</textPath></text></g>
+<circle cx="260" cy="260" r="166" fill="url(#collar)"/>
+<circle cx="260" cy="260" r="156" fill="#0e0e0c"/>
+<circle cx="260" cy="266" r="146" fill="#000" opacity=".45"/>
+<circle cx="260" cy="258" r="146" fill="url(#domo)"/>
+<circle cx="260" cy="258" r="146" fill="none" stroke="#5c1208" stroke-opacity=".5" stroke-width="3"/>
+<ellipse cx="222" cy="190" rx="78" ry="44" transform="rotate(-24 222 190)" fill="url(#brillo)"/>
+<text x="260" y="300" text-anchor="middle" font-family="Bebas" font-size="128" fill="#8f1d0d" opacity=".55">MAP</text>
+<text x="260" y="297" text-anchor="middle" font-family="Bebas" font-size="128" fill="#ff7a5f" opacity=".35">MAP</text>
+</svg></body></html>
