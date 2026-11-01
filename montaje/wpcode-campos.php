@@ -243,6 +243,28 @@ $map_campos_acf = function () {
 		'hide_on_screen' => array( 'the_content' ),
 		'show_in_rest'   => 1,
 	) );
+
+	// Frecuencia confirmada (página 22828).
+	acf_add_local_field_group( array(
+		'key'            => 'group_map_frecuencia',
+		'title'          => 'MAP 2027 · Textos de «Frecuencia confirmada»',
+		'fields'         => array(
+			array( 'key' => 'field_map_fc_kicker', 'name' => 'fc_kicker', 'label' => 'Línea sobre el título', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+			array( 'key' => 'field_map_fc_titulo', 'name' => 'fc_titulo', 'label' => 'Título', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+			array( 'key' => 'field_map_fc_bajada', 'name' => 'fc_bajada', 'label' => 'Bajada', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_fc_puertas_titulo', 'name' => 'fc_puertas_titulo', 'label' => 'Tres puertas · título', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+			array( 'key' => 'field_map_fc_escuchar', 'name' => 'fc_escuchar', 'label' => 'Escuchar · texto', 'instructions' => 'El episodio queda fijo. Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_fc_leer', 'name' => 'fc_leer', 'label' => 'Leer · texto', 'instructions' => 'El título lo pone el artículo. Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_fc_ver', 'name' => 'fc_ver', 'label' => 'Ver · texto', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_fc_cierre', 'name' => 'fc_cierre', 'label' => 'Cierre · texto', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_fc_firma', 'name' => 'fc_firma', 'label' => 'Cierre · firma', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+		),
+		'location'       => array( array( array( 'param' => 'page', 'operator' => '==', 'value' => '22828' ) ) ),
+		'position'       => 'acf_after_title',
+		'style'          => 'default',
+		'hide_on_screen' => array( 'the_content' ),
+		'show_in_rest'   => 1,
+	) );
 };
 // WPCode puede correr el snippet después de acf/init: en ese caso se registran de una vez.
 if ( did_action( 'acf/init' ) ) {
@@ -251,8 +273,8 @@ if ( did_action( 'acf/init' ) ) {
 	add_action( 'acf/init', $map_campos_acf );
 }
 
-// Páginas con campos (498 Sobre el director, 24 Contacto, 2368 Podcast, 2600 Serie MAP, 14451 Crónicas del Refugio, 10670 Gracias): se editan en la pantalla clásica, sin el editor de bloques ni el contenido viejo de Elementor.
-$map_con_campos = array( 498, 24, 2368, 2600, 14451, 10670 );
+// Páginas con campos (498 Sobre el director, 24 Contacto, 2368 Podcast, 2600 Serie MAP, 14451 Crónicas del Refugio, 10670 Gracias, 22828 Frecuencia confirmada): se editan en la pantalla clásica, sin el editor de bloques ni el contenido viejo de Elementor.
+$map_con_campos = array( 498, 24, 2368, 2600, 14451, 10670, 22828 );
 add_filter( 'use_block_editor_for_post', function ( $usar, $post ) use ( $map_con_campos ) {
 	return ( $post && in_array( (int) $post->ID, $map_con_campos, true ) ) ? false : $usar;
 }, 20, 2 );
