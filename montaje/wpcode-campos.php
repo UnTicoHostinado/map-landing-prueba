@@ -265,6 +265,38 @@ $map_campos_acf = function () {
 		'hide_on_screen' => array( 'the_content' ),
 		'show_in_rest'   => 1,
 	) );
+
+	// Cantinas legendarias (página 2).
+	acf_add_local_field_group( array(
+		'key'            => 'group_map_cantinas',
+		'title'          => 'MAP 2027 · Textos de «Cantinas legendarias»',
+		'fields'         => array(
+			array( 'key' => 'field_map_cn_kicker', 'name' => 'cn_kicker', 'label' => 'Línea sobre el título', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+			array( 'key' => 'field_map_cn_titulo', 'name' => 'cn_titulo', 'label' => 'Título', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'text' ),
+			array( 'key' => 'field_map_cn_bajada', 'name' => 'cn_bajada', 'label' => 'Bajada', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+			array( 'key' => 'field_map_cn_notam', 'name' => 'cn_notam', 'label' => 'NOTAM (sale al alejar el mapa)', 'instructions' => 'Si lo dejás vacío, sale el texto original.', 'type' => 'textarea', 'rows' => 4, 'new_lines' => '' ),
+		),
+		'location'       => array( array( array( 'param' => 'page', 'operator' => '==', 'value' => '2' ) ) ),
+		'position'       => 'acf_after_title',
+		'style'          => 'default',
+		'hide_on_screen' => array( 'the_content' ),
+		'show_in_rest'   => 1,
+	) );
+
+	// Cantinas legendarias: estado de cada punto en el mapa (tipo de contenido «cantina»).
+	acf_add_local_field_group( array(
+		'key'            => 'group_map_cantina_estado',
+		'title'          => 'MAP 2027 · Estado en el mapa',
+		'fields'         => array(
+			array( 'key' => 'field_map_cn_aliado', 'name' => 'punto_aliado', 'label' => 'Punto aliado', 'type' => 'true_false', 'ui' => 1, 'ui_on_text' => 'Sí', 'ui_off_text' => 'No', 'instructions' => 'No es cantina, pero aquí también se toma birra. Sale como rombo verde.' ),
+			array( 'key' => 'field_map_cn_cerro', 'name' => 'cerro', 'label' => 'Cerró · fuera del aire', 'type' => 'true_false', 'ui' => 1, 'ui_on_text' => 'Sí', 'ui_off_text' => 'No', 'instructions' => 'Ya no opera. Queda en el mapa como memoria, en gris y sin botones de cómo llegar.' ),
+			array( 'key' => 'field_map_cn_senal', 'name' => 'senal_activa', 'label' => 'Señal activa (sonar)', 'type' => 'true_false', 'ui' => 1, 'ui_on_text' => 'Sí', 'ui_off_text' => 'No', 'instructions' => 'El punto destella en el mapa, como un sonar.' ),
+		),
+		'location'       => array( array( array( 'param' => 'post_type', 'operator' => '==', 'value' => 'cantina' ) ) ),
+		'position'       => 'side',
+		'style'          => 'default',
+		'show_in_rest'   => 1,
+	) );
 };
 // WPCode puede correr el snippet después de acf/init: en ese caso se registran de una vez.
 if ( did_action( 'acf/init' ) ) {
@@ -273,8 +305,8 @@ if ( did_action( 'acf/init' ) ) {
 	add_action( 'acf/init', $map_campos_acf );
 }
 
-// Páginas con campos (498 Sobre el director, 24 Contacto, 2368 Podcast, 2600 Serie MAP, 14451 Crónicas del Refugio, 10670 Gracias, 22828 Frecuencia confirmada): se editan en la pantalla clásica, sin el editor de bloques ni el contenido viejo de Elementor.
-$map_con_campos = array( 498, 24, 2368, 2600, 14451, 10670, 22828 );
+// Páginas con campos (498 Sobre el director, 24 Contacto, 2368 Podcast, 2600 Serie MAP, 14451 Crónicas del Refugio, 10670 Gracias, 22828 Frecuencia confirmada, 2 Cantinas legendarias): se editan en la pantalla clásica, sin el editor de bloques ni el contenido viejo de Elementor.
+$map_con_campos = array( 498, 24, 2368, 2600, 14451, 10670, 22828, 2 );
 add_filter( 'use_block_editor_for_post', function ( $usar, $post ) use ( $map_con_campos ) {
 	return ( $post && in_array( (int) $post->ID, $map_con_campos, true ) ) ? false : $usar;
 }, 20, 2 );
@@ -287,3 +319,8 @@ add_action( 'admin_head-post.php', function () use ( $map_con_campos ) {
 		echo '<script>document.addEventListener("DOMContentLoaded",function(){var a=document.querySelector(".wrap h1, .wrap .wp-heading-inline");if(a){var p=document.createElement("p");p.style.cssText="margin:8px 0 0;padding:10px 12px;background:#fff8e5;border-left:4px solid #dba617;max-width:760px";p.textContent="Los textos de esta página se cambian en las cajas «MAP 2027 · Textos», más abajo. Cambiá lo que necesités y dale Actualizar. Si dejás una caja vacía, sale el texto original.";a.parentNode.insertBefore(p,a.nextSibling.nextSibling||null);}});</script>';
 	}
 } );
+
+// Las cantinas viven solo en el mapa de /cantinas/: fuera del mapa del sitio de Rank Math (cada /cantina/<nombre>/ redirige a su ficha).
+add_filter( 'rank_math/sitemap/exclude_post_type', function ( $excluir, $tipo ) {
+	return 'cantina' === $tipo ? true : $excluir;
+}, 10, 2 );
