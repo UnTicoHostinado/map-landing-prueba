@@ -324,3 +324,24 @@ add_action( 'admin_head-post.php', function () use ( $map_con_campos ) {
 add_filter( 'rank_math/sitemap/exclude_post_type', function ( $excluir, $tipo ) {
 	return 'cantina' === $tipo ? true : $excluir;
 }, 10, 2 );
+
+// Al publicar, cambiar o borrar una cantina se limpia sola la caché (WP Rocket y el CDN de Rocket.net),
+// para que /cantinas/ muestre el cambio de una vez. Corre después de que ACF guarda los campos.
+function map_cn_limpiar_cache( $post_id ) {
+	static $hecho = false;
+	if ( $hecho || 'cantina' !== get_post_type( $post_id ) || wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+		return;
+	}
+	$hecho = true;
+	if ( function_exists( 'rocket_clean_post' ) ) {
+		rocket_clean_post( 2 );
+	}
+	if ( function_exists( 'rocket_clean_domain' ) ) {
+		rocket_clean_domain();
+	}
+	wp_cache_flush();
+}
+add_action( 'acf/save_post', 'map_cn_limpiar_cache', 99 );
+add_action( 'trashed_post', 'map_cn_limpiar_cache' );
+add_action( 'untrashed_post', 'map_cn_limpiar_cache' );
+add_action( 'before_delete_post', 'map_cn_limpiar_cache' );
